@@ -7,131 +7,224 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    {{--  <link href="{{asset('assets/css/paper-dashboard.css')}}" rel="stylesheet"/>  --}}
-    {{--  <link href="{{ asset('css/app.css') }}" rel="stylesheet">  --}}
-
-    <link rel="stylesheet" href="{{ asset('assets/login/css/login.css') }}">    
+<!--===============================================================================================-->	
+<link rel="icon" type="image/png" href="{{ asset('assets/login_v2/images/icons/logo.png') }}"/>
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/vendor/bootstrap/css/bootstrap.min.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/fonts/font-awesome-4.7.0/css/font-awesome.min.cs')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/fonts/iconic/css/material-design-iconic-font.min.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/vendor/animate/animate.css')}}">
+<!--===============================================================================================-->	
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/vendor/css-hamburgers/hamburgers.min.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/vendor/animsition/css/animsition.min.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/vendor/select2/select2.min.css')}}">
+<!--===============================================================================================-->	
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/vendor/daterangepicker/daterangepicker.css')}}">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/css/util.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/css/main.css')}}">
+<!--===============================================================================================-->
 
 </head>
 <body>
-    {{--  <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('{{ asset('assets/login_v2/images/Logo3.png')}}');">
+			<div class="wrap-login100">
+                <form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
+                    {{ csrf_field() }}
+                    
+					<span class="login100-form-logo">
+						<i class="zmdi zmdi-account"></i>
+					</span>
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
+					<span class="login100-form-title p-b-34 p-t-27">
+						Sales Assistant Login
+					</span>
+                 {{--<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
+                        <div class="col-md-6">
+                            <input id="email" type="email" class="form-control" name="email" placeholder="jake@example.com" value="{{ old('email') }}" required autofocus>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                            @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>  --}}
+					<div class="wrap-input100 validate-input{{ $errors->has('email') ? ' has-error' : '' }}" data-validate = "Enter username">
+						<input id="email" type="email" class="input100"  name="email" placeholder="Email" value="{{ old('email') }}">
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+                        @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                        @endif
+					</div>
+
+
+                {{-- <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <label for="password" class="col-md-4 control-label">Password</label>
+
+                        <div class="col-md-6">
+                            <input id="password" type="password" class="form-control" placeholder="jakejames" name="password" required>
+
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>  --}}
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						<input id="password" class="input100" type="password" name="password" placeholder="Password" required>
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        @if ($errors->has('password'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                        @endif
+					</div>
+
+                 {{--<div class="form-group">
+                        <div class="col-md-6 col-md-offset-4">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                                </label>
+                            </div>
+                        </div>
+                    </div>  --}}
+					<div class="contact100-form-checkbox">
+						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+						<label class="label-checkbox100" for="ckb1">
+							Remember me
+                        </label>
+					</div>
+
+
+                    {{--  <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Login
+                                </button>
+
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    Forgot Your Password?
                                 </a>
+                            </div>
+                    </div>  --}}
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit">
+							Login
+						</button>
+					</div>
 
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        @yield('content')
+					<div class="text-center p-t-90">
+                        <a class="txt1" href="{{route('admin.login')}}">
+							Go to Admin Login
+						</a>
+                        <br>
+                        <a class="txt1" href="{{ route('password.request') }}">
+							Forgot Password?
+						</a>
+					</div>
+                </form>
 
 
-    </div>  --}}
 
-    <div class="container">
-        <div id="login" class="login">
-          <div class="login-icon-field">
-            <embed type="image/svg+xml" src="{{ asset('assets/login/img/logo.svg') }}" width="150px";height="150px" style="margin-top: 60px; margin-left: 65px"/>
-            
-            <div class="login-form">
-              <div class="username-row row">
-                <label for="username_input">
-                  <svg version="1.1" class="user-icon" x="0px" y="0px"
-                  viewBox="-255 347 100 100" xml:space="preserve" height="36px" width="30px">
-                  <path class="user-path" d="
-                  M-203.7,350.3c-6.8,0-12.4,6.2-12.4,13.8c0,4.5,2.4,8.6,5.4,11.1c0,0,2.2,1.6,1.9,3.7c-0.2,1.3-1.7,2.8-2.4,2.8c-0.7,0-6.2,0-6.2,0
-                  c-6.8,0-12.3,5.6-12.3,12.3v2.9v14.6c0,0.8,0.7,1.5,1.5,1.5h10.5h1h13.1h13.1h1h10.6c0.8,0,1.5-0.7,1.5-1.5v-14.6v-2.9
-                  c0-6.8-5.6-12.3-12.3-12.3c0,0-5.5,0-6.2,0c-0.8,0-2.3-1.6-2.4-2.8c-0.4-2.1,1.9-3.7,1.9-3.7c2.9-2.5,5.4-6.5,5.4-11.1
-                  C-191.3,356.5-196.9,350.3-203.7,350.3L-203.7,350.3z"/>
-                  </svg>
-                </label>
-                <input type="text" id="username_input" class="username-input" placeholder="Username"/>
-              </div>
-    
-              <div class="password-row row">
-                <label for="password_input">
-                  <svg version="1.1" class="password-icon" x="0px" y="0px"
-                  viewBox="-255 347 100 100" height="36px" width="30px">
-                  <path class="key-path" d="M-191.5,347.8c-11.9,0-21.6,9.7-21.6,21.6c0,4,1.1,7.8,3.1,11.1l-26.5,26.2l-0.9,10h10.6l3.8-5.7l6.1-1.1
-                  l1.6-6.7l7.1-0.3l0.6-7.2l7.2-6.6c2.8,1.3,5.8,2,9.1,2c11.9,0,21.6-9.7,21.6-21.6C-169.9,357.4-179.6,347.8-191.5,347.8z"/>
-                  </svg>
-                </label>
-                <input type="password" id="password_input" class="password-input" class="input" placeholder="Password"/>
-              </div>
-            </div>
-            <div class="call-to-action">
-              <a href="{{ route('login') }}"><button id="login-button" type="button">Sales Assistant</button></a>
-              <a href="{{ route('admin.login') }}"><button id="login-button" type="button">Admin</button></a>
-              {{--  <p><a>Forgot Password?</a></p>  --}}
-            </div>
-            <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-            <script src='https://cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js'></script>
-            <script src='https://cdn.jsdelivr.net/velocity/1.2.2/velocity.ui.min.js'></script>
-        
-        
-        
-            <script src="{{ asset('assets/login/js/login.js') }}"></script>
-        </div>
-      </div>
-    </div>
+                {{--  <div class="panel-body">
+                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+                        {{ csrf_field() }}
+
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control" name="email" placeholder="jake@example.com" value="{{ old('email') }}" required autofocus>
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" class="col-md-4 control-label">Password</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control" placeholder="jakejames" name="password" required>
+
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    Login
+                                </button>
+
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    Forgot Your Password?
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>  --}}
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
 
    
-
-
     <!-- Scripts -->
     {{--  <script src="{{ asset('js/app.js') }}"></script>  --}}
+    <!--===============================================================================================-->
+	    <script src="{{ asset( 'assets/login_v2/vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset( 'assets/login_v2/vendor/animsition/js/animsition.min.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset( 'assets/login_v2/vendor/bootstrap/js/popper.js')}}"></script>
+        <script src="{{ asset( 'assets/login_v2/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset( 'assets/login_v2/vendor/select2/select2.min.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset( 'assets/login_v2/vendor/daterangepicker/moment.min.js')}}"></script>
+        <script src="{{ asset( 'assets/login_v2/vendor/daterangepicker/daterangepicker.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset( 'assets/login_v2/vendor/countdowntime/countdowntime.js')}}"></script>
+    <!--===============================================================================================-->
+        <script src="{{ asset( 'assets/login_v2/js/main.js')}}"></script>
+    
 
     
 </body>

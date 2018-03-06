@@ -17,39 +17,73 @@
             //     });
                 
             // });
-                var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                animationDuration:5000,
-                exportEnabled:true,
-                exportFileName:"Top-Items",
-                // creditText:"Jernixon",
-                theme: "light1", // "light1", "light2", "dark1", "dark2"
-                title:{
-                    text: "Top items last February",
-                    // backgroundColor:"black",
-                    // fontColor:"white"
-                },
-                toolTip: {
-                    shared: true  
-                },
-                axisY: {
-                    title: "Quantity"
-                },
-                data: [{        
-                    type: "column", //column,line,area,pie,bar,doughnut 
-                    // showInLegend: true, 
-                    // legendMarkerColor: "grey",
-                    // legendText: "MMbbl = one million barrels",  
-                    dataPoints: [      
-                        { y: 80, label: "Item1" },
-                        { y: 40,  label: "Item2" },
-                        { y: 27,  label: "Item3" },
-                    ]
-                    // dataPoints: queryDataPoints,
-                }]
+                var chart = new CanvasJS.Chart("topItemsChart", {
+                    animationEnabled: true,
+                    animationDuration:5000,
+                    exportEnabled:true,
+                    exportFileName:"Top-Items",
+                    // creditText:"Jernixon",
+                    theme: "light1", // "light1", "light2", "dark1", "dark2"
+                    title:{
+                        text: "Top items last February",
+                        // backgroundColor:"black",
+                        // fontColor:"white"
+                    },
+                    toolTip: {
+                        shared: true  
+                    },
+                    axisY: {
+                        title: "Quantity"
+                    },
+                    data: [{        
+                        type: "column", //column,line,area,pie,bar,doughnut 
+                        // showInLegend: true, 
+                        // legendMarkerColor: "grey",
+                        // legendText: "MMbbl = one million barrels",  
+                        dataPoints: [      
+                            { y: 80, label: "Item1" },
+                            { y: 40,  label: "Item2" },
+                            { y: 27,  label: "Item3" },
+                        ]
+                        // dataPoints: queryDataPoints,
+                    }]
                 
                 });
                 chart.render();
+
+                var chart2 = new CanvasJS.Chart("leastItemsChart", {
+                    animationEnabled: true,
+                    animationDuration:5000,
+                    exportEnabled:true,
+                    exportFileName:"Least-Items",
+                    // creditText:"Jernixon",
+                    theme: "dark2", // "light1", "light2", "dark1", "dark2"
+                    title:{
+                        text: "Least items last February",
+                        // backgroundColor:"black",
+                        // fontColor:"white"
+                    },
+                    toolTip: {
+                        shared: true  
+                    },
+                    axisY: {
+                        title: "Quantity"
+                    },
+                    data: [{        
+                        type: "column", //column,line,area,pie,bar,doughnut 
+                        // showInLegend: true, 
+                        // legendMarkerColor: "grey",
+                        // legendText: "MMbbl = one million barrels",  
+                        dataPoints: [      
+                            { y: 17, label: "Item1",color:"orange" },
+                            { y: 58,  label: "Item2" },
+                            { y: 79,  label: "Item3" },
+                        ]
+                        // dataPoints: queryDataPoints,
+                    }]
+                
+                });
+                chart2.render();
         }
 
         function searchItem(a){
@@ -114,49 +148,11 @@
     </script>
 @endsection
 
+@section('linkName')
+    <a class="navbar-brand" href="#"><i class="ti-panel"></i> Dashboard</a>
+@endsection
+
 @section('right')
-<div class="content">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar bar1"></span>
-                    <span class="icon-bar bar2"></span>
-                    <span class="icon-bar bar3"></span>
-                </button>
-                <a class="navbar-brand" href="#"><i class="ti-panel"></i> Dashboard</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="ti-user"></i>
-                            <p class="notification"></p>
-                            <p> {{ Auth::user()->name }}</p>
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    {{--  style="border: 2px solid green"  --}}
     <div class="row">
         <div class="col-md-12" >
             <div class="card" >
@@ -177,87 +173,89 @@
                                         </div>
                                 </div>
                         </div>
+                        
                         <div class="row">
-                            <div class="col-md-7" >
-                                    <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
-                                        <thead> 
-                                            <tr>
-                                                {{--  <th>Id</th>  --}}
-                                                <th>Description</th>
-                                                <th>Category</th>
-                                                <th>Quantity in Stock</th>
-                                                <th>Wholesale Price</th>
-                                                <th>Retail Price</th>
-                                                <th>Add to Cart</th>
-                                            </tr>
-                                        </thead>
-                                    {{--  <tbody id="dashboardDatatable">  --}}
-                                        <tbody>
+                           
+                            <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
+                                <thead> 
+                                    <tr>
+                                        {{--  <th>Id</th>  --}}
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Quantity in Stock</th>
+                                        <th>Wholesale Price</th>
+                                        <th>Retail Price</th>
+                                        <th>Add to Cart</th>
+                                    </tr>
+                                </thead>
+                            {{--  <tbody id="dashboardDatatable">  --}}
+                                <tbody>
 
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div class="col-md-5" >
-                                    <h4>Customer Purchase</h4>
-                                    <div class="row">
-                                        <div class="col-md-3 text-right">
-                                            <label>Customer Name: </label>
-                                        </div>
-                                        <div class="col-md-9">
-                                            <input type="text" class="form-control border-input" form="purchase" required>
-                                        </div>
-                                    </div>
-                                    {{--  <div class="row">
-                                        <div class="col-md-3 text-right">
-                                            <label>Date of Purchased</label>    
-                                        </div>
-                                        <div class="col-md-9">
-                    
-                                            <span class="add-on">
-                                                <i class="fa fa-calendar" aria-hidden="true"></i>
-                                              
-                                            </span>   
-                                        </div>
-                    
-                                    </div>  --}}
-                                    
-                                    <div class="row"> 
-                                        <div class="col-md-12 table-responsive">
-                                            <table id="cartTable" class="table table-striped table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        {{--  <th>Id</th>  --}}
-                                                        <td>Item</td>
-                                                        <td>Quantity Left</td>
-                                                        <td>Wholesale Price</td>
-                                                        <td>Retail Price</td>
-                                                        <td>Quantity Purchase</td>
-                                                        <td>Total Price</td>
-                                                        <td>Action</td>
-                                                    </tr> 
-                                                </thead>
-                                                <tbody id="cartTbody">
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="text-right">                                           
-                                            <div class="col-md-5">                                                    
-                                                <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
-                                            
-                                            </div>                             
-                                        </div>
-                                        <div class="col-md-4 text-right">
-                                            <label>Total Price: </label>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <input type="text" disabled class="form-control border-input" form="purchase" value="0">
-                                        </div>
-                                    </div>
-                            </div>
+                                </tbody>
+                            </table>
+                           
                         </div>
-
+                        <div class="row">
+                                <h4>Customer Purchase</h4>
+                                <div class="row">
+                                    <div class="col-md-3 text-right">
+                                        <label>Customer Name: </label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control border-input" form="purchase" required>
+                                    </div>
+                                </div>
+                                {{--  <div class="row">
+                                    <div class="col-md-3 text-right">
+                                        <label>Date of Purchased</label>    
+                                    </div>
+                                    <div class="col-md-9">
+                
+                                        <span class="add-on">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                          
+                                        </span>   
+                                    </div>
+                
+                                </div>  --}}
+                                
+                                <div class="row"> 
+                                    <div class="col-md-12 table-responsive">
+                                        <table id="cartTable" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    {{--  <th>Id</th>  --}}
+                                                    <td>Item</td>
+                                                    <td>Quantity Left</td>
+                                                    <td>Wholesale Price</td>
+                                                    <td>Retail Price</td>
+                                                    <td>Quantity Purchase</td>
+                                                    <td>Total Price</td>
+                                                    <td>Action</td>
+                                                </tr> 
+                                            </thead>
+                                            <tbody id="cartTbody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="text-right">                                           
+                                        <div class="col-md-5">                                                    
+                                            <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
+                                        
+                                        </div>                             
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <label>Total Price: </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" disabled class="form-control border-input" form="purchase" value="0">
+                                    </div>
+                                </div>
+                        </div>                            
+                                   
+                           
                 </div>
             </div>
         </div>
@@ -267,13 +265,21 @@
         <div class="col-md-12" >
                 <div class="card" >
                      <div class="header">
-                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                        <div id="topItemsChart" style="height: 300px; width: 100%;"></div>
                     </div>
                 </div>
         </div>
     </div>
-    
-</div>
+
+    <div class="row">
+        <div class="col-md-12" >
+                <div class="card" >
+                     <div class="header">
+                        <div id="leastItemsChart" style="height: 300px; width: 100%;"></div>
+                    </div>
+                </div>
+        </div>
+    </div>
 
 @endsection     
 
@@ -355,7 +361,13 @@
                 "processing": true,
                 "serverSide": true,
                 "pagingType": "full_numbers",
-                "ajax":  "{{ route('dashboard.getItems') }}",
+
+                @if(Auth::guard('adminGuard')->check())
+                    "ajax":  "{{ route('dashboard.getItems') }}",
+                @elseif(Auth::guard('web')->check())
+                    "ajax":  "{{ route('SADashboard.getItems') }}",
+                @endif
+                
                 "columns": [
                     // {data: 'product_id'},
                     {data: 'description'},

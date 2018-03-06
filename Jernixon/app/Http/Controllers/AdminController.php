@@ -26,9 +26,9 @@ class AdminController extends Controller
     }
     public function items()
     {
-        $products = Product::paginate(2);
-        // return view('items.index')   ;
-        return view('items.index')->with('products',$products);
+        // $products = Product::paginate(2);
+        return view('items.index');
+        // return view('items.index')->with('products',$products);
     }
     public function reports()
     {
@@ -38,6 +38,7 @@ class AdminController extends Controller
     public function employees(){
         return view('pages.employees');
     }
+
 
 
     public function getItemsForDashboard(){
@@ -67,6 +68,9 @@ class AdminController extends Controller
     public function getDataPoints(){
 
     }
+
+
+
     public function addQuantity(Request $request){
         //update purchase set price='$newUnitCost', quantity='$newPurchase' WHERE item_id='$item_id' and price='$oldUnitCost' and quantity='$oldPurchase'"
         //$name = $request->input('user.name'); 
@@ -116,6 +120,25 @@ class AdminController extends Controller
             
                 })
             ->make(true);
+    }
+    public function storeNewItem(Request $request){
+        $this->validate($request,[
+                    'description' => 'required',
+                    'quantityInStock' => 'required',
+                    'wholeSalePrice' => 'required',
+                    'retailPrice' => 'required'
+        ]);
+
+        //Create new Item
+        $item = new Product;
+        $item->description = $request->input('description');
+        //$item->quantityInStock = $request->input('quantityInStock');
+        $item->price = $request->input('wholeSalePrice');
+        //$item->retailPrice = $request->input('retailPrice');
+        $item->save();
+        return response($request->all());
+        // return "success";
+       // return redirect('/items')->with('success','Success adding item');
     }
 
 

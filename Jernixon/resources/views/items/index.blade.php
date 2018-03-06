@@ -11,50 +11,12 @@ class="active"
 @endsection
 
 @extends('inc.headScripts')
+
+@section('linkName')
+    <a class="navbar-brand" href="#"><i class="ti-panel"></i> Items</a>
+@endsection
+
 @section('right')
-<i><p style="color:red;font-size:20px">Items under construction!</p></i>
-
-<nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar bar1"></span>
-                    <span class="icon-bar bar2"></span>
-                    <span class="icon-bar bar3"></span>
-                </button>
-                <a class="navbar-brand" href="#"><i class="ti-panel"></i> Items</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="ti-user"></i>
-                            <p class="notification"></p>
-                            <p> {{ Auth::user()->name }}</p>
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-<div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -106,7 +68,7 @@ class="active"
                             <table id="tableItems" class="table table-hover table-condensed" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        {{--  <th>Id</th>  --}}
                                         <th>Description</th>
                                         <th>Price</th>
                                         <th>created_at</th>
@@ -132,7 +94,7 @@ class="active"
         @else
         <h5>No items</h5>
         @endif  --}}
-    </div>
+
     
     @endsection
     
@@ -184,9 +146,15 @@ class="active"
                 "processing": true,
                 "serverSide": true,
                 "pagingType": "full_numbers",
-                "ajax":  "{{ route('items.getItems') }}",
+
+                @if(Auth::guard('adminGuard')->check())
+                    "ajax":  "{{ route('items.getItems') }}",
+                @elseif(Auth::guard('web')->check())
+                    "ajax":  "{{ route('salesAssistant.getItems') }}",                    
+                @endif
+
                 "columns": [
-                {data: 'product_id'},
+                // {data: 'product_id'},
                 {data: 'description'},
                 {data: 'price'},
                 {data: 'created_at'},
@@ -207,7 +175,8 @@ class="active"
                 var data = $(this).serialize();
                 $.ajax({
                     type:'POST',
-                    url:'/items',
+                    // url:'admin/storeNewItem',
+                    url: "{{route('admin.Newitems')}}",
                     dataType:'json',
                     /*  data:{
                         'description':'',

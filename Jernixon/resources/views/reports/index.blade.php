@@ -164,39 +164,12 @@ class="active"
     
 </script>
 @endsection
-@section('right')
-<i><p style="color:red;font-size:20px">Reports under construction!</p></i>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar bar1"></span>
-                <span class="icon-bar bar2"></span>
-                <span class="icon-bar bar3"></span>
-            </button>
-            <a class="navbar-brand" href="#"><i class="ti-clipboard"> </i>Reports</a>
-        </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="ti-user"></i>
-                        <p class="notification"></p>
-                        <p>Admin</p>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="notifications.html">Notifications</a></li>
-                        <li><a href="changepassword.html">Change Password</a></li>
-                        <li><a href="#">Log out</a></li>
-                    </ul>    
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>    
-<div class="content">
+
+@section('linkName')
+    <a class="navbar-brand" href="#"><i class="ti-panel"></i> Reports</a>
+@endsection
+
+@section('right')  
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -289,7 +262,7 @@ class="active"
             </div>
         </div>
     </div>
-</div>
+
 @endsection
 
 @section('js_link')

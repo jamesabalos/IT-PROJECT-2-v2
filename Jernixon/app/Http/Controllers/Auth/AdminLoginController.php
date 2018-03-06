@@ -10,7 +10,7 @@ class AdminLoginController extends Controller
 {
     public function __construct(){
         //$this->middleware('guest'); it will not let U access the adminLoginForm WHILE logged in as a User
-        $this->middleware('guest:adminGuard'); // it will allow us to access the showLoginForm, even where logged in as a user, BECAUSE  we are still a guest in the adminGuard guard
+        $this->middleware('guest:adminGuard', ['except' => ['logout']]); // it will allow us to access the showLoginForm, even where logged in as a user, BECAUSE  we are still a guest in the adminGuard guard
     /*     AUTH middleware:
             -if there is a page protected by auth middleware, we will make sure to redirect them
             to the correct login page if the're not logged in
@@ -49,4 +49,11 @@ class AdminLoginController extends Controller
        return redirect()->back()->withInput($request->only('email','remember'));
        
     }
+
+    public function logout()
+    {
+        Auth::guard('adminGuard')->logout();
+        return redirect('/');
+    }
+
 }

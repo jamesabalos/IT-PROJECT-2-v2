@@ -14,7 +14,7 @@
 // Route::get('/', 'PagesController@index');
 Route::get('/', function(){
     return view('welcome');
-});
+})->middleware('guest:web');
 
 
 // Route::get('/dashboard', 'DashboardController@index');
@@ -38,6 +38,12 @@ Route::get('/', function(){
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('salesAssistant', 'SalesAssistantController@dashboard')->name('SA.dashboard');
+Route::get('salesAssistant/dashboard/getItems', 'HomeController@getItemsForDashboard')->name('SADashboard.getItems');
+Route::get('salesAssistant/items/getItems', 'HomeController@getItemsForItems')->name('salesAssistant.getItems');
+Route::get('salesAssistant/items', 'HomeController@items')->name('salesAssistant.items');
+Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('salesAssistant.logout');
+
 
 
 Route::get('admin/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');
@@ -45,7 +51,10 @@ Route::post('admin/login','Auth\AdminLoginController@login')->name('admin.login.
 Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
 Route::get('admin/dashboard/getItems', 'AdminController@getItemsForDashboard')->name('dashboard.getItems');
 Route::get('admin/dashboard/getDataPoints', 'AdminController@getDataPoints')->name('dashboard.getDataPoints');
+Route::get('admin/logout','Auth\AdminLoginController@logout')->name('admin.logout');
 
+
+Route::Post('admin/storeNewItem', 'AdminController@storeNewItem')->name('admin.Newitems');
 Route::Post('admin/items/addQuantity','AdminController@addQuantity');
 Route::Post('admin/items/subtractQuantity','AdminController@subtractQuantity');
 Route::Post('admin/items/returnItem','AdminController@returnItem');

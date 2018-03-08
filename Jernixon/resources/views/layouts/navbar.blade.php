@@ -23,6 +23,8 @@
     <!-- tab style -->
     {{--  <link href="{{asset('assets/css/tab.css')}}" rel="stylesheet">  --}}
     
+    {{--  <link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">  --}}
+    
     <link rel="stylesheet" href="{{asset('assets/css/bootstrapv3.3.7.css')}}">
     {{--  <link href="{{asset('assets/bootstrap-4/css/bootstrap.min.css')}}" rel="stylesheet">  --}}
     
@@ -100,7 +102,7 @@
                         <div class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="background:whitesmoke;padding:10px 10px 10px 0;border-radius:30px;border:1px solid grey">
                                         <i class="ti-user"></i>
                                         <p class="notification"></p>
                                         <p> {{ Auth::user()->name }}</p>

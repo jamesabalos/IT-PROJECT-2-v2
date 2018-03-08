@@ -5,6 +5,42 @@
 @endsection
 
 @section('headScript')
+<style >
+    .panel-icon{
+    padding: 30px;
+    width: 40%;
+    border-radius: 0;
+    }.panel-icon{
+    -webkit-border-radius: 3px 0 0 3px;
+    -moz-border-radius: 3px 0 0 3px;
+    border-radius: 3px 0 0 3px;
+    }.panel-value{
+    -webkit-border-radius: 0 3px 3px 0;
+    -moz-border-radius: 0 3px 3px 0;
+    border-radius: 0 3px 3px 0;
+    }.panel-value h2{
+    margin-top: 30px;
+    }
+    .panel-icon i{
+    line-height:65px;
+    font-size: 40px;
+    color: #fff;
+    }
+    .bg-green{
+  background-color: #A3C86D;
+}
+.bg-blue{
+  background-color: #7ACBEE;
+}
+.bg-yellow{
+  background-color: #FDD761;
+}
+.bg-red{
+  background-color: #FF7857;
+}
+
+
+</style>
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
     <script>
@@ -130,6 +166,7 @@
              //newTr.innerHTML = a.parentNode.parentNode.innerHTML ;
              //thatTbody.append(newTr);
              for(var i=0; i<data.length;i++){
+                 
                 newRow.insertCell(-1).innerHTML = data[i].innerHTML;
             }
             newRow.insertCell(-1).innerHTML = "<td><input type='number' value='1' min='1'></td>";
@@ -159,18 +196,42 @@
                 <div class="header">
                         <div class="row">
                                 <div class="panel-heading" >
-                                        <div class="row">
-                                            {{--  <div class="col col-xs-5">
-                                                <label><i class = "ti-search"></i> Search</label>
-                                                <input type="text" onkeyup="searchItem(this)" id="dashboardSearchItem" class="form-control border-input" placeholder="Enter the name of the item">
-                                                <input type="text" class="form-control border-input" placeholder="Enter the name of the item">
-                                            </div>  --}}
-                                            {{--  <div class="col col-xs-12 text-right">
-                                                    <a href = "#openCart" data-toggle="modal" class="btn btn-lg btn-primary btn-create"><i class = "fa fa-shopping-cart"></i>
-                                                        <button id="#openCart" data-toggle="modal" class='btn btn-lg btn-primary fa fa-shopping-cart '></button>
-                                                    </a>
-                                            </div>  --}}
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                           <div class="panel panel-box clearfix">
+                                             <div class="panel-icon pull-left bg-green">
+                                              <i class="glyphicon glyphicon-user"></i>
+                                            </div>
+                                            <div class="panel-value pull-right">
+                                              <h2 class="margin-top"> 3 </h2>
+                                              <p class="text-muted">Users</p>
+                                            </div>
+                                           </div>
                                         </div>
+                                        <div class="col-md-4">
+                                           <div class="panel panel-box clearfix">
+                                             <div class="panel-icon pull-left bg-red">
+                                              <i class="glyphicon glyphicon-list"></i>
+                                            </div>
+                                            <div class="panel-value pull-right">
+                                              <h2 class="margin-top"> 1 </h2>
+                                              <p class="text-muted">Accessories</p>
+                                            </div>
+                                           </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                           <div class="panel panel-box clearfix">
+                                             <div class="panel-icon pull-left bg-blue">
+                                              <i class="glyphicon glyphicon-shopping-cart"></i>
+                                            </div>
+                                            <div class="panel-value pull-right">
+                                              <h2 class="margin-top"> 3 </h2>
+                                              <p class="text-muted">Motorparts</p>
+                                            </div>
+                                           </div>
+                                        </div>
+                                        
+                                    </div>
                                 </div>
                         </div>
                         

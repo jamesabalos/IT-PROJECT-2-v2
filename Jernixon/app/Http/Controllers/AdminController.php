@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\User;
 use Datatables;
 use DB;
 class AdminController extends Controller
@@ -36,7 +37,9 @@ class AdminController extends Controller
 
     }
     public function employees(){
-        return view('pages.employees');
+        $employees = User::all();
+        
+        return view('pages.employees')->with('employees',$employees);
     }
 
 
@@ -162,6 +165,40 @@ class AdminController extends Controller
         return Datatables::of($data)
             ->make(true);
     }
+
+    public function addNewEmployee(Request $request){
+        $this->validate($request,[
+                    'name' => 'required',
+                    'email' => 'required',
+                    'password' => 'required',
+        ]);
+
+        //Create new Item
+        $item = new User;
+        $item->name = $request->input('name');
+        $item->email = $request->input('email');
+        $item->password = $request->input('password');
+        $item->save();
+        return response($request->all());
+        // return "success";
+       // return redirect('/items')->with('success','Success adding item');
+    }
+
+    public function updateEmpoyeeAccount(Request $request, $id){
+        $this->validate($request,[
+            'name' => 'required',
+            'email' => 'required',
+            // 'password' => 'required',
+        ]);
+
+        $item = User::find($id);
+        $item->name = $request->input('name');
+        $item->email = $request->input('email');
+        $item->password = $request->input('password');
+        $item->save();
+        return response($request->all());
+    }
+
 
 
 

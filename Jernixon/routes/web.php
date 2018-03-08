@@ -67,4 +67,7 @@ Route::get('admin/reports/getReturns', 'AdminController@getReturns')->name('repo
 Route::get('admin/reports/getItemsAdded', 'AdminController@getItemsAdded')->name('reports.getItemsAdded');
 Route::get('admin/reports/getRemovedItems', 'AdminController@getRemovedItems')->name('reports.getRemovedItems');
 
+
+Route::Put('admin/employees/updateEmployeeAccount/{id}', 'AdminController@updateEmpoyeeAccount')->name('admin.updateEmployeeAccount');
+Route::Post('admin/employees/addNewEmployee', 'AdminController@addNewEmployee')->name('admin.addNewEmployee');
 Route::get('admin/employees', 'AdminController@employees')->name('admin.employees');

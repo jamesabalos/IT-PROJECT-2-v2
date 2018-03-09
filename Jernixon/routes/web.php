@@ -49,9 +49,17 @@ Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('sa
 Route::get('admin/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');
 Route::post('admin/login','Auth\AdminLoginController@login')->name('admin.login.submit');
 Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
-Route::get('admin/dashboard/getItems', 'AdminController@getItemsForDashboard')->name('dashboard.getItems');
 Route::get('admin/dashboard/getDataPoints', 'AdminController@getDataPoints')->name('dashboard.getDataPoints');
 Route::get('admin/logout','Auth\AdminLoginController@logout')->name('admin.logout');
+
+Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('dashboard.getItems');
+Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');
+
+Route::get('admin/purchases', 'AdminController@purchases')->name('admin.purchases');
+
+Route::get('admin/returns', 'AdminController@returns')->name('admin.returns');
+
+Route::get('admin/physical_count', 'AdminController@physicalCount')->name('admin.physicalCount');
 
 
 Route::Post('admin/storeNewItem', 'AdminController@storeNewItem')->name('admin.Newitems');
@@ -68,6 +76,7 @@ Route::get('admin/reports/getItemsAdded', 'AdminController@getItemsAdded')->name
 Route::get('admin/reports/getRemovedItems', 'AdminController@getRemovedItems')->name('reports.getRemovedItems');
 
 
-Route::Put('admin/employees/updateEmployeeAccount/{id}', 'AdminController@updateEmpoyeeAccount')->name('admin.updateEmployeeAccount');
+Route::DELETE('admin/employees/destroyEmployeeAccount/{id}', 'AdminController@destroyEmployeeAccount')->name('admin.destroyEmployeeAccount');
+Route::Put('admin/employees/updateEmployeeAccount/{id}', 'AdminController@updateEmployeeAccount')->name('admin.updateEmployeeAccount');
 Route::Post('admin/employees/addNewEmployee', 'AdminController@addNewEmployee')->name('admin.addNewEmployee');
 Route::get('admin/employees', 'AdminController@employees')->name('admin.employees');

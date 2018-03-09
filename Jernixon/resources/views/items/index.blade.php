@@ -193,10 +193,15 @@ class="active"
                         $("#errorDivAddNewItem").removeClass("alert-danger hidden")
                                         .addClass("alert-success")
                                         .html("<h1>Success</h1>");
+                        $("#errorDivAddNewItem").css("display:block");
+                        $("#errorDivAddNewItem").slideDown("slow",function(){
                                         document.getElementById("formAddNewItem").reset();
+                        })
+                                        .delay(1000)                        
+                                        .hide(1500);
 
                     },
-                    error:function(data){
+                    error:function(data){   
                         var response = data.responseJSON;
                         $("#errorDivAddNewItem").removeClass("hidden").addClass("alert-danger");
                         $("#errorDivAddNewItem").html(function(){

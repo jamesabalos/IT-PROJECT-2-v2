@@ -23,7 +23,6 @@
     <!-- tab style -->
     {{--  <link href="{{asset('assets/css/tab.css')}}" rel="stylesheet">  --}}
     
-    {{--  <link rel="stylesheet" href="{{asset('assets/css/dashboard.css')}}">  --}}
     
     <link rel="stylesheet" href="{{asset('assets/css/bootstrapv3.3.7.css')}}">
     {{--  <link href="{{asset('assets/bootstrap-4/css/bootstrap.min.css')}}" rel="stylesheet">  --}}
@@ -60,6 +59,18 @@
                     <li @yield('dashboard_link')>
                         <a href={{route('admin.dashboard')}}><i class="ti-panel"></i><p>Dashboard</p></a>
                     </li>                        
+                    <li @yield('sales_link')>
+                        <a href={{route('admin.sales')}}><i class="ti-panel"></i><p>Sales</p></a>
+                    </li>                        
+                    <li @yield('purchases_link')>
+                        <a href={{route('admin.purchases')}}><i class="ti-panel"></i><p>Purchases</p></a>
+                    </li>                        
+                    <li @yield('returns_link')>
+                        <a href={{route('admin.returns')}}><i class="ti-panel"></i><p>Returns</p></a>
+                    </li>                        
+                    <li @yield('physicalCount_link')>
+                        <a href={{route('admin.physicalCount')}}><i class="ti-panel"></i><p>Physical count</p></a>
+                    </li>                        
                     <li  @yield('reports_link') >
                         <a href={{route('admin.reports')}}><i class="ti-clipboard"></i><p>Reports</p></a>
                     </li>
@@ -69,6 +80,7 @@
                     <li @yield('employees_link')>
                         <a href={{route('admin.employees')}}><i class="ti-user"></i><p>Employees</p></a>
                     </li>
+
                     {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
                     @elseif(Auth::guard('web')->check())
                     <li @yield('dashboard_link')>

@@ -25,6 +25,26 @@ class AdminController extends Controller
         // return view('admin');
         return view('dashboard.dashboard');
     }
+    public function sales()
+    {
+        // return view('admin');
+        return view('adminViews.sales');
+    }
+    public function purchases()
+    {
+        // return view('admin');
+        return view('adminViews.purchases');
+    }
+    public function returns()
+    {
+        // return view('admin');
+        return view('adminViews.returns');
+    }
+    public function physicalCount()
+    {
+        // return view('admin');
+        return view('adminViews.physicalCount');
+    }
     public function items()
     {
         // $products = Product::paginate(2);
@@ -44,7 +64,7 @@ class AdminController extends Controller
 
 
 
-    public function getItemsForDashboard(){
+    public function getItemsForSales(){
 
         //  $data = DB::select("SELECT products.description, products.price as retail_price, purchases.price as wholesale_price, status FROM `products` join `purchases` using(product_id) where status='SALABLE' OR status='DAMAGED-SALABLE'");
         //  while ( $rows = mysqli_fetch_assoc($data)  ) {
@@ -180,15 +200,15 @@ class AdminController extends Controller
         $item->password = $request->input('password');
         $item->save();
         return response($request->all());
-        // return "success";
-       // return redirect('/items')->with('success','Success adding item');
+        // return redirect('/admin/employees');
+    //    return redirect('/items')->with('success','Success adding item');
     }
 
-    public function updateEmpoyeeAccount(Request $request, $id){
+    public function updateEmployeeAccount(Request $request, $id){
         $this->validate($request,[
             'name' => 'required',
             'email' => 'required',
-            // 'password' => 'required',
+            //'password' => 'required',
         ]);
 
         $item = User::find($id);
@@ -197,6 +217,12 @@ class AdminController extends Controller
         $item->password = $request->input('password');
         $item->save();
         return response($request->all());
+    }
+    public function destroyEmployeeAccount($id){
+        $employee = User::find($id);
+        $employee->delete();
+       return redirect('/admin/employees');
+      
     }
 
 

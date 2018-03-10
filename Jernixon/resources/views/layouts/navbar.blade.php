@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}"  >
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -35,7 +35,7 @@
     @yield('headScript')
 </head>
 
-<body>
+<body @yield('onload') @yield('ng-app')>
     {{--  <script>
         $(document).ready(function(){
             $("#addNewItemButton").click(function(){
@@ -98,7 +98,7 @@
         </div> 
         
         <div class="main-panel">
-            <div class="content">
+            <div class="content" ng-controller="customerPurchase">
                 <nav class="navbar navbar-default">
                     <div class="container-fluid">
                         <div class="navbar-header">

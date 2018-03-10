@@ -166,7 +166,7 @@ class="active"
 @endsection
 
 @section('linkName')
-    <a class="navbar-brand" href="#"><i class="ti-panel"></i> Reports</a>
+    <h2>Reports</h2>
 @endsection
 
 @section('right')  

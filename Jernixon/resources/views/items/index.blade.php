@@ -13,7 +13,7 @@ class="active"
 @extends('inc.headScripts')
 
 @section('linkName')
-    <a class="navbar-brand" href="#"><i class="ti-panel"></i> Items</a>
+    <h2>Items</h2>
 @endsection
 
 @section('right')

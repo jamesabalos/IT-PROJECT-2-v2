@@ -4,7 +4,7 @@ class="active"
 @endsection
 
 @section('linkName')
-<a class="navbar-brand" href="#"><i class="ti-panel"></i> Employees</a>
+    <h2>Employees</h2>
 @endsection
 
 @section('headScript')
@@ -78,11 +78,11 @@ class="active"
                                             <a href='#editEmployee' onclick='showDetails(this)' class='btn btn-xs btn-warning' data-toggle='modal' >\
                                                 <i class='glyphicon glyphicon-pencil'></i>\
                                             </a>\
-                                            <a href='' class='btn btn-xs btn-danger' data-toggle='tooltip' >\
-                                                <i class='glyphicon glyphicon-remove'></i>\
-                                            </a>\
                                         </div>\
                                     </td>";
+                                            // <a href='' class='btn btn-xs btn-danger' data-toggle='tooltip' >\
+                                            //     <i class='glyphicon glyphicon-remove'></i>\
+                                            // </a>\
                         
 
                     })
@@ -196,7 +196,7 @@ class="active"
                                     <th class="text-center">Email</th>
                                     {{--  <th class="text-center" style="width: 15%;">User Role</th>  --}}
                                     {{--  <th class="text-center" style="width: 10%;">Status</th>  --}}
-                                    <th class="text-center" style="width: 20%;">Last Login</th>
+                                    <th class="text-center" style="width: 20%;">Status</th>
                                     <th class="text-center" style="width: 100px;">Actions</th>
                                 </tr>
                             </thead>
@@ -208,18 +208,18 @@ class="active"
                                     <td class="text-center">{{$employee->name}}</td>
                                     <td class="text-center">{{$employee->email}}</td>
                                     {{--  <td class="text-center">under-construction</td>  --}}
-                                    <td class="text-center">under-construction</td>
+                                    <td class="text-center"></td>
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <a href="#editEmployee" onclick="showDetails(this)" class="btn btn-xs btn-warning" data-toggle="modal" >
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                             </a>
                                             
-                                            <form action="{{ route('admin.destroyEmployeeAccount',['id' =>$employee->id]) }}" method="post">
+                                            {{--  <form action="{{ route('admin.destroyEmployeeAccount',['id' =>$employee->id]) }}" method="post">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                              <button type="submit" id="{{$employee->id}}" onclick="removeEmployee(this)">Delete</button>
-                                            </form>
+                                            </form>  --}}
                                         </div>
                                     </td>
                                 </tr>
@@ -371,13 +371,13 @@ class="active"
                             
                         </div>
                         
-                        {{--  <div class="form-group">
+                        <div class="form-group">
                             <label for="status">Status</label>
                             <select class="form-control" name="status">
-                                <option value="1">Active</option>
-                                <option selected="selected" value="0">Deactive</option>
+                                <option value="Active">Active</option>
+                                <option value="Deactive">Deactive</option>
                             </select>
-                        </div>  --}}
+                        </div>
                         <div class="form-group">
                             {{Form::label('password', 'Update Password:',['class'=>'control-label'])}}                                                                
                             {{Form::password('password','',['class'=>'form-control','placeholder'=>'Type user new password'])}}

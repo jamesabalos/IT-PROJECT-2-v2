@@ -190,234 +190,234 @@ class="active"
                 });
                 
             }
-        </script>
-        @endsection
+</script>
+@endsection
         
-        @section('linkName')
-        <a class="navbar-brand" href="#"><i class="ti-panel"></i> Dashboard</a>
-        @endsection
-        
-        @section('right')
-        <div class="row">
-            <div class="col-md-12" >
-                <div class="card" >
-                    <div class="header">
+@section('linkName')
+<h2>Dashboard</h2>
+@endsection
+
+@section('right')
+<div class="row">
+    <div class="col-md-12" >
+        <div class="card" >
+            <div class="header">
+                <div class="row">
+                    <div class="panel-heading" >
                         <div class="row">
-                            <div class="panel-heading" >
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="panel panel-box clearfix">
-                                            <div class="panel-icon pull-left bg-green">
-                                                <i class="glyphicon glyphicon-user"></i>
-                                            </div>
-                                            <div class="panel-value">
-                                                <h2 class="margin-top"> ? </h2>
-                                                <p class="text-muted">Users</p>
-                                            </div>
-                                        </div>
+                            <div class="col-md-4">
+                                <div class="panel panel-box clearfix">
+                                    <div class="panel-icon pull-left bg-green">
+                                        <i class="glyphicon glyphicon-user"></i>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="panel panel-box clearfix">
-                                            <div class="panel-icon pull-left bg-red">
-                                                <i class="glyphicon glyphicon-list"></i>
-                                            </div>
-                                            <div class="panel-value">
-                                                <h2 class="margin-top"> ? </h2>
-                                                <p class="text-muted">Accessories</p>
-                                            </div>
-                                        </div>
+                                    <div class="panel-value">
+                                        <h2 class="margin-top"> ? </h2>
+                                        <p class="text-muted">Users</p>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="panel panel-box clearfix">
-                                            <div class="panel-icon pull-left bg-blue">
-                                                <i class="glyphicon glyphicon-shopping-cart"></i>
-                                            </div>
-                                            <div class="panel-value ">
-                                                <h2 class="margin-top"> ? </h2>
-                                                <p class="text-muted">Motorparts</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
                                 </div>
                             </div>
-                        </div>
-                        
-                        {{--  <div class="row">
+                            <div class="col-md-4">
+                                <div class="panel panel-box clearfix">
+                                    <div class="panel-icon pull-left bg-red">
+                                        <i class="glyphicon glyphicon-list"></i>
+                                    </div>
+                                    <div class="panel-value">
+                                        <h2 class="margin-top"> ? </h2>
+                                        <p class="text-muted">Accessories</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="panel panel-box clearfix">
+                                    <div class="panel-icon pull-left bg-blue">
+                                        <i class="glyphicon glyphicon-shopping-cart"></i>
+                                    </div>
+                                    <div class="panel-value ">
+                                        <h2 class="margin-top"> ? </h2>
+                                        <p class="text-muted">Motorparts</p>
+                                    </div>
+                                </div>
+                            </div>
                             
-                            <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
-                                <thead> 
+                        </div>
+                    </div>
+                </div>
+                
+                {{--  <div class="row">
+                    
+                    <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
+                        <thead> 
+                            <tr>
+                                
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Quantity in Stock</th>
+                                <th>Wholesale Price</th>
+                                <th>Retail Price</th>
+                                <th>Add to Cart</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    
+                </div>  --}}
+                {{--  <div class="row">
+                    <h4>Customer Purchase</h4>
+                    <div class="row">
+                        <div class="col-md-3 text-right">
+                            <label>Customer Name: </label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control border-input" form="purchase" required>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row"> 
+                        <div class="col-md-12 table-responsive">
+                            <table id="cartTable" class="table table-striped table-bordered">
+                                <thead>
                                     <tr>
                                         
-                                        <th>Description</th>
-                                        <th>Category</th>
-                                        <th>Quantity in Stock</th>
-                                        <th>Wholesale Price</th>
-                                        <th>Retail Price</th>
-                                        <th>Add to Cart</th>
-                                    </tr>
+                                        <td>Item</td>
+                                        <td>Quantity Left</td>
+                                        <td>Wholesale Price</td>
+                                        <td>Retail Price</td>
+                                        <td>Quantity Purchase</td>
+                                        <td>Total Price</td>
+                                        <td>Action</td>
+                                    </tr> 
                                 </thead>
-                                
-                                <tbody>
-                                    
+                                <tbody id="cartTbody">
                                 </tbody>
                             </table>
-                            
-                        </div>  --}}
-                        {{--  <div class="row">
-                            <h4>Customer Purchase</h4>
-                            <div class="row">
-                                <div class="col-md-3 text-right">
-                                    <label>Customer Name: </label>
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="text" class="form-control border-input" form="purchase" required>
-                                </div>
-                            </div>
-                            
-                            
-                            <div class="row"> 
-                                <div class="col-md-12 table-responsive">
-                                    <table id="cartTable" class="table table-striped table-bordered">
-                                        <thead>
-                                            <tr>
-                                                
-                                                <td>Item</td>
-                                                <td>Quantity Left</td>
-                                                <td>Wholesale Price</td>
-                                                <td>Retail Price</td>
-                                                <td>Quantity Purchase</td>
-                                                <td>Total Price</td>
-                                                <td>Action</td>
-                                            </tr> 
-                                        </thead>
-                                        <tbody id="cartTbody">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="text-right">                                           
-                                    <div class="col-md-5">                                                    
-                                        <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
-                                        
-                                    </div>                             
-                                </div>
-                                <div class="col-md-4 text-right">
-                                    <label>Total Price: </label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" disabled class="form-control border-input" form="purchase" value="0">
-                                </div>
-                            </div>
-                        </div>                            
-                        --}}
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-12" >
-                <div class="card" >
-                    <div class="header">
-                        <div id="topItemsChart" style="height: 300px; width: 100%;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row">
-            <div class="col-md-12" >
-                <div class="card" >
-                    <div class="header">
-                        <div id="leastItemsChart" style="height: 300px; width: 100%;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        @endsection     
-        
-        @section('modals')
-        {{--  <div id="openCart" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-            <div class = "modal-dialog modal-lg">
-                <div class = "modal-content">
-                    <div class = "modal-body">
-                        <button class="close" data-dismiss="modal">&times;</button>
-                        <h4>Customer Purchase</h4>
-                        <div class="row">
-                            <div class="col-md-3 text-right">
-                                <label>Customer Name: </label>
-                            </div>
-                            <div class="col-md-9">
-                                <input type="text" class="form-control border-input" form="purchase" required>
-                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3 text-right">
-                                <label>Date of Purchased</label>    
-                            </div>
-                            <div class="col-md-9">
+                    </div>
+                    <div class="row">
+                        <div class="text-right">                                           
+                            <div class="col-md-5">                                                    
+                                <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
                                 
-                                <span class="add-on">
-                                    <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    
-                                </span>   
-                            </div>
-                            
+                            </div>                             
                         </div>
+                        <div class="col-md-4 text-right">
+                            <label>Total Price: </label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" disabled class="form-control border-input" form="purchase" value="0">
+                        </div>
+                    </div>
+                </div>                            
+                --}}
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12" >
+        <div class="card" >
+            <div class="header">
+                <div id="topItemsChart" style="height: 300px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12" >
+        <div class="card" >
+            <div class="header">
+                <div id="leastItemsChart" style="height: 300px; width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection     
+
+@section('modals')
+{{--  <div id="openCart" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+    <div class = "modal-dialog modal-lg">
+        <div class = "modal-content">
+            <div class = "modal-body">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h4>Customer Purchase</h4>
+                <div class="row">
+                    <div class="col-md-3 text-right">
+                        <label>Customer Name: </label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control border-input" form="purchase" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 text-right">
+                        <label>Date of Purchased</label>    
+                    </div>
+                    <div class="col-md-9">
                         
-                        <div class="row"> 
-                            <div class="col-md-12 table-responsive">
-                                <table id="cartTable" class="table table-striped table-bordered table-list">
-                                    <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Item</th>
-                                            <th>Quantity Left</th>
-                                            <th>Wholesale Price</th>
-                                            <th>Retail Price</th>
-                                            <th>Quantity Purchase</th>
-                                            <th>Total Price</th>
-                                            <th>Action</th>
-                                        </tr> 
-                                    </thead>
-                                    <tbody id="cartTbody">
-                                    </tbody>
-                                </table>
-                            </div>
+                        <span class="add-on">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                            
+                        </span>   
+                    </div>
+                    
+                </div>
+                
+                <div class="row"> 
+                    <div class="col-md-12 table-responsive">
+                        <table id="cartTable" class="table table-striped table-bordered table-list">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Item</th>
+                                    <th>Quantity Left</th>
+                                    <th>Wholesale Price</th>
+                                    <th>Retail Price</th>
+                                    <th>Quantity Purchase</th>
+                                    <th>Total Price</th>
+                                    <th>Action</th>
+                                </tr> 
+                            </thead>
+                            <tbody id="cartTbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-md-4 text-right">
+                            <label>Total Price: </label>
                         </div>
-                        <div class="modal-footer">
-                            <div class="row">
-                                <div class="col-md-4 text-right">
-                                    <label>Total Price: </label>
-                                </div>
-                                <div class="col-md-4">
-                                    <input type="text" disabled class="form-control border-input" form="purchase" value="0">
-                                </div>
-                                <div class="text-right">                                           
-                                    <div class="col-md-4">                                                    
-                                        <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
-                                        <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                    </div>                             
-                                </div>
-                            </div>
+                        <div class="col-md-4">
+                            <input type="text" disabled class="form-control border-input" form="purchase" value="0">
+                        </div>
+                        <div class="text-right">                                           
+                            <div class="col-md-4">                                                    
+                                <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
+                                <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                            </div>                             
                         </div>
                     </div>
                 </div>
             </div>
-        </div>  --}}
-        @endsection
-        
-        @section('js_link')
-        <!--   Core JS Files   -->
-        {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
-        <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>
-        <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-        {{--  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>  --}}
-        {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-        <script src="{{asset('assets/js/canvasjs.min.js')}}"></script>
-        
-        @endsection
+        </div>
+    </div>
+</div>  --}}
+@endsection
+
+@section('js_link')
+<!--   Core JS Files   -->
+{{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
+<script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+{{--  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
+<script src="{{asset('assets/js/canvasjs.min.js')}}"></script>
+
+@endsection

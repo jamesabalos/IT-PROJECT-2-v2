@@ -11,11 +11,12 @@
     {{--  csrf_token  --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    {{--  <link rel="stylesheet" href="{{asset('css/app.css')}}">  --}}
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">  
     <!-- Animation library for notifications   -->
     {{--  <link href="{{asset('assets/css/animate.min.css')}}" rel="stylesheet"/>  --}}
     <!--  Paper Dashboard core CSS    -->
     <link href="{{asset('assets/css/paper-dashboard.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/hover.css')}}" rel="stylesheet"/>
     <!--  Fonts and icons     -->
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
     {{--  <link href="{{asset('assets/css/fonts.css')}}" rel='stylesheet' type='text/css'>  --}}
@@ -24,7 +25,7 @@
     {{--  <link href="{{asset('assets/css/tab.css')}}" rel="stylesheet">  --}}
     
     
-    <link rel="stylesheet" href="{{asset('assets/css/bootstrapv3.3.7.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('assets/css/bootstrapv3.3.7.css')}}"> --}}
     {{--  <link href="{{asset('assets/bootstrap-4/css/bootstrap.min.css')}}" rel="stylesheet">  --}}
     
     <title>{{config('app.name')}}</title>
@@ -47,7 +48,7 @@
     </script>  --}}
     
     <div class="wrapper">  
-        <div class="sidebar" data-background-color="white" data-active-color="danger">
+        <div class="sidebar" data-background-color="#2E4057" data-active-color="danger">
             <div class="sidebar-wrapper">
                 <div class="logo">
                     <a href="dashboard.html" class="simple-text">
@@ -98,59 +99,56 @@
         </div> 
         
         <div class="main-panel">
-            <div class="content" ng-controller="customerPurchase">
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar bar1"></span>
-                                <span class="icon-bar bar2"></span>
-                                <span class="icon-bar bar3"></span>
-                            </button>
-                            {{--  <a class="navbar-brand" href="#"><i class="ti-panel"></i> Dashboard</a>  --}}
-                            @yield('linkName')
-                        </div>
-                        <div class="collapse navbar-collapse">
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="background:whitesmoke;padding:10px 10px 10px 0;border-radius:30px;border:1px solid grey">
-                                        <i class="ti-user"></i>
-                                        <p class="notification"></p>
-                                        <p> {{ Auth::user()->name }}</p>
-                                        <b class="caret"></b>
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            @if(Auth::guard('adminGuard')->check())
-                                            <a href="{{ route('admin.logout') }}">
-                                                {{--  onclick="event.preventDefault();  --}}
-                                                {{--  document.getElementById('logout-form').submit();">  --}}
-                                                Logout
-                                            </a>
-                                            
-                                            {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                                {{ csrf_field() }}
-                                            </form>  --}}
-                                            @elseif(Auth::guard('web')->check())
-                                            <a href="{{ route('salesAssistant.logout') }}">
-                                                {{--  onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">  --}}
-                                                Logout
-                                            </a>
-                                            
-                                            {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
-                                                {{ csrf_field() }}
-                                            </form>   --}}
-                                            @endif
-                                        </li>
-                                        
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
+            
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">                           
+                        {{--  <a class="navbar-brand" href="#"><i class="ti-panel"></i> Dashboard</a>  --}}
+                        @yield('linkName')
                     </div>
-                </nav>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+								<i class="ti-user"></i>
+                                    <p class="notification"></p>
+                                    <p> {{ Auth::user()->name }}</p>
+								<span class="caret"></span>
+								</a>
+                                
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        @if(Auth::guard('adminGuard')->check())
+                                        <a href="{{ route('admin.logout') }}">
+                                            {{--  onclick="event.preventDefault();  --}}
+                                            {{--  document.getElementById('logout-form').submit();">  --}}
+                                            Logout
+                                        </a>
+                                            
+                                        {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>  --}}
+                                        @elseif(Auth::guard('web')->check())
+                                        <a href="{{ route('salesAssistant.logout') }}">
+                                            {{--  onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">  --}}
+                                            Logout
+                                        </a>
+                                            
+                                        {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>   --}}
+                                        @endif
+                                    </li>
+                                        
+                                </ul>
+                            </li>
+							
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+			<div class="content" ng-controller="customerPurchase">
                 @yield('right')
             </div>
             

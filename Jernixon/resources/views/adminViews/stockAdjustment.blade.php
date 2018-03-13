@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('returns_link')
+@section('stockAdjustment_link')
 class="active"
 @endsection
 
@@ -103,7 +103,7 @@ ng-app="ourAngularJsApp"
         newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='text' min='1'></td>";
         newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number min='1'></td>";
         newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' min='1'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+
 
     }
 </script>
@@ -111,7 +111,7 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('linkName')
-<h2>Returns</h2>
+<h2>Stock Adjustment</h2>
 @endsection
 
 @section('right')
@@ -123,19 +123,22 @@ ng-app="ourAngularJsApp"
                     <div class="text-left">                                           
                         <div class="col-md-12">
                             <a href = "#create" data-toggle="modal" >
-                                <button type="submit" class="btn btn-info btn-fill btn-wd btn-success"><i class = "ti-plus"></i>Return Items</button> 
+                                <button type="submit" class="btn btn-info btn-fill btn-wd btn-success"><i class = "ti-plus"></i> Create Purchase Order</button> 
                             </a> 
                         </div>
                     </div>
                     <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
                         <thead> 
                             <tr>
-                                <th>OR Number</th>
+                                {{--  <th>Id</th>  --}}
+                                <th>PO ID</th>
                                 <th>Date Created</th>
-                                <th>Customer</th>
-                                <th>Action</th>
+                                <th>Supplier</th>
+                                <th>Status</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
+                        {{--  <tbody id="dashboardDatatable">  --}}
                         <tbody>
                         </tbody>
                     </table>
@@ -153,12 +156,12 @@ ng-app="ourAngularJsApp"
         <div class = "modal-content">
             <div class = "modal-body">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4>Return</h4>
+                <h4>Purchase Order</h4>
                 <div class="alert alert-danger hidden" id="errorDivAddNewItem">
 
                 </div>
 
-                {!! Form::open(['method'=>'post','id'=>'formReturn']) !!}
+                {!! Form::open(['method'=>'post','id'=>'formPurchaseOrder']) !!}
 
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
@@ -184,10 +187,10 @@ ng-app="ourAngularJsApp"
                 <div class="form-group">    
                     <div class="row">
                         <div class="col-md-3">
-                            {{Form::label('Customer', 'Customer:')}}
+                            {{Form::label('Supplier', 'Supplier:')}}
                         </div>
                         <div class="col-md-9">
-                            {{Form::text('Customer','',['class'=>'form-control','placeholder'=>'Customer'])}}
+                            {{Form::text('Supplier','',['class'=>'form-control','placeholder'=>'Supplier'])}}
                         </div>
                     </div>
                 </div>
@@ -196,40 +199,8 @@ ng-app="ourAngularJsApp"
                         <div class="card" >
                             <div class="header">
                                 <div class="row">
-                                    <h4>Return Items</h4>
-                                    <table class="table table-hover table-condensed" style="width:100%" id="">
-                                        <thead> 
-                                            <tr>
-
-                                                <th>Description</th>
-                                                <th>Quantity</th>
-                                                <th>Price</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id= "">
-                                            <tr>
-                                                <td></td>
-                                                <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
-                                                <td></td>
-                                                <td><input class="form-control" type="checkbox"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                        </div>
-                    </div>
-                </div>                {!! Form::close() !!}
-
-                <div class="row" >
-                    <div class="col-md-12" >
-                        <div class="card" >
-                            <div class="header">
-                                <div class="row">
-                                    <h4>In Exchange for</h4>
+                                    <div class="text-left">                                           
+                                    </div>
                                     <table class="table table-hover table-condensed" style="width:100%" id="">
                                         <thead> 
                                             <tr>
@@ -257,16 +228,21 @@ ng-app="ourAngularJsApp"
                             <div class ="text-right">Total Price:</div>
                         </div>
                     </div>
-                </div>
+                </div>                {!! Form::close() !!}
+
+
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
+
                             <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>
+                <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button> 
+
+
             </div>
         </div>
     </div>

@@ -96,7 +96,7 @@ ng-app="ourAngularJsApp"
         //show the plus sign button again
         document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
     }
-    
+
     function addRow(){
         var thatTbody = document.getElementById("purchasetable");
         var newRow = thatTbody.insertRow(-1);
@@ -104,14 +104,14 @@ ng-app="ourAngularJsApp"
         newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number min='1'></td>";
         newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' min='1'></td>";
 
-        
+
     }
 </script>
 
 @endsection
 
 @section('linkName')
-<h2>Sales</h2>
+<h2>Purchases</h2>
 @endsection
 
 @section('right')
@@ -162,7 +162,7 @@ ng-app="ourAngularJsApp"
                 </div>
 
                 {!! Form::open(['method'=>'post','id'=>'formPurchaseOrder']) !!}
-            
+
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <div class="row">
@@ -208,6 +208,7 @@ ng-app="ourAngularJsApp"
                                                 <th>Description</th>
                                                 <th>Quantity</th>
                                                 <th>Price</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id= "purchasetable">
@@ -215,6 +216,7 @@ ng-app="ourAngularJsApp"
                                                 <td>{{Form::text('Description','',['class'=>'form-control'])}}</td>
                                                 <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
                                                 <td>{{Form::text('Price','',['class'=>'form-control'])}}</td>
+                                                <td><button class="btn btn-danger form-control"><i class="glyphicon glyphicon-remove"></i></button></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -222,21 +224,23 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
                         <div class="col-md-12">
+                            <div class ="text-right">Total Items:</div>
+                            <div class ="text-right">Total Price:</div>
                         </div>
                     </div>
                 </div>                {!! Form::close() !!}
 
-            
+
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                           
+
                             <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
-                                     <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button> 
+                <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button> 
 
 
             </div>

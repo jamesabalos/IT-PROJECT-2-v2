@@ -197,37 +197,35 @@ class="active"
                     
                     {{--  <div id="paraentDivFour" style="border:2px solid green; display:none">  --}}
                         <div id="transactionDiv" style="display: block;">
-                             <div class="content table-responsive table-full-width">
-                                <table id="transactionsTable"  class="table table-hover table-condensed">                                    
-                                        <thead >
-                                            <tr>
-                                                <td>Item Purchased</td>
-                                                <td>Quantity</td>
-                                                <td>Wholesale Price</td>
-                                                <td>Retail Price</td>
-                                                <td>Total Price</td>
-                                            </tr>
-                                        </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>    
+                            <table id="transactionsTable"  class="table table-hover table-condensed" >
+                                <thead >
+                                    <tr>
+                                        <td>Item Purchased</td>
+                                        <td>Quantity</td>
+                                        <td>Wholesale Price</td>
+                                        <td>Retail Price</td>
+                                        <td>Total Price</td>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>                        
                         </div> 
                         <div id="returnsDiv" style="display:none">
-                            <div class="content table-responsive table-full-width">                            
-                                <table id="returnsTable" class="table table-hover table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <td>description</td>
-                                            <td>Quantity</td>
-                                            <td>Wholesale Price</td>
-                                            <td>Retail Price</td>
-                                            <td>Total Price</td>
-                                            <td>Reason</td>
-                                            <td>Status</td>
-                                        </tr>
-                                </thead>
-                            </table> 
+                            <div class="content table-responsive table-full-width">
                             </div>
+                            <table id="returnsTable" class="table table-hover table-condensed">
+                                <thead>
+                                    <tr>
+                                        <td>description</td>
+                                        <td>Quantity</td>
+                                        <td>Wholesale Price</td>
+                                        <td>Retail Price</td>
+                                        <td>Total Price</td>
+                                        <td>Reason</td>
+                                        <td>Status</td>
+                                    </tr>
+                                </thead>
+                            </table>                        
                         </div> 
                         <div id="itemsAddedDiv" style="display:none">
                             <div class="content table-responsive table-full-width">

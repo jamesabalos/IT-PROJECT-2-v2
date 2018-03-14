@@ -58,33 +58,37 @@ class AdminController extends Controller
     }
     public function employees(){
         $employees = User::all();
-        
+
         return view('pages.employees')->with('employees',$employees);
     }
 
-
+    public function stockAdjustment()
+    {
+        // return view('admin');
+        return view('adminViews.stockAdjustment');
+    }
 
     public function getItemsForSales(){
 
         //  $data = DB::select("SELECT products.description, products.price as retail_price, purchases.price as wholesale_price, status FROM `products` join `purchases` using(product_id) where status='SALABLE' OR status='DAMAGED-SALABLE'");
         //  while ( $rows = mysqli_fetch_assoc($data)  ) {
         //     $description = $rows['description'];
- 
+
         //     $data1 = DB::select("SELECT products.price as retail_price FROM `products` join `purchases` using(product_id) where description="" AND status='SALABLE'");
         //     $data2 = DB::select("SELECT COUNT(product_id) FROM `products` join `purchases` using(product_id) where description="" AND status='SALABLE'");
         //     $data2 = DB::select("SELECT COUNT(product_id) FROM `products` join `purchases` using(product_id) where description="" AND status='DAMAGED-SALABLE'");
         //  }
 
         $data = DB::table('products')->select('*');
-       // return $data;
+        // return $data;
 
         return Datatables::of($data)
-             ->addColumn('action',function($data){
-                 return "
+            ->addColumn('action',function($data){
+                return "
                  <button class='btn btn-info' id='$data->product_id' onclick='addItemToCart(this)'><i class='glyphicon glyphicon-plus'></i></button></a>";
-                    
-        
-             })
+
+
+            })
             ->make(true);
 
     }
@@ -100,50 +104,56 @@ class AdminController extends Controller
         //dd=(json_decode($request->getContent(), true));
         //$data = $request->json()->all();
         return "pending query...";
-       // $item = DB::select("UPDATE product set _='$request->input('inputValue')'");
+        // $item = DB::select("UPDATE product set _='$request->input('inputValue')'");
     }
     public function subtractQuantity(Request $request){
         // $item = DB::select("");        
-         return "pending query...";        
+        return "pending query...";        
     }
     public function returnItem(Request $request){
-         $this->validate($request,[
-             'customerName' => 'required',
-             'itemName' => 'required',
-             'quantity' => 'required',
-             'totalPrice' => 'required',
-             'reason' => 'required',
-             'status' => 'required'
-         ]);
+        $this->validate($request,[
+            'customerName' => 'required',
+            'itemName' => 'required',
+            'quantity' => 'required',
+            'totalPrice' => 'required',
+            'reason' => 'required',
+            'status' => 'required'
+        ]);
         // $item = DB::select("");
- 
-         return "pending query for return item...";        
+
+        return "pending query for return item...";        
     }
     public function getItemsForItems(){
 
         $data = DB::table('products')->select('*');
         return Datatables::of($data)
             ->addColumn('action',function($data){
-                return "
+                return "<a href = '#addModal' data-toggle='modal'>
+                    <button id='Add' class='btn btn-success' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-plus-sign'></i> Add</button>
+                </a>
+                <a href = '#subtractModal' data-toggle='modal' >
+                    <button id='Subtract'class='btn btn-danger' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-minus-sign'></i> Subtract</button>
+                </a>
+
                 <a href = '#removeModal' data-toggle='modal' >
                     <button id='Remove' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Remove Item</button>
                 </a>
                 <a href = '#editModal' data-toggle='modal' >
                     <button id='Edit' class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i>Edit</button>
                 </a>
-                
+
                 ";
-    
-            
-                })
+
+
+            })
             ->make(true);
     }
     public function storeNewItem(Request $request){
         $this->validate($request,[
-                    'description' => 'required',
-                    'quantityInStock' => 'required',
-                    'wholeSalePrice' => 'required',
-                    'retailPrice' => 'required'
+            'description' => 'required',
+            'quantityInStock' => 'required',
+            'wholeSalePrice' => 'required',
+            'retailPrice' => 'required'
         ]);
 
         //Create new Item
@@ -155,7 +165,7 @@ class AdminController extends Controller
         $item->save();
         return response($request->all());
         // return "success";
-       // return redirect('/items')->with('success','Success adding item');
+        // return redirect('/items')->with('success','Success adding item');
     }
 
 
@@ -182,9 +192,9 @@ class AdminController extends Controller
 
     public function addNewEmployee(Request $request){
         $this->validate($request,[
-                    'name' => 'required',
-                    'email' => 'required',
-                    'password' => 'required',
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
         ]);
 
         //Create new Item
@@ -195,7 +205,7 @@ class AdminController extends Controller
         $item->save();
         return response($request->all());
         // return redirect('/admin/employees');
-    //    return redirect('/items')->with('success','Success adding item');
+        //    return redirect('/items')->with('success','Success adding item');
     }
 
     public function updateEmployeeAccount(Request $request, $id){
@@ -215,8 +225,8 @@ class AdminController extends Controller
     public function destroyEmployeeAccount($id){
         $employee = User::find($id);
         $employee->delete();
-       return redirect('/admin/employees');
-      
+        return redirect('/admin/employees');
+
     }
 
 

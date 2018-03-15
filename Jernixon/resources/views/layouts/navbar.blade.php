@@ -36,7 +36,7 @@
     @yield('headScript')
 </head>
 
-<body @yield('onload') @yield('ng-app')>
+<body @yield('ng-app')>
     {{--  <script>
         $(document).ready(function(){
             $("#addNewItemButton").click(function(){

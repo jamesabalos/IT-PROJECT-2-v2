@@ -80,8 +80,7 @@ class AdminController extends Controller
 
         return Datatables::of($data)
              ->addColumn('action',function($data){
-                 return "
-                 <button class='btn btn-info' id='$data->product_id' onclick='addItemToCart(this)'><i class='glyphicon glyphicon-plus'></i></button></a>";
+                 return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'><i class='glyphicon glyphicon-plus'></i></button>";
                     
         
              })

@@ -128,13 +128,7 @@ class AdminController extends Controller
         $data = DB::table('products')->select('*');
         return Datatables::of($data)
             ->addColumn('action',function($data){
-                return "<a href = '#addModal' data-toggle='modal'>
-                    <button id='Add' class='btn btn-success' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-plus-sign'></i> Add</button>
-                </a>
-                <a href = '#subtractModal' data-toggle='modal' >
-                    <button id='Subtract'class='btn btn-danger' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-minus-sign'></i> Subtract</button>
-                </a>
-
+                return "
                 <a href = '#removeModal' data-toggle='modal' >
                     <button id='Remove' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Remove Item</button>
                 </a>

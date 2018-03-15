@@ -26,9 +26,10 @@
     <link href="{{asset('assets/css/light-bootstrap-dashboard.css?v=1.4.0')}}" rel="stylesheet"/>
 
     <!--     Fonts and icons     -->
-    <link href="{{asset('assets/css/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/css/font.css')}}" rel='stylesheet' type='text/css'>
     <link href="{{asset('assets/css/pe-icon-7-stroke.css')}}" rel='stylesheet' type='text/css'>
+
 
     <script src="{{asset('assets/js/jquery.js')}}"></script>
 
@@ -51,7 +52,7 @@
         </script>  --}}
 
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="#343a40" data-image="assets/img/sidebar-5.jpg">
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="{{route('admin.dashboard')}}" class="simple-text">
@@ -60,47 +61,44 @@
             </div>
 
              <ul class="nav">
-                        @if(Auth::guard('adminGuard')->check())
-                        <li @yield('dashboard_link')>
-                            <a href={{route('admin.dashboard')}}><i class="ti-panel"></i>Dashboard</a>
-                        </li>
-                        <li @yield('employees_link')>
-                            <a href={{route('admin.employees')}}><i class="ti-user"></i>Employees</a>
-                        </li>
-                        <li  @yield('items_link') >
-                            <a href={{route('admin.items')}}><i class="ti-clipboard"></i>Items</a>
-                        </li>
-                        <li @yield('physicalCount_link')>
-                            <a href={{route('admin.physicalCount')}}><i class="ti-panel"></i>Physical Count</a>
-                        </li>
-                        <li @yield('purchases_link')>
-                            <a href={{route('admin.purchases')}}><i class="ti-panel"></i>Purchases</a>
-                        </li>
-                        <li  @yield('reports_link') >
-                            <a href={{route('admin.reports')}}><i class="ti-clipboard"></i>Reports</p></a>
-                        </li>
-                        <li @yield('returns_link')>
-                            <a href={{route('admin.returns')}}><i class="ti-panel"></i>Returns</a>
-                        </li>                        
+                    @if(Auth::guard('adminGuard')->check())
+                    <li @yield('dashboard_link')>
+                        
+                        <a href={{route('admin.dashboard')}}> <i class="fa fa-fw fa-dashboard"></i><p>Dashboard</p></a>
+                    </li>                        
+                    <li @yield('sales_link')>
+                        <a href={{route('admin.sales')}}><i class="fa fa-dollar"></i></i></i><p>Sales</p></a>
+                    </li>                       
+                    <li @yield('purchases_link')>
+                        <a href={{route('admin.purchases')}}><i class="fa fa-cube"></i><p>Purchases</p></a>
+                    </li>                        
+                    <li @yield('returns_link')>
+                        <a href={{route('admin.returns')}}><i class="fa fa-mail-reply"></i><p>Returns</p></a>
+                    </li>                        
+                    <li @yield('physicalCount_link')>
+                        <a href={{route('admin.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                    </li>                        
+                    <li  @yield('reports_link') >
+                        <a href={{route('admin.reports')}}><i class="fa fa-line-chart"></i><p>Reports</p></a>
+                    </li>
+                    <li  @yield('items_link') >
+                        <a href={{route('admin.items')}}><i class="	fa fa-bars"></i><p>Items</p></a>
+                    </li>
+                    <li @yield('employees_link')>
+                        <a href={{route('admin.employees')}}><i class="fa fa-users"></i><p>Employees</p></a>
+                    </li>
 
-                        <li @yield('sales_link')>
-                            <a href={{route('admin.sales')}}><i class="ti-panel"></i>Sales</a>
-                        </li>                       
-                        <li @yield('stockAdjustment_link')>
-                            <a href={{route('admin.stockAdjustment')}}><i class="ti-user"></i>Stock Adjustment</a>
-                        </li>
-
-                        {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
-                        @elseif(Auth::guard('web')->check())
-                        <li @yield('dashboard_link')>
-                            <a href={{route('home')}}><i class="ti-panel"></i>Dashboard</a>
-                        </li> 
-                        <li  @yield('items_link') >
-                            <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i>Items</a>
-                        </li>
-                        {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
-                        @endif
-                    </ul>
+                    {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
+                    @elseif(Auth::guard('web')->check())
+                    <li @yield('dashboard_link')>
+                        <a href={{route('home')}}><i class="ti-panel"></i><p>Dashboard</p></a>
+                    </li> 
+                    <li  @yield('items_link') >
+                        <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i><p>Items</p></a>
+                    </li>
+                    {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
+                    @endif
+                </ul>
 
                 </div>
 
@@ -125,13 +123,11 @@
                     <ul class="nav navbar-nav navbar-left">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-dashboard"></i>
                                 <p class="hidden-lg hidden-md">Dashboard</p>
                             </a>
                         </li>
                         <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-globe"></i>
                                     <b class="caret hidden-lg hidden-md"></b>
                                     <p class="hidden-lg hidden-md">
                                         5 Notifications
@@ -167,18 +163,12 @@
                         </li>
                         <li>
                            <a href="">
-                                <i class="fa fa-search"></i>
                                 <p class="hidden-lg hidden-md">Search</p>
                             </a>
                         </li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li>
-                           <a href="">
-                               <p>Account</p>
-                            </a>
-                        </li>
                         <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <p>

@@ -4,7 +4,7 @@ class="active"
 @endsection
 
 @section('linkName')
-    <h2>Employees</h2>
+    <h3>Employees</h3>
 @endsection
 
 @section('headScript')

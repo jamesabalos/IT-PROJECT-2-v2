@@ -194,7 +194,7 @@ class="active"
 @endsection
         
 @section('linkName')
-<h2>Dashboard</h2>
+<h3>Dashboard</h3>
 @endsection
 
 @section('right')

@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width" />
 
     <link rel="icon" type="image/png" sizes="96x96" href="{{asset('assets/img/logo.png')}}">
-    
+
     {{--  csrf_token  --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -116,7 +116,9 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Dashboard</a>
+
+                    {{--  <a class="navbar-brand"><i class="ti-panel"></i> Dashboard</a>  --}} @yield('linkName')
+
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-left">
@@ -136,12 +138,31 @@
                                     </p>
                               </a>
                               <ul class="dropdown-menu">
-                                <li><a href="#">Notification 1</a></li>
-                                <li><a href="#">Notification 2</a></li>
-                                <li><a href="#">Notification 3</a></li>
-                                <li><a href="#">Notification 4</a></li>
-                                <li><a href="#">Another notification</a></li>
-                              </ul>
+                                        <li>
+                                            @if(Auth::guard('adminGuard')->check())
+                                            <a href="{{ route('admin.logout') }}">
+                                                {{--  onclick="event.preventDefault();  --}}
+                                                {{--  document.getElementById('logout-form').submit();">  --}}
+                                                Logout
+                                            </a>
+
+                                            {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            </form>  --}}
+                                            @elseif(Auth::guard('web')->check())
+                                            <a href="{{ route('salesAssistant.logout') }}">
+                                                {{--  onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">  --}}
+                                                Logout
+                                            </a>
+
+                                            {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            </form>   --}}
+                                            @endif
+                                        </li>
+
+                                    </ul>
                         </li>
                         <li>
                            <a href="">
@@ -166,28 +187,44 @@
 
                               </a>
                               <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                              </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <p>Log out</p>
-                            </a>
-                        </li>
-                        <li class="separator hidden-lg"></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                                        <li>
+                                            @if(Auth::guard('adminGuard')->check())
+                                            <a href="{{ route('admin.logout') }}">
+                                                {{--  onclick="event.preventDefault();  --}}
+                                                {{--  document.getElementById('logout-form').submit();">  --}}
+                                                Logout
+                                            </a>
+
+                                            {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            </form>  --}}
+                                            @elseif(Auth::guard('web')->check())
+                                            <a href="{{ route('salesAssistant.logout') }}">
+                                                {{--  onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">  --}}
+                                                Logout
+                                            </a>
+
+                                            {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            </form>   --}}
+                                            @endif
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+        <div class="content" ng-controller="customerPurchase">
+             @yield('right')
+        </div>
 
 
-        <div class="content">
+        <!-- <div class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-4">
@@ -393,10 +430,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
 
-        <footer class="footer">
+        <!-- <footer class="footer">
             <div class="container-fluid">
                 <nav class="pull-left">
                     <ul>
@@ -426,48 +463,16 @@
                     &copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.creative-tim.com">Creative Tim</a>, made with love for a better web
                 </p>
             </div>
-        </footer>
+        </footer> -->
 
     </div>
 </div>
 
 
-</body>
+@yield('modals')
+        @yield('jqueryScript')
+    </body>
 
-    <!--   Core JS Files   -->
-    <script src="assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
-
-    <!--  Charts Plugin -->
-    <script src="assets/js/chartist.min.js"></script>
-
-    <!--  Notifications Plugin    -->
-    <script src="assets/js/bootstrap-notify.js"></script>
-
-    <!--  Google Maps Plugin    -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-
-    <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-    <script src="assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
-
-    <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-    <script src="assets/js/demo.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function(){
-
-            demo.initChartist();
-
-            $.notify({
-                icon: 'pe-7s-gift',
-                message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for every web developer."
-
-            },{
-                type: 'info',
-                timer: 4000
-            });
-
-        });
-    </script>
+    @yield('js_link')
 
 </html>

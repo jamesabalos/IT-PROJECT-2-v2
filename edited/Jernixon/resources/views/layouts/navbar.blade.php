@@ -62,41 +62,41 @@
              <ul class="nav">
                         @if(Auth::guard('adminGuard')->check())
                         <li @yield('dashboard_link')>
-                            <a href={{route('admin.dashboard')}}><i class="ti-panel"></i><p>Dashboard</p></a>
+                            <a href={{route('admin.dashboard')}}><i class="ti-panel"></i>Dashboard</a>
                         </li>
                         <li @yield('employees_link')>
-                            <a href={{route('admin.employees')}}><i class="ti-user"></i><p>Employees</p></a>
+                            <a href={{route('admin.employees')}}><i class="ti-user"></i>Employees</a>
                         </li>
                         <li  @yield('items_link') >
-                            <a href={{route('admin.items')}}><i class="ti-clipboard"></i><p>Items</p></a>
+                            <a href={{route('admin.items')}}><i class="ti-clipboard"></i>Items</a>
                         </li>
                         <li @yield('physicalCount_link')>
-                            <a href={{route('admin.physicalCount')}}><i class="ti-panel"></i><p>Physical count</p></a>
+                            <a href={{route('admin.physicalCount')}}><i class="ti-panel"></i>Physical Count</a>
                         </li>
                         <li @yield('purchases_link')>
-                            <a href={{route('admin.purchases')}}><i class="ti-panel"></i><p>Purchases</p></a>
+                            <a href={{route('admin.purchases')}}><i class="ti-panel"></i>Purchases</a>
                         </li>
                         <li  @yield('reports_link') >
-                            <a href={{route('admin.reports')}}><i class="ti-clipboard"></i><p>Reports</p></a>
+                            <a href={{route('admin.reports')}}><i class="ti-clipboard"></i>Reports</p></a>
                         </li>
                         <li @yield('returns_link')>
-                            <a href={{route('admin.returns')}}><i class="ti-panel"></i><p>Returns</p></a>
+                            <a href={{route('admin.returns')}}><i class="ti-panel"></i>Returns</a>
                         </li>                        
 
                         <li @yield('sales_link')>
-                            <a href={{route('admin.sales')}}><i class="ti-panel"></i><p>Sales</p></a>
+                            <a href={{route('admin.sales')}}><i class="ti-panel"></i>Sales</a>
                         </li>                       
                         <li @yield('stockAdjustment_link')>
-                            <a href={{route('admin.stockAdjustment')}}><i class="ti-user"></i><p>Stock Adjustment</p></a>
+                            <a href={{route('admin.stockAdjustment')}}><i class="ti-user"></i>Stock Adjustment</a>
                         </li>
 
                         {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
                         @elseif(Auth::guard('web')->check())
                         <li @yield('dashboard_link')>
-                            <a href={{route('home')}}><i class="ti-panel"></i><p>Dashboard</p></a>
+                            <a href={{route('home')}}><i class="ti-panel"></i>Dashboard</a>
                         </li> 
                         <li  @yield('items_link') >
-                            <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i><p>Items</p></a>
+                            <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i>Items</a>
                         </li>
                         {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
                         @endif
@@ -117,7 +117,8 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    {{--  <a class="navbar-brand"><i class="ti-panel"></i> Dashboard</a>  --}} @yield('linkName')
+                    @yield('linkName')
+					
 
                 </div>
                 <div class="collapse navbar-collapse">
@@ -181,7 +182,7 @@
                         <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <p>
-                                        Dropdown
+                                        {{ Auth::user()->name }}
                                         <b class="caret"></b>
                                     </p>
 

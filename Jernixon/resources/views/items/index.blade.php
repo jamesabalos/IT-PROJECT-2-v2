@@ -13,7 +13,7 @@ class="active"
 @extends('inc.headScripts')
 
 @section('linkName')
-    <h2>Items</h2>
+    <h3>Items</h3>
 @endsection
 
 @section('right')

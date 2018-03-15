@@ -34,7 +34,7 @@ ng-app="ourAngularJsApp"
                 newRow.insertCell(-1).innerHTML = "<td>"+ myItemJSON.retailPrice +"</td>";
                 newRow.insertCell(-1).innerHTML = "<td><input type='number' value='" +myItemJSON.quantityPurchase+ "'min='1'></td>";
                 newRow.insertCell(-1).innerHTML = "<td></td>";
-                newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
+                newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='remove(this)'>Remove</button></td>";
 
             }
         } 
@@ -60,7 +60,7 @@ ng-app="ourAngularJsApp"
             newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>";
             newRow.insertCell(-1).innerHTML ="<td ng-bind='" +data[0].innerHTML+"'></td>";
             // newRow.insertCell(-1).innerHTML ="<td><h2 ng-bind='" +data[0].innerHTML+ "'></h2></td>";
-            newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +button.getAttribute("id")+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
+            newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +button.getAttribute("id")+ "' onclick='remove(this)'>Remove</button></td>";
 
             //add to localStorage
             var itemObject = {
@@ -81,7 +81,7 @@ ng-app="ourAngularJsApp"
 
     }
 
-    function removeRowInCart(button){
+    function remove(button){
         //var i = a.parentNode.parentNode.rowIndex;
         //document.getElementById("cartTable").deleteRow(i);
         var row = button.parentNode.parentNode; //row
@@ -96,22 +96,23 @@ ng-app="ourAngularJsApp"
         //show the plus sign button again
         document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
     }
-    
+
     function addRow(){
         var thatTbody = document.getElementById("purchasetable");
         var newRow = thatTbody.insertRow(-1);
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='text' min='1'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number min='1'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' min='1'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched form-control' type='text' min='1'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched form-control' type='number min='1'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched form-control' type='number' min='1'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
-        
+
     }
 </script>
 
 @endsection
 
 @section('linkName')
-<h2>Sales</h2>
+<h3>Purchases</h3>
 @endsection
 
 @section('right')
@@ -123,14 +124,13 @@ ng-app="ourAngularJsApp"
                     <div class="text-left">                                           
                         <div class="col-md-12">
                             <a href = "#create" data-toggle="modal" >
-                                <button type="submit" class="btn btn-info btn-fill btn-wd btn-success"><i class = "ti-plus"></i> Create Purchase Order</button> 
+                                <button type="submit" class="btn btn-info btn-fill btn-wd btn-success">Create Purchase Order</button> 
                             </a> 
                         </div>
                     </div>
                     <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
                         <thead> 
                             <tr>
-                                {{--  <th>Id</th>  --}}
                                 <th>PO ID</th>
                                 <th>Date Created</th>
                                 <th>Supplier</th>
@@ -138,7 +138,6 @@ ng-app="ourAngularJsApp"
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        {{--  <tbody id="dashboardDatatable">  --}}
                         <tbody>
                         </tbody>
                     </table>
@@ -162,7 +161,7 @@ ng-app="ourAngularJsApp"
                 </div>
 
                 {!! Form::open(['method'=>'post','id'=>'formPurchaseOrder']) !!}
-            
+
                 <input type="hidden" id="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <div class="row">
@@ -208,6 +207,7 @@ ng-app="ourAngularJsApp"
                                                 <th>Description</th>
                                                 <th>Quantity</th>
                                                 <th>Price</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id= "purchasetable">
@@ -215,6 +215,7 @@ ng-app="ourAngularJsApp"
                                                 <td>{{Form::text('Description','',['class'=>'form-control'])}}</td>
                                                 <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
                                                 <td>{{Form::text('Price','',['class'=>'form-control'])}}</td>
+                                                <td><button class='btn btn-danger form-control' data-item-id='" +button.getAttribute("id")+ "' onclick='removeRow(this)'><i class='glyphicon glyphicon-remove'></i></button></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -222,22 +223,21 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
                         <div class="col-md-12">
+                            <div class ="text-right">Total Items:</div>
+                            <div class ="text-right">Total Price:</div>
                         </div>
                     </div>
                 </div>                {!! Form::close() !!}
 
-            
+                <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button> 
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                           
-                            <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
+                            <button id="submitNewItems" type="submit" onclick="window.alert('to be continue..')" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
-                                     <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button> 
-
 
             </div>
         </div>

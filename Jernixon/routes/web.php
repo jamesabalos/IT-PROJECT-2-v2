@@ -80,3 +80,6 @@ Route::DELETE('admin/employees/destroyEmployeeAccount/{id}', 'AdminController@de
 Route::Put('admin/employees/updateEmployeeAccount/{id}', 'AdminController@updateEmployeeAccount')->name('admin.updateEmployeeAccount');
 Route::Post('admin/employees/addNewEmployee', 'AdminController@addNewEmployee')->name('admin.addNewEmployee');
 Route::get('admin/employees', 'AdminController@employees')->name('admin.employees');
+
+
+Route::get('admin/stockAjustment', 'AdminController@stockAdjustment')->name('admin.stockAdjustment');

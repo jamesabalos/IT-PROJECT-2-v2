@@ -132,48 +132,7 @@ ng-app="ourAngularJsApp"
                         <input ng-model="typeName" ng-change="myFunction()" type="text" class="form-control border-input" form="purchase" required>
                     </div>
                 </div>
-                {{--  <div class="row">
-                <div class="col-md-3 text-right">
-                    <label>Date of Purchased</label>    
-                </div>
-                <div class="col-md-9">
 
-                    <span class="add-on">
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
-
-                    </span>   
-                </div>
-
-                </div>  --}}
-
-                <div class="row"> 
-                    <div class="col-md-12 table-responsive">
-                        <table id="cartTable" class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    {{--  <th>Id</th>  --}}
-                                    <td>Item</td>
-                                    <td>Quantity Left</td>
-                                    <td>Wholesale Price</td>
-                                    <td>Retail Price</td>
-                                    <td>Quantity Purchase</td>
-                                    <td>Sales Price</td>
-                                    <td>Action</td>
-                                </tr> 
-                            </thead>
-                            <tbody id="cartTbody">
-                                <td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>                                 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>  
-                <div class="row">
-                    <h2 ng-bind="newStock"></h2>
-                    <div class="text-right">                                           
-                        <div class="col-md-5">                                                    
-                            <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
-                        </div>                             
-                    </div>
                     {{--  <div class="row">
                         <div class="col-md-3 text-right">
                             <label>Date of Purchased</label>    
@@ -225,7 +184,7 @@ ng-app="ourAngularJsApp"
                         </div>
                         <div class="col-md-3" id="totalSalesDiv"><h4 class="form-control" style="color:green" id="totalSales" ng-bind=""></h4></div>
                     </div>
-                </div>
+           
             </div>
         </div>
     </div>
@@ -415,7 +374,7 @@ ng-app="ourAngularJsApp"
                 var lastRow = thatTable.rows[numberOfRows-1];
                 var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'');
                 
-                var retailPrice = "<p class='form-control' style='color:green'></p>";
+                var retailPrice = "<p class='form-control' style='color:green'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p>";
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);
 

@@ -70,7 +70,7 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('linkName')
-<h2>Returns</h2>
+<h3>Returns</h3>
 @endsection
 
 @section('right')

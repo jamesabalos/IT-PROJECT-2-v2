@@ -166,7 +166,7 @@ class="active"
 @endsection
 
 @section('linkName')
-    <h2>Reports</h2>
+    <h3>Reports</h3>
 @endsection
 
 @section('right')  

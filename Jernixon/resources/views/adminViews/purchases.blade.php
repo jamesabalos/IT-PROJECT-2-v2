@@ -60,6 +60,14 @@ class="active"
         newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
     }
 </script>
+<<<<<<< HEAD
+=======
+
+@endsection
+
+@section('linkName')
+<h3>Purchases</h3>
+>>>>>>> 5b5ce0798b5afe104adf9a6563f4382a5d2ee1ed
 @endsection
 
 @section('right')

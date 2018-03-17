@@ -3,68 +3,43 @@
 class="active"
 @endsection
 
-@section('onload')
+{{--  @section('onload')
 onload="refresh()"
-@endsection
+@endsection  --}}
 
 {{--  @section('ng-app')
 ng-app="ourAngularJsApp"
 @endsection  --}}
- 
+@section('linkName')
+<h3>Purchases</h3>
+@endsection
 
 @section('headScript')
-<link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
-<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
-<!--AngularJs-->
-{{--  <script src="{{asset('assets/js/angular.min.js')}}"></script>  --}}
-<script>
-    function refresh(){
-        var len=localStorage.length;
-        var thatTbody = document.getElementById("cartTbody");
-        for(var i=0; i<len; i++) {
-            var key = localStorage.key(i);
-            var value = localStorage[key];
-            if(value.includes("item")){
-                // console.log(key + " => " + value);          
-                var myItemJSON = JSON.parse(localStorage.getItem(key));            
-                var newRow = thatTbody.insertRow(-1);
-                newRow.insertCell(-1).innerHTML = "<td>"+ myItemJSON.item +"</td>";
-                newRow.insertCell(-1).innerHTML = "<td>"+ myItemJSON.quantityLeft +"</td>";
-                newRow.insertCell(-1).innerHTML = "<td>"+ myItemJSON.wholeSalePrice +"</td>";
-                newRow.insertCell(-1).innerHTML = "<td>"+ myItemJSON.retailPrice +"</td>";
-                newRow.insertCell(-1).innerHTML = "<td><input type='number' value='" +myItemJSON.quantityPurchase+ "'min='1'></td>";
-                newRow.insertCell(-1).innerHTML = "<td></td>";
-                newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='remove(this)'>Remove</button></td>";
+<script type="text/javascript">
 
-            }
-        } 
-    }
-
-    function remove(button){
-        //var i = a.parentNode.parentNode.rowIndex;
-        //document.getElementById("cartTable").deleteRow(i);
-        var row = button.parentNode.parentNode; //row
-        $(row).hide(500,function(){
-            $(row).remove();
-        });
-
-        //remove item in local storage
-        var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
-        localStorage.removeItem(data[0].innerHTML);
-
-        //show the plus sign button again
-        document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
-    }
 
     function addRow(){
-        var thatTbody = document.getElementById("purchasetable");
-        var newRow = thatTbody.insertRow(-1);
-        newRow.insertCell(-1).innerHTML = "<td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>";
-        newRow.insertCell(-1).innerHTML = "<td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>";
-        newRow.insertCell(-1).innerHTML = "<td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>";
-        newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+        var thatTable = document.getElementById("purchasetable");
+        var newRow = thatTable.insertRow(-1);
+        // newRow.insertCell(-1).innerHTML = "<td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>";
+        // newRow.insertCell(-1).innerHTML = "<td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>";
+        // newRow.insertCell(-1).innerHTML = "<td>{{Form::text('Price','',['class'=>'form-control','value'=>''])}}</td>";
+        // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+        newRow.insertCell(-1).innerHTML = "<td></td>";
+        newRow.insertCell(-1).innerHTML = "<td></td>";
+        newRow.insertCell(-1).innerHTML = "<td></td>";
+        newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
     }
+
+    $(document).ready(function(){
+        $('#formPurchaseOrder').on('submit',function(e){
+                e.preventDefault();
+            alert("clicked")
+
+        })
+    });
 </script>
+
 @endsection
 
 @section('right')
@@ -106,7 +81,8 @@ ng-app="ourAngularJsApp"
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
 
-            {!! Form::open(['method'=>'post','id'=>'formPurchaseOrder']) !!}
+             {!! Form::open(['method'=>'get','id'=>'formPurchaseOrder']) !!}
+            <input type="hidden" id="_token" value="{{ csrf_token() }}">
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -121,7 +97,7 @@ ng-app="ourAngularJsApp"
                         </strong>
                     </div>
                     <div class="panel-body">
-                        <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                        {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
 
                         <div class="form-group">
                             <div class="row">
@@ -129,7 +105,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}
+                                    {{Form::text('Date','',['class'=>'form-control','value'=>''])}}
                                 </div>
                             </div>
                         </div>
@@ -151,13 +127,13 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Supplier', 'Supplier:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::text('Supplier','',['class'=>'form-control','value'=>'','disabled'])}}
+                                    {{Form::text('Supplier','',['class'=>'form-control','value'=>''])}}
                                 </div>
                             </div>
                         </div>
 
                         <div class="content table-responsive">
-                            <table class="table table-bordered table-striped" id="">
+                            <table class="table table-bordered table-striped" id="purchasetable">
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
@@ -167,29 +143,29 @@ ng-app="ourAngularJsApp"
                                     </tr>
                                 </thead>
 
-                                <tbody id= "purchasetable">
+                                <tbody>
                                     <tr>
-                                        <td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>
+                                        <td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>
                                         <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
-                                        <td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>
+                                        <td>{{Form::text('Price','',['class'=>'form-control','value'=>''])}}</td>
                                         <td><button class='btn btn-danger form-control' data-item-id='" +button.getAttribute("id")+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div> 
-                        <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>
                     </div>
                 </div>
-                {!! Form::close() !!}
-
+                <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitNewItems" type="submit" onclick="window.alert('to be continue..')" class="btn btn-success">Save</button>
+                            <button id="submitPurchases" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
+                {!! Form::close() !!}
+                
             </div>
 
         </div>

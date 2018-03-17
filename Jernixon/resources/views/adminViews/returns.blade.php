@@ -7,9 +7,9 @@ class="active"
 onload="refresh()"
 @endsection
 
-@section('ng-app')
+{{--  @section('ng-app')
 ng-app="ourAngularJsApp"
-@endsection
+@endsection  --}}
 
 
 @section('headScript')
@@ -57,14 +57,22 @@ ng-app="ourAngularJsApp"
     }
 
     function addRow(){
-        var thatTbody = document.getElementById("purchasetable");
-        var newRow = thatTbody.insertRow(-1);
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='text' min='1'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number min='1'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' min='1'></td>";
+        var thatTable = document.getElementById("purchasetable");
+        var newRow = thatTable.insertRow(-1);
+        newRow.insertCell(-1).innerHTML = "<td><input class='form-control' type='text'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input  class='form-control' type='number' ></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input  class='form-control' type='number' ></td>";
         newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
     }
+
+        $(document).ready(function(){
+        $('#formPurchaseOrder').on('submit',function(e){
+                e.preventDefault();
+            alert("clicked")
+
+        })
+    });
 </script>
 
 @endsection
@@ -170,7 +178,7 @@ ng-app="ourAngularJsApp"
                         </strong>
                     </div>
                     <div class="content table-responsive">
-                        <table class="table table-bordered table-striped" id="">
+                        <table class="table table-bordered table-striped">
 
                             <thead>
                                 <tr>
@@ -181,11 +189,14 @@ ng-app="ourAngularJsApp"
                                 </tr>
                             </thead>
 
-                            <tbody id= "purchasetable">
+                            <tbody>
                                 <tr>
                                     <td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>
                                     <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
                                     <td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>
+                                    {{--  <td><input  type='text'></td>
+                                    <td><input  type='text' ></td>
+                                    <td><input  type='text' ></td>  --}}
                                     <td><input class='form-control' type="checkbox"></td>
                                 </tr>
                             </tbody>
@@ -200,7 +211,7 @@ ng-app="ourAngularJsApp"
                         </strong>
                     </div>
                     <div class="content table-responsive">
-                        <table class="table table-bordered table-striped" id="">
+                        <table class="table table-bordered table-striped" id="purchasetable">
                             <thead>
                                 <tr>
                                     <th class="text-left">Description</th>
@@ -210,18 +221,22 @@ ng-app="ourAngularJsApp"
                                 </tr>
                             </thead>
 
-                            <tbody id= "purchasetable">
+                            <tbody >
                                 <tr>
-                                    <td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>
+                                    <td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>
                                     <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
-                                    <td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>
-                                    <td><button class='btn btn-danger form-control' data-item-id='" +button.getAttribute("id")+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>
+                                    <td>{{Form::text('Price','',['class'=>'form-control','value'=>''])}}</td>
+                                    {{--  <td><button class='btn btn-danger form-control' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>  --}}
+                                    {{--  <td>a</td>
+                                    <td>a</td>
+                                    <td>a</td>  --}}
+                                    <td><button class='btn btn-danger form-control' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>
+                <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

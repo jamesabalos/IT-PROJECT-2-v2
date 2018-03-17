@@ -184,7 +184,9 @@ class="active"
                             </div>
                     <div class = "col-md-12">
                         <a href = "#addEmployee" data-toggle="modal">
+                            <div class="content table-responsive table-full-width">
                             <button type="button" class="btn btn-success"><i class = "ti-plus"></i> Add Employee</button>
+                            </div>
                         </a>
                     </div>
                     <div class="content table-responsive table-full-width">

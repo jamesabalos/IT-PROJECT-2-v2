@@ -39,9 +39,6 @@ class="active"
                                         </li>
                                         <li >
                                             <a href = "#subtract" data-toggle="modal" >Subtract </a>
-                                        </li>
-                                        <li >
-                                            <a href = "#return" data-toggle="modal"  >Return</a>
                                         </li>                                                      
                                     </ul>
                                 </div>  --}}
@@ -50,10 +47,7 @@ class="active"
                                     <div class = "text-right">
                                         <a href = "#addNewItemModal" data-toggle="modal" >
                                             <button type="submit" class="btn btn-info btn-fill btn-wd btn-success"><i class = "ti-plus"></i> Add new item</button> 
-                                        </a>  
-                                        <a href = '#returnModal' data-toggle='modal' >
-                                            <button id='Return' class='btn btn-danger'><i class='glyphicon glyphicon-backward'></i> Return</button>
-                                        </a>      
+                                        </a>       
                                         {{--  <a href = "#remove" data-toggle="modal">
                                             <button type="submit" class="btn btn-info btn-fill btn-wd btn-danger"><i class="ti-minus"></i> Remove item</button>
                                         </a>                                              --}}
@@ -220,48 +214,48 @@ class="active"
                 
             })
 
-            $('#formReturnItem').on('submit',function(e){
-                e.preventDefault(); //prevent the page to load when submitting form
-                //key value pair of form
-                var data = $(this).serialize();
-
-                $.ajax({
-                    type:'POST',
-                    url:'/items/returnItem',
-                    //dataType:'json',
-                    data:data,
-                    success:function(dataReceive){
-                        $("#errorDivReturnItem p").remove();
-                        //$("#errorDivReturnItem").removeClass("alert-danger hidden")
-                        $("#errorDivReturnItem").removeClass("alert-danger")
-                                                .addClass("alert-success")
-                                                .html("<h1>Success</h1>");
-
-                        $("#errorDivReturnItem").css("display:block");
-                        $("#errorDivReturnItem").slideDown("slow",function(){
-                            document.getElementById("formReturnItem").reset();
-                        })
-                        .delay(1000)                        
-                        .hide(1500);
-                    },
-                    error:function(dataReceived){
-                        var response = dataReceived.responseJSON;
-                        $("#errorDivReturnItem").removeClass("alert-success")
-                                                .addClass("alert-danger"); 
-                        $("#errorDivReturnItem").css("display:block");
-                        $("#errorDivReturnItem").slideDown("slow")                                               
-                                                .html(function(){
-                                                    var addedHtml="";
-                                                    for (var key in response.errors) {
-                                                        addedHtml += "<p>"+response.errors[key]+"</p>";
-                                                    }
-                                                    return addedHtml;
-                        });
-                    
-                    }
-                })
-                
-            })
+//            $('#formReturnItem').on('submit',function(e){
+//                e.preventDefault(); //prevent the page to load when submitting form
+//                //key value pair of form
+//                var data = $(this).serialize();
+//
+//                $.ajax({
+//                    type:'POST',
+//                    url:'/items/returnItem',
+//                    //dataType:'json',
+//                    data:data,
+//                    success:function(dataReceive){
+//                        $("#errorDivReturnItem p").remove();
+//                        //$("#errorDivReturnItem").removeClass("alert-danger hidden")
+//                        $("#errorDivReturnItem").removeClass("alert-danger")
+//                                                .addClass("alert-success")
+//                                                .html("<h1>Success</h1>");
+//
+//                        $("#errorDivReturnItem").css("display:block");
+//                        $("#errorDivReturnItem").slideDown("slow",function(){
+//                            document.getElementById("formReturnItem").reset();
+//                        })
+//                        .delay(1000)                        
+//                        .hide(1500);
+//                    },
+//                    error:function(dataReceived){
+//                        var response = dataReceived.responseJSON;
+//                        $("#errorDivReturnItem").removeClass("alert-success")
+//                                                .addClass("alert-danger"); 
+//                        $("#errorDivReturnItem").css("display:block");
+//                        $("#errorDivReturnItem").slideDown("slow")                                               
+//                                                .html(function(){
+//                                                    var addedHtml="";
+//                                                    for (var key in response.errors) {
+//                                                        addedHtml += "<p>"+response.errors[key]+"</p>";
+//                                                    }
+//                                                    return addedHtml;
+//                        });
+//                    
+//                    }
+//                })
+//                
+//            })
         });
     </script>
     @endsection
@@ -421,128 +415,6 @@ class="active"
         </div>
         
     </div>
-    <div id="returnModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-        <div class = "modal-dialog">
-            <div class = "modal-content">
-                <div class = "modal-body">
-                    <button class="close" data-dismiss="modal">&times;</button>
-                    <h4>Return of Item</h4>   
-                    <div class="alert" style="display:none" id="errorDivReturnItem">
-                     
-                    </div>
-                    {{--  <div class="row">
-                        <div class="col-md-3">
-                            <label><i class = "ti-search"></i> Search</label>
-                        </div>
-                        <div class="col-md-5">
-                            <input type="text" onkeyup="searchItem2(this)" id="returnItem" class="form-control border-input" placeholder="Name of the returned item">
-                        </div>
-                    </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <td>Description</td>
-                                <td>Quantity</td>
-                                <td>Action</td>
-                            </tr>
-                        </thead>
-                        <tbody  id="returnItemTbody">
-                        </tbody>
-                    </table>  --}}
-                    
-                    {{--  <div id="returnFormDiv">  --}}
-                        {!! Form::open(['method'=>'post','id'=>'formReturn']) !!}
-                             {{--  <div class="col-md-3">
-                               {{Form::label('description', 'Description:')}}
-                            </div>
-                            <div class="col-md-9">
-                                {{Form::text('description','',['class'=>'form-control','placeholder'=>'Description'])}}
-                            </div>  --}}
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{--  <label>Customer Name:</label>  --}}
-                               {{Form::label('customerName', 'Customer Name:')}}
-                                
-                            </div>
-                            <div class="col-md-9">
-                                {{--  <input type="text" class="form-control border-input" form="returnform" placeholder="Customer Name">  --}}
-                                {{Form::text('customerName','',['class'=>'form-control','placeholder'=>'Customer Name'])}}
-                                
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{--  <label>Item:</label>  --}}
-                               {{Form::label('itemName', 'Item:')}}                                
-                            </div>
-                            <div class="col-md-9">
-                                {{--  <input id="returnItemName" type="text" class="form-control border-input" disabled>  --}}
-                                {{Form::text('itemName','',['class'=>'form-control','id'=>'itemName','disabled'])}}
-                                
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{--  <label>Quantity:</label>  --}}
-                               {{Form::label('quantity', 'Quantity:')}}                                                                
-                            </div>
-                            <div class="col-md-9">
-                                {{--  <input type="number" form="returnform" class="form-control border-input" min="0">  --}}
-                                {{Form::number('quantity','',['class'=>'form-control border-input','min'=>'0'])}}                                
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{--  <label>Total price:</label>  --}}
-                               {{Form::label('totalPrice', 'Total price:')}}                                                                                                
-                            </div>
-                            <div class="col-md-9">
-                                {{--  <input type="number" form="returnform" class="form-control border-input" min="0">  --}}
-                                {{Form::number('totalPrice','',['class'=>'form-control border-input','min'=>'0'])}}                                                                
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{--  <label>Reason:</label>--}}
-                               {{Form::label('reason', 'Reason:')}}                                                                                                                                
-                            </div>
-                            <div class="col-md-9">
-                                {{--  <textarea class="form-control" form="returnform" rows="4" id="comment"></textarea>  --}}
-                                {{--  {{ Form::textarea('reason', null, ['size' => '30x5']) }}  --}}
-                                {{--  <textarea name="notes" cols="30" rows="5"></textarea>  --}}
-                                {{ Form::textarea('reason',null,['class'=>'form-control','placeholder'=>'Enter reason']) }}
-                                {{--  {{Form::text('reason','',['class'=>'form-control'])}}                                  --}}
-                            
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                            {{--  <label>Status:</label>  --}}
-                            {{Form::label('status', 'Status:')}}                                                                                                                                                            
-                            </div>
-                            <div class="col-md-9">
-                                {{--  <input type="text" class="form-control" form="returnform" name="status">  --}}
-                                {{Form::text('status','',['class'=>'form-control'])}}                                
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="text-right">                                           
-                                <div class="col-md-12">                                                    
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                    <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                                </div>                             
-                            </div>
-                        </div>
-                        {!! Form::close() !!}
-                        
-                    {{--  </div>  --}}
-
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="removeModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
         <div class = "modal-dialog modal-lg">
             <div class = "modal-content">
@@ -588,9 +460,13 @@ class="active"
     @section('js_link')
     <!--   Core JS Files   -->
     
+
     {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>  --}}
     <script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+
+
+
     
     @endsection

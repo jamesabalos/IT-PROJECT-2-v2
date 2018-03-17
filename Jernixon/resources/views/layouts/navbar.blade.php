@@ -51,7 +51,7 @@
         </script>  --}}
 
 <div class="wrapper">
-    <div class="sidebar" data-color="purple" data-image="assets/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="navcolor" data-image="assets/img/sidebar-5.jpg">
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="{{route('admin.dashboard')}}" class="simple-text">

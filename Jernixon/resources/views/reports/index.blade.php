@@ -197,6 +197,7 @@ class="active"
                     
                     {{--  <div id="paraentDivFour" style="border:2px solid green; display:none">  --}}
                         <div id="transactionDiv" style="display: block;">
+                            <div class="content table-responsive table-full-width">
                             <table id="transactionsTable"  class="table table-hover table-condensed" >
                                 <thead >
                                     <tr>
@@ -208,11 +209,11 @@ class="active"
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
-                            </table>                        
+                            </table>   
+                            </div>
                         </div> 
                         <div id="returnsDiv" style="display:none">
                             <div class="content table-responsive table-full-width">
-                            </div>
                             <table id="returnsTable" class="table table-hover table-condensed">
                                 <thead>
                                     <tr>
@@ -225,7 +226,8 @@ class="active"
                                         <td>Status</td>
                                     </tr>
                                 </thead>
-                            </table>                        
+                            </table>  
+                            </div>
                         </div> 
                         <div id="itemsAddedDiv" style="display:none">
                             <div class="content table-responsive table-full-width">

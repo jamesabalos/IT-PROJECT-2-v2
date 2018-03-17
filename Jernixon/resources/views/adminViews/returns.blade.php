@@ -89,7 +89,9 @@ ng-app="ourAngularJsApp"
                 <div class="header">
                     <div class = "col-md-12">
                         <a href = "#return" data-toggle="modal">
+                            <div class="content table-responsive table-full-width">
                             <button type="button" class="btn btn-success">Return Item</button>
+                            </div>
                         </a>
                     </div>
                     <div class="content table-responsive table-full-width">

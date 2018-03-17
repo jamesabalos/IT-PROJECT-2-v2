@@ -7,16 +7,16 @@ class="active"
 onload="refresh()"
 @endsection
 
-@section('ng-app')
+{{--  @section('ng-app')
 ng-app="ourAngularJsApp"
-@endsection
-
+@endsection  --}}
+ 
 
 @section('headScript')
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
 <!--AngularJs-->
-<script src="{{asset('assets/js/angular.min.js')}}"></script>
+{{--  <script src="{{asset('assets/js/angular.min.js')}}"></script>  --}}
 <script>
     function refresh(){
         var len=localStorage.length;

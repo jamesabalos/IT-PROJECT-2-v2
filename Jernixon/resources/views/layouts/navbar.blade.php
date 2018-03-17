@@ -27,8 +27,8 @@
 
     <!--     Fonts and icons     -->
     <link href="{{asset('assets/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
-    <link href="{{asset('assets/css/font.css')}}" rel='stylesheet' type='text/css'>
-    <link href="{{asset('assets/css/pe-icon-7-stroke.css')}}" rel='stylesheet' type='text/css'>
+    {{--  <link href="{{asset('assets/css/font.css')}}" rel='stylesheet' type='text/css'>  --}}
+    {{--  <link href="{{asset('assets/css/pe-icon-7-stroke.css')}}" rel='stylesheet' type='text/css'>  --}}
 
 
     <script src="{{asset('assets/js/jquery.js')}}"></script>

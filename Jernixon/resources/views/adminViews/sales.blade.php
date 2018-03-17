@@ -16,7 +16,7 @@ ng-app="ourAngularJsApp"
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
 <!--AngularJs-->
-<script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>
+{{--  <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>  --}}
 
 <script src="{{asset('assets/js/angularJs.js')}}"></script>
 <script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
@@ -70,10 +70,10 @@ ng-app="ourAngularJsApp"
     function removeRowInCart(button){
         //var i = a.parentNode.parentNode.rowIndex;
         //document.getElementById("cartTable").deleteRow(i);
-        var row = button.parentNode.parentNode; //row
-        $(row).hide(500,function(){
+        // var row = button.parentNode.parentNode; //row
+        // $(row).hide(500)
             // $(row).remove();
-        });
+        // });
 
         //remove item in local storage
         var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
@@ -454,7 +454,10 @@ ng-app="ourAngularJsApp"
             }
 
             $scope.remove = function(event){
-                event.currentTarget.parentNode.parentNode.remove();
+                // $(event.currentTarget.parentNode.parentNode).hide(500,function(){
+                    event.currentTarget.parentNode.parentNode.remove();
+                    
+                // })
                 var thatTable = document.querySelectorAll('#cartTable > tbody > tr')
                 var numberOfRows = thatTable.length;
                 var ngBinds = "";

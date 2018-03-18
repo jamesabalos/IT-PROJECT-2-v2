@@ -54,12 +54,13 @@
     <div class="sidebar" data-color="navcolor" data-image="assets/img/sidebar-5.jpg">
         <div class="sidebar-wrapper">
             <div class="logo">
-                <a href="{{route('admin.dashboard')}}" class="simple-text">
-                    Jernixon Motorparts and Accessories
+                <a href="{{route('admin.dashboard')}}" class="simple-text"> 
+                    <img src="{{asset('assets/img/logo2.png')}}">
+<!--                    Jernixon Motorparts and Accessories-->
                 </a>
             </div>
 
-             <ul class="nav">
+             <ul class="nav" >
                     @if(Auth::guard('adminGuard')->check())
                     <li @yield('dashboard_link')>
                         

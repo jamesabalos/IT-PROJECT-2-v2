@@ -125,11 +125,9 @@ ng-app="ourAngularJsApp"
             <div class="header" >
                 <h4 ng-bind="name">Customer Purchase</h4>
                 <div class="row">
-                    <div class="col-md-3 text-right">
-                        <label>Customer Name: </label>
-                    </div>
-                    <div class="col-md-6">
-                        <input ng-model="typeName" ng-change="myFunction()" type="text" class="form-control border-input" form="purchase" required>
+                    
+                    <div class="col-md-5">
+                        <input ng-model="typeName" placeholder="Customer Name" ng-change="myFunction()" type="text" class="form-control border-input" form="purchase" required style="float:right">
                     </div>
                 </div>
 
@@ -175,16 +173,19 @@ ng-app="ourAngularJsApp"
                     </div>  
                     <div class="row">
                         <div class="text-right">                                           
-                            <div class="col-md-4">                                                    
+                            <div class="col-md-5">                                                    
                                 <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
-                            </div>                             
-                        </div>
-                        <div class="col-md-5 text-right">
+                            </div> 
+                             <div class="col-md-3 text-right">
                             <label>Total Sales: </label>
                         </div>
-                        <div class="col-md-3" id="totalSalesDiv"><h4 class="form-control" style="color:green" id="totalSales" ng-bind=""></h4></div>
+                            
+                        </div> 
+                        <div class="col-md-5" id="totalSalesDiv">
+                            <h4 class="form-control" style="color:green" id="totalSales" ng-bind=""></h4>
+                        </div>
                     </div>
-           
+                    
             </div>
         </div>
     </div>

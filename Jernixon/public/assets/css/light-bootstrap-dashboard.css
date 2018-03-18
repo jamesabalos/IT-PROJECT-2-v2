@@ -951,6 +951,7 @@ fieldset[disabled] .btn-neutral.active {
     height: 40px;
     -webkit-box-shadow: none;
     box-shadow: none;
+    margin-bottom: 20px;
 }
 
 .form-control:focus {
@@ -2206,7 +2207,7 @@ fieldset[disabled] .btn-neutral.active {
 }
 
 .card .header {
-    padding: 15px 15px 0;
+    padding: 15px 35px 15px;
 }
 
 .card .category,
@@ -3324,6 +3325,7 @@ fieldset[disabled] .btn-neutral.active {
     .navbar-collapse .nav li > a,
     .sidebar .nav li > a {
         padding: 10px 15px;
+        
     }
     .navbar-collapse .nav,
     .sidebar .nav {
@@ -3722,7 +3724,7 @@ fieldset[disabled] .btn-neutral.active {
     .social-line .btn {
         margin: 0 0 10px 0;
     }
-    .subscribe-line .form-control {
+    .subscribe-line .form   -control {
         margin: 0 0 10px 0;
     }
     .social-line.pull-right {

@@ -16,8 +16,6 @@ ng-app="ourAngularJsApp"
 
 @section('headScript')
 <script type="text/javascript">
-
-
     function addRow(){
         var thatTable = document.getElementById("purchasetable");
         var newRow = thatTable.insertRow(-1);
@@ -30,6 +28,37 @@ ng-app="ourAngularJsApp"
         newRow.insertCell(-1).innerHTML = "<td></td>";
         newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
     }
+    function searchItem(a){
+            $.ajax({
+                    method: 'get',
+                    //url: 'items/' + document.getElementById("inputItem").value,
+                    url: 'dashboard/' + a.value,
+                    dataType: "json",
+                        success: function(data){
+                            if(a.id === "dashboardSearchItem"){
+                                $("#dashboardDatatable tr").remove();                        
+                                for(var i=0; i < data.length; i++){
+                                    var thatTable = document.getElementById("dashboardDatatable");
+                                    var newRow = thatTable.insertRow(-1);
+                                    var itemIdCell = newRow.insertCell(-1);
+                                    itemIdCell.innerHTML = "<td>" + data[i].product_id + "</td>";
+                                    var secondCell = newRow.insertCell(-1);
+                                    secondCell.innerHTML = "<td>" +data[i].description+ "</td>";
+                                    var thirdCell = newRow.insertCell(-1); 
+                                    thirdCell.innerHTML = "<td>query</td>";
+                                    var forthCell = newRow.insertCell(-1);
+                                    forthCell.innerHTML = "<td>" + data[i].price + "</td>";
+                                    var fifthCell = newRow.insertCell(-1); 
+                                    fifthCell.innerHTML = "<td>query</td>";
+                                    var sixthCell = newRow.insertCell(-1);
+                                    //sixthCell.innerHTML = "<td><button type='submit' value='Submit' form='form" +data[i].product_id+"'"+">Submit</button></td>";
+                                    sixthCell.innerHTML = "<td><button class='btn btn-success' onclick='addItemToCart(this)'>Add</button></td>";
+                                }
+                            }
+                            
+                        }
+                });
+        }
 
     $(document).ready(function(){
         $('#formPurchaseOrder').on('submit',function(e){
@@ -147,10 +176,13 @@ ng-app="ourAngularJsApp"
 
                                 <tbody>
                                     <tr>
-                                        <td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>
+                                        {{--  <td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>
                                         <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
                                         <td>{{Form::text('Price','',['class'=>'form-control','value'=>''])}}</td>
-                                        <td><button class='btn btn-danger form-control' data-item-id='" +button.getAttribute("id")+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>
+                                        <td><button class='btn btn-danger form-control' data-item-id='" +button.getAttribute("id")+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>  --}}
+                                        <td colspan="4">
+                                            <input type="text" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">                                            
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

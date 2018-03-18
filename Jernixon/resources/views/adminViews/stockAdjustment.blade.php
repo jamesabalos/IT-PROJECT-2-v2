@@ -59,9 +59,12 @@ ng-app="ourAngularJsApp"
                 <div class="header">
                     <div class = "col-md-12">
                         <a href = "#adjustment" data-toggle="modal">
+                            <div class = "content table-responsive table-full-width">
                             <button type="button" class="btn btn-success">Stock Adjustment</button>
+                            </div>
                         </a>
                     </div>
+
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="dashboardDatatable">
                             <thead>

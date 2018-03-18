@@ -30,8 +30,16 @@
     {{--  <link href="{{asset('assets/css/font.css')}}" rel='stylesheet' type='text/css'>  --}}
     {{--  <link href="{{asset('assets/css/pe-icon-7-stroke.css')}}" rel='stylesheet' type='text/css'>  --}}
 
-
     <script src="{{asset('assets/js/jquery.js')}}"></script>
+
+    <script src="{{asset('assets/js/light-bootstrap-dashboard.js?v=1.4.0')}}"></script>
+
+    <script src="{{asset('assets/js/jquery.3.2.1.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/chartist.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/bootstrap-notify.js')}}"></script>
+
 
     {{--  <script src="{{ asset('js/app.js') }}"></script>  --}}
 
@@ -51,7 +59,7 @@
         </script>  --}}
 
 <div class="wrapper">
-    <div class="sidebar" data-color="navcolor" data-image="assets/img/sidebar-5.jpg">
+    <div class="sidebar" data-color="navcolor">
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="{{route('admin.dashboard')}}" class="simple-text">
@@ -59,7 +67,7 @@
                 </a>
             </div>
 
-             <ul class="nav">
+             <ul class="nav" id="navs">
                     @if(Auth::guard('adminGuard')->check())
                     <li @yield('dashboard_link')>
                         
@@ -111,11 +119,11 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
 
                     @yield('linkName')
 					
@@ -137,31 +145,31 @@
                                     </p>
                               </a>
                               <ul class="dropdown-menu">
-                                        <li>
-                                            @if(Auth::guard('adminGuard')->check())
-                                            <a href="{{ route('admin.logout') }}">
-                                                {{--  onclick="event.preventDefault();  --}}
-                                                {{--  document.getElementById('logout-form').submit();">  --}}
-                                                Logout
-                                            </a>
+                                <li>
+                                    @if(Auth::guard('adminGuard')->check())
+                                    <a href="{{ route('admin.logout') }}">
+                                        {{--  onclick="event.preventDefault();  --}}
+                                        {{--  document.getElementById('logout-form').submit();">  --}}
+                                        Logout
+                                    </a>
 
-                                            {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            </form>  --}}
-                                            @elseif(Auth::guard('web')->check())
-                                            <a href="{{ route('salesAssistant.logout') }}">
-                                                {{--  onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">  --}}
-                                                Logout
-                                            </a>
+                                    {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                    </form>  --}}
+                                    @elseif(Auth::guard('web')->check())
+                                    <a href="{{ route('salesAssistant.logout') }}">
+                                        {{--  onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">  --}}
+                                        Logout
+                                    </a>
 
-                                            {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            </form>   --}}
-                                            @endif
-                                        </li>
+                                    {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                    </form>   --}}
+                                    @endif
+                                </li>
 
-                                    </ul>
+                            </ul>
                         </li>
                         <li>
                            <a href="">

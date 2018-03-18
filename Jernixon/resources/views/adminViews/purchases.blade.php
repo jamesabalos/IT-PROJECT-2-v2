@@ -16,48 +16,58 @@ ng-app="ourAngularJsApp"
 
 @section('headScript')
 <script type="text/javascript">
-    function addRow(){
+    function addRow(itemName){
+        document.getElementById("searchItemInput").value = "";
+        document.getElementById("searchResultDiv").innerHTML = "";
+
         var thatTable = document.getElementById("purchasetable");
         var newRow = thatTable.insertRow(-1);
         // newRow.insertCell(-1).innerHTML = "<td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>";
         // newRow.insertCell(-1).innerHTML = "<td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>";
         // newRow.insertCell(-1).innerHTML = "<td>{{Form::text('Price','',['class'=>'form-control','value'=>''])}}</td>";
         // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
-        newRow.insertCell(-1).innerHTML = "<td></td>";
-        newRow.insertCell(-1).innerHTML = "<td></td>";
-        newRow.insertCell(-1).innerHTML = "<td></td>";
-        newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+        newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
+        newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
     }
+
     function searchItem(a){
+        if(a.value === ""){
+            document.getElementById("searchResultDiv").innerHTML ="";   
+        }
             $.ajax({
                     method: 'get',
                     //url: 'items/' + document.getElementById("inputItem").value,
-                    url: 'dashboard/' + a.value,
+                    url: 'purchases/' + a.value,
                     dataType: "json",
                         success: function(data){
-                            if(a.id === "dashboardSearchItem"){
-                                $("#dashboardDatatable tr").remove();                        
-                                for(var i=0; i < data.length; i++){
-                                    var thatTable = document.getElementById("dashboardDatatable");
-                                    var newRow = thatTable.insertRow(-1);
-                                    var itemIdCell = newRow.insertCell(-1);
-                                    itemIdCell.innerHTML = "<td>" + data[i].product_id + "</td>";
-                                    var secondCell = newRow.insertCell(-1);
-                                    secondCell.innerHTML = "<td>" +data[i].description+ "</td>";
-                                    var thirdCell = newRow.insertCell(-1); 
-                                    thirdCell.innerHTML = "<td>query</td>";
-                                    var forthCell = newRow.insertCell(-1);
-                                    forthCell.innerHTML = "<td>" + data[i].price + "</td>";
-                                    var fifthCell = newRow.insertCell(-1); 
-                                    fifthCell.innerHTML = "<td>query</td>";
-                                    var sixthCell = newRow.insertCell(-1);
-                                    //sixthCell.innerHTML = "<td><button type='submit' value='Submit' form='form" +data[i].product_id+"'"+">Submit</button></td>";
-                                    sixthCell.innerHTML = "<td><button class='btn btn-success' onclick='addItemToCart(this)'>Add</button></td>";
-                                }
+                        //    console.log(data)
+                        // <div>
+                        //     <strong>Phi</strong>lippines
+                        //     <input type="hidden" value="Philippines">
+                        // </div>
+    
+                        var resultDiv = document.getElementById("searchResultDiv");
+                        resultDiv.innerHTML = "";
+                            for (var i = 0;  i< data.length; i++) {
+                                var node = document.createElement("DIV");
+                                node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                                var pElement = document.createElement("P");
+                                var textNode = document.createTextNode(data[i].description);
+                                pElement.appendChild(textNode);
+                                node.appendChild(pElement);          
+                                resultDiv.appendChild(node);  
+                                
                             }
-                            
                         }
-                });
+            });
+    
+        }
+
+        function removeRow(a){
+            a.parentNode.parentNode.remove();
+
         }
 
     $(document).ready(function(){
@@ -66,9 +76,47 @@ ng-app="ourAngularJsApp"
             alert("clicked")
 
         })
+        
     });
+        document.addEventListener("click", function (e) {
+            document.getElementById("searchResultDiv").innerHTML = "";
+        });
+        
 </script>
 
+<style>
+    .autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+    display: inline-block;
+    }
+    .searchResultDiv {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+    }
+    .searchResultDiv div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+    border-bottom: 1px solid #d4d4d4; 
+    }
+    .searchResultDiv div:hover {
+    /*when hovering an item:*/
+    background-color: #e9e9e9; 
+    }
+    .autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important; 
+    color: #ffffff; 
+    }
+</style>
 @endsection
 
 @section('right')
@@ -164,7 +212,7 @@ ng-app="ourAngularJsApp"
                         </div>
 
                         <div class="content table-responsive">
-                            <table class="table table-bordered table-striped" id="purchasetable">
+                            <table class="table table-bordered table-striped" >
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
@@ -173,23 +221,24 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
-
-                                <tbody>
-                                    <tr>
-                                        {{--  <td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>
-                                        <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
-                                        <td>{{Form::text('Price','',['class'=>'form-control','value'=>''])}}</td>
-                                        <td><button class='btn btn-danger form-control' data-item-id='" +button.getAttribute("id")+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>  --}}
-                                        <td colspan="4">
-                                            <input type="text" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">                                            
-                                        </td>
-                                    </tr>
+                                <tbody id="purchasetable">
                                 </tbody>
                             </table>
+
+                            <div class="autocomplete" style="width:100%;">
+                                <input autocomplete="off" type="text" id="searchItemInput" name="item" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                                <div id="searchResultDiv" class="searchResultDiv">
+                                        {{--  <div>
+                                            <strong>Phi</strong>lippines
+                                            <input type="hidden" value="Philippines">
+                                        </div>  --}}
+                                </div>
+                            </div>
+                                
                         </div> 
                     </div>
                 </div>
-                <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>
+                {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

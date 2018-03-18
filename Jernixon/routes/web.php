@@ -56,6 +56,8 @@ Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('da
 Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');
 
 Route::get('admin/purchases', 'AdminController@purchases')->name('admin.purchases');
+Route::get('admin/purchases/{itemName}', 'AdminController@searchItem');
+
 
 Route::get('admin/returns', 'AdminController@returns')->name('admin.returns');
 

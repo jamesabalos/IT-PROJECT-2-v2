@@ -95,7 +95,16 @@ class AdminController extends Controller
 
     }
 
-
+    public function searchItem($itemName){
+    //    $item = Product::find($id);
+        // $item = DB::select("SELECT * from products where product_id=$id");
+        $item = Product::where('description','LIKE','%'.$itemName.'%')
+                    ->orderBy('description','asc')
+                    //->paginate(2);
+                    ->limit(5)
+                    ->get();
+        return $item;
+    }
 
     public function addQuantity(Request $request){
         //update purchase set price='$newUnitCost', quantity='$newPurchase' WHERE item_id='$item_id' and price='$oldUnitCost' and quantity='$oldPurchase'"

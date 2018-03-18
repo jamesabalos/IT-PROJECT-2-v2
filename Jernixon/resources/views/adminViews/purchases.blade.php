@@ -39,7 +39,7 @@ ng-app="ourAngularJsApp"
             $.ajax({
                     method: 'get',
                     //url: 'items/' + document.getElementById("inputItem").value,
-                    url: 'purchases/' + a.value,
+                    url: 'searchItem/' + a.value,
                     dataType: "json",
                         success: function(data){
                         //    console.log(data)
@@ -65,8 +65,14 @@ ng-app="ourAngularJsApp"
     
         }
 
+        document.addEventListener("click", function (e) {
+            document.getElementById("searchResultDiv").innerHTML = "";
+        });
         function removeRow(a){
-            a.parentNode.parentNode.remove();
+            $(a.parentNode.parentNode).hide(500,function(){
+              this.remove();  
+            });
+            // a.parentNode.parentNode.remove();
 
         }
 
@@ -78,9 +84,6 @@ ng-app="ourAngularJsApp"
         })
         
     });
-        document.addEventListener("click", function (e) {
-            document.getElementById("searchResultDiv").innerHTML = "";
-        });
         
 </script>
 

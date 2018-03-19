@@ -177,7 +177,11 @@ class="active"
                         <div class = "content">
                             <div class="row">
                                 <p class = "col-md-12">
-                                    <input type="text" name="search" placeholder="Enter date (MM-DD-YYYY)" class = "form-control border-input" >
+                                    <label>From:</label>
+                                    <input type="date" name="myDate">
+
+                                    <label>To:</label>
+                                    <input type="date" name="myDate">
                                 </p>  
                             </div>
 <!--                             <p>

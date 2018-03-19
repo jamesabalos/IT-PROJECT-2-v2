@@ -126,11 +126,12 @@ ng-app="ourAngularJsApp"
                 <h4 ng-bind="name">Customer Purchase</h4>
                 <div class="row">
                     
-                    <div class="col-md-5">
-                        <input ng-model="typeName" placeholder="Customer Name" ng-change="myFunction()" type="text" class="form-control border-input" form="purchase" required style="float:right">
+                    <div class="col-md-5" margin >
+                        <input ng-model="typeName" placeholder="Customer Name" ng-change="myFunction()" type="text" class="form-control border-input" form="purchase" required style="float: left">
                     </div>
                 </div>
 
+<!--
                     {{--  <div class="row">
                         <div class="col-md-3 text-right">
                             <label>Date of Purchased</label>    
@@ -144,6 +145,7 @@ ng-app="ourAngularJsApp"
                         </div>
                         
                     </div>  --}}
+-->
                     
                     <div class="row"> 
                         <div class="col-md-12 table-responsive">
@@ -173,17 +175,18 @@ ng-app="ourAngularJsApp"
                     </div>  
                     <div class="row">
                         <div class="text-right">                                           
-                            <div class="col-md-5">                                                    
-                                <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
-                            </div> 
-                             <div class="col-md-3 text-right">
+                            <div class="col-md-3 text-right" style="margin-left: 380px">
                             <label>Total Sales: </label>
-                        </div>
+                            </div>
                             
-                        </div> 
-                        <div class="col-md-5" id="totalSalesDiv">
-                            <h4 class="form-control" style="color:green" id="totalSales" ng-bind=""></h4>
+                            <div class="col-md-5" id="totalSalesDiv">
+                                <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
                         </div>
+                        </div> 
+                        
+                        <div class="col-md-5" required  style="margin-left: 580px">                                                    
+                                <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
+                        </div> 
                     </div>
                     
             </div>

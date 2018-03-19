@@ -944,7 +944,7 @@ fieldset[disabled] .btn-neutral.active {
 
 .form-control {
     background-color: #FFFFFF;
-    border: 1px solid #E3E3E3;
+    border: 1px solid #afafaf;
     border-radius: 4px;
     color: #565656;
     padding: 8px 12px;
@@ -956,7 +956,7 @@ fieldset[disabled] .btn-neutral.active {
 
 .form-control:focus {
     background-color: #FFFFFF;
-    border: 1px solid #AAAAAA;
+    border: 1px solid #afafaf;
     -webkit-box-shadow: none;
     box-shadow: none;
     outline: 0 !important;
@@ -967,7 +967,7 @@ fieldset[disabled] .btn-neutral.active {
 .has-error .form-control,
 .has-success .form-control:focus,
 .has-error .form-control:focus {
-    border-color: #E3E3E3;
+    border-color: #afafaf;
     -webkit-box-shadow: none;
     box-shadow: none;
 }

@@ -328,15 +328,6 @@ class="active"
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12" >
-        <div class="card" >
-            <div class="header">
-                <div id="leastItemsChart" style="height: 300px; width: 100%;"></div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @endsection     
 

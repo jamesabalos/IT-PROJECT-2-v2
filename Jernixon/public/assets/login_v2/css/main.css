@@ -190,7 +190,8 @@ iframe {
 }
 
 .wrap-login100 {
-  width: 500px;
+  width: 400px;
+  height: 600px;
   border-radius: 10px;
   overflow: hidden;
   padding: 55px 55px 37px 55px;
@@ -212,7 +213,7 @@ iframe {
 }
 
 .login100-form-logo {
-  font-size: 60px; 
+  font-size: 62px; 
   color: #333333;
 
   display: -webkit-box;
@@ -231,7 +232,7 @@ iframe {
 
 .login100-form-title {
   font-family: Poppins-Medium;
-  font-size: 30px;
+  font-size: 25px;
   color: #fff;
   line-height: 1.2;
   text-align: center;

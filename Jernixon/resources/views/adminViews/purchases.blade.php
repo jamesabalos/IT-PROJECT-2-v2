@@ -17,19 +17,25 @@ ng-app="ourAngularJsApp"
 @section('headScript')
 <script type="text/javascript">
     function addRow(itemName){
+        var items =[];
+        var thatTbody = $("#purchasetable tr td:first-child");
+
+        for (var i = 0; i < thatTbody.length; i++) {
+            items[i] = thatTbody[i].innerHTML;
+        }
+
+        if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
+        
+            var thatTable = document.getElementById("purchasetable");
+            var newRow = thatTable.insertRow(-1);
+
+            newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+        }
         document.getElementById("searchItemInput").value = "";
         document.getElementById("searchResultDiv").innerHTML = "";
-
-        var thatTable = document.getElementById("purchasetable");
-        var newRow = thatTable.insertRow(-1);
-        // newRow.insertCell(-1).innerHTML = "<td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>";
-        // newRow.insertCell(-1).innerHTML = "<td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>";
-        // newRow.insertCell(-1).innerHTML = "<td>{{Form::text('Price','',['class'=>'form-control','value'=>''])}}</td>";
-        // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
-        newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
-        newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
     }
 
     function searchItem(a){

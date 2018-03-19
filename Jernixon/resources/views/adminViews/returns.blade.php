@@ -28,17 +28,26 @@ ng-app="ourAngularJsApp"
     }
 
     function addRow(itemName){
+        var items =[];
+        var thatTbody = $("#inExchangeTbody tr td:first-child");
+
+        for (var i = 0; i < thatTbody.length; i++) {
+            items[i] = thatTbody[i].innerHTML;
+        }        
+
+        if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
+            var thatTable = document.getElementById("inExchangeTbody");
+            var newRow = thatTable.insertRow(-1);
+            newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+
+        }
+
         document.getElementById("searchItemInput").value = "";
         document.getElementById("searchResultDiv").innerHTML = "";
-
-        var thatTable = document.getElementById("inExchangeTable");
-        var newRow = thatTable.insertRow(-1);
-        newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
-        newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
-        // var thatTable2 = document.querySelectorAll('#inExchangeTable > tbody > tr');
-        // console.log(thatTable2.length)
+        
     }
 
     function searchItem(a){
@@ -57,8 +66,8 @@ ng-app="ourAngularJsApp"
                         //     <input type="hidden" value="Philippines">
                         // </div>
     
-                        var resultDiv = document.getElementById("searchResultDiv");
-                        resultDiv.innerHTML = "";
+                            var resultDiv = document.getElementById("searchResultDiv");
+                            resultDiv.innerHTML = "";
                             for (var i = 0;  i< data.length; i++) {
                                 var node = document.createElement("DIV");
                                 node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
@@ -268,7 +277,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         <div class="content table-responsive">
-                            <table class="table table-bordered table-striped" >
+                            <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
@@ -278,17 +287,7 @@ ng-app="ourAngularJsApp"
                                     </tr>
                                 </thead>
     
-                                <tbody id="inExchangeTable">
-                                    {{--  <tr>
-                                        <td>{{Form::text('Description','',['class'=>'form-control','value'=>''])}}</td>
-                                        <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
-                                        <td>{{Form::text('Price','',['class'=>'form-control','value'=>''])}}</td>  --}}
-                                        {{--  <td><button class='btn btn-danger form-control' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>  --}}
-                                        {{--  <td>a</td>
-                                        <td>a</td>
-                                        <td>a</td>  --}}
-                                        {{--  <td><button type="button" class='btn btn-danger form-control' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>
-                                    </tr>  --}}
+                                <tbody id="inExchangeTbody">
                                 </tbody>
                             </table>
                         </div>

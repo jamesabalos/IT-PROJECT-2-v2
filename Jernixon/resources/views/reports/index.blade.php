@@ -4,9 +4,9 @@ class="active"
 @endsection
 @section('headScript')
 
-	<!--jquery-->
+    <!--jquery-->
 <script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
-	<!--plugin DataTable-->
+    <!--plugin DataTable-->
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 {{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/>  --}}
 
@@ -40,7 +40,6 @@ class="active"
                 {data: 'updated_at'},
                 ]
         });
-
         $("#transactionDTButton").click(function(){
             //slideUp any div that has a display:block value
             $("div[style='display: block;']").slideUp("slow");
@@ -172,7 +171,7 @@ class="active"
 @section('right')  
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
                         <div class = "content">
@@ -181,24 +180,22 @@ class="active"
                                     <input type="text" name="search" placeholder="Enter date (MM-DD-YYYY)" class = "form-control border-input" >
                                 </p>  
                             </div>
-                            <p>
+<!--                             <p>
                                 <label class="category">Generate Report:</label>
                                 <button type="submit" class="btn btn-success"><i class = "fa fa-file-excel-o"></i> Excel</button> <button type="submit" class="btn btn-danger"><i class="  fa fa-file-pdf-o"></i> PDF</button>
-                            </p>
+                            </p> -->
+
+                        <div class="btn-group btn-group-lg">
+                            <button type="button" id="transactionDTButton" class="btn btn-primary">Transaction</button>
+                            <button type="button" id="returnsDTButton" class="btn btn-primary">Returns</button>
+                            <button type="button" id="itemsAddedDTButton" class="btn btn-primary">Items Added</button>
+                            <button type="button" id="removedItemsDTButton" class="btn btn-primary">Removed Items</button>
                         </div>
-                        
-                        <div class="btn-group btn-group-lg" role="group" aria-label="">
-                            <button type="button" id="transactionDTButton" class="btn btn-info">Transaction</button>
-                            <button type="button" id="returnsDTButton" class="btn btn-info">Returns</button>
-                            <button type="button" id="itemsAddedDTButton" class="btn btn-info">Items Added</button>
-                            <button type="button" id="removedItemsDTButton" class="btn btn-info">Removed Items</button>
-                        </div>
-                    </div>
-                    
-                    {{--  <div id="paraentDivFour" style="border:2px solid green; display:none">  --}}
+
+                        {{--  <div id="paraentDivFour" style="border:2px solid green; display:none">  --}}
                         <div id="transactionDiv" style="display: block;">
-                            <div class="content table-responsive table-full-width">
-                            <table id="transactionsTable"  class="table table-hover table-condensed" >
+                            <div class="content table-responsive table-full-width table-stripped">
+                            <table id="transactionsTable" class="table table-striped dt-responsive nowrap" style="width:100%">
                                 <thead >
                                     <tr>
                                         <td>Item Purchased</td>
@@ -214,7 +211,7 @@ class="active"
                         </div> 
                         <div id="returnsDiv" style="display:none">
                             <div class="content table-responsive table-full-width">
-                            <table id="returnsTable" class="table table-hover table-condensed">
+                            <table id="returnsTable" class="table table-striped dt-responsive nowrap" style="width:100%">
                                 <thead>
                                     <tr>
                                         <td>description</td>
@@ -231,7 +228,7 @@ class="active"
                         </div> 
                         <div id="itemsAddedDiv" style="display:none">
                             <div class="content table-responsive table-full-width">
-                                <table id="itemsAddedTable" class="table table-hover table-condensed">
+                                <table id="itemsAddedTable" class="table table-striped dt-responsive nowrap" style="width:100%">
                                     <thead>
                                         <tr>
                                             <td>Description</td>
@@ -245,7 +242,7 @@ class="active"
                         </div> 
                         <div id="removedItemsDiv" style="display:none">
                             <div class="content table-responsive table-full-width">
-                                <table id="removedItemsTable" class="table table-hover table-condensed">
+                                <table id="removedItemsTable" class="table table-striped dt-responsive nowrap" style="width:100%">
                                     <thead>
                                         <tr>
                                             <td>Description</td>
@@ -259,7 +256,9 @@ class="active"
                             </div>
                         </div> 
                     {{--  </div>  --}}
-                    
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

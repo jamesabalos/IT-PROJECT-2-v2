@@ -168,6 +168,7 @@
                 
                       <div class="container">
                         <div class="navbar-header">
+
                               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                 <span class="sr-only">Toggle navigation</span>
                                 <span class="icon-bar"></span>
@@ -176,6 +177,42 @@
                               </button>
                               <div class="small-logo-container">
                                 <h3>Jernixon Motorcycle Shop</h3>
+                                    <div class="user-margin">
+                                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <p>
+                                                    {{ Auth::user()->name }}
+                                                    <b class="caret"></b>
+                                                </p>
+
+                                          </a>
+                                          <ul class="dropdown-menu">
+                                                    <li>
+                                                        @if(Auth::guard('adminGuard')->check())
+                                                        <a href="{{ route('admin.logout') }}">
+                                                            {{--  onclick="event.preventDefault();  --}}
+                                                            {{--  document.getElementById('logout-form').submit();">  --}}
+                                                            Logout
+                                                        </a>
+
+                                                        {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                                        {{ csrf_field() }}
+                                                        </form>  --}}
+                                                        @elseif(Auth::guard('web')->check())
+                                                        <a href="{{ route('salesAssistant.logout') }}">
+                                                            {{--  onclick="event.preventDefault();
+                                                            document.getElementById('logout-form').submit();">  --}}
+                                                            Logout
+                                                        </a>
+
+                                                        {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
+                                                        {{ csrf_field() }}
+                                                        </form>   --}}
+                                                        @endif
+                                                    </li>
+
+                                                </ul>
+                                    </div>
+                                          
                               </div>
                         </div>
                         <div class="navbar-collapse collapse">

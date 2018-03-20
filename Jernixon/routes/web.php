@@ -62,7 +62,7 @@ Route::get('admin/searchItem/{itemName}', 'AdminController@searchItem');
 Route::get('admin/returns', 'AdminController@returns')->name('admin.returns');
 
 Route::get('admin/physical_count', 'AdminController@physicalCount')->name('admin.physicalCount');
-
+    
 
 Route::Post('admin/storeNewItem', 'AdminController@storeNewItem')->name('admin.Newitems');
 Route::Post('admin/items/addQuantity','AdminController@addQuantity');

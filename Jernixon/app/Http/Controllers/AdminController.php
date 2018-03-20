@@ -196,13 +196,16 @@ class AdminController extends Controller
         $this->validate($request,[
             'name' => 'required',
             'email' => 'required',
-            'password' => 'required',
+            // 'password' => 'required',
+            'address' => 'required'
         ]);
 
         //Create new Item
         $item = new User;
         $item->name = $request->input('name');
         $item->email = $request->input('email');
+        $item->contactNumber = $request->input('contactNumber');
+        $item->address = $request->input('address');
         $item->password = $request->input('password');
         $item->save();
         return response($request->all());

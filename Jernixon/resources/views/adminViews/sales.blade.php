@@ -181,7 +181,7 @@ ng-app="ourAngularJsApp"
                             
                             <div class="col-md-5" id="totalSalesDiv">
                                 <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
-                        </div>
+                            </div>
                         </div> 
                         
                         <div class="col-md-5" required  style="margin-left: 580px">                                                    

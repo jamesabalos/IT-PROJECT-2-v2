@@ -40,23 +40,26 @@ class="active"
         $('#formAddNewEmployee').on('submit',function(e){
             e.preventDefault(); //prevent the page to load when submitting form
             //key value pair of form
-            var data = $(this).serialize();
+            // var data = $(this).serialize();
             var arrayOfData = $(this).serializeArray();
-            
+            var password = (arrayOfData[1].value).split(" ",1) + "@jernixon";
+
             $.ajax({
                 type:'POST',
                 // url:'admin/storeNewItem',
                 url: "{{route('admin.addNewEmployee')}}",
                 dataType:'json',
-                /*  data:{
-                    'description':'',
-                    'quantityInStock':4,
-                    'wholeSalePrice':10,
-                    'retailPrice':15,
+                  data:{
+                    'name': arrayOfData[1].value,
+                    'email':  arrayOfData[2].value,
+                    'contactNumber': arrayOfData[3].value,
+                    'address': arrayOfData[4].value,
+                    'password': password,
+
                 },
-                */
+                
                 //data:{data},
-                data:data,
+                // data:data,
                 //_token:$("#_token"),
                 success:function(data){
                     $('#addEmployee').modal('hide')                    
@@ -113,6 +116,7 @@ class="active"
             var arrayOfData = $(this).serializeArray();
             var fullRoute = "/admin/employees/updateEmployeeAccount/"+arrayOfData[1].value;
             var data = $(this).serialize();
+
 
             $.ajax({
                 type:'POST',
@@ -252,7 +256,7 @@ class="active"
                 </div>
                 {!! Form::open(['method'=>'post','id'=>'formAddNewEmployee']) !!}
                 
-                {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">                      --}}
+                {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">                           --}}
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-3 text-right">
@@ -298,19 +302,32 @@ class="active"
                         </div>
                     </div>
                 </div>
+                
                 <div class="form-group">
+                    {{Form::label('contactNumber', 'Contact Number:',['class'=>'control-label'])}}                                                                
+                    {{Form::number('contactNumber','',['class'=>'form-control'])}}
+                    
+                </div>
+                <div class="form-group">
+                    {{Form::label('address', 'Address:',['class'=>'control-label'])}}                                                                
+                    {{Form::text('address','',['class'=>'form-control'])}}
+                    
+                </div>
+
+                {{--  <div class="form-group">
                     <div class="row">
                         <div class="col-md-3 text-right">
                             {{Form::label('password', 'Password:')}}                                
                             
                         </div>
                         <div class="col-md-9">
-                            {{--  <input type="password" form="addnewform" name="password" class="form-control border-input">    --}}
+                            
                             {{Form::password('password','',['class'=>'form-control  border-input'])}}                                
                             
                         </div>
                     </div>
-                </div>
+                </div>  --}}
+
                 {{--  <div class="form-group">
                     <div class="row">
                         <div class="col-md-3 text-right">
@@ -367,11 +384,7 @@ class="active"
                             {{Form::text('name','',['class'=>'form-control'])}}
                             
                         </div>
-                        <div class="form-group">
-                            {{Form::label('email', 'Email:',['class'=>'control-label'])}}                                                                
-                            {{Form::email('email','',['class'=>'form-control'])}}
-                            
-                        </div>
+                        
                         
                         <div class="form-group">
                             <label for="status">Status</label>
@@ -380,11 +393,11 @@ class="active"
                                 <option value="Deactive">Deactive</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        {{--  <div class="form-group">
                             {{Form::label('password', 'Update Password:',['class'=>'control-label'])}}                                                                
                             {{Form::password('password','',['class'=>'form-control','placeholder'=>'Type user new password'])}}
                             
-                        </div>
+                        </div>  --}}
                         
                         {{Form::hidden('_method','PUT')}}
                         <div class="form-group clearfix">

@@ -204,10 +204,10 @@ class="active"
                             </p> -->
 
                         <div class="btn-group btn-group-lg">
-                            <button type="button" id="transactionDTButton" class="btn btn-primary">Transaction</button>
-                            <button type="button" id="returnsDTButton" class="btn btn-primary">Returns</button>
-                            <button type="button" id="itemsAddedDTButton" class="btn btn-primary">Items Added</button>
-                            <button type="button" id="removedItemsDTButton" class="btn btn-primary">Removed Items</button>
+                            <button type="button" id="transactionDTButton" class="btn btn-primary active">Transaction</button>
+                            <button type="button" id="returnsDTButton" class="btn btn-primary active">Returns</button>
+                            <button type="button" id="itemsAddedDTButton" class="btn btn-primary active">Items Added</button>
+                            <button type="button" id="removedItemsDTButton" class="btn btn-primary active">Removed Items</button>
                         </div>
 
                         {{--  <div id="paraentDivFour" style="border:2px solid green; display:none">  --}}

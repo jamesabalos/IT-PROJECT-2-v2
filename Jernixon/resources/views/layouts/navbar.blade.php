@@ -177,7 +177,8 @@
                               </button>
                               <div class="small-logo-container">
                                 <h3>Jernixon Motorcycle Shop</h3>
-                                    <div class="user-margin">
+                                    <ul class="nav navbar-right user-margin">
+                                        <li class="dropdown">
                                           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                 <p>
                                                     {{ Auth::user()->name }}
@@ -211,7 +212,9 @@
                                                     </li>
 
                                                 </ul>
-                                    </div>
+                                        </li>
+
+                                    </ul>
                                           
                               </div>
                         </div>

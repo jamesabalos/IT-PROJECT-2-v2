@@ -8,29 +8,29 @@ class="active"
 @endsection
 
 @section('headScript')
-<script vtype="text/javascript">
-    function showDetails(button){
-        //alert(button.parentNode.parentNode.parentNode);
-        var data  = $(button.parentNode.parentNode.parentNode.innerHTML).slice(0,-1);
-        var form = document.getElementById("formUpdateEmployeeAccount");
-        console.log(form)
-        form.elements[1].value = data[0].innerHTML;
-        form.elements[2].value = data[2].innerHTML;
-        form.elements[3].setAttribute("selected",data[5].innerHTML);
-        // form.elements[3].value = data[5].innerHTML;
-    }
+<script type="text/javascript">
+    // function showDetails(button){
+    //     //alert(button.parentNode.parentNode.parentNode);
+    //     var data  = $(button.parentNode.parentNode.parentNode.innerHTML).slice(0,-1);
+    //     var form = document.getElementById("formUpdateEmployeeAccount");
+    //     console.log(form)
+    //     form.elements[1].value = data[0].innerHTML;
+    //     form.elements[2].value = data[2].innerHTML;
+    //     form.elements[3].setAttribute("selected",data[5].innerHTML);
+    //     // form.elements[3].value = data[5].innerHTML;
+    // }
     
-    function removeEmployee(e){
-        var button = document.getElementById(e.getAttribute("id"));
-        button.addEventListener("click", function(event) { 
-            event.preventDefault();
-            alert("success preventing..")
+    // function removeEmployee(e){
+    //     var button = document.getElementById(e.getAttribute("id"));
+    //     button.addEventListener("click", function(event) {
+    //         event.preventDefault();
+    //         alert("success preventing..")
             
-        });
+    //     });
 
          
         
-    }
+    // }
 
     $(document).ready(function() {
         $.ajaxSetup({
@@ -64,6 +64,7 @@ class="active"
                 // data:data,
                 //_token:$("#_token"),
                 success:function(data){
+                    console.log(data)
                     $('#addEmployee').modal('hide')                    
                     $("#successDiv p").remove();
                     $("#successDiv").removeClass("hidden")
@@ -77,17 +78,15 @@ class="active"
                     
                         newRow.insertCell(-1).innerHTML ="<td class='text-center'>"+arrayOfData[1].value+"</td>";
                         newRow.insertCell(-1).innerHTML ="<td class='text-center'>"+arrayOfData[2].value+"</td>";
-                        newRow.insertCell(-1).innerHTML ="<td></td>";
-                        newRow.insertCell(-1).innerHTML ="<td class='text-center'>\
-                                        <div class='btn-group'>\
-                                            <a href='#editEmployee' onclick='showDetails(this)' class='btn btn-xs btn-warning' data-toggle='modal' >\
-                                                <i class='glyphicon glyphicon-pencil'></i>\
-                                            </a>\
-                                        </div>\
-                                    </td>";
-                                            // <a href='' class='btn btn-xs btn-danger' data-toggle='tooltip' >\
-                                            //     <i class='glyphicon glyphicon-remove'></i>\
-                                            // </a>\
+                        newRow.insertCell(-1).innerHTML ="<td class='text-center'>active</td>";
+                        // newRow.insertCell(-1).innerHTML ="<td class='text-center'>\
+                        //                 <div class='btn-group'>\
+                        //                     <a href='#editEmployee' onclick='showDetails(this)' class='btn btn-xs btn-warning' data-toggle='modal' >\
+                        //                         <i class='glyphicon glyphicon-pencil'></i>\
+                        //                     </a>\
+                        //                 </div>\
+                        //             </td>";
+                        newRow.insertCell(-1).innerHTML = "<td class='text-center'><button data-id='" +data.id+"' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount'>Deactivate</button></td>";
                         
 
                     })
@@ -113,32 +112,91 @@ class="active"
             
         });
         
-        $('#formUpdateEmployeeAccount').on('submit',function(e){
-            e.preventDefault(); //prevent the page to load when submitting form
-            var arrayOfData = $(this).serializeArray();
-            var fullRoute = "/admin/employees/updateEmployeeAccount/"+arrayOfData[1].value;
-            var data = $(this).serialize();
+        // $('#formUpdateEmployeeAccount').on('submit',function(e){
+        //     e.preventDefault(); //prevent the page to load when submitting form
+        //     var arrayOfData = $(this).serializeArray();
+        //     var fullRoute = "/admin/employees/updateEmployeeAccount/"+arrayOfData[1].value;
+        //     // var data = $(this).serialize();
 
 
+        //     $.ajax({
+        //         type:'POST',
+        //         // url:'admin/storeNewItem',
+        //         // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
+        //         url: fullRoute,
+                
+        //         dataType:'json',
+        //         data:{
+        //             // 'description':'',
+        //             // 'quantityInStock':4,
+        //             // 'wholeSalePrice':10,
+        //             // 'retailPrice':15,
+        //             'status': arrayOfData[2].value,
+        //         },
+                
+        //         //data:{data},
+        //         // data:data,
+        //         //_token:$("#_token"),
+        //         success:function(data){
+        //             $('#editEmployee').modal('hide')
+        //             $("#successDiv p").remove();
+        //             $("#successDiv").removeClass("hidden")
+        //             // .addClass("alert-success")
+        //             .html("<h3>Employee updated</h3>");
+                    
+        //             $("#successDiv").css("display:block");
+        //             $("#successDiv").slideDown("slow",function(){
+        //                 document.getElementById(arrayOfData[1].value).cells[1].innerHTML = arrayOfData[2].value;
+        //                 document.getElementById(arrayOfData[1].value).cells[2].innerHTML = arrayOfData[3].value;
+        //             })
+        //             .delay(1000)                        
+        //             .hide(1500);
+
+                    
+
+
+        //         },
+        //         error:function(data){
+        //             var response = data.responseJSON;
+        //             $("#errorDivEditEmployee").removeClass("hidden")
+        //             $("#errorDivEditEmployee").html(function(){
+        //                 var addedHtml="";
+        //                 for (var key in response.errors) {
+        //                     addedHtml += "<p>"+response.errors[key]+"</p>";
+        //                 }
+        //                 return addedHtml;
+        //             });
+        //             // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
+        //             //alert(Object.keys(error.errors).length)
+        //             //console.log(error)
+        //         }
+        //     });
+            
+        // });
+
+        $(".formUpdateEmployeeAccount").on('click',function(button){
+            button.preventDefault(); //prevent the page to load when submitting form
+            var fullRoute = "/admin/employees/updateEmployeeAccount/"+button.currentTarget.attributes[0].value; //id
             $.ajax({
-                type:'POST',
+                type:'PUT',
                 // url:'admin/storeNewItem',
                 // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
                 url: fullRoute,
                 
                 dataType:'json',
-                /*  data:{
-                    'description':'',
-                    'quantityInStock':4,
-                    'wholeSalePrice':10,
-                    'retailPrice':15,
+                data:{
+                    // 'description':'',
+                    // 'quantityInStock':4,
+                    // 'wholeSalePrice':10,
+                    'status': button.currentTarget.attributes[1].value, //'status': inactive | active
+                    // 'buttonName':button.currentTarget.attributes[2].value, 
                 },
-                */
+                
                 //data:{data},
-                data:data,
+                // data:data,
                 //_token:$("#_token"),
                 success:function(data){
-                    $('#editEmployee').modal('hide')
+                    // $('#editEmployee').modal('hide')
                     $("#successDiv p").remove();
                     $("#successDiv").removeClass("hidden")
                     // .addClass("alert-success")
@@ -146,8 +204,32 @@ class="active"
                     
                     $("#successDiv").css("display:block");
                     $("#successDiv").slideDown("slow",function(){
-                        document.getElementById(arrayOfData[1].value).cells[1].innerHTML = arrayOfData[2].value;
-                        document.getElementById(arrayOfData[1].value).cells[2].innerHTML = arrayOfData[3].value;
+                        //document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
+                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='" +button.currentTarget.attributes[0].value+ "' data-status='" +button.currentTarget.attributes[1].value+ "' data-status-reverse='" +button.currentTarget.attributes[2].value+ "' data-button-reverse='" +button.currentTarget.attributes[3].value+ "' class='formUpdateEmployeeAccount'>" +button.currentTarget.attributes[3].value+ "</button>"; 
+                       
+                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status",button.currentTarget.attributes[1].value);
+                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse",button.currentTarget.attributes[2].value);
+                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse",button.currentTarget.attributes[3].value);
+                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = button.currentTarget.attributes[3].value;
+                        
+                        if( button.currentTarget.attributes[1].value == "active"){
+                            // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML ="<button data-id='' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount'>Deactivate</button>";
+                            
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;                            
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status","inactive");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","active");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse","Active");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Diactivate";
+                        }else{
+                            // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='' data-status='active' data-status-reverse='inactive' data-button-reverse='Diactivate' class='formUpdateEmployeeAccount'>Activate</button>";
+                            
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status","active");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","inactive");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse","Diactivate");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Activate";
+                        }
+
                     })
                     .delay(1000)                        
                     .hide(1500);
@@ -155,27 +237,26 @@ class="active"
                     
 
 
-                },
-                error:function(data){
-                    var response = data.responseJSON;
-                    $("#errorDivEditEmployee").removeClass("hidden")
-                    $("#errorDivEditEmployee").html(function(){
-                        var addedHtml="";
-                        for (var key in response.errors) {
-                            addedHtml += "<p>"+response.errors[key]+"</p>";
-                        }
-                        return addedHtml;
-                    });
-                    // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
-                    //alert(Object.keys(error.errors).length)
-                    //console.log(error)
                 }
-            });
-            
-        });
+                // error:function(data){
+                //     var response = data.responseJSON;
+                //     $("#errorDivEditEmployee").removeClass("hidden")
+                //     $("#errorDivEditEmployee").html(function(){
+                //         var addedHtml="";
+                //         for (var key in response.errors) {
+                //             addedHtml += "<p>"+response.errors[key]+"</p>";
+                //         }
+                //         return addedHtml;
+                //     });
 
+                // }
+            });
+
+        }); 
 
     })
+
+
 </script>
 @endsection
 
@@ -222,11 +303,11 @@ class="active"
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                 </a>  --}}
                                                 
-                                                {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
+                                                {{--  {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
                                                     <input type="hidden"  value="{{$employee->id}}" name="employeeId">                                                
-
-                                                    @if( $employee->status == 'active')
+                                                    @if( $employee->status == "active")
                                                         <input type="hidden" name="status" value="inactive">  
+                                                         
                                                         {{Form::hidden('_method','PUT')}}                                          
                                                         <button type="submit">Deactivate</button>
                                                     @else
@@ -234,9 +315,14 @@ class="active"
                                                         {{Form::hidden('_method','PUT')}}                                                    
                                                         <button type="submit">Activate</button>                                                    
                                                     @endif
-                                                    
-                                                    
-                                                {!! Form::close() !!}                                              
+                                                {!! Form::close() !!}                                                --}}
+
+                                            @if( $employee->status == "active")
+                                                <button data-id="{{$employee->id}}" data-status="inactive" data-status-reverse="active"  data-button-reverse="Activate" class="formUpdateEmployeeAccount">Deactivate</button>
+                                            @else                                                
+                                                <button data-id="{{$employee->id}}" data-status="active" data-status-reverse="inactive" data-button-reverse="Diactivate" class="formUpdateEmployeeAccount">Activate</button>                                                    
+                                            @endif 
+
                                         </td>
                                     </tr>
                                     @endforeach

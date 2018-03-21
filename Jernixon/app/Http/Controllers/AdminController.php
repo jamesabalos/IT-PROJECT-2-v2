@@ -201,14 +201,20 @@ class AdminController extends Controller
         ]);
 
         //Create new Item
-        $item = new User;
-        $item->name = $request->input('name');
-        $item->email = $request->input('email');
-        $item->contact_number = $request->input('contactNumber');
-        $item->address = $request->input('address');
-        $item->password = $request->input('password');
-        $item->save();
-        return response($request->all());
+        $employee = new User;
+        $employee->name = $request->input('name');
+        $employee->email = $request->input('email');
+        $employee->contact_number = $request->input('contactNumber');
+        $employee->address = $request->input('address');
+        $employee->password = $request->input('password');
+        $employee->save();
+        // return response($request->all());
+
+        $results = User::latest('created_at')->first();
+        return $results;
+        // return DB::table('users')->orderBy('created_at', 'desc')->first();
+        
+
         // return redirect('/admin/employees');
         //    return redirect('/items')->with('success','Success adding item');
     }

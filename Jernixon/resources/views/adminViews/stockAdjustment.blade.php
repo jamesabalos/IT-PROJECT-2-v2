@@ -35,15 +35,97 @@ ng-app="ourAngularJsApp"
         document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
     }
 
-    function addRow(){
-        var thatTbody = document.getElementById("adjustmenttable");
-        var newRow = thatTbody.insertRow(-1);
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched form-control' type='text' min='1'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched form-control' type='number min='1'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched form-control' type='number' min='1'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+    function addRow(itemName){
+        var items =[];
+        var thatTbody = $("#stockTable tr td:first-child");
+
+        for (var i = 0; i < thatTbody.length; i++) {
+            items[i] = thatTbody[i].innerHTML;
+        }        
+
+        if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
+            var thatTable = document.getElementById("stockTable");
+            var newRow = thatTable.insertRow(-1);
+            newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' value=" +itemName+ " disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
+            newRow.insertCell(-1).innerHTML = "<td><button type='button' class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+
+        }
+
+        document.getElementById("searchItemInput").value = "";
+        document.getElementById("searchResultDiv").innerHTML = "";
+
+    }
+
+    function searchItem(a){
+        if(a.value === ""){
+            document.getElementById("searchResultDiv").innerHTML ="";   
+        }
+        $.ajax({
+            method: 'get',
+            //url: 'items/' + document.getElementById("inputItem").value,
+            url: 'searchItem/' + a.value,
+            dataType: "json",
+            success: function(data){
+                //    console.log(data)
+                // <div>
+                //     <strong>Phi</strong>lippines
+                //     <input type="hidden" value="Philippines">
+                // </div>
+
+                var resultDiv = document.getElementById("searchResultDiv");
+                resultDiv.innerHTML = "";
+                for (var i = 0;  i< data.length; i++) {
+                    var node = document.createElement("DIV");
+                    node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                    var pElement = document.createElement("P");
+                    var textNode = document.createTextNode(data[i].description);
+                    pElement.appendChild(textNode);
+                    node.appendChild(pElement);          
+                    resultDiv.appendChild(node);  
+
+                }
+            }
+        });
+
     }
 </script>
+
+<style>
+    .autocomplete {
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
+    }
+    .searchResultDiv {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .searchResultDiv div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff; 
+        border-bottom: 1px solid #d4d4d4; 
+    }
+    .searchResultDiv div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9; 
+    }
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important; 
+        color: #ffffff; 
+    }
+</style>
 
 @endsection
 
@@ -57,23 +139,17 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <div class = "col-md-12">
-                        <a href = "#adjustment" data-toggle="modal">
-                            <div class = "content table-responsive table-full-width">
-                            <button type="button" class="btn btn-success">Stock Adjustment</button>
-                            </div>
-                        </a>
-                    </div>
-
+                    <a href = "#adjustment" data-toggle="modal">
+                        <button type="button" class="btn btn-success">Stock Adjustment</button>
+                    </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="dashboardDatatable">
                             <thead>
                                 <tr>
-                                    <th class="text-left">Name</th>
+                                    <th class="text-left">Employee Name</th>
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Quantity</th>
-                                    <th class="text-left">Date</th>
-                                    <th class="text-left">Reason</th>
+                                    <th class="text-left">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -122,6 +198,7 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
@@ -129,30 +206,31 @@ ng-app="ourAngularJsApp"
                             Stock Adjustment
                         </strong>
                     </div>
-                    <div class="content table-responsive">
-                        <table class="table table-bordered table-striped" id="">
+                    <div class="modal-body">
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped" id="">
 
-                            <thead>
-                                <tr>
-                                    <th class="text-left">Name</th>
-                                    <th class="text-left">Email</th>
-                                    <th class="text-left">Status</th>
-                                    <th class="text-left">Action</th>
-                                </tr>
-                            </thead>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Employee Name</th>
+                                        <th class="text-left">Item Name</th>
+                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Status</th>
+                                        <th class="text-left">Action</th>
+                                    </tr>
+                                </thead>
 
-                            <tbody id= "purchasetable">
-                                <tr>
-                                    <td>{{Form::text('Name','',['class'=>'form-control','placeholder'=>''])}}</td>
-                                    <td>{{Form::text('Email','',['class'=>'form-control','placeholder'=>''])}}</td>
-                                    <td>{{Form::text('Status','',['class'=>'form-control','placeholder'=>''])}}</td>
-                                    <td><button class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <tbody id="stockTable">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="autocomplete" style="width:100%;">
+                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
+                            <div id="searchResultDiv" class="searchResultDiv">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

@@ -1,5 +1,4 @@
-@extends('layouts.navbar')
-@section('returns_link')
+@section('notifications_link')
 class="active"
 @endsection
 
@@ -38,9 +37,9 @@ ng-app="ourAngularJsApp"
         if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
             var thatTable = document.getElementById("inExchangeTbody");
             var newRow = thatTable.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' value=" +itemName+ " disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
             newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
@@ -133,7 +132,7 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('linkName')
-<h3>Returns</h3>
+<h3>Notifications</h3>
 @endsection
 
 @section('right')
@@ -142,15 +141,21 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <a href = "#return" data-toggle="modal">
-                        <button type="button" class="btn btn-success">Return Item</button>
-                    </a>
+                    <div class = "col-md-12">
+                        <a href = "#return" data-toggle="modal">
+                            <div class="content table-responsive table-full-width">
+                                <button type="button" class="btn btn-success">Return Item</button>
+                            </div>
+                        </a>
+                    </div>
+                    
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="dashboardDatatable">
                             <thead>
                                 <tr>
                                     <th class="text-left">OR Number</th>
                                     <th class="text-left">Date Created</th>
+                                    <th class="text-left">Customer</th>
                                     <th class="text-left">Action</th>
                                 </tr>
                             </thead>
@@ -172,11 +177,16 @@ ng-app="ourAngularJsApp"
         <div class = "modal-content">
 
             {!! Form::open(['method'=>'post','id'=>'formReturn']) !!}
-
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Return Item</h3>
-            </div>
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Official Receipt No:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ Form::number('Official Receipt No','',['class'=>'form-control','placeholder'=>'Official Receipt No','min'=>'1']) }}
+                                </div>
+                            </div>
+                        </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -187,6 +197,17 @@ ng-app="ourAngularJsApp"
                     </div>
                     <div class="panel-body">
                         <input type="hidden" id="_token" value="{{ csrf_token() }}">
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Official Receipt No:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ Form::number('Official Receipt No','',['class'=>'form-control','placeholder'=>'Official Receipt No','min'=>'1']) }}
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <div class="row">
@@ -199,16 +220,6 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
 
-                        <div class="form-group">                                
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Official Receipt No:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{ Form::number('Official Receipt No','',['class'=>'form-control','placeholder'=>'Official Receipt No','min'=>'1']) }}
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="form-group">    
                             <div class="row">
@@ -229,35 +240,31 @@ ng-app="ourAngularJsApp"
                             Return Item
                         </strong>
                     </div>
-                    <div class="modal-body">
-                        <div class="content table-responsive">
-                            <table class="table table-bordered table-striped">
+                    <div class="content table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Description</th>
+                                    <th class="text-left">Quantity</th>
+                                    <th class="text-left">Price</th>
+                                    <th class="text-left">Action</th>
+                                </tr>
+                            </thead>
 
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Description</th>
-                                        <th class="text-left">Quantity</th>
-                                        <th class="text-left">Price</th>
-                                        <th class="text-left">Action</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr>
-                                        <td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>
-                                        <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
-                                        <td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>
-                                        {{--  <td><input  type='text'></td>
-                                        <td><input  type='text' ></td>
-                                        <td><input  type='text' ></td>  --}}
-                                        <td><input class='form-control' type="checkbox"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                            <tbody>
+                                <tr>
+                                    <td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>
+                                    <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
+                                    <td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>
+                                    {{--  <td><input  type='text'></td>
+                                    <td><input  type='text' ></td>
+                                    <td><input  type='text' ></td>  --}}
+                                    <td><input class='form-control' type="checkbox"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
@@ -265,26 +272,30 @@ ng-app="ourAngularJsApp"
                             In Exchange for
                         </strong>
                     </div>
-                    <div class="modal-body">
-                        <div class="content table-responsive">
-                            <table class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Description</th>
-                                        <th class="text-left">Quantity</th>
-                                        <th class="text-left">Price</th>
-                                        <th class="text-left">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="inExchangeTbody">
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="autocomplete" style="width:100%;">
-                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
-                            <div id="searchResultDiv" class="searchResultDiv">
-                            </div>
-                        </div>
+                    <div class="content table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Description</th>
+                                    <th class="text-left">Quantity</th>
+                                    <th class="text-left">Price</th>
+                                    <th class="text-left">Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="inExchangeTbody">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="autocomplete" style="width:100%;">
+                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
+                    <div id="searchResultDiv" class="searchResultDiv">
+                        {{--  <div>
+                        <strong>Phi</strong>lippines
+                        <input type="hidden" value="Philippines">
+                        </div>  --}}
                     </div>
                 </div>
                 <div class="row">
@@ -294,23 +305,25 @@ ng-app="ourAngularJsApp"
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
-                </div>
-                {!! Form::close() !!}
+                </div> 
             </div>
+
         </div>
+
+        {!! Form::close() !!}
     </div>
+</div>
+
+@endsection
 
 
-    @endsection
+@section('js_link')
+<!--   Core JS Files   -->
+{{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
+<script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>
 
 
-    @section('js_link')
-    <!--   Core JS Files   -->
-    {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
-    <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>
-
-
-    @endsection
+@endsection

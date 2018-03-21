@@ -2084,7 +2084,7 @@ fieldset[disabled] .btn-neutral.active {
 
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
-    background-color: #F5F5F5;
+    background-color: #b46969;
     color: #333333;
     opacity: 1;
     text-decoration: none;
@@ -3866,17 +3866,11 @@ fieldset[disabled] .btn-neutral.active {
 .navbar-color .navbar-nav > li > a {
     margin:0,0,10px, 10px;
     font-size: 20px;
-  color: white;
+    color: white;
 }
 .navbar-color .navbar-nav > .active > a{
-   background: #FFFFFF ;
-   opacity: .7;
-    background: -moz-linear-gradient(top, #FFFFFF  0%, #614747 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9368E9), color-stop(100%, #614747));
-    background: -webkit-linear-gradient(top, #FFFFFF  0%, #614747 100%)
-    background: -o-linear-gradient(top, #FFFFFF  0%, #614747 100%);
-    background: -ms-linear-gradient(top, #FFFFFF  0%, #614747 100%);
-    background: linear-gradient(to bottom, #FFFFFF  0%, #614747 100%);
+    background: #b46969 ;
+    opacity: .7;
     background-size: 150% 150%;
 }
 

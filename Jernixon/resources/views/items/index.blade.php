@@ -19,7 +19,7 @@ class="active"
 @section('right')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="header">
                         <div class = "content">
@@ -59,7 +59,8 @@ class="active"
                                     
                                 </div>      
                             </div>  --}}
-                            <table id="tableItems" class="table table-hover table-condensed" style="width:100%">
+                            <div class="content table-responsive table-full-width table-stripped">
+                            <table id="tableItems" class="table table-striped dt-responsive nowrap" style="width:100%">
                                 <thead>
                                     <tr>
                                         {{--  <th>Id</th>  --}}
@@ -71,6 +72,8 @@ class="active"
                                     </tr>
                                 </thead>
                             </table>
+                            </div>
+
                         </div>    
                     </div>
                     <br>
@@ -436,7 +439,9 @@ class="active"
                         </div>
                     </div>  --}}
                     {{--  <div class="content table-responsive">
-                        <table class="table table-striped">
+
+                    <div class="content table-responsive table-full-width table-stripped">
+                        <table id="tableItems" class="table table-striped dt-responsive nowrap" style="width:100%">
                             <thead>
                                 <th>Id</th>
                                 <th>Description</th>
@@ -448,6 +453,7 @@ class="active"
                             <tbody id="removeItemTbody" >
                             </tbody>
                         </table>
+                    </div>
                     </div>  --}}
                 </div>    
             </div>

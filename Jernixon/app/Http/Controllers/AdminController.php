@@ -204,7 +204,7 @@ class AdminController extends Controller
         $item = new User;
         $item->name = $request->input('name');
         $item->email = $request->input('email');
-        $item->contactNumber = $request->input('contactNumber');
+        $item->contact_number = $request->input('contactNumber');
         $item->address = $request->input('address');
         $item->password = $request->input('password');
         $item->save();
@@ -214,17 +214,18 @@ class AdminController extends Controller
     }
 
     public function updateEmployeeAccount(Request $request, $id){
-        $this->validate($request,[
-            'name' => 'required',
-            'email' => 'required',
-            //'password' => 'required',
-        ]);
+        // $this->validate($request,[
+        //     // 'name' => 'required',
+        //     // 'email' => 'required',
+        //     // 'password' => 'required',
+        // ]);
 
-        $item = User::find($id);
-        $item->name = $request->input('name');
-        $item->email = $request->input('email');
-        $item->password = $request->input('password');
-        $item->save();
+        $employee = User::find($id);
+        // $employee->name = $request->input('name');
+        // $employee->email = $request->input('email');
+        // $employee->password = $request->input('password');
+        $employee->status = $request->input('status');
+        $employee->save();
         return response($request->all());
     }
     public function destroyEmployeeAccount($id){

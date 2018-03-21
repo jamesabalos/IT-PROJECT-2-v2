@@ -13,9 +13,11 @@ class="active"
         //alert(button.parentNode.parentNode.parentNode);
         var data  = $(button.parentNode.parentNode.parentNode.innerHTML).slice(0,-1);
         var form = document.getElementById("formUpdateEmployeeAccount");
-        form.elements[2].value = data[0].innerHTML;
-        form.elements[3].value = data[2].innerHTML;
-        form.elements[4].value = data[4].innerHTML;
+        console.log(form)
+        form.elements[1].value = data[0].innerHTML;
+        form.elements[2].value = data[2].innerHTML;
+        form.elements[3].setAttribute("selected",data[5].innerHTML);
+        // form.elements[3].value = data[5].innerHTML;
     }
     
     function removeEmployee(e){
@@ -208,28 +210,36 @@ class="active"
                             </thead>
                             <tbody id="employeeTbody">
                                 @if(count($employees) >= 0)
-                                @foreach($employees as $employee)
-                                <tr id="{{$employee->id}}">
-                                    <td class="text-center hidden" >{{$employee->id}}</td>
-                                    <td class="text-center">{{$employee->name}}</td>
-                                    <td class="text-center">{{$employee->email}}</td>
-                                    {{--  <td class="text-center">under-construction</td>  --}}
-                                    <td class="text-center"></td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <a href="#editEmployee" onclick="showDetails(this)" class="btn btn-xs btn-warning" data-toggle="modal" >
-                                                <i class="glyphicon glyphicon-pencil"></i>
-                                            </a>
-                                            
-                                            {{--  <form action="{{ route('admin.destroyEmployeeAccount',['id' =>$employee->id]) }}" method="post">
-                                                {{ csrf_field() }}
-                                                {{ method_field('DELETE') }}
-                                             <button type="submit" id="{{$employee->id}}" onclick="removeEmployee(this)">Delete</button>
-                                            </form>  --}}
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
+                                    @foreach($employees as $employee)
+                                    <tr id="{{$employee->id}}">
+                                        <td class="text-center hidden" >{{$employee->id}}</td>
+                                        <td class="text-center">{{$employee->name}}</td>
+                                        <td class="text-center">{{$employee->email}}</td>
+                                        {{--  <td class="text-center">under-construction</td>  --}}
+                                        <td class="text-center">{{$employee->status}}</td>
+                                        <td class="text-center">
+                                                {{--  <a href="#editEmployee" onclick="showDetails(this)" class="btn btn-xs btn-warning" data-toggle="modal" >
+                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                </a>  --}}
+                                                
+                                                {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
+                                                    <input type="hidden"  value="{{$employee->id}}" name="employeeId">                                                
+
+                                                    @if( $employee->status == 'active')
+                                                        <input type="hidden" name="status" value="inactive">  
+                                                        {{Form::hidden('_method','PUT')}}                                          
+                                                        <button type="submit">Deactivate</button>
+                                                    @else
+                                                        <input type="hidden" name="status" value="active">                                                                                                        
+                                                        {{Form::hidden('_method','PUT')}}                                                    
+                                                        <button type="submit">Activate</button>                                                    
+                                                    @endif
+                                                    
+                                                    
+                                                {!! Form::close() !!}                                              
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 @else
                                 <p>no account</p>
                                 @endif
@@ -375,8 +385,8 @@ class="active"
                         <div class="alert alert-danger hidden" id="errorDivEditEmployee">
                             
                         </div>
-                        {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
-                        <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                        {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount2']) !!}
+                        {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
                         
                         <input type="hidden"  value="" name="employeeId">
                         <div class="form-group">
@@ -389,8 +399,8 @@ class="active"
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select class="form-control" name="status">
-                                <option value="Active">Active</option>
-                                <option value="Deactive">Deactive</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">inactive</option>
                             </select>
                         </div>
                         {{--  <div class="form-group">

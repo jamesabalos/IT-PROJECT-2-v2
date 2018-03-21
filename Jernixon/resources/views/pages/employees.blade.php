@@ -4,7 +4,7 @@ class="active"
 @endsection
 
 @section('linkName')
-    <h3>Employees</h3>
+<h3>Employees</h3>
 @endsection
 
 @section('headScript')
@@ -19,17 +19,17 @@ class="active"
         form.elements[3].setAttribute("selected",data[5].innerHTML);
         // form.elements[3].value = data[5].innerHTML;
     }
-    
+
     function removeEmployee(e){
         var button = document.getElementById(e.getAttribute("id"));
         button.addEventListener("click", function(event) { 
             event.preventDefault();
             alert("success preventing..")
-            
+
         });
 
-         
-        
+
+
     }
 
     $(document).ready(function() {
@@ -38,7 +38,7 @@ class="active"
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        
+
         $('#formAddNewEmployee').on('submit',function(e){
             e.preventDefault(); //prevent the page to load when submitting form
             //key value pair of form
@@ -51,7 +51,7 @@ class="active"
                 // url:'admin/storeNewItem',
                 url: "{{route('admin.addNewEmployee')}}",
                 dataType:'json',
-                  data:{
+                data:{
                     'name': arrayOfData[1].value,
                     'email':  arrayOfData[2].value,
                     'contactNumber': arrayOfData[3].value,
@@ -59,7 +59,7 @@ class="active"
                     'password': password,
 
                 },
-                
+
                 //data:{data},
                 // data:data,
                 //_token:$("#_token"),
@@ -67,32 +67,32 @@ class="active"
                     $('#addEmployee').modal('hide')                    
                     $("#successDiv p").remove();
                     $("#successDiv").removeClass("hidden")
-                                    .html("<h3>Success</h3>");
-                     document.getElementById("formAddNewEmployee").reset();
-                    
+                        .html("<h3>Success</h3>");
+                    document.getElementById("formAddNewEmployee").reset();
+
                     $("#successDiv").css("display:block");
                     $("#successDiv").slideDown("slow",function(){
                         var thatTbody = document.getElementById("employeeTbody");
                         var newRow = thatTbody.insertRow(-1);
-                    
+
                         newRow.insertCell(-1).innerHTML ="<td class='text-center'>"+arrayOfData[1].value+"</td>";
                         newRow.insertCell(-1).innerHTML ="<td class='text-center'>"+arrayOfData[2].value+"</td>";
                         newRow.insertCell(-1).innerHTML ="<td></td>";
                         newRow.insertCell(-1).innerHTML ="<td class='text-center'>\
-                                        <div class='btn-group'>\
-                                            <a href='#editEmployee' onclick='showDetails(this)' class='btn btn-xs btn-warning' data-toggle='modal' >\
-                                                <i class='glyphicon glyphicon-pencil'></i>\
-                                            </a>\
-                                        </div>\
-                                    </td>";
-                                            // <a href='' class='btn btn-xs btn-danger' data-toggle='tooltip' >\
-                                            //     <i class='glyphicon glyphicon-remove'></i>\
-                                            // </a>\
-                        
+<div class='btn-group'>\
+<a href='#editEmployee' onclick='showDetails(this)' class='btn btn-xs btn-warning' data-toggle='modal' >\
+<i class='glyphicon glyphicon-pencil'></i>\
+    </a>\
+    </div>\
+    </td>";
+                        // <a href='' class='btn btn-xs btn-danger' data-toggle='tooltip' >\
+                        //     <i class='glyphicon glyphicon-remove'></i>\
+                        // </a>\
+
 
                     })
-                    .delay(1000)                        
-                    .hide(1500);
+                        .delay(1000)                        
+                        .hide(1500);
                 },
                 error:function(data){
                     var response = data.responseJSON;
@@ -107,12 +107,12 @@ class="active"
                     // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
                     //alert(Object.keys(error.errors).length)
                     //console.log(error)
-                    
+
                 }
             });
-            
+
         });
-        
+
         $('#formUpdateEmployeeAccount').on('submit',function(e){
             e.preventDefault(); //prevent the page to load when submitting form
             var arrayOfData = $(this).serializeArray();
@@ -125,7 +125,7 @@ class="active"
                 // url:'admin/storeNewItem',
                 // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
                 url: fullRoute,
-                
+
                 dataType:'json',
                 /*  data:{
                     'description':'',
@@ -142,17 +142,17 @@ class="active"
                     $("#successDiv p").remove();
                     $("#successDiv").removeClass("hidden")
                     // .addClass("alert-success")
-                    .html("<h3>Employee updated</h3>");
-                    
+                        .html("<h3>Employee updated</h3>");
+
                     $("#successDiv").css("display:block");
                     $("#successDiv").slideDown("slow",function(){
                         document.getElementById(arrayOfData[1].value).cells[1].innerHTML = arrayOfData[2].value;
                         document.getElementById(arrayOfData[1].value).cells[2].innerHTML = arrayOfData[3].value;
                     })
-                    .delay(1000)                        
-                    .hide(1500);
+                        .delay(1000)                        
+                        .hide(1500);
 
-                    
+
 
 
                 },
@@ -171,7 +171,7 @@ class="active"
                     //console.log(error)
                 }
             });
-            
+
         });
 
 
@@ -185,16 +185,11 @@ class="active"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                        <div class="alert alert-success hidden" id="successDiv">
-                            
-                            </div>
-                    <div class = "col-md-12">
-                        <a href = "#addEmployee" data-toggle="modal">
-                            <div class="content table-responsive table-full-width">
-                            <button type="button" class="btn btn-success"><i class = "ti-plus"></i> Add Employee</button>
-                            </div>
-                        </a>
+                    <div class="alert alert-success hidden" id="successDiv">
                     </div>
+                    <a href = "#addEmployee" data-toggle="modal">
+                        <button type="button" class="btn btn-success"><i class = "ti-plus"></i> Add Employee</button>
+                    </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="employeeTable">
                             <thead>
@@ -210,40 +205,40 @@ class="active"
                             </thead>
                             <tbody id="employeeTbody">
                                 @if(count($employees) >= 0)
-                                    @foreach($employees as $employee)
-                                    <tr id="{{$employee->id}}">
-                                        <td class="text-center hidden" >{{$employee->id}}</td>
-                                        <td class="text-center">{{$employee->name}}</td>
-                                        <td class="text-center">{{$employee->email}}</td>
-                                        {{--  <td class="text-center">under-construction</td>  --}}
-                                        <td class="text-center">{{$employee->status}}</td>
-                                        <td class="text-center">
-                                                {{--  <a href="#editEmployee" onclick="showDetails(this)" class="btn btn-xs btn-warning" data-toggle="modal" >
-                                                    <i class="glyphicon glyphicon-pencil"></i>
-                                                </a>  --}}
-                                                
-                                                {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
-                                                    <input type="hidden"  value="{{$employee->id}}" name="employeeId">                                                
+                                @foreach($employees as $employee)
+                                <tr id="{{$employee->id}}">
+                                    <td class="text-center hidden" >{{$employee->id}}</td>
+                                    <td class="text-center">{{$employee->name}}</td>
+                                    <td class="text-center">{{$employee->email}}</td>
+                                    {{--  <td class="text-center">under-construction</td>  --}}
+                                    <td class="text-center">{{$employee->status}}</td>
+                                    <td class="text-center">
+                                        {{--  <a href="#editEmployee" onclick="showDetails(this)" class="btn btn-xs btn-warning" data-toggle="modal" >
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                        </a>  --}}
 
-                                                    @if( $employee->status == 'active')
-                                                        <input type="hidden" name="status" value="inactive">  
-                                                        {{Form::hidden('_method','PUT')}}                                          
-                                                        <button type="submit">Deactivate</button>
-                                                    @else
-                                                        <input type="hidden" name="status" value="active">                                                                                                        
-                                                        {{Form::hidden('_method','PUT')}}                                                    
-                                                        <button type="submit">Activate</button>                                                    
-                                                    @endif
-                                                    
-                                                    
-                                                {!! Form::close() !!}                                              
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                        {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
+                                        <input type="hidden"  value="{{$employee->id}}" name="employeeId">                                                
+
+                                        @if( $employee->status == 'active')
+                                        <input type="hidden" name="status" value="inactive">  
+                                        {{Form::hidden('_method','PUT')}}                                          
+                                        <button type="submit">Deactivate</button>
+                                        @else
+                                        <input type="hidden" name="status" value="active">                                                                                                        
+                                        {{Form::hidden('_method','PUT')}}                                                    
+                                        <button type="submit">Activate</button>                                                    
+                                        @endif
+
+
+                                        {!! Form::close() !!}                                              
+                                    </td>
+                                </tr>
+                                @endforeach
                                 @else
                                 <p>no account</p>
                                 @endif
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -258,109 +253,79 @@ class="active"
 <div id="addEmployee" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
-            <div class = "modal-body">
+            <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4 class = "text-center">Add employee</h4>
-                <div class="alert alert-danger hidden" id="errorDivAddNewEmployee">
-                    
-                </div>
-                {!! Form::open(['method'=>'post','id'=>'formAddNewEmployee']) !!}
-                
-                {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">                           --}}
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3 text-right">
-                            {{Form::label('name', 'Name:')}}                                
-                        </div>
-                        <div class="col-md-9">
-                            {{--  <input type="" class="form-control border-input" name="employeename" form="addnewform">  --}}
-                            {{Form::text('name','',['class'=>'form-control  border-input'], 'autofocus')}}                                
-                        </div>
+                <h3 class="modal-title">Add Employee</h3>
+            </div>
+            <div class = "modal-body">  
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-th"></span>
+                            Update Employee
+                        </strong>
                     </div>
-                </div>
-                {{--  <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3 text-right">
-                            <label>Username:</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="" form="addnewform" class="form-control border-input" name="username">
-                        </div>
-                    </div>
-                </div>  --}}
-                {{--  <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3 text-right">
-                            <label>Mobile Number:</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="number" form="addnewform" class="form-control border-input">
-                            
-                        </div>
-                    </div>
-                </div>  --}}
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3 text-right">
-                            {{Form::label('email', 'Email:')}}                                
-                            
-                        </div>
-                        <div class="col-md-9">
-                            {{--  <input type="email" form="addnewform" class="form-control border-input" name="email">  --}}
-                            {{Form::email('email','',['class'=>'form-control  border-input'])}}                                
-                            
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    {{Form::label('contactNumber', 'Contact Number:',['class'=>'control-label'])}}                                                                
-                    {{Form::number('contactNumber','',['class'=>'form-control'])}}
-                    
-                </div>
-                <div class="form-group">
-                    {{Form::label('address', 'Address:',['class'=>'control-label'])}}                                                                
-                    {{Form::text('address','',['class'=>'form-control'])}}
-                    
-                </div>
+                    <div class="panel-body">
+                        <input type="hidden" id="_token" value="{{ csrf_token() }}">
 
-                {{--  <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3 text-right">
-                            {{Form::label('password', 'Password:')}}                                
-                            
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Name', 'Name:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('Name','',['class'=>'form-control','placeholder'=>''])}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            
-                            {{Form::password('password','',['class'=>'form-control  border-input'])}}                                
-                            
-                        </div>
-                    </div>
-                </div>  --}}
 
-                {{--  <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3 text-right">
-                            <label>Confirm Password:</label>
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Email:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ Form::text('Email','',['class'=>'form-control','placeholder'=>'']) }}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            <input type="password" form="addnewform" class="form-control border-input">
+
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Contact No', 'Contact No:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::number('Contact No','',['class'=>'form-control','placeholder'=>''])}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Address', 'Address:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('Address','',['class'=>'form-control','placeholder'=>''])}}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>  --}}
+                </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="text-center">                                           
-                            <div class="col-md-12">                                                    
-                                {{--  <input type="submit" form="addnewform" name="save" value="Save" class="btn btn-success">  --}}
-                                <button type="submit" class="btn btn-success">Save</button>                                    
+                        <div class="text-right">                                           
+                            <div class="col-md-12">   
+                                <button id="submitNewItems" type="submit" onclick="window.alert('to be continue..')" class="btn btn-success">Save</button>
                                 <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                            </div>                             
+                            </div>
                         </div>
-                    </div>
+                    </div> 
                 </div>
+
                 {!! Form::close() !!}
-                
+
             </div>
         </div>
     </div>
@@ -383,19 +348,19 @@ class="active"
                     </div>
                     <div class="panel-body">
                         <div class="alert alert-danger hidden" id="errorDivEditEmployee">
-                            
+
                         </div>
                         {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount2']) !!}
                         {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
-                        
+
                         <input type="hidden"  value="" name="employeeId">
                         <div class="form-group">
                             {{Form::label('name', 'Name:',['class'=>'control-label'])}}                                
                             {{Form::text('name','',['class'=>'form-control'])}}
-                            
+
                         </div>
-                        
-                        
+
+
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select class="form-control" name="status">
@@ -404,42 +369,42 @@ class="active"
                             </select>
                         </div>
                         {{--  <div class="form-group">
-                            {{Form::label('password', 'Update Password:',['class'=>'control-label'])}}                                                                
-                            {{Form::password('password','',['class'=>'form-control','placeholder'=>'Type user new password'])}}
-                            
+                        {{Form::label('password', 'Update Password:',['class'=>'control-label'])}}                                                                
+                        {{Form::password('password','',['class'=>'form-control','placeholder'=>'Type user new password'])}}
+
                         </div>  --}}
-                        
+
                         {{Form::hidden('_method','PUT')}}
                         <div class="form-group clearfix">
                             <button type="submit" name="update" class="btn btn-info">Update</button>
                         </div>
-                        
+
                         {!! Form::close() !!}
-                        
+
                     </div>
                 </div>
-                
+
                 {{--  <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>
-                            <span class="glyphicon glyphicon-th"></span>
-                            Change Employee password
-                        </strong>
-                    </div>
-                    <div class="panel-body">
-                        <form action="" method="post" class="clearfix" pb-autologin="true">
-                            <div class="form-group">
-                                <label for="password" class="control-label">Password</label>
-                                <input type="password" class="form-control" name="password" placeholder="Type user new password" pb-role="password">
-                            </div>
-                            <div class="form-group clearfix">
-                                <button type="submit" name="update" class="btn btn-danger">Change</button>
-                            </div>
-                        </form>
-                    </div>
+                <div class="panel-heading">
+                    <strong>
+                        <span class="glyphicon glyphicon-th"></span>
+                        Change Employee password
+                    </strong>
+                </div>
+                <div class="panel-body">
+                    <form action="" method="post" class="clearfix" pb-autologin="true">
+                        <div class="form-group">
+                            <label for="password" class="control-label">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Type user new password" pb-role="password">
+                        </div>
+                        <div class="form-group clearfix">
+                            <button type="submit" name="update" class="btn btn-danger">Change</button>
+                        </div>
+                    </form>
+                </div>
                 </div>  --}}
-                
-                
+
+
             </div>
         </div>
     </div>

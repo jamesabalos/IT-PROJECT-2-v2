@@ -25,7 +25,7 @@ ng-app="ourAngularJsApp"
         }
 
         if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
-        
+
             var thatTable = document.getElementById("purchasetable");
             var newRow = thatTable.insertRow(-1);
 
@@ -42,88 +42,88 @@ ng-app="ourAngularJsApp"
         if(a.value === ""){
             document.getElementById("searchResultDiv").innerHTML ="";   
         }
-            $.ajax({
-                    method: 'get',
-                    //url: 'items/' + document.getElementById("inputItem").value,
-                    url: 'searchItem/' + a.value,
-                    dataType: "json",
-                        success: function(data){
-                        //    console.log(data)
-                        // <div>
-                        //     <strong>Phi</strong>lippines
-                        //     <input type="hidden" value="Philippines">
-                        // </div>
-    
-                        var resultDiv = document.getElementById("searchResultDiv");
-                        resultDiv.innerHTML = "";
-                            for (var i = 0;  i< data.length; i++) {
-                                var node = document.createElement("DIV");
-                                node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
-                                var pElement = document.createElement("P");
-                                var textNode = document.createTextNode(data[i].description);
-                                pElement.appendChild(textNode);
-                                node.appendChild(pElement);          
-                                resultDiv.appendChild(node);  
-                                
-                            }
-                        }
-            });
-    
-        }
+        $.ajax({
+            method: 'get',
+            //url: 'items/' + document.getElementById("inputItem").value,
+            url: 'searchItem/' + a.value,
+            dataType: "json",
+            success: function(data){
+                //    console.log(data)
+                // <div>
+                //     <strong>Phi</strong>lippines
+                //     <input type="hidden" value="Philippines">
+                // </div>
 
-        document.addEventListener("click", function (e) {
-            document.getElementById("searchResultDiv").innerHTML = "";
+                var resultDiv = document.getElementById("searchResultDiv");
+                resultDiv.innerHTML = "";
+                for (var i = 0;  i< data.length; i++) {
+                    var node = document.createElement("DIV");
+                    node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                    var pElement = document.createElement("P");
+                    var textNode = document.createTextNode(data[i].description);
+                    pElement.appendChild(textNode);
+                    node.appendChild(pElement);          
+                    resultDiv.appendChild(node);  
+
+                }
+            }
         });
-        function removeRow(a){
-            $(a.parentNode.parentNode).hide(500,function(){
-              this.remove();  
-            });
-            // a.parentNode.parentNode.remove();
 
-        }
+    }
+
+    document.addEventListener("click", function (e) {
+        document.getElementById("searchResultDiv").innerHTML = "";
+    });
+    function removeRow(a){
+        $(a.parentNode.parentNode).hide(500,function(){
+            this.remove();  
+        });
+        // a.parentNode.parentNode.remove();
+
+    }
 
     $(document).ready(function(){
         $('#formPurchaseOrder').on('submit',function(e){
-                e.preventDefault();
+            e.preventDefault();
             alert("clicked")
 
         })
-        
+
     });
-        
+
 </script>
 
 <style>
     .autocomplete {
-    /*the container must be positioned relative:*/
-    position: relative;
-    display: inline-block;
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
     }
     .searchResultDiv {
-    position: absolute;
-    border: 1px solid #d4d4d4;
-    border-bottom: none;
-    border-top: none;
-    z-index: 99;
-    /*position the autocomplete items to be the same width as the container:*/
-    top: 100%;
-    left: 0;
-    right: 0;
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
     }
     .searchResultDiv div {
-    padding: 10px;
-    cursor: pointer;
-    background-color: #fff; 
-    border-bottom: 1px solid #d4d4d4; 
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff; 
+        border-bottom: 1px solid #d4d4d4; 
     }
     .searchResultDiv div:hover {
-    /*when hovering an item:*/
-    background-color: #e9e9e9; 
+        /*when hovering an item:*/
+        background-color: #e9e9e9; 
     }
     .autocomplete-active {
-    /*when navigating through the items using the arrow keys:*/
-    background-color: DodgerBlue !important; 
-    color: #ffffff; 
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important; 
+        color: #ffffff; 
     }
 </style>
 @endsection
@@ -134,21 +134,15 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <div class = "col-md-12">
-                        <a href = "#purchase" data-toggle="modal">
-                            <div class="content table-responsive table-full-width">
+                    <a href = "#purchase" data-toggle="modal">
                             <button type="button" class="btn btn-success">Create Purchase Order</button>
-                            </div>
-                        </a>
-                    </div>
+                    </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="dashboardDatatable">
                             <thead>
                                 <tr>
                                     <th class="text-left">PO ID</th>
                                     <th class="text-left">Date Created </th>
-                                    <th class="text-left">Supplier</th>
-                                    <th class="text-left">Status</th>
                                     <th class="text-left">Action</th>
                                 </tr>
                             </thead>
@@ -169,7 +163,7 @@ ng-app="ourAngularJsApp"
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
 
-             {!! Form::open(['method'=>'get','id'=>'formPurchaseOrder']) !!}
+            {!! Form::open(['method'=>'get','id'=>'formPurchaseOrder']) !!}
             <input type="hidden" id="_token" value="{{ csrf_token() }}">
 
             <div class="modal-header">
@@ -237,13 +231,13 @@ ng-app="ourAngularJsApp"
                             <div class="autocomplete" style="width:100%;">
                                 <input autocomplete="off" type="text" id="searchItemInput" name="item" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
                                 <div id="searchResultDiv" class="searchResultDiv">
-                                        {{--  <div>
-                                            <strong>Phi</strong>lippines
-                                            <input type="hidden" value="Philippines">
-                                        </div>  --}}
+                                    {{--  <div>
+                                    <strong>Phi</strong>lippines
+                                    <input type="hidden" value="Philippines">
+                                    </div>  --}}
                                 </div>
                             </div>
-                                
+
                         </div> 
                     </div>
                 </div>
@@ -257,7 +251,7 @@ ng-app="ourAngularJsApp"
                     </div>
                 </div>
                 {!! Form::close() !!}
-                
+
             </div>
 
         </div>

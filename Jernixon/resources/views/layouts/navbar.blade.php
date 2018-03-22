@@ -32,7 +32,7 @@
 
     <script src="{{asset('assets/js/jquery.js')}}"></script>
 
-    <script src="{{asset('assets/js/light-bootstrap-dashboard.js?v=1.4.0')}}"></script>
+    <!-- <script src="{{asset('assets/js/light-bootstrap-dashboard.js?v=1.4.0')}}"></script> -->
 
     <script src="{{asset('assets/js/jquery.3.2.1.min.js')}}"></script>
 
@@ -91,7 +91,7 @@
                         <a href={{route('admin.reports')}}><i class="fa fa-line-chart"></i><p>Reports</p></a>
                     </li>
                     <li  @yield('items_link') >
-                        <a href={{route('admin.items')}}><i class="	fa fa-bars"></i><p>Items</p></a>
+                        <a href={{route('admin.items')}}><i class=" fa fa-bars"></i><p>Items</p></a>
                     </li>
                     <li @yield('employees_link')>
                         <a href={{route('admin.employees')}}><i class="fa fa-users"></i><p>Employees</p></a>
@@ -166,7 +166,7 @@
 
         <nav class="navbar navbar-color navbar-fixed hiddenm" role="navigation">         
                 
-                      <div class="container">
+                      
                         <div class="navbar-header">
 
                               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -263,10 +263,6 @@
                             @endif
                           </ul>
                         </div><!--/.nav-collapse -->
-
-                      </div>
-
-             
 
                 </nav>
 

@@ -59,13 +59,18 @@
         </script>  --}}
 
 <div class="wrapper">
+
     <div class="sidebar" data-color="navcolor">
+
         <div class="sidebar-wrapper">
+
             <div class="logo">
+
                 <a href="{{route('admin.dashboard')}}" class="simple-text"> 
                     <img src="{{asset('assets/img/logo2.png')}}">
 <!--                    Jernixon Motorparts and Accessories-->
                 </a>
+
             </div>
 
              <ul class="nav" id="navs">
@@ -74,42 +79,54 @@
                     <li @yield('dashboard_link')>
                         
                         <a href={{route('admin.dashboard')}}> <i class="fa fa-fw fa-dashboard"></i><p>Dashboard</p></a>
-                    </li>                        
+                    </li>       
+
                     <li @yield('sales_link')>
                         <a href={{route('admin.sales')}}><i class="fa fa-dollar"></i></i></i><p>Sales</p></a>
-                    </li>                       
+                    </li>  
+
                     <li @yield('purchases_link')>
                         <a href={{route('admin.purchases')}}><i class="fa fa-cube"></i><p>Purchases</p></a>
-                    </li>                        
+                    </li>  
+
                     <li @yield('returns_link')>
                         <a href={{route('admin.returns')}}><i class="fa fa-mail-reply"></i><p>Returns</p></a>
-                    </li>                        
+                    </li> 
+
                     <li @yield('physicalCount_link')>
                         <a href={{route('admin.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
-                    </li>                        
+                    </li>  
+
                     <li  @yield('reports_link') >
                         <a href={{route('admin.reports')}}><i class="fa fa-line-chart"></i><p>Reports</p></a>
                     </li>
+
                     <li  @yield('items_link') >
                         <a href={{route('admin.items')}}><i class=" fa fa-bars"></i><p>Items</p></a>
                     </li>
+
                     <li @yield('employees_link')>
                         <a href={{route('admin.employees')}}><i class="fa fa-users"></i><p>Employees</p></a>
                     </li>
+
                     <li @yield('stockAdjustment_link')>
                         <a href={{route('admin.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
                     </li>
 
+                    <!-- Sales Assistant -->
+
                     {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
                     @elseif(Auth::guard('web')->check())
                     <li @yield('dashboard_link')>
-                        <a href={{route('home')}}><i class="ti-panel"></i><p>Dashboard</p></a>
+                        <a href={{route('home')}}><i class="fa fa-dashboard"></i><p>Dashboard</p></a>
                     </li> 
+
                     <li  @yield('items_link') >
-                        <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i><p>Items</p></a>
+                        <a href={{route('salesAssistant.items')}}><i class="fa fa-bars"></i><p>Items</p></a>
                     </li>
                     {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
                     @endif
+
                 </ul>
 
                 </div>
@@ -117,13 +134,21 @@
             </div> 
 
      <div class="main-panel">
+
          <nav class="navbar navbar-default navbar-fixed navbar1">
+
             <div class="container-fluid">
+
                 <div class="navbar-header">
+
                     @yield('linkName')
+
                 </div>
+
                     <ul class="nav navbar-nav navbar-right">
+
                         <li class="dropdown">
+
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <p>
                                         {{ Auth::user()->name }}
@@ -131,140 +156,171 @@
                                     </p>
 
                               </a>
+
                               <ul class="dropdown-menu">
-                                        <li>
-                                            @if(Auth::guard('adminGuard')->check())
-                                                <a href="{{ route('admin.logout') }}">
-                                                    {{--  onclick="event.preventDefault();  --}}
-                                                    {{--  document.getElementById('logout-form').submit();">  --}}
-                                                    Logout
-                                                </a>
 
-                                                {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                                {{ csrf_field() }}
-                                                </form>  --}}
-                                            @elseif(Auth::guard('web')->check())
-                                                <a href="{{ route('salesAssistant.logout') }}">
-                                                    {{--  onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">  --}}
-                                                    Logout
-                                                </a>
+                                <li>
 
-                                            {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            </form>   --}}
-                                            @endif
-                                        </li>
+                                    @if(Auth::guard('adminGuard')->check())
+                                    <a href="{{ route('admin.logout') }}">
+                                        {{--  onclick="event.preventDefault();  --}}
+                                        {{--  document.getElementById('logout-form').submit();">  --}}
+                                        Logout
+                                    </a>
 
-                                    </ul>
+                                    {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                    </form>  --}}
+                                    @elseif(Auth::guard('web')->check())
+                                    <a href="{{ route('salesAssistant.logout') }}">
+                                        {{--  onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();">  --}}
+                                        Logout
+                                    </a>
+
+                                    {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                    </form>   --}}
+                                    @endif
+
                                 </li>
 
                             </ul>
+
+                        </li>
+
+                    </ul>
                 
-            </div>
-        </nav>
+                </div>
+
+            </nav>
 
         <nav class="navbar navbar-color navbar-fixed hiddenm" role="navigation">         
-                
-                      
-                        <div class="navbar-header">
+            <div class="navbar-header navbar-custom">
 
-                              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                              </button>
-                              <div class="small-logo-container">
-                                <h3>Jernixon Motorcycle Shop</h3>
-                                    <ul class="nav navbar-right user-margin">
-                                        <li class="dropdown">
-                                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                <p>
-                                                    {{ Auth::user()->name }}
-                                                    <b class="caret"></b>
-                                                </p>
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 
-                                          </a>
-                                          <ul class="dropdown-menu">
-                                                    <li>
-                                                        @if(Auth::guard('adminGuard')->check())
-                                                        <a href="{{ route('admin.logout') }}">
-                                                            {{--  onclick="event.preventDefault();  --}}
-                                                            {{--  document.getElementById('logout-form').submit();">  --}}
-                                                            Logout
-                                                        </a>
+                <span class="sr-only">Toggle navigation</span><i class="fa fa-bars"></i>
 
-                                                        {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                                        {{ csrf_field() }}
-                                                        </form>  --}}
-                                                        @elseif(Auth::guard('web')->check())
-                                                        <a href="{{ route('salesAssistant.logout') }}">
-                                                            {{--  onclick="event.preventDefault();
-                                                            document.getElementById('logout-form').submit();">  --}}
-                                                            Logout
-                                                        </a>
+              </button>
 
-                                                        {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
-                                                        {{ csrf_field() }}
-                                                        </form>   --}}
-                                                        @endif
-                                                    </li>
+              <div class="small-logo-container">
 
-                                                </ul>
-                                        </li>
+                <img id = "logo" src = "{{asset('assets/img/logo.png')}}" width = "50" height = "50">
 
-                                    </ul>
-                                          
-                              </div>
-                        </div>
-                        <div class="navbar-collapse collapse">
+                <a class="navbar-brand">Jernixon Motorparts and Accessories </a>
+
+                    <ul class="nav navbar-right user-margin">
+
+                        <li class="dropdown">
+
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                            <!-- <p> -->
+                                {{ Auth::user()->name }}
+                                <b class="caret"></b>
+                            <!-- </p> -->
+
+                          </a>
+
+                          <ul class="dropdown-menu">
+
+                            <li>
+
+                                @if(Auth::guard('adminGuard')->check())
+
+                                <a href="{{ route('admin.logout') }}">
+                                    {{--  onclick="event.preventDefault();  --}}
+                                    {{--  document.getElementById('logout-form').submit();">  --}}
+                                    Logout
+                                </a>
+
+                                {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+
+                                </form>  --}}
+
+                                @elseif(Auth::guard('web')->check())
+                                <a href="{{ route('salesAssistant.logout') }}">
+                                    {{--  onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">  --}}
+                                    Logout
+                                </a>
+
+                                {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                                </form>   --}}
+                                @endif
+
+                            </li>
+
+                            </ul>
+
+                        </li>
+
+                    </ul>
                           
-                          <ul class="nav navbar-nav navbar-right">
-                            @if(Auth::guard('adminGuard')->check())
-                            <li @yield('dashboard_link')>
-                                
-                                <a href={{route('admin.dashboard')}}> <i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
-                            </li>                        
-                            <li @yield('sales_link')>
-                                <a href={{route('admin.sales')}}><i class="fa fa-dollar"></i>Sales</a>
-                            </li>                       
-                            <li @yield('purchases_link')>
-                                <a href={{route('admin.purchases')}}><i class="fa fa-cube"></i>Purchases</a>
-                            </li>                        
-                            <li @yield('returns_link')>
-                                <a href={{route('admin.returns')}}><i class="fa fa-mail-reply"></i>Returns</a>
-                            </li>                        
-                            <li @yield('physicalCount_link')>
-                                <a href={{route('admin.physicalCount')}}><i class="fa fa-check-square-o"></i>Physical count</a>
-                            </li>                        
-                            <li  @yield('reports_link') >
-                                <a href={{route('admin.reports')}}><i class="fa fa-line-chart"></i>Reports</a>
-                            </li>
-                            <li  @yield('items_link') >
-                                <a href={{route('admin.items')}}><i class=" fa fa-bars"></i>Items</a>
-                            </li>
-                            <li @yield('employees_link')>
-                                <a href={{route('admin.employees')}}><i class="fa fa-users"></i>Employees</a>
-                            </li>
-                            <li @yield('stockAdjustment_link')>
-                                <a href={{route('admin.stockAdjustment')}}><i class="fa fa-adjust"></i>Stock Adjustment</a>
-                            </li>
+              </div>
 
-                            {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
-                            @elseif(Auth::guard('web')->check())
-                            <li @yield('dashboard_link')>
-                                <a href={{route('home')}}><i class="ti-panel"></i>Dashboard</a>
-                            </li> 
-                            <li  @yield('items_link') >
-                                <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i>Items</a>
-                            </li>
-                            {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
-                            @endif
-                          </ul>
-                        </div><!--/.nav-collapse -->
+             </div>
 
-                </nav>
+            <div class="navbar-collapse collapse">
+              
+              <ul class="nav navbar-nav navbar-right">
+                @if(Auth::guard('adminGuard')->check())
+                <li @yield('dashboard_link')>
+                    
+                    <a href={{route('admin.dashboard')}}> <i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+                </li>      
+
+                <li @yield('sales_link')>
+                    <a href={{route('admin.sales')}}><i class="fa fa-dollar"></i>Sales</a>
+                </li>  
+
+                <li @yield('purchases_link')>
+                    <a href={{route('admin.purchases')}}><i class="fa fa-cube"></i>Purchases</a>
+                </li>
+
+                <li @yield('returns_link')>
+                    <a href={{route('admin.returns')}}><i class="fa fa-mail-reply"></i>Returns</a>
+                </li>   
+
+                <li @yield('physicalCount_link')>
+                    <a href={{route('admin.physicalCount')}}><i class="fa fa-check-square-o"></i>Physical count</a>
+                </li> 
+
+                <li  @yield('reports_link') >
+                    <a href={{route('admin.reports')}}><i class="fa fa-line-chart"></i>Reports</a>
+                </li>
+
+                <li  @yield('items_link') >
+                    <a href={{route('admin.items')}}><i class=" fa fa-bars"></i>Items</a>
+                </li>
+
+                <li @yield('employees_link')>
+                    <a href={{route('admin.employees')}}><i class="fa fa-users"></i>Employees</a>
+                </li>
+
+                <li @yield('stockAdjustment_link')>
+                    <a href={{route('admin.stockAdjustment')}}><i class="fa fa-adjust"></i>Stock Adjustment</a>
+                </li>
+
+                {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
+                @elseif(Auth::guard('web')->check())
+                <li @yield('dashboard_link')>
+                    <a href={{route('home')}}><i class="ti-panel"></i>Dashboard</a>
+                </li> 
+
+                <li  @yield('items_link') >
+                    <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i>Items</a>
+                </li>
+                {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
+                @endif
+              </ul>
+
+            </div><!--/.nav-collapse -->
+
+         </nav>
 
         <div class="content" ng-controller="customerPurchase">
             <div class="linkName">@yield('linkName')</div>
@@ -272,6 +328,7 @@
         </div>
 
     </div>
+
 </div>
 
 

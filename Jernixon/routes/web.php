@@ -44,7 +44,7 @@ Route::get('salesAssistant/items/getItems', 'HomeController@getItemsForItems')->
 Route::get('salesAssistant/items', 'HomeController@items')->name('salesAssistant.items');
 Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('salesAssistant.logout');
 
-
+Route::get('admin/changePassword','Auth\AdminLoginController@changePassword')->name('admin.changePassword');
 
 Route::get('admin/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');
 Route::post('admin/login','Auth\AdminLoginController@login')->name('admin.login.submit');

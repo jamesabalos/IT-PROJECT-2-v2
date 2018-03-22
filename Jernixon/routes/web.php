@@ -56,10 +56,12 @@ Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('da
 Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');
 
 Route::get('admin/purchases', 'AdminController@purchases')->name('admin.purchases');
+Route::get('admin/purchases/getPurchases', 'AdminController@getPurchases')->name('purchases.getPurchases');
 
 Route::get('admin/searchItem/{itemName}', 'AdminController@searchItem');
 
 Route::get('admin/returns', 'AdminController@returns')->name('admin.returns');
+Route::get('admin/returns/getReturns', 'AdminController@getReturns')->name('returns.getReturns');
 
 Route::get('admin/physical_count', 'AdminController@physicalCount')->name('admin.physicalCount');
     
@@ -72,10 +74,10 @@ Route::get('admin/items/getItems', 'AdminController@getItemsForItems')->name('it
 Route::get('admin/items', 'AdminController@items')->name('admin.items');
 
 Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');
-Route::get('admin/reports/getTransactions', 'AdminController@getTransactions')->name('reports.getTransactions');
-Route::get('admin/reports/getReturns', 'AdminController@getReturns')->name('reports.getReturns');
-Route::get('admin/reports/getItemsAdded', 'AdminController@getItemsAdded')->name('reports.getItemsAdded');
-Route::get('admin/reports/getRemovedItems', 'AdminController@getRemovedItems')->name('reports.getRemovedItems');
+// Route::get('admin/reports/getTransactions', 'AdminController@getTransactions')->name('reports.getTransactions');
+// Route::get('admin/reports/getItemsAdded', 'AdminController@getItemsAdded')->name('reports.getItemsAdded');
+// Route::get('admin/reports/getRemovedItems', 'AdminController@getRemovedItems')->name('reports.getRemovedItems');
+Route::get('admin/reports/getReports', 'AdminController@getReports')->name('reports.getReports');
 
 
 Route::DELETE('admin/employees/destroyEmployeeAccount/{id}', 'AdminController@destroyEmployeeAccount')->name('admin.destroyEmployeeAccount');
@@ -85,3 +87,4 @@ Route::get('admin/employees', 'AdminController@employees')->name('admin.employee
 
 
 Route::get('admin/stockAjustment', 'AdminController@stockAdjustment')->name('admin.stockAdjustment');
+Route::get('admin/stockAjustment/getStockAdjustment', 'AdminController@getStockAdjustment')->name('stockAdjustment.getStockAdjustment');

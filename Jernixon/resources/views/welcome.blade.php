@@ -65,11 +65,11 @@
 					<div class="wrap-input100 validate-input{{ $errors->has('email') ? ' has-error' : '' }}" data-validate = "Enter username">
 						<input id="email" type="email" class="input100"  name="email" placeholder="Email" value="{{ old('email') }}">
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
-                        @if ($errors->has('email'))
+                        {{--  @if ($errors->has('email')) 
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
                                 </span>
-                        @endif
+                        @endif  --}}
 					</div>
 
 

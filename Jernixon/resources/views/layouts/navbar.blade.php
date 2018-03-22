@@ -134,21 +134,21 @@
                               <ul class="dropdown-menu">
                                         <li>
                                             @if(Auth::guard('adminGuard')->check())
-                                            <a href="{{ route('admin.logout') }}">
-                                                {{--  onclick="event.preventDefault();  --}}
-                                                {{--  document.getElementById('logout-form').submit();">  --}}
-                                                Logout
-                                            </a>
+                                                <a href="{{ route('admin.logout') }}">
+                                                    {{--  onclick="event.preventDefault();  --}}
+                                                    {{--  document.getElementById('logout-form').submit();">  --}}
+                                                    Logout
+                                                </a>
 
-                                            {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            </form>  --}}
+                                                {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                                </form>  --}}
                                             @elseif(Auth::guard('web')->check())
-                                            <a href="{{ route('salesAssistant.logout') }}">
-                                                {{--  onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">  --}}
-                                                Logout
-                                            </a>
+                                                <a href="{{ route('salesAssistant.logout') }}">
+                                                    {{--  onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">  --}}
+                                                    Logout
+                                                </a>
 
                                             {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}

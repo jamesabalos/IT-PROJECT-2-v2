@@ -60,7 +60,7 @@ class="active"
                                 </div>      
                             </div>  --}}
                             <div class="content table-responsive table-full-width table-stripped">
-                            <table id="tableItems" class="table table-striped dt-responsive nowrap" style="width:100%">
+                            <table id="tableItems" class="table table-bordered table-striped dt-responsive nowrap" style="width:100%">
                                 <thead>
                                     <tr>
                                         {{--  <th>Id</th>  --}}

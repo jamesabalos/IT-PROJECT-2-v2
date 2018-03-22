@@ -68,6 +68,7 @@ class AdminController extends Controller
         return view('adminViews.stockAdjustment');
     }
 
+
     public function getItemsForSales(){
 
         //  $data = DB::select("SELECT products.description, products.price as retail_price, purchases.price as wholesale_price, status FROM `products` join `purchases` using(product_id) where status='SALABLE' OR status='DAMAGED-SALABLE'");
@@ -105,6 +106,29 @@ class AdminController extends Controller
                     ->get();
         return $item;
     }
+
+    public function getPurchases(){
+        $data = DB::table('products')->select('*');
+        return Datatables::of($data)
+            ->make(true);
+    }
+    public function getReturns(){
+        $data = DB::table('products')->select('*');
+        return Datatables::of($data)
+            ->make(true);
+    }
+    public function getReports(){
+        $data = DB::table('products')->select('*');
+        return Datatables::of($data)
+            ->make(true);
+    }
+    public function getStockAdjustment(){
+        $data = DB::table('products')->select('*');
+        return Datatables::of($data)
+            ->make(true);
+    }
+
+
 
     public function addQuantity(Request $request){
         //update purchase set price='$newUnitCost', quantity='$newPurchase' WHERE item_id='$item_id' and price='$oldUnitCost' and quantity='$oldPurchase'"
@@ -158,6 +182,7 @@ class AdminController extends Controller
             'retailPrice' => 'required'
         ]);
 
+   
         //Create new Item
         $item = new Product;
         $item->description = $request->input('description');
@@ -171,26 +196,21 @@ class AdminController extends Controller
     }
 
 
-    public function getTransactions(){
-        $data = DB::table('products')->select('*');
-        return Datatables::of($data)
-            ->make(true);
-    }
-    public function getReturns(){
-        $data = DB::table('products')->select('*');
-        return Datatables::of($data)
-            ->make(true);
-    }
-    public function getItemsAdded(){
-        $data = DB::table('products')->select('*');
-        return Datatables::of($data)
-            ->make(true);
-    }
-    public function getRemovedItems(){
-        $data = DB::table('products')->select('*');
-        return Datatables::of($data)
-            ->make(true);
-    }
+    // public function getTransactions(){
+    //     $data = DB::table('products')->select('*');
+    //     return Datatables::of($data)
+    //         ->make(true);
+    // }
+    // public function getItemsAdded(){
+    //     $data = DB::table('products')->select('*');
+    //     return Datatables::of($data)
+    //         ->make(true);
+    // }
+    // public function getRemovedItems(){
+    //     $data = DB::table('products')->select('*');
+    //     return Datatables::of($data)
+    //         ->make(true);
+    // }
 
     public function addNewEmployee(Request $request){
         $this->validate($request,[

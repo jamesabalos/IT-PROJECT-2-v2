@@ -15,6 +15,30 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('headScript')
+<!--jquery-->
+<script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
+{{--  plugin DataTable  --}}
+<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+{{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/ comment>  --}}
+
+<link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+
+{{--  <script src="{{asset('assets/js/DataTables/dataTables.js')}}"></script comment>  --}}
+    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+        {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
+         <script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
+         <script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
+         {{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
+         <script src="{{asset('assets/js/jszip.min.js')}}"></script>
+         {{--  pdf    --}}
+             <script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
+    {{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
+      <script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
+      <script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
+      <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
+
+
+
 <script type="text/javascript">
     function addRow(itemName){
         var items =[];
@@ -83,6 +107,51 @@ ng-app="ourAngularJsApp"
     }
 
     $(document).ready(function(){
+        $('#purchasesDataTable').DataTable({
+              "destroy": true,
+              "processing": true,
+              "serverSide": true,
+              "colReorder": true,  
+              //"autoWidth": true,
+              "pagingType": "full_numbers",
+              dom: 'Bfrtip',
+              // buttons: ['excel', 'pdf','print'], 
+
+              // buttons:[{
+              //             extend: 'excel',
+              //             text: 'excel',
+              //             action: function (e, dt, node, config) {
+              //                     exportExtension = 'Excel';
+
+              //                     // $.fn.DataTable.ext.buttons.excelHtml5.action(e, dt, node, config);
+              //                     $.fn.DataTable.ext.buttons.excelHtml5.action.call( e, dt, node, config);
+              //                 }
+
+              //             },'print'],
+
+              "buttons": [
+                  {
+                      extend: 'collection',
+                      text: 'EXPORT',
+                      buttons: [
+                          'copy',
+                          'excel',
+                          'csv',
+                          'pdf',
+                          'print'
+                      ]
+                  }
+              ],
+
+              "ajax":  "{{ route('purchases.getPurchases') }}",
+              "columns": [
+                  {data: 'description'},
+                //   {data: 'dateCreated'},
+                  {data: 'created_at'},
+                  {data: 'updated_at'},
+              ]
+          });
+
         $('#formPurchaseOrder').on('submit',function(e){
             e.preventDefault();
             alert("clicked")
@@ -138,7 +207,7 @@ ng-app="ourAngularJsApp"
                             <button type="button" class="btn btn-success">Create Purchase Order</button>
                     </a>
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="dashboardDatatable">
+                        <table class="table table-bordered table-striped" id="purchasesDataTable">
                             <thead>
                                 <tr>
                                     <th class="text-left">PO ID</th>
@@ -261,6 +330,6 @@ ng-app="ourAngularJsApp"
 
 @section('js_link')
 <!--   Core JS Files   -->
-<script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>
+{{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>  --}}
 <script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
 @endsection

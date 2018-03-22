@@ -3899,93 +3899,104 @@ fieldset[disabled] .btn-neutral.active {
     }*/
 
     .user-margin .dropdown-menu{
-        margin: 10px;
+        /*margin: 10px;*/
     }
     .user-margin a{
     color: black;
+    }
+    .user-margin ul{
+        /*margin-left: 10px;*/
+    }
+    #logo{
+        float: left;
+    }
+
+    #link:hover{
+        color: #fff;
+        background-color: #af3939;
+        text-decoration: none;
+    }
+
+    .dropdown{
+        color: #af3939;
+    }
+
+    .dropdown:hover{
+        color: #fff;
+        background-color: #af3939;
+        text-decoration: none;
+    }
+
+    .navbar-custom{
+
+        font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+        text-transform: uppercase;
+        font-weight: 300;;
+        border: none;
+        background: #af3939;
+        background: -moz-linear-gradient(top, #af3939 0%, #614747 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9368E9), color-stop(100%, #614747));
+        background: -webkit-linear-gradient(top, #af3939 0%, #614747 100%)
+        background: -o-linear-gradient(top, #af3939 0%, #614747 100%);
+        background: -ms-linear-gradient(top, #af3939 0%, #614747 100%);
+        background: linear-gradient(to bottom, #af3939 0%, #614747 100%);
+
+    }
+
+    .navbar-custom .navbar-nav li a:hover {
+        color: #fff;
+        background-color: #af3939;
+    }
+
+    .navbar-custom .navbar-nav li a:active,
+    .navbar-custom .navbar-nav li a:focus {
+        color: #fff;
+        background-color: #af3939;
+    }
+
+    .navbar-custom .navbar-nav li.active a,
+    .navbar-custom .navbar-nav li.active a:active,
+    .navbar-custom .navbar-nav li.active a:focus,
+    .navbar-custom .navbar-nav li.active a:hover {
+        color: #fff;
+        background: #af3939;
+    }
+
+    .navbar-custom .navbar-toggle {
+        color: #fff;
+        text-transform: uppercase;
+        font-size: 10px;
+        border-color: #000;
+    }
+
+    .nav{
+
+        text-transform: uppercase;
+    }
+
+    .navbar-custom .navbar-toggle:focus,
+    .navbar-custom .navbar-toggle:hover {
+
+      background-color: #af3939;
+      color: #fff;
+      border-color: #000;
+
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .brand{
+        font-weight: bold;
+        margin: 10px;
+    }
+    .small-title{
+        margin:10px;
+        line-height: 50px;
+        height: 50px;
+    }
+    .small-logo-container{
+        
+    }
 }
-.user-margin ul{
-    margin-left: 10px;
-}
-   
-}
 
-#logo{
-    float: left;
-}
-
-#link:hover{
-    color: #fff;
-    background-color: #af3939;
-    text-decoration: none;
-}
-
-.dropdown{
-    color: #af3939;
-}
-
-.dropdown:hover{
-    color: #fff;
-    background-color: #af3939;
-    text-decoration: none;
-}
-
-.navbar-custom{
-
-    font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    text-transform: uppercase;
-    font-weight: 300;;
-    border: none;
-    background: #af3939;
-    background: -moz-linear-gradient(top, #af3939 0%, #614747 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9368E9), color-stop(100%, #614747));
-    background: -webkit-linear-gradient(top, #af3939 0%, #614747 100%)
-    background: -o-linear-gradient(top, #af3939 0%, #614747 100%);
-    background: -ms-linear-gradient(top, #af3939 0%, #614747 100%);
-    background: linear-gradient(to bottom, #af3939 0%, #614747 100%);
-
-}
-
-.navbar-custom .navbar-nav li a:hover {
-    color: #fff;
-    background-color: #af3939;
-}
-
-.navbar-custom .navbar-nav li a:active,
-.navbar-custom .navbar-nav li a:focus {
-    color: #fff;
-    background-color: #af3939;
-}
-
-.navbar-custom .navbar-nav li.active a,
-.navbar-custom .navbar-nav li.active a:active,
-.navbar-custom .navbar-nav li.active a:focus,
-.navbar-custom .navbar-nav li.active a:hover {
-    color: #fff;
-    background: #af3939;
-}
-
-.navbar-custom .navbar-toggle {
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 10px;
-    border-color: #000;
-}
-
-.nav{
-
-    text-transform: uppercase;
-}
-
-.navbar-custom .navbar-toggle:focus,
-.navbar-custom .navbar-toggle:hover {
-
-  background-color: #af3939;
-  color: #fff;
-  border-color: #000;
-
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}

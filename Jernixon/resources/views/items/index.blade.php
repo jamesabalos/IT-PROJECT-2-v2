@@ -67,7 +67,7 @@ class="active"
                                         <th>Description</th>
                                         <th>Price</th>
                                         <th>created_at</th>
-                                        <th>updated_at</th>
+                                        <th>Reorder Level</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -459,7 +459,22 @@ class="active"
             </div>
         </div>
     </div>
-    
+
+    <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+            <div class = "modal-dialog modal-lg">
+                    <div class = "modal-content">
+                        <div class = "modal-body">
+                                <div class="modal-header">
+                                    <button class="close" data-dismiss="modal">&times;</button>
+                                    <h4>Item History</h4>
+                
+                                </div>
+                        </div>
+                    </div>
+            </div>
+ 
+ 
+    </div>
     
     @endsection
     

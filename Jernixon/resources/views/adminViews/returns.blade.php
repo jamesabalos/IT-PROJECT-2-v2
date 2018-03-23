@@ -251,7 +251,7 @@ ng-app="ourAngularJsApp"
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
-                            Update Return Item
+                             Return Item
                         </strong>
                     </div>
                     <div class="panel-body">

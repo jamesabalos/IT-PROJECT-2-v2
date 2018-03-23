@@ -124,7 +124,7 @@ class="active"
                                             <td>Quantity</td>
                                             <td>Wholesale Price</td>
                                             <td>Retail Price</td>
-                                            <td>Total Price</td>
+                                            {{--  <td>Total Price</td>  --}}
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

@@ -80,7 +80,7 @@ Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');
 Route::get('admin/reports/getReports', 'AdminController@getReports')->name('reports.getReports');
 
 
-Route::DELETE('admin/employees/destroyEmployeeAccount/{id}', 'AdminController@destroyEmployeeAccount')->name('admin.destroyEmployeeAccount');
+// Route::DELETE('admin/employees/destroyEmployeeAccount/{id}', 'AdminController@destroyEmployeeAccount')->name('admin.destroyEmployeeAccount');
 Route::Put('admin/employees/updateEmployeeAccount/{id}', 'AdminController@updateEmployeeAccount')->name('admin.updateEmployeeAccount');
 Route::Post('admin/employees/addNewEmployee', 'AdminController@addNewEmployee')->name('admin.addNewEmployee');
 Route::get('admin/employees', 'AdminController@employees')->name('admin.employees');

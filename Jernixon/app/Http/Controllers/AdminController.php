@@ -167,6 +167,9 @@ class AdminController extends Controller
                 <a href = '#editModal' data-toggle='modal' >
                     <button id='Edit' class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i>Edit</button>
                 </a>
+                <a href = '#viewHistory' data-toggle='modal' >
+                    <button class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i>History</button>
+                </a>
 
                 ";
 

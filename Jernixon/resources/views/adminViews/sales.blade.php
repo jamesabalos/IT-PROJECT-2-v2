@@ -130,6 +130,9 @@ ng-app="ourAngularJsApp"
                                 <div class="col-md-5" margin >
                                     <input ng-model="typeName" placeholder="Customer Name" ng-change="myFunction()" type="text" class="form-control border-input" form="purchase" required style="float: left">
                                 </div>
+                                <div class="col-md-5" margin >
+                                    <input ng-model="typeName" placeholder="Receipt" ng-change="myFunction()" type="text" class="form-control border-input" form="purchase" required style="float: left">
+                                </div>
                             </div>
                             
                             <div class="row"> 
@@ -139,7 +142,7 @@ ng-app="ourAngularJsApp"
                                             <tr>
                                                 <td>Item</td>
                                                 <td>Quantity Left</td>
-                                                <td>Wholesale Price</td>
+                                                <td>Purchase Price</td>
                                                 <td>Retail Price</td>
                                                 <td>Quantity Purchase</td>
                                                 <td>Sales Price</td>

@@ -95,7 +95,7 @@ class="active"
                 },
                 error:function(data){
                     var response = data.responseJSON;
-                    $("#errorDivAddNewEmployee").removeClass("hidden").addClass("alert-danger");
+                    $("#errorDivAddNewEmployee").removeClass("hidden").addClass("alert-danger text-center");
                     $("#errorDivAddNewEmployee").html(function(){
                         var addedHtml="";
                         for (var key in response.errors) {
@@ -343,6 +343,9 @@ class="active"
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title">Add Employee</h3>
             </div>
+            <div id="errorDivAddNewEmployee" class="hidden">
+                    <p>hello</p>
+            </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -351,6 +354,8 @@ class="active"
                             Update Employee
                         </strong>
                     </div>
+
+                    {!! Form::open(['method'=>'post','id'=>'formAddNewEmployee']) !!}                    
                     <div class="panel-body">
                         <input type="hidden" id="_token" value="{{ csrf_token() }}">
 
@@ -403,7 +408,7 @@ class="active"
                     <div class="row">
                         <div class="text-right">                                           
                             <div class="col-md-12">   
-                                <button id="submitNewItems" type="submit" onclick="window.alert('to be continue..')" class="btn btn-success">Save</button>
+                                <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
                                 <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>

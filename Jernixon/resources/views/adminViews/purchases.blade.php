@@ -237,14 +237,14 @@ ng-app="ourAngularJsApp"
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Purchase Order</h3>
+                <h3 class="modal-title">Purchase</h3>
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
-                            Update Purchase Order
+                            Create Purchase
                         </strong>
                     </div>
                     <div class="panel-body">
@@ -267,7 +267,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Official Receipt No:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{ Form::number('Official Receipt No','',['class'=>'form-control','placeholder'=>'Official Receipt No','min'=>'1']) }}
+                                    {{ Form::text('Official Receipt No','',['class'=>'form-control','placeholder'=>'Official Receipt No']) }}
                                 </div>
                             </div>
                         </div>
@@ -297,17 +297,17 @@ ng-app="ourAngularJsApp"
                                 </tbody>
                             </table>
 
-                            <div class="autocomplete" style="width:100%;">
-                                <input autocomplete="off" type="text" id="searchItemInput" name="item" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
-                                <div id="searchResultDiv" class="searchResultDiv">
-                                    {{--  <div>
-                                    <strong>Phi</strong>lippines
-                                    <input type="hidden" value="Philippines">
-                                    </div>  --}}
-                                </div>
-                            </div>
-
+                            
                         </div> 
+                                <div class="autocomplete" style="width:100%;">
+                                    <input autocomplete="off" type="text" id="searchItemInput" name="item" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                                    <div id="searchResultDiv" class="searchResultDiv">
+                                        {{--  <div>
+                                        <strong>Phi</strong>lippines
+                                        <input type="hidden" value="Philippines">
+                                        </div>  --}}
+                                    </div>
+                                </div>
                     </div>
                 </div>
                 {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}

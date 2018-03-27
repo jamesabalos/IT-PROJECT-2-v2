@@ -54,15 +54,17 @@ ng-app="ourAngularJsApp"
         var thatTbody = $("#inExchangeTbody tr td:first-child");
 
         for (var i = 0; i < thatTbody.length; i++) {
-            items[i] = thatTbody[i].innerHTML;
-        }        
-
+            // items[i] = thatTbody[i].innerHTML;
+            items[i] = thatTbody[i].childNodes[0].innerHTML;            
+            // console.log(thatTbody[i].childNodes[0].value)
+            // items[i] = thatTbody[i].childNodes[0].value;
+        }     
         if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
             var thatTable = document.getElementById("inExchangeTbody");
             var newRow = thatTable.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' value=" +itemName+ " disabled></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><p>"+itemName+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +itemName+ "'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]' min='1' class='form-control' disabled></td>";
             newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
@@ -94,6 +96,8 @@ ng-app="ourAngularJsApp"
                     var node = document.createElement("DIV");
                     node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
                     var pElement = document.createElement("P");
+                    //add the price
+                    //pElement.setAttribute("data-price" , data[i].) 
                     var textNode = document.createTextNode(data[i].description);
                     pElement.appendChild(textNode);
                     node.appendChild(pElement);          
@@ -110,9 +114,35 @@ ng-app="ourAngularJsApp"
     });
 
     $(document).ready(function(){
-        $('#formPurchaseOrder').on('submit',function(e){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#formReturnItem').on('submit',function(e){
             e.preventDefault();
-            alert("clicked")
+            var data = $(this).serialize();           
+            
+            $.ajax({
+                type:'POST',
+                // url:'admin/storeNewItem',
+                url: "{{route('admin.createReturnItem')}}",
+                dataType:'json',
+                // data:{
+                //     'name': arrayOfData[1].value,
+                // },
+
+                // data:{data},
+                data:data,
+                //_token:$("#_token"),
+                success:function(data){
+                    console.log(data)
+
+                },
+                error:function(data){
+                    console.log(data)
+                }
+            });
 
         })
 
@@ -141,7 +171,7 @@ ng-app="ourAngularJsApp"
               "buttons": [
                   {
                       extend: 'collection',
-                      text: 'EXPORT (excel : pdf : csv : print)',
+                      text: 'EXPORT',
                       buttons: [
                           'copy',
                           'excel',
@@ -240,7 +270,7 @@ ng-app="ourAngularJsApp"
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
 
-            {!! Form::open(['method'=>'post','id'=>'formReturn']) !!}
+            {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -255,7 +285,6 @@ ng-app="ourAngularJsApp"
                         </strong>
                     </div>
                     <div class="panel-body">
-                        <input type="hidden" id="_token" value="{{ csrf_token() }}">
 
                         <div class="form-group">
                             <div class="row">
@@ -313,13 +342,10 @@ ng-app="ourAngularJsApp"
 
                                 <tbody>
                                     <tr>
-                                        <td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>
-                                        <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
-                                        <td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>
-                                        {{--  <td><input  type='text'></td>
-                                        <td><input  type='text' ></td>
-                                        <td><input  type='text' ></td>  --}}
-                                        <td><input class='form-control' type="checkbox"></td>
+                                            {{--  <td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>
+                                            <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
+                                            <td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>
+                                            <td><input class='form-control' type="checkbox"></td>  --}}
                                     </tr>
                                 </tbody>
                             </table>
@@ -359,7 +385,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitNewItems" type="submit" onclick="window.alert('to be continue..')" class="btn btn-success">Save</button>
+                            <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>

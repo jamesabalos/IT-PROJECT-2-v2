@@ -92,6 +92,15 @@ class AdminController extends Controller
             ->make(true);
 
     }
+
+    public function createSales(Request $request){
+        // $data = DB::table('products')->select('*');
+         //return $data;
+         return response($request->all());
+         
+            
+     }
+
     public function getDataPoints(){
 
     }
@@ -112,10 +121,25 @@ class AdminController extends Controller
         return Datatables::of($data)
             ->make(true);
     }
+    public function createPurchase(Request $request){
+       // $data = DB::table('products')->select('*');
+        //return $data;
+        return response($request->all());
+        
+           
+    }
+    
     public function getReturns(){
         $data = DB::table('products')->select('*');
         return Datatables::of($data)
-            ->make(true);
+        ->make(true);
+    }
+    public function createReturnItem(Request $request){
+        // $data = DB::table('products')->select('*');
+        //return $data;
+        return response($request->all());
+        
+            
     }
     public function getReports(){
         $data = DB::table('products')->select('*');
@@ -263,6 +287,14 @@ class AdminController extends Controller
         return redirect('/admin/employees');
 
     }
+
+    public function createStockAdjustment(Request $request){
+        // $data = DB::table('products')->select('*');
+         //return $data;
+         return response($request->all());
+         
+            
+     }
 
 
 

@@ -50,25 +50,25 @@ ng-app="ourAngularJsApp"
         localStorage.removeItem(data[0].innerHTML);
 
         //show the plus sign button again
-        document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
+        // document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
     }
 
-    function addRow(itemName){
+    function addRow(div){
         var items =[];
-        var thatTbody = $("#stockTable tr td:first-child");
+        var thatTbody = $("#stockTable tr td:nth-child(2)");
 
         for (var i = 0; i < thatTbody.length; i++) {
-            items[i] = thatTbody[i].innerHTML;
+            items[i] = thatTbody[i].firstChild.value;
         }        
 
-        if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
+        if( items.indexOf(div.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
             var thatTable = document.getElementById("stockTable");
             var newRow = thatTable.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' value=" +itemName+ " disabled></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' disabled></td>";
-            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
-            newRow.insertCell(-1).innerHTML = "<td><button type='button' class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='text' name='employeeName[]' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' value='" +div.firstChild.innerHTML+ "' disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><select name='status[]' class='form-control' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"  +div.getAttribute("id")+ "'><button type='button' class='btn btn-danger form-control' data-item-id='" +div.getAttribute("id")+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
 
@@ -97,7 +97,9 @@ ng-app="ourAngularJsApp"
                 resultDiv.innerHTML = "";
                 for (var i = 0;  i< data.length; i++) {
                     var node = document.createElement("DIV");
-                    node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                    // node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                    node.setAttribute("onclick","addRow(this)");
+                    node.setAttribute("id",data[i].product_id);
                     var pElement = document.createElement("P");
                     var textNode = document.createTextNode(data[i].description);
                     pElement.appendChild(textNode);
@@ -111,6 +113,43 @@ ng-app="ourAngularJsApp"
     }
     
     $(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#formStockAdjustment').on('submit',function(e){
+            e.preventDefault();
+
+            var data = $(this).serialize();           
+            var arrayOfData = $(this).serializeArray();           
+            console.log(data)
+
+             $.ajax({
+                type:'POST',
+                // url:'admin/storeNewItem',
+                url: "{{route('admin.createStockAdjustment')}}",
+                dataType:'json',
+                // data:{
+                //     'name': arrayOfData[1].value,
+                // },
+
+                // data:{data},
+                data:data,
+                //_token:$("#_token"),
+                success:function(data){
+                    console.log(data)
+
+                },
+                error:function(data){
+                    console.log(data)
+                }
+            });
+
+
+        })
+        
+
          $('#stockAdjustmentDataTable').DataTable({
               "destroy": true,
               "processing": true,
@@ -136,7 +175,7 @@ ng-app="ourAngularJsApp"
               "buttons": [
                   {
                       extend: 'collection',
-                      text: 'EXPORT (excel : pdf : csv : print)',
+                      text: 'EXPORT',
                       buttons: [
                           'copy',
                           'excel',
@@ -156,6 +195,7 @@ ng-app="ourAngularJsApp"
                   {data: 'description'},
               ]
           });
+ 
     })
 
 </script>
@@ -236,7 +276,7 @@ ng-app="ourAngularJsApp"
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
 
-            {!! Form::open(['method'=>'post','id'=>'formAdjustment']) !!}
+            {!! Form::open(['method'=>'post','id'=>'formStockAdjustment']) !!}
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -292,7 +332,7 @@ ng-app="ourAngularJsApp"
                             </table>
                         </div>
                         <div class="autocomplete" style="width:100%;">
-                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
+                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
                             <div id="searchResultDiv" class="searchResultDiv">
                             </div>
                         </div>
@@ -301,12 +341,14 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitNewItems" type="submit" onclick="window.alert('to be continue..')" class="btn btn-success">Save</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
             </div>
+            {!! Form::close() !!}
+            
         </div>
     </div>
 </div>

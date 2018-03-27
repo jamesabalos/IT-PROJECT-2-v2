@@ -54,14 +54,17 @@ Route::get('admin/logout','Auth\AdminLoginController@logout')->name('admin.logou
 
 Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('dashboard.getItems');
 Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');
+Route::Post('admin/sales/createSales', 'AdminController@createSales')->name('admin.createSales');
 
 Route::get('admin/purchases', 'AdminController@purchases')->name('admin.purchases');
 Route::get('admin/purchases/getPurchases', 'AdminController@getPurchases')->name('purchases.getPurchases');
+Route::Post('admin/purchaes/createPurchase', 'AdminController@createPurchase')->name('admin.createPurchase');
 
 Route::get('admin/searchItem/{itemName}', 'AdminController@searchItem');
 
 Route::get('admin/returns', 'AdminController@returns')->name('admin.returns');
 Route::get('admin/returns/getReturns', 'AdminController@getReturns')->name('returns.getReturns');
+Route::Post('admin/returns/createReturnItem', 'AdminController@createReturnItem')->name('admin.createReturnItem');
 
 Route::get('admin/physical_count', 'AdminController@physicalCount')->name('admin.physicalCount');
     
@@ -88,3 +91,4 @@ Route::get('admin/employees', 'AdminController@employees')->name('admin.employee
 
 Route::get('admin/stockAjustment', 'AdminController@stockAdjustment')->name('admin.stockAdjustment');
 Route::get('admin/stockAjustment/getStockAdjustment', 'AdminController@getStockAdjustment')->name('stockAdjustment.getStockAdjustment');
+Route::Post('admin/stockAjustment/createStockAdjustment', 'AdminController@createStockAdjustment')->name('admin.createStockAdjustment');

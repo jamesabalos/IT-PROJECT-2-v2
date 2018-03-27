@@ -45,17 +45,19 @@ ng-app="ourAngularJsApp"
         var thatTbody = $("#purchasetable tr td:first-child");
 
         for (var i = 0; i < thatTbody.length; i++) {
-            items[i] = thatTbody[i].innerHTML;
+            // items[i] = thatTbody[i].innerHTML;
+            items[i] = thatTbody[i].childNodes[0].innerHTML;            
+            // console.log(thatTbody[i].childNodes[0].innerHTML)
         }
-
+        
         if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
 
             var thatTable = document.getElementById("purchasetable");
             var newRow = thatTable.insertRow(-1);
-
-            newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><p>"+itemName+"</p><input type='hidden' name='itemName[]' value='" +itemName+ "'></td>";
+            // newRow. = "<input type='hidden' class='form-control' name='itemName[]' value='" +itemName+ "'>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]'  min='1' class='form-control'></td>";
             newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
         }
         document.getElementById("searchItemInput").value = "";
@@ -107,6 +109,12 @@ ng-app="ourAngularJsApp"
     }
 
     $(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
         $('#purchasesDataTable').DataTable({
               "destroy": true,
               "processing": true,
@@ -152,9 +160,35 @@ ng-app="ourAngularJsApp"
               ]
           });
 
+        
         $('#formPurchaseOrder').on('submit',function(e){
             e.preventDefault();
-            alert("clicked")
+
+            var data = $(this).serialize();           
+            var arrayOfData = $(this).serializeArray();           
+            console.log(data)
+
+             $.ajax({
+                type:'POST',
+                // url:'admin/storeNewItem',
+                url: "{{route('admin.createPurchase')}}",
+                dataType:'json',
+                // data:{
+                //     'name': arrayOfData[1].value,
+                // },
+
+                // data:{data},
+                data:data,
+                //_token:$("#_token"),
+                success:function(data){
+                    console.log(data)
+
+                },
+                error:function(data){
+                    console.log(data)
+                }
+            });
+
 
         })
 
@@ -300,7 +334,7 @@ ng-app="ourAngularJsApp"
                             
                         </div> 
                                 <div class="autocomplete" style="width:100%;">
-                                    <input autocomplete="off" type="text" id="searchItemInput" name="item" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
                                     <div id="searchResultDiv" class="searchResultDiv">
                                         {{--  <div>
                                         <strong>Phi</strong>lippines

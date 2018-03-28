@@ -282,7 +282,7 @@ class="active"
                             {{Form::label('description', 'Description:')}}
                         </div>
                         <div class="col-md-9">
-                            {{Form::text('description','',['class'=>'form-control','placeholder'=>'Description'])}}
+                            {{Form::text('description','',['class'=>'form-control'])}}
                         </div>
                     </div>
                 </div>
@@ -292,17 +292,7 @@ class="active"
                             {{Form::label('Quantity in stock:')}}
                         </div>
                         <div class="col-md-9">
-                            {{ Form::number('quantityInStock','',['class'=>'form-control','placeholder'=>'quantity','min'=>'1']) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">    
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
-                        </div>
-                        <div class="col-md-9">
-                            {{Form::number('wholeSalePrice','',['class'=>'form-control','placeholder'=>'Whole Sale Price','min'=>'1'])}}
+                            {{ Form::number('quantityInStock','',['class'=>'form-control','min'=>'1']) }}
                         </div>
                     </div>
                 </div>
@@ -312,10 +302,31 @@ class="active"
                             {{Form::label('Retail Price', 'Retail Price:')}}
                         </div>
                         <div class="col-md-9">                                    
-                            {{Form::number('retailPrice','',['class'=>'form-control','placeholder'=>'Retail Price','min'=>'1'])}}
+                            {{Form::number('retailPrice','',['class'=>'form-control','min'=>'1'])}}
                         </div>
                     </div>
                 </div>
+                <div class="form-group">    
+                    <div class="row">
+                        <div class="col-md-3">
+                            {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
+                        </div>
+                        <div class="col-md-9">
+                            {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1'])}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">    
+                    <div class="row">
+                        <div class="col-md-3">
+                            {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
+                        </div>
+                        <div class="col-md-9">
+                            {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1'])}}
+                        </div>
+                    </div>
+                </div>
+
                 @include('inc.messages')
                 {{--  </form>  --}}
                 {{--  <div class="modal-footer">  --}}
@@ -338,7 +349,7 @@ class="active"
 <div id="editModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
-{!! Form::open(['method'=>'post','id'=>'formEdit']) !!}
+            {!! Form::open(['method'=>'post','id'=>'formEdit']) !!}
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title">Edit Items</h3>
@@ -347,55 +358,65 @@ class="active"
             <div class = "modal-body">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                                            <strong>
+                        <strong>
                             <span class="glyphicon glyphicon-th"></span>
                             Update Items
                         </strong>
                     </div>
                     <div class="panel-body">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{Form::label('description', 'Description:')}}
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('description', 'Description:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('description','',['class'=>'form-control'])}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            {{Form::text('description','',['class'=>'form-control'])}}
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Quantity in stock:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ Form::number('quantityInStock','',['class'=>'form-control','disabled']) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">   
+                            <div class="row">
+                                <div class="col-md-3">                                                             
+                                    {{Form::label('Retail Price', 'Retail Price:')}}
+                                </div>
+                                <div class="col-md-9">                                    
+                                    {{Form::number('retailPrice','',['class'=>'form-control','disabled'])}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1','disabled'])}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">   
+                            <div class="row">
+                                <div class="col-md-3">                                                             
+                                    {{Form::label('Reorder Level', 'Reorder Level:')}}
+                                </div>
+                                <div class="col-md-9">                                    
+                                    {{Form::number('reorderLevel','',['class'=>'form-control'])}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">                                
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{Form::label('Quantity in stock:')}}
-                        </div>
-                        <div class="col-md-9">
-                            {{ Form::number('quantityInStock','',['class'=>'form-control','placeholder'=>'?','disabled']) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">    
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
-                        </div>
-                        <div class="col-md-9">
-                            {{Form::number('wholeSalePrice','',['class'=>'form-control','placeholder'=>'','min'=>'1'])}}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">   
-                    <div class="row">
-                        <div class="col-md-3">                                                             
-                            {{Form::label('Retail Price', 'Retail Price:')}}
-                        </div>
-                        <div class="col-md-9">                                    
-                            {{Form::number('retailPrice','',['class'=>'form-control','placeholder'=>'?'])}}
-                        </div>
-                    </div>
-                </div>
-                    </div>
-                </div>
-                                <div class="row">
+                <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
                             <button id="submitPurchases" type="submit" class="btn btn-success">Save</button>
@@ -404,12 +425,12 @@ class="active"
                     </div>
                 </div>
                 @include('inc.messages')
-            {!! Form::close() !!}
+                {!! Form::close() !!}
 
 
+            </div>
         </div>
     </div>
-</div>
 
 </div>
 

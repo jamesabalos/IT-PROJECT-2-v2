@@ -3970,11 +3970,6 @@ fieldset[disabled] .btn-neutral.active {
         border-color: #000;
     }
 
-    .nav{
-
-        text-transform: uppercase;
-    }
-
     .navbar-custom .navbar-toggle:focus,
     .navbar-custom .navbar-toggle:hover {
 
@@ -4001,3 +3996,7 @@ fieldset[disabled] .btn-neutral.active {
     }
 }
 
+.nav{
+
+    text-transform: uppercase;
+}

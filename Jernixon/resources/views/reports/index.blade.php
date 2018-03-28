@@ -120,10 +120,10 @@ class="active"
                                 <table id="transactionsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead >
                                         <tr>
-                                            <td>Item Purchased</td>
-                                            <td>Quantity</td>
-                                            <td>Wholesale Price</td>
-                                            <td>Retail Price</td>
+                                            <th>Item Purchased</th>
+                                            <th>Quantity</th>
+                                            <th>Wholesale Price</th>
+                                            <th>Retail Price</th>
                                             {{--  <td>Total Price</td>  --}}
                                         </tr>
                                     </thead>

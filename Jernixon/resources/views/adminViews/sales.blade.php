@@ -104,6 +104,8 @@ ng-app="ourAngularJsApp"
                         type:'POST',
                         // url:'admin/storeNewItem',
                         url: "{{route('admin.createSales')}}",
+//                        dataType:'json',
+
                         // data:{
                         //     'name': arrayOfData[1].value,
                         // },
@@ -138,11 +140,45 @@ ng-app="ourAngularJsApp"
                              
                             //remove all rows in cart
                             $("#cartTbody tr").remove();
+                            
+                            //prompt the message
+                            
+//                            $("#successDiv").css("display:block");
+//                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
+//                            $("#successDiv").slideDown("slow");
+                            
+                            $("#successDiv p").remove();
+                            $("#successDiv").removeClass("alert-danger hidden").addClass("alert-success")
+                            // .addClass("alert-success")
+                                .html("<h3>Transaction successful</h3>");
+
+//                            $("#successDiv").css("display:block");
+                            $("#successDiv").slideDown("slow")
+                                            .delay(1000)                        
+                                            .hide(1500);
+//                            $("#successDiv").removeAttribute("style")
+                            
+
                         },
                         
                        
                         error:function(data){
-                            console.log(data)
+                            var response = data.responseJSON;
+                            console.log(response)
+
+                             //prompt the message
+                            $("#successDiv").css("display","block");
+//                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
+//                            $("#successDiv").slideDown("slow");
+//                            $("#successDiv").css("display:block");
+                            $("#successDiv").removeClass("alert-success hidden").addClass("alert-danger");
+                            $("#successDiv").html(function(){
+                                var addedHtml="";
+                                for (var key in response.errors) {
+                                    addedHtml += "<p>"+response.errors[key]+"</p>";
+                                }
+                                return addedHtml;
+                            });
                         }
                     });
                     // .done(function(data) {
@@ -161,7 +197,7 @@ ng-app="ourAngularJsApp"
         @endsection
         
         @section('linkName')
-        <h3><i class="fa fa-dollar"></i> Sales</h3>
+        <h3>Sales</h3>
         @endsection
         
         @section('right')
@@ -199,7 +235,8 @@ ng-app="ourAngularJsApp"
                 <div class="col-md-12" >
                     <div class="card" >
                         <div class="header" >
-                            
+                            <div class="alert alert-success hidden" id="successDiv">
+                            </div>
                             {!! Form::open(['method'=>'post','id'=>'formSales']) !!}                                
                             <h4 ng-bind="name">Customer Purchase</h4>
                             <div class="row">

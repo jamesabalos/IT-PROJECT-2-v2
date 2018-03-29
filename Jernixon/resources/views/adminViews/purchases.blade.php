@@ -11,7 +11,7 @@ onload="refresh()"
 ng-app="ourAngularJsApp"
 @endsection  --}}
 @section('linkName')
-<h3><i class="fa fa-cube" style="margin-right: 10px"></i> Purchases</h3>
+<h3>Purchases</h3>
 @endsection
 
 @section('headScript')
@@ -40,7 +40,7 @@ ng-app="ourAngularJsApp"
 
 
 <script type="text/javascript">
-    function addRow(itemName){
+    function addRow(div){
         var items =[];
         var thatTbody = $("#purchasetable tr td:first-child");
 
@@ -48,21 +48,53 @@ ng-app="ourAngularJsApp"
             items[i] = thatTbody[i].innerHTML;
         }
 
-        if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
+        if( items.indexOf(div.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
 
             var thatTable = document.getElementById("purchasetable");
             var newRow = thatTable.insertRow(-1);
 
-            newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+            newRow.insertCell(-1).innerHTML = "<td>" +div.firstChild.innerHTML+ "</td>";
+            newRow.insertCell(-1).innerHTML = "<td><input name='quantity[]' type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input name='price[]' type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='product_id[]' value='" +div.getAttribute("id")+ "'><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
         }
         document.getElementById("searchItemInput").value = "";
         document.getElementById("searchResultDiv").innerHTML = "";
     }
 
-                 
+    function searchItem(a){
+        if(a.value === ""){
+            document.getElementById("searchResultDiv").innerHTML ="";   
+        }
+        $.ajax({
+            method: 'get',
+            //url: 'items/' + document.getElementById("inputItem").value,
+            url: 'searchItem/' + a.value,
+            dataType: "json",
+            success: function(data){
+                //    console.log(data)
+                // <div>
+                //     <strong>Phi</strong>lippines
+                //     <input type="hidden" value="Philippines">
+                // </div>
+
+                var resultDiv = document.getElementById("searchResultDiv");
+                resultDiv.innerHTML = "";
+                for (var i = 0;  i< data.length; i++) {
+                    var node = document.createElement("DIV");
+                    node.setAttribute("id",data[i].product_id)
+                    node.setAttribute("onclick","addRow(this)")
+                    var pElement = document.createElement("P");
+                    var textNode = document.createTextNode(data[i].description);
+                    pElement.appendChild(textNode);
+                    node.appendChild(pElement);          
+                    resultDiv.appendChild(node);  
+
+                }
+            }
+        });
+
+    }
 	
 	function getItems(button){
 		
@@ -87,7 +119,7 @@ ng-app="ourAngularJsApp"
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                 }
-                document.getElementById("supplierName").innerHTML = data[0].name;
+                document.getElementById("supplierName").innerHTML = data[0].supplier_name;
                 document.getElementById("poDate").innerHTML = data[0].created_at;
                 document.getElementById("officialReceiptNumber").innerHTML = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
 
@@ -97,16 +129,16 @@ ng-app="ourAngularJsApp"
 		
 	}
 
-      document.addEventListener("click", function (e) {
-          document.getElementById("searchResultDiv").innerHTML = "";
-      });
-      function removeRow(a){
-          $(a.parentNode.parentNode).hide(500,function(){
-              this.remove();  
-          });
-          // a.parentNode.parentNode.remove();
+    document.addEventListener("click", function (e) {
+        document.getElementById("searchResultDiv").innerHTML = "";
+    });
+    function removeRow(a){
+        $(a.parentNode.parentNode).hide(500,function(){
+            this.remove();  
+        });
+        // a.parentNode.parentNode.remove();
 
-      }
+    }
 
     $(document).ready(function(){
 		
@@ -159,39 +191,23 @@ ng-app="ourAngularJsApp"
               ]
           });
 
+        $('#formPurchaseOrder').on('submit',function(e){
+            e.preventDefault();
+            var data = $(this).serialize();
 
-          $('#formPurchaseOrder').on('submit',function(e){
-              e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url: "{{route('admin.createPurchases')}}",
+                data: data,
 
-              var data = $(this).serialize();           
-              var arrayOfData = $(this).serializeArray();           
-              console.log(data)
+                success:function(data){
+                    console.log(data)
+                }
+		  });
 
-              $.ajax({
-                  type:'POST',
-                  // url:'admin/storeNewItem',
-                  url: "{{route('admin.createPurchase')}}",
-                  dataType:'json',
-                  // data:{
-                  //     'name': arrayOfData[1].value,
-                  // },
+        })
 
-                  // data:{data},
-                  data:data,
-                  //_token:$("#_token"),
-                  success:function(data){
-                      console.log(data)
-
-                  },
-                  error:function(data){
-                      console.log(data)
-                  }
-              });
-
-
-          })
-
-      });
+    });
 
 </script>
 
@@ -237,7 +253,7 @@ ng-app="ourAngularJsApp"
             <div class="card">
                 <div class="header">
                     <a href = "#purchase" data-toggle="modal">
-                        <button type="button" class="btn btn-success">Create Purchase Order</button>
+                            <button type="button" class="btn btn-success">Create Purchase Order</button>
                     </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="purchasesDataTable">
@@ -281,7 +297,7 @@ ng-app="ourAngularJsApp"
                         </strong>
                     </div>
                     <div class="panel-body">
-                        {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
+           
 
                         <div class="form-group">
                             <div class="row">
@@ -289,7 +305,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::text('Date','',['class'=>'form-control','value'=>''])}}
+                                    {{Form::date('Date','',['class'=>'form-control','value'=>''])}}
                                 </div>
                             </div>
                         </div>
@@ -315,11 +331,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-                        <div class="autocomplete" style="width:100%;">
-                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
-                            <div id="searchResultDiv" class="searchResultDiv">
-                            </div>
-                        </div>
+
                         <div class="content table-responsive">
                             <table class="table table-bordered table-striped" >
                                 <thead>
@@ -327,19 +339,31 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Price</th>
+                                        <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="purchasetable">
                                 </tbody>
-                            </table> 
-                        </div> 
+                            </table>
 
+                            
+                        </div> 
+                                <div class="autocomplete" style="width:100%;">
+                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                                    <div id="searchResultDiv" class="searchResultDiv">
+                                        {{--  <div>
+                                        <strong>Phi</strong>lippines
+                                        <input type="hidden" value="Philippines">
+                                        </div>  --}}
+                                    </div>
+                                </div>
                     </div>
                 </div>
+                {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitPurchases" type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -355,9 +379,6 @@ ng-app="ourAngularJsApp"
 <div id="purchasesModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
-
-            {{--  {!! Form::open(['method'=>'get','id'=>'formPurchaseOrder']) !!}
-            <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>

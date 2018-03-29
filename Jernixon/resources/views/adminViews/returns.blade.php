@@ -73,6 +73,40 @@ ng-app="ourAngularJsApp"
         document.getElementById("searchResultDiv").innerHTML = "";
 
     }
+    function addReturnItem(ORNumber){
+        var items =[];
+        var thatTbody = $("#returnItemTbody tr td:first-child");
+        
+         $.ajax({
+            method: 'get',
+            url: "{{route('admin.getORNumberItems')}}",
+            data:{
+                 'ORNumber': ORNumber,
+            },        
+            success: function(data){
+                $("#returnItemTbody tr").remove();
+                console.log(data)
+                var modalReturnItemTbody = document.getElementById("returnItemTbody");
+                for(var i = 0; i < data.length; i++){
+                    var newRow = modalReturnItemTbody.insertRow(-1);
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "'></td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td><input type='checkbox' class='form-control'></td>";
+                }
+                document.getElementById("Date").value = data[0].created_at;
+                document.getElementById("Customer").value = data[0].customer_name;
+              
+
+                
+            }
+            });
+
+
+        document.getElementById("searchORNumberInput").value = ORNumber ;
+        document.getElementById("resultORNumberDiv").innerHTML = "";
+
+    }
 
     function searchItem(a){
         if(a.value === ""){
@@ -107,6 +141,42 @@ ng-app="ourAngularJsApp"
             }
         });
 
+    }
+      
+    function searchOfficialReceipt(a){
+        
+		var officialReceipt = a.value;
+		var fullRoute = "/admin/returns/getORNumber/"+officialReceipt;
+        if(a.value === ""){
+            document.getElementById("resultORNumberDiv").innerHTML ="";   
+        }else{
+            $.ajax({
+            method: 'get',
+            //url: 'items/' + document.getElementById("inputItem").value,
+            url: fullRoute,
+//            dataType: "json",
+            
+            success: function(data){
+                var resultORNumberDiv = document.getElementById("resultORNumberDiv");
+                resultORNumberDiv.innerHTML = "";
+                for (var i = 0;  i< data.length; i++) {
+                    var node = document.createElement("DIV");
+                    node.setAttribute("onclick","addReturnItem(this.firstChild.innerHTML)")
+                    var pElement = document.createElement("P");
+                    //add the price
+                    //pElement.setAttribute("data-price" , data[i].) 
+                    var textNode = document.createTextNode(data[i].or_number);
+                    pElement.appendChild(textNode);
+                    node.appendChild(pElement);          
+                    resultORNumberDiv.appendChild(node);  
+//
+                }
+                console.log(data)
+                
+            }
+            });
+        }
+        
     }
 
     document.addEventListener("click", function (e) {
@@ -184,10 +254,10 @@ ng-app="ourAngularJsApp"
 
               "ajax":  "{{ route('returns.getReturns') }}",
               "columns": [
-                  {data: 'description'},
+                  {data: 'or_number'},
                 //   {data: 'price'},
                   {data: 'created_at'},
-                  {data: 'updated_at'},
+                  {data: 'action'},
               ]
           });
 
@@ -232,7 +302,7 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('linkName')
-<h3><i class="fa fa-mail-reply" style="margin-right:10px"> </i> Returns</h3>
+<h3>Returns</h3>
 @endsection
 
 @section('right')
@@ -274,14 +344,14 @@ ng-app="ourAngularJsApp"
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Return Item</h3>
+                <h3 class="modal-title">Returns</h3>
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
-                             Return Item
+                             Information
                         </strong>
                     </div>
                     <div class="panel-body">
@@ -303,7 +373,10 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Official Receipt No:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{ Form::number('Official Receipt No','',['class'=>'form-control','placeholder'=>'Official Receipt No','min'=>'1']) }}
+<!--                                    {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}-->
+                        <input autocomplete="off" id="searchORNumberInput" type="number" id="searchOR" onkeyup="searchOfficialReceipt(this)" name="ORnumber" class="form-control border-input">
+                                     <div id="resultORNumberDiv" class="searchResultDiv">
+                            </div>
                                 </div>
                             </div>
                         </div>
@@ -340,13 +413,7 @@ ng-app="ourAngularJsApp"
                                     </tr>
                                 </thead>
 
-                                <tbody>
-                                    <tr>
-                                            {{--  <td>{{Form::text('Description','',['class'=>'form-control','value'=>'','disabled'])}}</td>
-                                            <td>{{Form::number('Quantity','',['class'=>'form-control','min'=>'1'])}}</td>
-                                            <td>{{Form::text('Price','',['class'=>'form-control','value'=>'','disabled'])}}</td>
-                                            <td><input class='form-control' type="checkbox"></td>  --}}
-                                    </tr>
+                                <tbody id="returnItemTbody">
                                 </tbody>
                             </table>
                         </div>

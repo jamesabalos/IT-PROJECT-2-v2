@@ -92,11 +92,23 @@ class AdminController extends Controller
 
         $arrayCount = count($request->productIds);
 		$mytime = date('Y-m-d H:i:s');
-        for($i = 0;$i<$arrayCount;$i++){
-			$insert = DB::table('sales')->insert(
-				['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $mytime,]
-			);
-		}return "insert successful";
+		$successful = true;
+		
+		$data = DB::table('sales')
+					->select('or_number')
+					->where('or_number' , '=' , $request->receiptNumber)
+					->get();
+		
+		if($data->isEmpty()){
+			for($i = 0;$i<$arrayCount;$i++){
+				$insert = DB::table('sales')->insert(
+					['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $mytime,]
+				);
+			}
+			return "successful";
+		}else{
+			return "unsuccessful";
+		}
     }
 	 
 	 
@@ -112,8 +124,43 @@ class AdminController extends Controller
         return $item;
     }
 
+    public function createPurchases(Request $request){
+        
+        
+        $this->validate($request,[
+            'Date' => 'required',
+            'Official_Receipt_No' => 'required',
+            'Supplier' => 'required',
+            'price' => 'required',
+            'product_id' => 'required',
+            'quantity' => 'required',
+        ]);
+        
+        $arrayCount = count($request->product_id);
+		$successful = true;
+		
+		$data = DB::table('purchases')
+					->select('po_id')
+					->where('po_id' , '=' , $request->Official_Receipt_No)
+					->get();
+		
+        if($data->isEmpty()){
+            for($i = 0;$i<$arrayCount;$i++){
+                $insert = DB::table('purchases')->insert(
+                    ['po_id' => $request->Official_Receipt_No, 'product_id' => $request->product_id[$i], 'supplier_name' => $request->Supplier, 'price' => $request->price[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date]
+                );
+            }
+            return "successful";
+        }else{
+            return "unsuccessful";
+        }
+    }
+
+    
     public function getPurchases(){
-        $data = DB::table('purchases')->select('po_id', 'created_at');
+        $data = DB::table('purchases')
+                    ->select('po_id', 'created_at')
+                    ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
@@ -131,14 +178,16 @@ class AdminController extends Controller
 	public function getPurchaseOrder($purchaseOrderId){
 		$data = DB::table('purchases')
 					->join('products', 'products.product_id' , '=' , 'purchases.product_id')
-					->join('suppliers', 'suppliers.supplier_id' , '=' , 'purchases.supplier_id')
-					->select('description', 'name', 'quantity', 'price', 'purchases.created_at')
+					->select('description', 'supplier_name', 'quantity', 'price', 'purchases.created_at')
 					->where('po_id', '=', $purchaseOrderId)
 					->get();
 		return $data;
 	}
+    
     public function getReturns(){
-        $data = DB::table('returns')->select('or_number', 'created_at');
+        $data = DB::table('returns')
+                    ->select('or_number', 'created_at')
+                    ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
@@ -152,6 +201,26 @@ class AdminController extends Controller
             })
             ->make(true);
     }
+    public function getORNumber($ORNumber){
+        $data = DB::table('sales')
+                    ->select('or_number')
+                    ->distinct()
+                    ->where('or_number','LIKE','%'.$ORNumber.'%')
+                    ->limit(5)
+                    ->get();
+        return $data;
+    }
+    public function getORNumberItems(Request $request){
+        
+        $data = DB::table('sales')
+                        ->join('products', 'products.product_id', '=', 'sales.product_id')
+                        ->select('description', 'customer_name', 'quantity', 'price', 'sales.created_at')
+                        ->where('or_number', '=', $request->ORNumber)
+                        ->get();
+        return $data;
+        
+    }
+    
     public function getReports(){
         $data = DB::table('sales')
 					->join('products', 'products.product_id', '=', 'sales.product_id')
@@ -238,12 +307,12 @@ class AdminController extends Controller
         // return "success";
         // return redirect('/items')->with('success','Success adding item');
     }
-public function itemsChangeStatus(Request $request, $id){
-    $product = Product::find($id);
-    $product->status= $request->input('status');
-    $product->save();
-    return response($request->all());
-}
+	public function itemsChangeStatus(Request $request, $id){
+		$product = Product::find($id);
+		$product->status= $request->input('status');
+		$product->save();
+		return response($request->all());
+	}
 
     // public function getTransactions(){
     //     $data = DB::table('products')->select('*');

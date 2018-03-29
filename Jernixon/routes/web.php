@@ -60,7 +60,7 @@ Route::Post('admin/sales/createSales', 'AdminController@createSales')->name('adm
 
 Route::get('admin/purchases', 'AdminController@purchases')->name('admin.purchases');
 Route::get('admin/purchases/getPurchases', 'AdminController@getPurchases')->name('purchases.getPurchases');
-Route::Post('admin/purchaes/createPurchase', 'AdminController@createPurchase')->name('admin.createPurchase');
+Route::Post('admin/purchaes/createPurchase', 'AdminController@createPurchases')->name('admin.createPurchases');
 Route::Get('admin/purchases/getPurchaseOrder/{poid}', 'AdminController@getPurchaseOrder');
 
 Route::get('admin/searchItem/{itemName}', 'AdminController@searchItem');
@@ -68,6 +68,8 @@ Route::get('admin/searchItem/{itemName}', 'AdminController@searchItem');
 Route::get('admin/returns', 'AdminController@returns')->name('admin.returns');
 Route::get('admin/returns/getReturns', 'AdminController@getReturns')->name('returns.getReturns');
 Route::Post('admin/returns/createReturnItem', 'AdminController@createReturnItem')->name('admin.createReturnItem');
+Route::get('admin/returns/getORNumber/{ORNumber}', 'AdminController@getORNumber');
+Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')->name('admin.getORNumberItems');
 
 Route::get('admin/physical_count', 'AdminController@physicalCount')->name('admin.physicalCount');
     
@@ -78,7 +80,7 @@ Route::Post('admin/items/subtractQuantity','AdminController@subtractQuantity');
 Route::Post('admin/items/returnItem','AdminController@returnItem');
 Route::get('admin/items/getItems', 'AdminController@getItemsForItems')->name('items.getItems');
 Route::get('admin/items', 'AdminController@items')->name('admin.items');
-Route::Put('admin/items/changeStatus/{id}', 'AdminController@itemsChangeStatus');
+
 Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');
 // Route::get('admin/reports/getTransactions', 'AdminController@getTransactions')->name('reports.getTransactions');
 // Route::get('admin/reports/getItemsAdded', 'AdminController@getItemsAdded')->name('reports.getItemsAdded');

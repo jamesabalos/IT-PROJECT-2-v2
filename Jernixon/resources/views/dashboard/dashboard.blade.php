@@ -429,22 +429,27 @@ $(document).ready(function() {
 
 function barChart() {
   window.barChart = Morris.Bar({
-    element: 'bar-chart',
-    data: [
-      { y: 'Item 1', a: 100},
-      { y: 'Item 2', a: 75},
-      { y: 'Item 3', a: 50},
-      { y: 'Item 4', a: 75},
-      { y: 'Item 5', a: 50},
-    ],
-    xkey: 'y',
-    ykeys: ['a'],
-    labels: ['Series A'],
-    lineColors: ['#1e88e5'],
-    lineWidth: '3px',
-    resize: true,
-    redraw: true
-  });
+        element: 'bar-chart',
+        data: [
+        { y: 'Item 1', a: 100 },
+        { y: 'Item 2', a: 75 },
+        { y: 'Item 3', a: 50 },
+        { y: 'Item 4', a: 25 },
+        { y: 'Item 5', a: 20 }
+        ],
+        xkey: 'y',
+        ykeys: ['a'],
+        labels: ['Calls'],
+        hideHover: 'always',
+        barColors: function (row, series, type) {
+            console.log("--> "+row.label, series, type);
+            if(row.label == "Item 1") return "#fe0000";
+            else if(row.label == "Item 2") return "#ff7f00";
+            else if(row.label == "Item 3") return "#ffff00";
+            else if(row.label == "Item 4") return "#81ff81";
+            else if(row.label == "Item 5") return "#00ffff";
+        }
+    });
 }
 
 </script>

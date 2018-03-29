@@ -46,6 +46,33 @@ class="active"
     .bg-red{
         background-color: #FF7857;
     }
+
+    .morris-hover {
+  position:absolute;
+  z-index:1000;
+}
+
+.morris-hover.morris-default-style {     border-radius:10px;
+  padding:6px;
+  color:#666;
+  background:rgba(255, 255, 255, 0.8);
+  border:solid 2px rgba(230, 230, 230, 0.8);
+  font-family:sans-serif;
+  font-size:12px;
+  text-align:center;
+}
+
+.morris-hover.morris-default-style .morris-hover-row-label {
+  font-weight:bold;
+  margin:0.25em 0;
+}
+
+.morris-hover.morris-default-style .morris-hover-point {
+  white-space:nowrap;
+  margin:0.1em 0;
+}
+
+svg { width: 100%; }
     
     
 </style>
@@ -195,10 +222,15 @@ class="active"
                 
             }
 </script>
+
+<!-- <link rel="stylesheet" href="https://www.cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" /> -->
+<script src="{{asset('assets/js/raphael2.1.0.js')}}"></script>
+<script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
+<script src="{{asset('assets/js/morrisv05.js')}}"></script>
 @endsection
         
 @section('linkName')
-<h3><i class="fa fa-fw fa-dashboard"></i> Dashboard</h3>
+<h3>Dashboard</h3>
 @endsection
 
 @section('right')
@@ -246,7 +278,33 @@ class="active"
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Bar Chart -->
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Top Items
+
+                    </div>
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div id="bar-chart"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                  </div>
+
+                  <!-- end of chart -->
+
                 {{--  <div class="row">
                     
                     <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">

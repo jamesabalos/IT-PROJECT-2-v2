@@ -45,19 +45,17 @@ ng-app="ourAngularJsApp"
         var thatTbody = $("#purchasetable tr td:first-child");
 
         for (var i = 0; i < thatTbody.length; i++) {
-            // items[i] = thatTbody[i].innerHTML;
-            items[i] = thatTbody[i].childNodes[0].innerHTML;            
-            // console.log(thatTbody[i].childNodes[0].innerHTML)
+            items[i] = thatTbody[i].innerHTML;
         }
-        
+
         if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
 
             var thatTable = document.getElementById("purchasetable");
             var newRow = thatTable.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = "<td><p>"+itemName+"</p><input type='hidden' name='itemName[]' value='" +itemName+ "'></td>";
-            // newRow. = "<input type='hidden' class='form-control' name='itemName[]' value='" +itemName+ "'>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]'  min='1' class='form-control'></td>";
+
+            newRow.insertCell(-1).innerHTML = "<td>" +itemName+ "</td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
             newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
         }
         document.getElementById("searchItemInput").value = "";
@@ -96,6 +94,39 @@ ng-app="ourAngularJsApp"
         });
 
     }
+	
+	function getItems(button){
+		
+		var itemId = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+		// console.log(itemId);
+		var fullRoute = "/admin/purchases/getPurchaseOrder/"+itemId;
+		$.ajax({
+			type:'GET',
+			url: fullRoute,
+            // dataType: JSON,
+
+			success:function(data){
+				//add data to modal
+				//   console.log(data)
+                console.log(data)
+                $("#purchaseOrdertableTbody tr").remove();
+
+                var modalPurchaseTable = document.getElementById("purchaseOrdertableTbody");
+                for(var i = 0; i < data.length; i++){
+                    var newRow = modalPurchaseTable.insertRow(-1);
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                }
+                document.getElementById("supplierName").innerHTML = data[0].name;
+                document.getElementById("poDate").innerHTML = data[0].created_at;
+                document.getElementById("officialReceiptNumber").innerHTML = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+
+			}
+		});
+
+		
+	}
 
     document.addEventListener("click", function (e) {
         document.getElementById("searchResultDiv").innerHTML = "";
@@ -109,12 +140,12 @@ ng-app="ourAngularJsApp"
     }
 
     $(document).ready(function(){
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+		
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
         });
-
         $('#purchasesDataTable').DataTable({
               "destroy": true,
               "processing": true,
@@ -153,42 +184,15 @@ ng-app="ourAngularJsApp"
 
               "ajax":  "{{ route('purchases.getPurchases') }}",
               "columns": [
-                  {data: 'description'},
-                //   {data: 'dateCreated'},
+                  {data: 'po_id'},
                   {data: 'created_at'},
-                  {data: 'updated_at'},
+                  {data: 'action'},
               ]
           });
 
-        
         $('#formPurchaseOrder').on('submit',function(e){
             e.preventDefault();
-
-            var data = $(this).serialize();           
-            var arrayOfData = $(this).serializeArray();           
-            console.log(data)
-
-             $.ajax({
-                type:'POST',
-                // url:'admin/storeNewItem',
-                url: "{{route('admin.createPurchase')}}",
-                dataType:'json',
-                // data:{
-                //     'name': arrayOfData[1].value,
-                // },
-
-                // data:{data},
-                data:data,
-                //_token:$("#_token"),
-                success:function(data){
-                    console.log(data)
-
-                },
-                error:function(data){
-                    console.log(data)
-                }
-            });
-
+            alert("clicked")
 
         })
 
@@ -301,7 +305,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Official Receipt No:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{ Form::text('Official Receipt No','',['class'=>'form-control','placeholder'=>'Official Receipt No']) }}
+                                    {{ Form::text('Official Receipt No','',['class'=>'form-control']) }}
                                 </div>
                             </div>
                         </div>
@@ -324,7 +328,6 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Price</th>
-                                        <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="purchasetable">
@@ -360,7 +363,98 @@ ng-app="ourAngularJsApp"
         </div>
     </div>
 </div>
+
+<div id="purchasesModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+
+            {{--  {!! Form::open(['method'=>'get','id'=>'formPurchaseOrder']) !!}
+            <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
+
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">PO ID</h3>
+            </div>
+            <div class = "modal-body">  
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-th"></span>
+                            Purchases
+                        </strong>
+                    </div>
+                    <div class="panel-body">
+                        {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{--  {{Form::label('Date', 'Date:')}}  --}}
+                                    <label>Date:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    {{--  {{Form::text('Date','',['class'=>'form-control','value'=>''])}}  --}}
+                                    <p class="form-control" id="poDate"></p>                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{--  {{Form::label('Official Receipt No:')}}  --}}
+                                    <label>Official Receipt No:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    {{--  {{ Form::text('Official Receipt No','',['class'=>'form-control']) }}  --}}
+                                    <p class="form-control" id="officialReceiptNumber"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3 ">
+                                    {{--  {{Form::label('Supplier', 'Supplier:')}}  --}}
+                                    <label>Supplier</label>
+                                </div>
+                                <div class="col-md-9">
+                                    {{--  {{Form::text('Supplier','',['class'=>'form-control','value'=>''])}}  --}}
+                                    <p class="form-control" id="supplierName"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped" >
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="purchaseOrdertableTbody">
+                                </tbody>
+                            </table>
+                </div>
+                {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}
+                <div class="row">
+                    <div class="text-right">                                           
+                        <div class="col-md-12">   
+                            <button id="submitPurchases" type="button" class="btn btn-success">Close</button>
+                        </div>
+                    </div>
+                </div>
+                {{--  {!! Form::close() !!}  --}}
+
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
+
 
 @section('js_link')
 <!--   Core JS Files   -->

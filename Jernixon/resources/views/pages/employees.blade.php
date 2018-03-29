@@ -177,7 +177,7 @@ class="active"
         $(".formUpdateEmployeeAccount").on('click',function(button){
             button.preventDefault(); //prevent the page to load when submitting form
             var fullRoute = "/admin/employees/updateEmployeeAccount/"+button.currentTarget.attributes[0].value; //id
-            $.ajax({
+            $.ajax({ 
                 type:'PUT',
                 // url:'admin/storeNewItem',
                 // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',

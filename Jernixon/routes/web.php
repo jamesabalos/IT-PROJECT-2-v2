@@ -61,6 +61,7 @@ Route::Post('admin/sales/createSales', 'AdminController@createSales')->name('adm
 Route::get('admin/purchases', 'AdminController@purchases')->name('admin.purchases');
 Route::get('admin/purchases/getPurchases', 'AdminController@getPurchases')->name('purchases.getPurchases');
 Route::Post('admin/purchaes/createPurchase', 'AdminController@createPurchase')->name('admin.createPurchase');
+Route::Get('admin/purchases/getPurchaseOrder/{poid}', 'AdminController@getPurchaseOrder');
 
 Route::get('admin/searchItem/{itemName}', 'AdminController@searchItem');
 

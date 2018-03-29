@@ -95,39 +95,39 @@ class="active"
                 });
                 chart.render();
                 
-                var chart2 = new CanvasJS.Chart("leastItemsChart", {
-                    animationEnabled: true,
-                    animationDuration:5000,
-                    exportEnabled:true,
-                    exportFileName:"Least-Items",
-                    // creditText:"Jernixon",
-                    theme: "dark2", // "light1", "light2", "dark1", "dark2"
-                    title:{
-                        text: "Least items last February",
-                        // backgroundColor:"black",
-                        // fontColor:"white"
-                    },
-                    toolTip: {
-                        shared: true  
-                    },
-                    axisY: {
-                        title: "Quantity"
-                    },
-                    data: [{        
-                        type: "column", //column,line,area,pie,bar,doughnut 
-                        // showInLegend: true, 
-                        // legendMarkerColor: "grey",
-                        // legendText: "MMbbl = one million barrels",  
-                        dataPoints: [      
-                        { y: 17, label: "Item1",color:"orange" },
-                        { y: 58,  label: "Item2" },
-                        { y: 79,  label: "Item3" },
-                        ]
-                        // dataPoints: queryDataPoints,
-                    }]
+                // var chart2 = new CanvasJS.Chart("leastItemsChart", {
+                //     animationEnabled: true,
+                //     animationDuration:5000,
+                //     exportEnabled:true,
+                //     exportFileName:"Least-Items",
+                //     // creditText:"Jernixon",
+                //     theme: "dark2", // "light1", "light2", "dark1", "dark2"
+                //     title:{
+                //         text: "Least items last February",
+                //         // backgroundColor:"black",
+                //         // fontColor:"white"
+                //     },
+                //     toolTip: {
+                //         shared: true  
+                //     },
+                //     axisY: {
+                //         title: "Quantity"
+                //     },
+                //     data: [{        
+                //         type: "column", //column,line,area,pie,bar,doughnut 
+                //         // showInLegend: true, 
+                //         // legendMarkerColor: "grey",
+                //         // legendText: "MMbbl = one million barrels",  
+                //         dataPoints: [      
+                //         { y: 17, label: "Item1",color:"orange" },
+                //         { y: 58,  label: "Item2" },
+                //         { y: 79,  label: "Item3" },
+                //         ]
+                //         // dataPoints: queryDataPoints,
+                //     }]
                     
-                });
-                chart2.render();
+                // });
+                // chart2.render();
             }
             
             function searchItem(a){

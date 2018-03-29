@@ -31,16 +31,18 @@ ng-app="ourAngularJsApp"
         //.html("<button class='btn btn-danger' onclick='addItemToCart(this)'>Remove</button>")
         
         
-        var data  = $(button.parentNode.parentNode.innerHTML).slice(0,-3);
+        // var data  = $(button.parentNode.parentNode.innerHTML).slice(0);
         // if( localStorage.getItem(data[0].innerHTML) == null){
             var thatTbody = document.getElementById("cartTbody");
             var newRow = thatTbody.insertRow(-1);
-            //newTr.innerHTML = a.parentNode.parentNode.innerHTML ;
-            //thatTbody.append(newTr);
-            for(var i=0; i<data.length;i++){
+            newRow.insertCell(-1).innerHTML = button.parentNode.parentNode.firstChild.innerHTML;
+            
+            // newRow.innerHTML = a.parentNode.parentNode.innerHTML ;
+            // thatTbody.append(newTr);
+            // for(var i=0; i<data.length;i++){
                 
-                newRow.insertCell(-1).innerHTML = data[i].innerHTML;
-            }
+            //     newRow.insertCell(-1).innerHTML = data[i].innerHTML;
+            // }
             
             
             // newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>";
@@ -96,14 +98,12 @@ ng-app="ourAngularJsApp"
                     var arrayOfData = $(this).serializeArray();           
 
                     var thatTbody = $("#cartTbody tr td:first-child");
-                    
-                    
-                    
+                   
+
                     $.ajax({
                         type:'POST',
                         // url:'admin/storeNewItem',
                         url: "{{route('admin.createSales')}}",
-                        dataType:'json',
                         // data:{
                         //     'name': arrayOfData[1].value,
                         // },
@@ -112,13 +112,42 @@ ng-app="ourAngularJsApp"
                         data:data,
                         //_token:$("#_token"),
                         success:function(data){
-                            console.log(data)
+                            document.getElementById("formSales").reset();
+                            var items = [];
+                            var len=localStorage.length;
+                            for(var i=0; i<len; i++) {
+                                var key = localStorage.key(i);
+                                var value = localStorage[key];
+                                if(value.includes("item")){
+                                    items.push(key);
+                                }
+                            }
 
+                            //delete items in localStorage
+                            for(var i=0; i < items.length; i++){
+                                localStorage.removeItem(items[i]);
+                            }
+                            //clear total sales
+                            document.getElementById("totalSalesDiv").firstChild.innerHTML="";
+                             
+                             //show the plus sign button again in dataTables
+                             var itemId = $("#cartTbody tr td:nth-child(5) button");
+                             for(var i = 0; i<itemId.length; i++){
+                               document.getElementById(itemId[i].getAttribute("data-item-id")).removeAttribute("style");
+                             }
+                             
+                            //remove all rows in cart
+                            $("#cartTbody tr").remove();
                         },
+                        
+                       
                         error:function(data){
                             console.log(data)
                         }
                     });
+                    // .done(function(data) {
+                    //          alert("success!!!!"); 
+                    // });
 
 
                 })
@@ -175,10 +204,12 @@ ng-app="ourAngularJsApp"
                             <h4 ng-bind="name">Customer Purchase</h4>
                             <div class="row">
                                 <div class="col-md-5" margin >
-                                    <input name="customerName" placeholder="Customer Name" type="text" class="form-control border-input" form="purchase" required style="float: left">
+                                    {{Form::label('customerName', 'Customer Name:')}}
+                                    {{Form::text('customerName','',['class'=>'form-control'])}}
                                 </div>
                                 <div class="col-md-5" margin >
-                                    <input name="receiptNumber" placeholder="Receipt" type="text" class="form-control border-input" form="purchase" required style="float: left">
+                                    {{Form::label('receiptNumber', 'Receipt Number:')}}
+                                    {{Form::text('receiptNumber','',['class'=>'form-control'])}}
                                 </div>
                             </div>
                             
@@ -188,9 +219,9 @@ ng-app="ourAngularJsApp"
                                         <thead>
                                             <tr>
                                                 <td>Item</td>
-                                                <td>Quantity Left</td>
-                                                <td>Purchase Price</td>
-                                                <td>Retail Price</td>
+                                                {{--  <td>Quantity Left</td>  --}}
+                                                {{--  <td>Purchase Price</td>  --}}
+                                                <td>Price</td>
                                                 <td>Quantity Purchase</td>
                                                 <td>Sales Price</td>
                                                 <td>Action</td>
@@ -206,23 +237,21 @@ ng-app="ourAngularJsApp"
                                             </tr>  --}}
                                         </tbody>
                                     </table>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="text-right">
-                                                <div class="col-md-9">
-                                                    <label>Total Sales:</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3" id="totalSalesDiv">
+									<div class="form-group">
+										<div class="row">
+											<div class="col-md-9 text-right">
+												<label>Total Sales:</label>
+											</div>
+											<div class="col-md-3" id="totalSalesDiv">
                                                 <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
                                             </div>
-                                            <div class="text-right">                                           
+											<div class="text-right">                                           
                                                 <div class="col-md-12">   
                                                     <button class="btn btn-primary" type="submit">Submit</button>
                                                 </div>
                                             </div> 
-                                        </div> 
-                                    </div>
+										</div>
+									</div>
                                 </div> 
                             </div>
                             {!! Form::close() !!}
@@ -316,10 +345,10 @@ $('#dashboardDatatable').DataTable({
             "title": "Description",
             "data": "description"
         },
-        {
-            "title": "Category",
-            "data": "status"
-        },
+        // {
+        //     "title": "Category",
+        //     "data": "status"
+        // },
         {
             "title": "Quantity in Stock",
             "data": "wholesale_price"
@@ -355,8 +384,8 @@ $('#dashboardDatatable').DataTable({
                     var myItemJSON = JSON.parse(localStorage.getItem(key));            
                     var newRow = thatTbody.insertRow(-1);
                     newRow.insertCell(-1).innerHTML = myItemJSON.item ;
-                    newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;
-                    newRow.insertCell(-1).innerHTML = myItemJSON.wholeSalePrice;
+                    // newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;
+                    // newRow.insertCell(-1).innerHTML = myItemJSON.wholeSalePrice;
                     
                     // var salesPrice = "<p class='form-control style='color:green' ng-bind='" +itemName+ "SP'></p>";
                     // var temp2 = $compile(salesPrice)($scope);
@@ -393,7 +422,7 @@ $('#dashboardDatatable').DataTable({
             
             //initialize totalSales
             document.getElementById("totalSalesDiv").innerHTML="";
-            var price = "<h4 class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></h4>";
+            var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
             angular.element( totalSalesDiv ).append( $compile(price)($scope) );
             
             
@@ -414,11 +443,11 @@ $('#dashboardDatatable').DataTable({
         var lastRow = thatTable.rows[numberOfRows-1];
         var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'');
         
-        var retailPrice = "<p class='form-control' style='color:green'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='213'> ";
+        var retailPrice = "<p class='form-control' style='color:green'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
         var temp0 = $compile(retailPrice)($scope);                
         angular.element( lastRow.insertCell(-1) ).append(temp0);    
         
-        var inputNumber = "<input type='number' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1'></input>";
+        var inputNumber = "<input type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1'></input>";
         var temp1 = $compile(inputNumber)($scope);
         // var newRow = thatTbody.insertRow(-1);
         // angular.element( newRow.insertCell(-1) ).append(temp);
@@ -437,12 +466,12 @@ $('#dashboardDatatable').DataTable({
         var tds  = $(lastRow.innerHTML).slice(0);     
         var itemObject = {
             item: tds[0].innerHTML,
-            quantityLeft: tds[1].innerHTML,
-            wholeSalePrice: tds[2].innerHTML,
-            retailPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
-            quantityPurchase: tds[4].firstChild.outerHTML,
-            salesPrice: tds[5].childNodes[0].outerHTML + tds[5].childNodes[1].outerHTML,
-            removeButton: tds[6].firstChild.outerHTML,
+            // quantityLeft: tds[1].innerHTML,
+            // wholeSalePrice: tds[2].innerHTML,
+            retailPrice: tds[1].childNodes[0].outerHTML + tds[1].childNodes[1].outerHTML,
+            quantityPurchase: tds[2].firstChild.outerHTML,
+            salesPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
+            removeButton: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
             itemId: event.currentTarget.getAttribute("id")
         };
         
@@ -474,7 +503,7 @@ $('#dashboardDatatable').DataTable({
                 }else{
                     var newNgBinds = ngBindAttributes + " + " + itemName+"SP";
                 }
-                var price = "<h4 class='form-control' style='color:green' ng-bind='" +newNgBinds+ "'></h4>";
+                var price = "<p class='form-control' style='color:green' ng-bind='" +newNgBinds+ "'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
                 
                 
@@ -506,16 +535,16 @@ $('#dashboardDatatable').DataTable({
                     if(numberOfRows > 0){
                         for(var i=0; i < numberOfRows; i++){
                             if(ngBinds==""){
-                                ngBinds += thatTable[i].childNodes[5].childNodes[0].getAttribute("ng-bind");
+                                ngBinds += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
                             }else{
-                                ngBinds += " + " + thatTable[i].childNodes[5].childNodes[0].getAttribute("ng-bind");
+                                ngBinds += " + " + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
                             }
                         }
                     }
                     console.log(ngBinds)    
                     
                     document.getElementById("totalSalesDiv").innerHTML="";
-                    var price = "<h4 class='form-control' style='color:green' ng-bind='" +ngBinds+ "'></h4>";
+                    var price = "<p class='form-control' style='color:green' ng-bind='" +ngBinds+ "'></p>";
                     angular.element( totalSalesDiv ).append( $compile(price)($scope) );
                 }
                 

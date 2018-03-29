@@ -70,84 +70,99 @@ class AdminController extends Controller
 
 
     public function getItemsForSales(){
-
-        //  $data = DB::select("SELECT products.description, products.price as retail_price, purchases.price as wholesale_price, status FROM `products` join `purchases` using(product_id) where status='SALABLE' OR status='DAMAGED-SALABLE'");
-        //  while ( $rows = mysqli_fetch_assoc($data)  ) {
-        //     $description = $rows['description'];
-
-        //     $data1 = DB::select("SELECT products.price as retail_price FROM `products` join `purchases` using(product_id) where description="" AND status='SALABLE'");
-        //     $data2 = DB::select("SELECT COUNT(product_id) FROM `products` join `purchases` using(product_id) where description="" AND status='SALABLE'");
-        //     $data2 = DB::select("SELECT COUNT(product_id) FROM `products` join `purchases` using(product_id) where description="" AND status='DAMAGED-SALABLE'");
-        //  }
-
-        $data = DB::table('products')->select('*');
-        // return $data;
+        $data = DB::table('salable_items')
+					->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
+					->select('products.product_id', 'description', 'wholesale_price' , 'retail_price' , 'quantity')
+					->where('status' , '=' , 'available');
 
         return Datatables::of($data)
              ->addColumn('action',function($data){
                  return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'><i class='glyphicon glyphicon-plus'></i></button>";
-                    
-        
              })
             ->make(true);
 
     }
+	
+	public function createSales(Request $request){
+		$this->validate($request,[
+            'customerName' => 'required',
+            'receiptNumber' => 'required',
+            'quantity' => 'required',
+        ]);
 
-    public function createSales(Request $request){
-        // $data = DB::table('products')->select('*');
-         //return $data;
-         return response($request->all());
-         
-            
-     }
-
+        $arrayCount = count($request->productIds);
+		$mytime = date('Y-m-d H:i:s');
+        for($i = 0;$i<$arrayCount;$i++){
+			$insert = DB::table('sales')->insert(
+				['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $mytime,]
+			);
+		}return "insert successful";
+    }
+	 
+	 
     public function getDataPoints(){
 
     }
 
     public function searchItem($itemName){
-    //    $item = Product::find($id);
-        // $item = DB::select("SELECT * from products where product_id=$id");
         $item = Product::where('description','LIKE','%'.$itemName.'%')
                     ->orderBy('description','asc')
-                    //->paginate(2);
                     ->limit(5)
                     ->get();
         return $item;
     }
 
     public function getPurchases(){
-        $data = DB::table('products')->select('*');
+        $data = DB::table('purchases')->select('po_id', 'created_at');
         return Datatables::of($data)
+            ->addColumn('action',function($data){
+                return "
+                <a href = '#purchasesModal' data-toggle='modal' >
+                    <button onclick='getItems(this)'class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
+                </a>
+
+                ";
+
+
+            })
             ->make(true);
     }
-    public function createPurchase(Request $request){
-       // $data = DB::table('products')->select('*');
-        //return $data;
-        return response($request->all());
-        
-           
-    }
-    
+	
+	public function getPurchaseOrder($purchaseOrderId){
+		$data = DB::table('purchases')
+					->join('products', 'products.product_id' , '=' , 'purchases.product_id')
+					->join('suppliers', 'suppliers.supplier_id' , '=' , 'purchases.supplier_id')
+					->select('description', 'name', 'quantity', 'price', 'purchases.created_at')
+					->where('po_id', '=', $purchaseOrderId)
+					->get();
+		return $data;
+	}
     public function getReturns(){
-        $data = DB::table('products')->select('*');
+        $data = DB::table('returns')->select('or_number', 'created_at');
         return Datatables::of($data)
-        ->make(true);
-    }
-    public function createReturnItem(Request $request){
-        // $data = DB::table('products')->select('*');
-        //return $data;
-        return response($request->all());
-        
-            
+            ->addColumn('action',function($data){
+                return "
+                <a href = '#' data-toggle='modal' >
+                    <button class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
+                </a>
+
+                ";
+
+
+            })
+            ->make(true);
     }
     public function getReports(){
-        $data = DB::table('products')->select('*');
+        $data = DB::table('sales')
+					->join('products', 'products.product_id', '=', 'sales.product_id')
+					->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at');
         return Datatables::of($data)
             ->make(true);
     }
     public function getStockAdjustment(){
-        $data = DB::table('products')->select('*');
+        $data = DB::table('stock_adjustments')
+					->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
+					->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at');
         return Datatables::of($data)
             ->make(true);
     }
@@ -181,7 +196,9 @@ class AdminController extends Controller
     }
     public function getItemsForItems(){
 
-        $data = DB::table('products')->select('*');
+        $data = DB::table('products')
+					->join('salable_items', 'products.product_id', '=', 'salable_items.product_id')
+					->select('description', 'wholesale_price', 'retail_price', 'reorder_level', 'created_at');
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
@@ -287,14 +304,6 @@ class AdminController extends Controller
         return redirect('/admin/employees');
 
     }
-
-    public function createStockAdjustment(Request $request){
-        // $data = DB::table('products')->select('*');
-         //return $data;
-         return response($request->all());
-         
-            
-     }
 
 
 

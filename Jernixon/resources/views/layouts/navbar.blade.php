@@ -317,7 +317,9 @@
                 </nav>
 
                 <div class="content" ng-controller="customerPurchase">
-                    <div class="linkName">@yield('linkName')</div>
+                    <div class="linkName">
+                         @yield('linkName')
+                    </div>
                     @yield('right')
                 </div>
 

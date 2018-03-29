@@ -51,6 +51,10 @@ class="active"
 </style>
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+
+<!-- Chart -->
+<link href="{{asset('assets/css/buttons.morris.css')}}" rel="stylesheet"/>
+
 <script>
     window.onload = function () {
         var queryDataPoints = [];
@@ -410,5 +414,39 @@ class="active"
 {{--  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>  --}}
 {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
 <script src="{{asset('assets/js/canvasjs.min.js')}}"></script>
+
+<!-- Chart -->
+<script src="{{asset('assets/js/morris.min.js')}}"></script>
+<script src="{{asset('assets/js/morris.js')}}"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  barChart();
+  $(window).resize(function() {
+    window.barChart.redraw();
+  });
+});
+
+function barChart() {
+  window.barChart = Morris.Bar({
+    element: 'bar-chart',
+    data: [
+      { y: 'Item 1', a: 100},
+      { y: 'Item 2', a: 75},
+      { y: 'Item 3', a: 50},
+      { y: 'Item 4', a: 75},
+      { y: 'Item 5', a: 50},
+    ],
+    xkey: 'y',
+    ykeys: ['a'],
+    labels: ['Series A'],
+    lineColors: ['#1e88e5'],
+    lineWidth: '3px',
+    resize: true,
+    redraw: true
+  });
+}
+
+</script>
 
 @endsection

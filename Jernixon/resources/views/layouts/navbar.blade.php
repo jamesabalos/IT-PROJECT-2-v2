@@ -150,12 +150,27 @@
                             
                             <ul class="nav navbar-nav navbar-right ">
                             
-                                <li>
-                                
-    <span class="glyphicon glyphicon-bell"></span>
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 
-  <span class="badge badge-notify">3</span>
+                                <i class="fa fa-bell"></i>
+
+                                <b class="caret"></b>
+
+                              </a>
+
+                              <ul class="dropdown-menu">
+
+                                <li><a href="#">Notification 1</a></li>
+                                <li><a href="#">Notification 2</a></li>
+                                <li><a href="#">Notification 3</a></li>
+                                <li><a href="#">Notification 4</a></li>
+                                <li><a href="#">Another notification</a></li>
+
+                              </ul>
+
                             </li>
+
 
                             <li class="dropdown">
 
@@ -233,11 +248,27 @@
                         </div>
                         <div class="small-logo-container">
                             <ul class="nav navbar-right user-margin">
-                                <button class="btn btn-default btn-lg btn-link" style="font-size:36px;">
-    <span class="glyphicon glyphicon-bell"></span>
-  </button>
-  <span class="badge badge-notify">3</span>
-                            </ul>
+
+                            <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                                <i class="fa fa-bell"></i>
+
+                                <b class="caret"></b>
+
+                              </a>
+
+                              <ul class="dropdown-menu">
+
+                                <li><a href="#">Notification 1</a></li>
+                                <li><a href="#">Notification 2</a></li>
+                                <li><a href="#">Notification 3</a></li>
+                                <li><a href="#">Notification 4</a></li>
+                                <li><a href="#">Another notification</a></li>
+                                
+                              </ul>
+
+                            </li>
 
                             <ul class="nav navbar-right user-margin">
                                 <li class="dropdown">

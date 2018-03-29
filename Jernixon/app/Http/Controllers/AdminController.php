@@ -203,13 +203,13 @@ class AdminController extends Controller
             ->addColumn('action',function($data){
                 return "
                 <a href = '#removeModal' data-toggle='modal' >
-                    <button id='Remove' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Remove Item</button>
+                    <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i> Disable</button>
                 </a>
                 <a href = '#editModal' data-toggle='modal' >
-                    <button id='Edit' class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i>Edit</button>
+                    <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
                 </a>
                 <a href = '#viewHistory' data-toggle='modal' >
-                    <button class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i>History</button>
+                    <button class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>
                 </a>
 
                 ";
@@ -238,7 +238,12 @@ class AdminController extends Controller
         // return "success";
         // return redirect('/items')->with('success','Success adding item');
     }
-
+public function itemsChangeStatus(Request $request, $id){
+    $product = Product::find($id);
+    $product->status= $request->input('status');
+    $product->save();
+    return response($request->all());
+}
 
     // public function getTransactions(){
     //     $data = DB::table('products')->select('*');

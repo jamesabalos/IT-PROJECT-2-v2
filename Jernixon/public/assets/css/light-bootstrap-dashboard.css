@@ -3884,7 +3884,8 @@ fieldset[disabled] .btn-neutral.active {
     }
     .navbar-nav{
         margin-top:0;
-        background: #af3939;
+        background: #000000;
+/*
         background: -moz-linear-gradient(top, #af3939 0%, #614747 100%);
         background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9368E9), color-stop(100%, #614747));
         background: -webkit-linear-gradient(top, #af3939 0%, #614747 100%)
@@ -3892,6 +3893,7 @@ fieldset[disabled] .btn-neutral.active {
         background: -ms-linear-gradient(top, #af3939 0%, #614747 100%);
         background: linear-gradient(to bottom, #af3939 0%, #614747 100%);
         background-size: 150% 150%;
+*/
     }
 
     /*.navbar-color .navbar-nav > li > a:hover{
@@ -3934,13 +3936,15 @@ fieldset[disabled] .btn-neutral.active {
         text-transform: uppercase;
         font-weight: 300;;
         border: none;
-        background: #af3939;
+        background: #111111;
+/*
         background: -moz-linear-gradient(top, #af3939 0%, #614747 100%);
         background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9368E9), color-stop(100%, #614747));
         background: -webkit-linear-gradient(top, #af3939 0%, #614747 100%)
         background: -o-linear-gradient(top, #af3939 0%, #614747 100%);
         background: -ms-linear-gradient(top, #af3939 0%, #614747 100%);
         background: linear-gradient(to bottom, #af3939 0%, #614747 100%);
+*/
 
     }
 
@@ -3960,7 +3964,7 @@ fieldset[disabled] .btn-neutral.active {
     .navbar-custom .navbar-nav li.active a:focus,
     .navbar-custom .navbar-nav li.active a:hover {
         color: #fff;
-        background: #af3939;
+        background: #111111;
     }
 
     .navbar-custom .navbar-toggle {
@@ -3978,7 +3982,7 @@ fieldset[disabled] .btn-neutral.active {
     .navbar-custom .navbar-toggle:focus,
     .navbar-custom .navbar-toggle:hover {
 
-      background-color: #af3939;
+      background-color: #111111;
       color: #fff;
       border-color: #000;
 

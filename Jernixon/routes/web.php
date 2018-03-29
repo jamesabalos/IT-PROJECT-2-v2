@@ -78,7 +78,7 @@ Route::Post('admin/items/subtractQuantity','AdminController@subtractQuantity');
 Route::Post('admin/items/returnItem','AdminController@returnItem');
 Route::get('admin/items/getItems', 'AdminController@getItemsForItems')->name('items.getItems');
 Route::get('admin/items', 'AdminController@items')->name('admin.items');
-
+Route::Put('admin/items/changeStatus/{id}', 'AdminController@itemsChangeStatus');
 Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');
 // Route::get('admin/reports/getTransactions', 'AdminController@getTransactions')->name('reports.getTransactions');
 // Route::get('admin/reports/getItemsAdded', 'AdminController@getItemsAdded')->name('reports.getItemsAdded');

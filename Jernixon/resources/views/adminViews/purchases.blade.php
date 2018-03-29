@@ -11,7 +11,7 @@ onload="refresh()"
 ng-app="ourAngularJsApp"
 @endsection  --}}
 @section('linkName')
-<h3>Purchases</h3>
+<h3><i class="fa fa-cube" style="margin-right: 10px"></i> Purchases</h3>
 @endsection
 
 @section('headScript')
@@ -62,38 +62,7 @@ ng-app="ourAngularJsApp"
         document.getElementById("searchResultDiv").innerHTML = "";
     }
 
-    function searchItem(a){
-        if(a.value === ""){
-            document.getElementById("searchResultDiv").innerHTML ="";   
-        }
-        $.ajax({
-            method: 'get',
-            //url: 'items/' + document.getElementById("inputItem").value,
-            url: 'searchItem/' + a.value,
-            dataType: "json",
-            success: function(data){
-                //    console.log(data)
-                // <div>
-                //     <strong>Phi</strong>lippines
-                //     <input type="hidden" value="Philippines">
-                // </div>
-
-                var resultDiv = document.getElementById("searchResultDiv");
-                resultDiv.innerHTML = "";
-                for (var i = 0;  i< data.length; i++) {
-                    var node = document.createElement("DIV");
-                    node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
-                    var pElement = document.createElement("P");
-                    var textNode = document.createTextNode(data[i].description);
-                    pElement.appendChild(textNode);
-                    node.appendChild(pElement);          
-                    resultDiv.appendChild(node);  
-
-                }
-            }
-        });
-
-    }
+                 
 	
 	function getItems(button){
 		
@@ -128,16 +97,16 @@ ng-app="ourAngularJsApp"
 		
 	}
 
-    document.addEventListener("click", function (e) {
-        document.getElementById("searchResultDiv").innerHTML = "";
-    });
-    function removeRow(a){
-        $(a.parentNode.parentNode).hide(500,function(){
-            this.remove();  
-        });
-        // a.parentNode.parentNode.remove();
+      document.addEventListener("click", function (e) {
+          document.getElementById("searchResultDiv").innerHTML = "";
+      });
+      function removeRow(a){
+          $(a.parentNode.parentNode).hide(500,function(){
+              this.remove();  
+          });
+          // a.parentNode.parentNode.remove();
 
-    }
+      }
 
     $(document).ready(function(){
 		
@@ -190,13 +159,39 @@ ng-app="ourAngularJsApp"
               ]
           });
 
-        $('#formPurchaseOrder').on('submit',function(e){
-            e.preventDefault();
-            alert("clicked")
 
-        })
+          $('#formPurchaseOrder').on('submit',function(e){
+              e.preventDefault();
 
-    });
+              var data = $(this).serialize();           
+              var arrayOfData = $(this).serializeArray();           
+              console.log(data)
+
+              $.ajax({
+                  type:'POST',
+                  // url:'admin/storeNewItem',
+                  url: "{{route('admin.createPurchase')}}",
+                  dataType:'json',
+                  // data:{
+                  //     'name': arrayOfData[1].value,
+                  // },
+
+                  // data:{data},
+                  data:data,
+                  //_token:$("#_token"),
+                  success:function(data){
+                      console.log(data)
+
+                  },
+                  error:function(data){
+                      console.log(data)
+                  }
+              });
+
+
+          })
+
+      });
 
 </script>
 
@@ -242,7 +237,7 @@ ng-app="ourAngularJsApp"
             <div class="card">
                 <div class="header">
                     <a href = "#purchase" data-toggle="modal">
-                            <button type="button" class="btn btn-success">Create Purchase Order</button>
+                        <button type="button" class="btn btn-success">Create Purchase Order</button>
                     </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="purchasesDataTable">
@@ -320,7 +315,11 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-
+                        <div class="autocomplete" style="width:100%;">
+                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                            <div id="searchResultDiv" class="searchResultDiv">
+                            </div>
+                        </div>
                         <div class="content table-responsive">
                             <table class="table table-bordered table-striped" >
                                 <thead>
@@ -332,22 +331,11 @@ ng-app="ourAngularJsApp"
                                 </thead>
                                 <tbody id="purchasetable">
                                 </tbody>
-                            </table>
-
-                            
+                            </table> 
                         </div> 
-                                <div class="autocomplete" style="width:100%;">
-                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
-                                    <div id="searchResultDiv" class="searchResultDiv">
-                                        {{--  <div>
-                                        <strong>Phi</strong>lippines
-                                        <input type="hidden" value="Philippines">
-                                        </div>  --}}
-                                    </div>
-                                </div>
+
                     </div>
                 </div>
-                {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

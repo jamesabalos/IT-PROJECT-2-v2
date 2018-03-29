@@ -2085,7 +2085,7 @@ fieldset[disabled] .btn-neutral.active {
 
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     background-color: #af3939;
     color: #fff;
     opacity: 1;
@@ -3934,7 +3934,7 @@ fieldset[disabled] .btn-neutral.active {
 
         font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
         text-transform: uppercase;
-        font-weight: 300;;
+        font-weight: 300;
         border: none;
         background: #111111;
 /*
@@ -3969,8 +3969,6 @@ fieldset[disabled] .btn-neutral.active {
 
     .navbar-custom .navbar-toggle {
         color: #fff;
-        text-transform: uppercase;
-        font-size: 10px;
         border-color: #000;
     }
 

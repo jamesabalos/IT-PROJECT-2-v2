@@ -66,10 +66,12 @@ class="active"
 
               "ajax":  "{{ route('reports.getReports') }}",
               "columns": [
+			  	  {data: 'or_number'},
                   {data: 'description'},
+				  {data: 'customer_name'},
+				  {data: 'quantity'},
                   {data: 'price'},
                   {data: 'created_at'},
-                  {data: 'updated_at'},
               ]
           });
        
@@ -120,11 +122,12 @@ class="active"
                                 <table id="transactionsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead >
                                         <tr>
+											<td>OR Number</td>
                                             <td>Item Purchased</td>
+											<td>Customer Name</td>
                                             <td>Quantity</td>
-                                            <td>Wholesale Price</td>
-                                            <td>Retail Price</td>
-                                            {{--  <td>Total Price</td>  --}}
+                                            <td>Price</td>
+											<td>Created At</td>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

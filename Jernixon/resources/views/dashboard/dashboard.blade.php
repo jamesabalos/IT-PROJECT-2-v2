@@ -501,14 +501,10 @@ function barChart() {
         ykeys: ['a'],
         labels: ['Calls'],
         hideHover: 'always',
-        barColors: function (row, series, type) {
-            console.log("--> "+row.label, series, type);
-            if(row.label == "Item 1") return "#fe0000";
-            else if(row.label == "Item 2") return "#ff7f00";
-            else if(row.label == "Item 3") return "#ffff00";
-            else if(row.label == "Item 4") return "#81ff81";
-            else if(row.label == "Item 5") return "#00ffff";
-        }
+        lineColors: ['#1e88e5'],
+        lineWidth: '3px',
+        resize: true,
+        redraw: true
     });
 }
 

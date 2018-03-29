@@ -212,20 +212,20 @@ class="active"
                         // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse",button.currentTarget.attributes[3].value);
                         // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = button.currentTarget.attributes[3].value;
 
-                        if( button.currentTarget.attributes[1].value == "active"){
+                        if( button.currentTarget.attributes[1].value == "Active"){
                             // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML ="<button data-id='' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount'>Deactivate</button>";
 
                             document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;                            
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status","inactive");
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","active");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status","Inactive");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","Active");
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse","Active");
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Deactivate";
                         }else{
                             // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='' data-status='active' data-status-reverse='inactive' data-button-reverse='Diactivate' class='formUpdateEmployeeAccount'>Activate</button>";
 
                             document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status","active");
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","inactive");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status","Active");
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","Inactive");
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse","Deactivate");
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Activate";
                         }
@@ -281,7 +281,7 @@ class="active"
                                     {{--  <th class="text-center" style="width: 15%;">User Role</th>  --}}
                                     {{--  <th class="text-center" style="width: 10%;">Status</th>  --}}
                                     <th class="text-center" style="width: 20%;">Status</th>
-                                    <th class="text-center" style="width: 100px;">Actions</th>
+                                    <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="employeeTbody">
@@ -301,29 +301,29 @@ class="active"
                                         {{--  {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
                                         <input type="hidden"  value="{{$employee->id}}" name="employeeId">                                                
                                         @if( $employee->status == "active")
-                                        <input type="hidden" name="status" value="inactive">  
+                                        <input type="hidden" name="status" value="Inactive">  
 
                                         {{Form::hidden('_method','PUT')}}                                          
                                         <button type="submit">Deactivate</button>
                                         @else
-                                        <input type="hidden" name="status" value="active">                                                                                                        
+                                        <input type="hidden" name="status" value="Active">                                                                                                        
                                         {{Form::hidden('_method','PUT')}}                                                    
                                         <button type="submit">Activate</button>                                                    
                                         @endif
                                         {!! Form::close() !!}                                                --}}
 
                                         @if( $employee->status == "active")
-                                        <div class="btn-group">
-                                            <button data-id="{{$employee->id}}" data-status="inactive" data-status-reverse="active"  data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger">Deactivate</button>
+        
+                                            <button data-id="{{$employee->id}}" data-status="Inactive" data-status-reverse="active"  data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger">Deactivate</button>
                                             <button type="button" class="btn btn-info">Reset Password</button>
-                                        </div>
+
                                         @else
-                                        <div class="btn-group">
-                                            <button data-id="{{$employee->id}}" data-status="active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success">Activate</button>
+                                    
+                                            <button data-id="{{$employee->id}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success">Activate</button>
                                             <a href = "#reset" data-toggle="modal">
                                                 <button type="button" class="btn btn-info">Reset Password</button>
                                             </a>
-                                        </div>
+
                                         @endif 
 
                                     </td>

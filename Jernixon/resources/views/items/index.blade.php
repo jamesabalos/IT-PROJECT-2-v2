@@ -216,51 +216,73 @@ class="active"
             })
 
         })
-        
-        
 
-        //            $('#formReturnItem').on('submit',function(e){
-        //                e.preventDefault(); //prevent the page to load when submitting form
-        //                //key value pair of form
-        //                var data = $(this).serialize();
-        //
-        //                $.ajax({
-        //                    type:'POST',
-        //                    url:'/items/returnItem',
-        //                    //dataType:'json',
-        //                    data:data,
-        //                    success:function(dataReceive){
-        //                        $("#errorDivReturnItem p").remove();
-        //                        //$("#errorDivReturnItem").removeClass("alert-danger hidden")
-        //                        $("#errorDivReturnItem").removeClass("alert-danger")
-        //                                                .addClass("alert-success")
-        //                                                .html("<h1>Success</h1>");
-        //
-        //                        $("#errorDivReturnItem").css("display:block");
-        //                        $("#errorDivReturnItem").slideDown("slow",function(){
-        //                            document.getElementById("formReturnItem").reset();
-        //                        })
-        //                        .delay(1000)                        
-        //                        .hide(1500);
-        //                    },
-        //                    error:function(dataReceived){
-        //                        var response = dataReceived.responseJSON;
-        //                        $("#errorDivReturnItem").removeClass("alert-success")
-        //                                                .addClass("alert-danger"); 
-        //                        $("#errorDivReturnItem").css("display:block");
-        //                        $("#errorDivReturnItem").slideDown("slow")                                               
-        //                                                .html(function(){
-        //                                                    var addedHtml="";
-        //                                                    for (var key in response.errors) {
-        //                                                        addedHtml += "<p>"+response.errors[key]+"</p>";
-        //                                                    }
-        //                                                    return addedHtml;
-        //                        });
-        //                    
-        //                    }
-        //                })
-        //                
-        //            })
+        $(".formUpdatechangeStatus").on('click',function(button){
+            button.preventDefault(); //prevent the page to load when submitting form
+            var fullRoute = "/admin/items/changeStatus/"+button.currentTarget.attributes[0].value; //id
+            $.ajax({
+                type:'PUT',
+                // url:'admin/storeNewItem',
+                // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
+                url: fullRoute,
+
+                dataType:'json',
+                data:{
+                    // 'description':'',
+                    // 'quantityInStock':4,
+                    // 'wholeSalePrice':10,
+                    'status': button.currentTarget.attributes[1].value, //'status': inactive | active
+                    // 'buttonName':button.currentTarget.attributes[2].value, 
+                },
+                success:function(data){
+                    console.log(data);
+                }
+            })
+        });
+
+
+    //            $('#formReturnItem').on('submit',function(e){
+    //                e.preventDefault(); //prevent the page to load when submitting form
+    //                //key value pair of form
+    //                var data = $(this).serialize();
+    //
+    //                $.ajax({
+    //                    type:'POST',
+    //                    url:'/items/returnItem',
+    //                    //dataType:'json',
+    //                    data:data,
+    //                    success:function(dataReceive){
+    //                        $("#errorDivReturnItem p").remove();
+    //                        //$("#errorDivReturnItem").removeClass("alert-danger hidden")
+    //                        $("#errorDivReturnItem").removeClass("alert-danger")
+    //                                                .addClass("alert-success")
+    //                                                .html("<h1>Success</h1>");
+    //
+    //                        $("#errorDivReturnItem").css("display:block");
+    //                        $("#errorDivReturnItem").slideDown("slow",function(){
+    //                            document.getElementById("formReturnItem").reset();
+    //                        })
+    //                        .delay(1000)                        
+    //                        .hide(1500);
+    //                    },
+    //                    error:function(dataReceived){
+    //                        var response = dataReceived.responseJSON;
+    //                        $("#errorDivReturnItem").removeClass("alert-success")
+    //                                                .addClass("alert-danger"); 
+    //                        $("#errorDivReturnItem").css("display:block");
+    //                        $("#errorDivReturnItem").slideDown("slow")                                               
+    //                                                .html(function(){
+    //                                                    var addedHtml="";
+    //                                                    for (var key in response.errors) {
+    //                                                        addedHtml += "<p>"+response.errors[key]+"</p>";
+    //                                                    }
+    //                                                    return addedHtml;
+    //                        });
+    //                    
+    //                    }
+    //                })
+    //                
+    //            })
     });
 </script>
 @endsection

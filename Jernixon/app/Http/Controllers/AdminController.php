@@ -186,7 +186,7 @@ class AdminController extends Controller
             ->addColumn('action',function($data){
                 return "
                 <a href = '#removeModal' data-toggle='modal' >
-                    <button class='btn btn-danger' onclick='changeStatus($data->product_id)'><i class='glyphicon glyphicon-remove'></i> Disable</button>
+                    <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i> Disable</button>
                 </a>
                 <a href = '#editModal' data-toggle='modal' >
                     <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
@@ -221,7 +221,12 @@ class AdminController extends Controller
         // return "success";
         // return redirect('/items')->with('success','Success adding item');
     }
-
+public function itemsChangeStatus(Request $request, $id){
+    $product = Product::find($id);
+    $product->status= $request->input('status');
+    $product->save();
+    return response($request->all());
+}
 
     // public function getTransactions(){
     //     $data = DB::table('products')->select('*');

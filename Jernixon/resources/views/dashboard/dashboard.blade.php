@@ -46,33 +46,6 @@ class="active"
     .bg-red{
         background-color: #FF7857;
     }
-
-    .morris-hover {
-  position:absolute;
-  z-index:1000;
-}
-
-.morris-hover.morris-default-style {     border-radius:10px;
-  padding:6px;
-  color:#666;
-  background:rgba(255, 255, 255, 0.8);
-  border:solid 2px rgba(230, 230, 230, 0.8);
-  font-family:sans-serif;
-  font-size:12px;
-  text-align:center;
-}
-
-.morris-hover.morris-default-style .morris-hover-row-label {
-  font-weight:bold;
-  margin:0.25em 0;
-}
-
-.morris-hover.morris-default-style .morris-hover-point {
-  white-space:nowrap;
-  margin:0.1em 0;
-}
-
-svg { width: 100%; }
     
     
 </style>
@@ -222,15 +195,10 @@ svg { width: 100%; }
                 
             }
 </script>
-
-<!-- <link rel="stylesheet" href="https://www.cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" /> -->
-<script src="{{asset('assets/js/raphael2.1.0.js')}}"></script>
-<script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
-<script src="{{asset('assets/js/morrisv05.js')}}"></script>
 @endsection
         
 @section('linkName')
-<h3>Dashboard</h3>
+<h3><i class="fa fa-fw fa-dashboard"></i> Dashboard</h3>
 @endsection
 
 @section('right')
@@ -278,33 +246,7 @@ svg { width: 100%; }
                         </div>
                     </div>
                 </div>
-
-                <!-- Bar Chart -->
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Top Items
-
-                    </div>
-
-                    <div class="container-fluid">
-
-                        <div class="row">
-
-                            <div class="col-md-12">
-
-                                <div id="bar-chart"></div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                  </div>
-
-                  <!-- end of chart -->
-
+                
                 {{--  <div class="row">
                     
                     <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
@@ -380,7 +322,6 @@ svg { width: 100%; }
     </div>
 </div>
 
-<!--
 <div class="row">
     <div class="col-md-12" >
         <div class="card" >
@@ -390,7 +331,6 @@ svg { width: 100%; }
         </div>
     </div>
 </div>
--->
 
 
 @endsection     
@@ -476,7 +416,6 @@ svg { width: 100%; }
 <script src="{{asset('assets/js/canvasjs.min.js')}}"></script>
 
 <!-- Chart -->
-<!-- <script src="{{asset('assets/js/morris-data.js')}}"></script> -->
 <script src="{{asset('assets/js/morris.min.js')}}"></script>
 <script src="{{asset('assets/js/morris.js')}}"></script>
 
@@ -485,33 +424,27 @@ $(document).ready(function() {
   barChart();
   $(window).resize(function() {
     window.barChart.redraw();
-
   });
 });
 
 function barChart() {
   window.barChart = Morris.Bar({
-        element: 'bar-chart',
-        data: [
-        { y: 'Item 1', a: 100 },
-        { y: 'Item 2', a: 75 },
-        { y: 'Item 3', a: 50 },
-        { y: 'Item 4', a: 25 },
-        { y: 'Item 5', a: 20 }
-        ],
-        xkey: 'y',
-        ykeys: ['a'],
-        labels: ['Calls'],
-        hideHover: 'always',
-        barColors: function (row, series, type) {
-        console.log("--> "+row.label, series, type);
-        if(row.label == "Item 1") return "#fe0000";
-        else if(row.label == "Item 2") return "#ff7f00";
-        else if(row.label == "Item 3") return "#ffff00";
-        else if(row.label == "Item 4") return "#81ff81";
-        else if(row.label == "Item 5") return "#00ffff";
-        }
-    });
+    element: 'bar-chart',
+    data: [
+      { y: 'Item 1', a: 100},
+      { y: 'Item 2', a: 75},
+      { y: 'Item 3', a: 50},
+      { y: 'Item 4', a: 75},
+      { y: 'Item 5', a: 50},
+    ],
+    xkey: 'y',
+    ykeys: ['a'],
+    labels: ['Series A'],
+    lineColors: ['#1e88e5'],
+    lineWidth: '3px',
+    resize: true,
+    redraw: true
+  });
 }
 
 </script>

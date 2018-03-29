@@ -216,6 +216,8 @@ class="active"
             })
 
         })
+        
+        
 
         //            $('#formReturnItem').on('submit',function(e){
         //                e.preventDefault(); //prevent the page to load when submitting form
@@ -265,76 +267,81 @@ class="active"
 
 @section('modals')
 <div id="addNewItemModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-    <div class = "modal-dialog">
+    <div class = "modal-dialog modal-md">
         <div class = "modal-content">
-            <div class = "modal-body">
+            <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4>Add New Item</h4>
-                <div class="alert alert-danger hidden" id="errorDivAddNewItem">
+                <h3 class="modal-title">Adding Item</h3>
+            </div>
+            <div class="alert alert-danger hidden" id="errorDivAddNewItem">
 
-                </div>
-                {!! Form::open(['method'=>'post','id'=>'formAddNewItem']) !!}
-                {{--  <form action="" role="form">  --}}
-                <input type="hidden" id="_token" value="{{ csrf_token() }}">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{Form::label('description', 'Description:')}}
+            </div>
+            {!! Form::open(['method'=>'post','id'=>'formAddNewItem']) !!}
+            <div class = "modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-th"></span>
+                            Add New Item
+                        </strong>
+                    </div>
+                    <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('description', 'Description:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('description','',['class'=>'form-control'])}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-9">
-                            {{Form::text('description','',['class'=>'form-control'])}}
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Quantity in stock:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ Form::number('quantityInStock','',['class'=>'form-control','min'=>'1']) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">   
+                            <div class="row">
+                                <div class="col-md-3">                                                             
+                                    {{Form::label('Retail Price', 'Retail Price:')}}
+                                </div>
+                                <div class="col-md-9">                                    
+                                    {{Form::number('retailPrice','',['class'=>'form-control','min'=>'1'])}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1'])}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-group">                                
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{Form::label('Quantity in stock:')}}
-                        </div>
-                        <div class="col-md-9">
-                            {{ Form::number('quantityInStock','',['class'=>'form-control','min'=>'1']) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">   
-                    <div class="row">
-                        <div class="col-md-3">                                                             
-                            {{Form::label('Retail Price', 'Retail Price:')}}
-                        </div>
-                        <div class="col-md-9">                                    
-                            {{Form::number('retailPrice','',['class'=>'form-control','min'=>'1'])}}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">    
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
-                        </div>
-                        <div class="col-md-9">
-                            {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1'])}}
-                        </div>
-                    </div>
-                </div>
-
                 @include('inc.messages')
-                {{--  </form>  --}}
-                {{--  <div class="modal-footer">  --}}
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            {{--  {{Form::submit('Submit',['class'=>'btn btn-primary'])}}  --}}
                             <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
-                {{--  </div>                      --}}
-                {!! Form::close() !!}
             </div>
+            {!! Form::close() !!}
         </div>
     </div>
-
 </div>
 <div id="editModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
     <div class = "modal-dialog modal-md">
@@ -444,33 +451,34 @@ class="active"
                         </strong>
                     </div>
                     <div class="panel-body">
-                       <div class="autocomplete" style="width:200px;">
+                        <div class="autocomplete" style="width:200px;">
                             <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
                             <div id="searchResultDiv" class="searchResultDiv">
+                            </div>
                         </div>
+                        <div class="card">
+                            <div class="container" >
+
+                                <p></p>
+                                <p style="font-size: 12px"><b>Items Added: </b></p>
+                                <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                <p style="font-size: 12px"><b>Date: </b></p>
+                            </div>          
                         </div>
                         <div class="card">
                             <div class="container">
                                 <p></p>
-                                <p><b>Items Added: </b></p>
-                                <p><b>Supplied by: </b></p>
-                                <p><b>Date: </b></p>
+                                <p style="font-size: 12px"><b>Items Added: </b></p>
+                                <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                <p style="font-size: 12px"><b>Date: </b></p>
                             </div>
                         </div>
                         <div class="card">
                             <div class="container">
                                 <p></p>
-                                <p><b>Items Added: </b></p>
-                                <p><b>Supplied by: </b></p>
-                                <p><b>Date: </b></p>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="container">
-                                <p></p>
-                                <p><b>Items Added: </b></p>
-                                <p><b>Supplied by: </b></p>
-                                <p><b>Date: </b></p>
+                                <p style="font-size: 12px"><b>Items Added: </b></p>
+                                <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                <p style="font-size: 12px"><b>Date: </b></p>
                             </div>
                         </div>
                     </div>

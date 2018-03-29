@@ -186,10 +186,10 @@ class AdminController extends Controller
             ->addColumn('action',function($data){
                 return "
                 <a href = '#removeModal' data-toggle='modal' >
-                    <button id='Remove' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Disable</button>
+                    <button class='btn btn-danger' onclick='changeStatus($data->product_id)'><i class='glyphicon glyphicon-remove'></i> Disable</button>
                 </a>
                 <a href = '#editModal' data-toggle='modal' >
-                    <button id='Edit' class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
+                    <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
                 </a>
                 <a href = '#viewHistory' data-toggle='modal' >
                     <button class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>

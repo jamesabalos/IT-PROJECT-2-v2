@@ -313,13 +313,13 @@ class="active"
                                         {!! Form::close() !!}                                                --}}
 
                                         @if( $employee->status == "active")
-                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                        <div class="btn-group">
                                             <button data-id="{{$employee->id}}" data-status="inactive" data-status-reverse="active"  data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger">Deactivate</button>
                                             <button type="button" class="btn btn-info">Reset Password</button>
                                         </div>
                                         @else
-                                        <div class="btn-group" role="group" aria-label="Basic example" style="display:inline-block;">
-                                            <button data-id="{{$employee->id}}" data-status="active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success">Activate</button>                            
+                                        <div class="btn-group">
+                                            <button data-id="{{$employee->id}}" data-status="active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success">Activate</button>
                                             <a href = "#reset" data-toggle="modal">
                                                 <button type="button" class="btn btn-info">Reset Password</button>
                                             </a>
@@ -450,7 +450,6 @@ class="active"
 
                         </div>
                         {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount2']) !!}
-                        {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
 
                         <input type="hidden"  value="" name="employeeId">
                         <div class="form-group">
@@ -482,28 +481,6 @@ class="active"
 
                     </div>
                 </div>
-
-                {{--  <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>
-                        <span class="glyphicon glyphicon-th"></span>
-                        Change Employee password
-                    </strong>
-                </div>
-                <div class="panel-body">
-                    <form action="" method="post" class="clearfix" pb-autologin="true">
-                        <div class="form-group">
-                            <label for="password" class="control-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Type user new password" pb-role="password">
-                        </div>
-                        <div class="form-group clearfix">
-                            <button type="submit" name="update" class="btn btn-danger">Change</button>
-                        </div>
-                    </form>
-                </div>
-                </div>  --}}
-
-
             </div>
         </div>
     </div>
@@ -514,48 +491,22 @@ class="active"
         <div class = "modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title text-center"><i class="fa fa-exclamation-triangle" style="margin-right: 10px"> </i> Reset Password</h3>
+                <p></p>
             </div>
-            <div class = "modal-body">  
-                <div class="panel panel-default">
-                    <div class="text-center">
-                        <strong>
-                            <h3>Are you sure?</h3>
-                            <p>Do you really want to reset the password? This process cannot be undone!</p>
-                        </strong>
-                    </div>
+            <div class="text-center">
+                <strong>
+                    <h3> <i class="fa fa-exclamation-triangle" style="margin-right: 15px"> </i> Are you sure?</h3>
+                    <p>Do you really want to reset the password? This process cannot be undone!</p>
+                </strong>
+            </div>
 
-                    <div class="panel-body">
-                        <div class="text-center">
-                            <div class="form-group clearfix">
-                                <button type="submit" name="update" class="btn btn-success">Okay</button>
-                                <button type="submit" name="update" class="btn btn-danger">Cancel</button>
-                            </div>
-                        </div>
+            <div class="panel-body">
+                <div class="text-center">
+                    <div class="form-group clearfix">
+                        <button type="submit" name="update" class="btn btn-success">Okay</button>
+                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
-
-                {{--  <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>
-                        <span class="glyphicon glyphicon-th"></span>
-                        Change Employee password
-                    </strong>
-                </div>
-                <div class="panel-body">
-                    <form action="" method="post" class="clearfix" pb-autologin="true">
-                        <div class="form-group">
-                            <label for="password" class="control-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Type user new password" pb-role="password">
-                        </div>
-                        <div class="form-group clearfix">
-                            <button type="submit" name="update" class="btn btn-danger">Change</button>
-                        </div>
-                    </form>
-                </div>
-                </div>  --}}
-
-
             </div>
         </div>
     </div>

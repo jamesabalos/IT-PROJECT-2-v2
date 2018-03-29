@@ -54,8 +54,8 @@ ng-app="ourAngularJsApp"
             var newRow = thatTable.insertRow(-1);
 
             newRow.insertCell(-1).innerHTML = "<td>" +div.firstChild.innerHTML+ "</td>";
-            newRow.insertCell(-1).innerHTML = "<td><input name='quantity[]' type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input name='price[]' type='number' min='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input name='quantity[]' type='number' min='1' value='1' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input name='price[]' type='number' min='1.00' value='1.00' class='form-control'></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='product_id[]' value='" +div.getAttribute("id")+ "'><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
         }
         document.getElementById("searchItemInput").value = "";
@@ -201,8 +201,34 @@ ng-app="ourAngularJsApp"
                 data: data,
 
                 success:function(data){
-                    console.log(data)
+                    //remove rows in purchase table
+                    $("#purchasetable tr").remove();
+                    //prompt the message
+                    $("#successDiv p").remove();
+                    $("#successDiv").removeClass("hidden");
+                                    // .addClass("alert-success")
+                                    // .html("<h3>Transaction successful</h3>");
+                    $("#successDiv").slideDown("slow")
+                                    .delay(1000)                        
+                                    .hide(1500);
+                    $("#errorDivCreatePurchase").html("");
+                    document.getElementById("formPurchaseOrder").reset(); //reset the form
+                    // $('#purchase').modal('hide')                    
+                    
+                    
+                },
+                error:function(data){
+                    var response = data.responseJSON;
+                    $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
+                    $("#errorDivCreatePurchase").html(function(){
+                        var addedHtml="";
+                        for (var key in response.errors) {
+                            addedHtml += "<p>"+response.errors[key]+"</p>";
+                        }
+                        return addedHtml;
+                    });
                 }
+
 		  });
 
         })
@@ -286,10 +312,22 @@ ng-app="ourAngularJsApp"
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Purchase</h3>
+                <div class="row">
+                        <div class="col-sm-3">
+                            <h3 class="modal-title">Purchase</h3>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="alert-success hidden" id="successDiv">
+                                <h3>Transaction successful</h3>
+                            </div>
+                        </div>
+                </div>
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
+                        <div id="errorDivCreatePurchase" class="hidden">
+
+                        </div>
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>

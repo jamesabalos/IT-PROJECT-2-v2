@@ -132,7 +132,7 @@ class AdminController extends Controller
             'Official_Receipt_No' => 'required',
             'Supplier' => 'required',
             'price' => 'required',
-            'product_id' => 'required',
+            // 'product_id' => 'required',
             'quantity' => 'required',
         ]);
         

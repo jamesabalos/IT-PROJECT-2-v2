@@ -222,6 +222,19 @@ svg { width: 100%; }
                 
             }
 </script>
+
+        <?php 
+            //index.php
+            $connect = mysqli_connect("localhost", "root", "", "world");
+            $query = "SELECT population, name FROM country order by population DESC limit 10";
+            $result = mysqli_query($connect, $query);
+            $chart_data = '';
+            while($row = mysqli_fetch_array($result))
+            {
+             $chart_data .= "{name:'".$row["name"]."', population:".$row["population"]."}, ";
+            }
+            $chart_data = substr($chart_data, 0, -2);
+        ?>
         
 
 
@@ -251,7 +264,17 @@ svg { width: 100%; }
                                         <i class="glyphicon glyphicon-user"></i>
                                     </div>
                                     <div class="panel-value">
-                                        <h2 class="margin-top"> 2 </h2>
+                                        <h2 class="margin-top">  
+                                            <?php 
+                                                //index.php
+                                                $connect = mysqli_connect("localhost", "root", "", "world");
+                                                $query = "SELECT COUNT(name) as number from country";
+                                                $result = mysqli_query($connect, $query);
+                                                $row = $result->fetch_assoc();
+                                                print_r($row["number"]);
+                                                
+                                            ?> 
+                                        </h2>
                                         <p class="text-muted">Users</p>
                                     </div>
                                 </div>
@@ -262,7 +285,17 @@ svg { width: 100%; }
                                         <i class="glyphicon glyphicon-list"></i>
                                     </div>
                                     <div class="panel-value">
-                                        <h2 class="margin-top"> 1290 </h2>
+                                        <h2 class="margin-top"> 
+                                            <?php 
+                                                //index.php
+                                                $connect = mysqli_connect("localhost", "root", "", "world");
+                                                $query = "SELECT COUNT(name) as number from country";
+                                                $result = mysqli_query($connect, $query);
+                                                $row = $result->fetch_assoc();
+                                                print_r($row["number"]);
+                                                
+                                            ?> 
+                                        </h2>
                                         <p class="text-muted">Total Items</p>
                                     </div>
                                 </div>
@@ -273,7 +306,17 @@ svg { width: 100%; }
                                         <i class="glyphicon glyphicon-exclamation-sign"></i>
                                     </div>
                                     <div class="panel-value ">
-                                        <h2 class="margin-top"> 5 </h2>
+                                        <h2 class="margin-top"> 
+                                            <?php 
+                                                //index.php
+                                                $connect = mysqli_connect("localhost", "root", "", "world");
+                                                $query = "SELECT COUNT(name) as number from country";
+                                                $result = mysqli_query($connect, $query);
+                                                $row = $result->fetch_assoc();
+                                                print_r($row["number"]);
+                                                
+                                            ?> 
+                                        </h2>
                                         <p class="text-muted">Re-order</p>
                                     </div>
                                 </div>
@@ -496,16 +539,10 @@ $(document).ready(function() {
 function barChart() {
   window.barChart = Morris.Bar({
     element: 'bar-chart',
-    data: [
-      { y: 'Item 1', a: 100},
-      { y: 'Item 2', a: 75},
-      { y: 'Item 3', a: 50},
-      { y: 'Item 4', a: 75},
-      { y: 'Item 5', a: 50},
-    ],
-    xkey: 'y',
-    ykeys: ['a'],
-    labels: ['Series A'],
+    data: [<?php echo $chart_data; ?>],
+    xkey: 'name',
+    ykeys: ['population'],
+    labels: ['population'],
     lineColors: ['#1e88e5'],
     lineWidth: '3px',
     resize: true,

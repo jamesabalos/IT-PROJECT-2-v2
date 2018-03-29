@@ -13,7 +13,7 @@ class="active"
 @extends('inc.headScripts')
 
 @section('linkName')
-<h3>Items</h3>
+<h3><i class=" fa fa-bars" style="margin-right: 15px"> </i>Items</h3>
 @endsection
 
 @section('right')
@@ -316,16 +316,6 @@ class="active"
                         </div>
                     </div>
                 </div>
-                <div class="form-group">    
-                    <div class="row">
-                        <div class="col-md-3">
-                            {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
-                        </div>
-                        <div class="col-md-9">
-                            {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1'])}}
-                        </div>
-                    </div>
-                </div>
 
                 @include('inc.messages')
                 {{--  </form>  --}}
@@ -449,33 +439,46 @@ class="active"
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
+                            <span class=" fa fa-bars"></span>
                             List of Item History
                         </strong>
                     </div>
                     <div class="panel-body">
-                        <div class="content table-responsive">
-                            <table class="table table-bordered table-striped" >
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Description</th>
-                                        <th class="text-left">Date</th>
-                                        <th class="text-left">Quantity</th>
-                                        <th class="text-left">Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="purchasetable">
-                                </tbody>
-                            </table> 
-                        </div> 
-
+                       <div class="autocomplete" style="width:200px;">
+                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
+                            <div id="searchResultDiv" class="searchResultDiv">
+                        </div>
+                        </div>
+                        <div class="card">
+                            <div class="container">
+                                <p></p>
+                                <p><b>Items Added: </b></p>
+                                <p><b>Supplied by: </b></p>
+                                <p><b>Date: </b></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="container">
+                                <p></p>
+                                <p><b>Items Added: </b></p>
+                                <p><b>Supplied by: </b></p>
+                                <p><b>Date: </b></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="container">
+                                <p></p>
+                                <p><b>Items Added: </b></p>
+                                <p><b>Supplied by: </b></p>
+                                <p><b>Date: </b></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="text-right">                                           
+                    <div class="text-center">                                           
                         <div class="col-md-12">   
-                            <button id="submitPurchases" type="submit" class="btn btn-success">Save</button>
-                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            <button class="btn btn-success" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

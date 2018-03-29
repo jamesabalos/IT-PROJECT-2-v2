@@ -10,7 +10,7 @@
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
         <meta name="viewport" content="width=device-width" />
 
-        <link rel="icon" type="image/png" sizes="96x96" href="{{asset('assets/img/logo.png')}}">
+        <link rel="icon" type="image/png" sizes="96x96" href="{{asset('assets/img/logo3.png')}}">
 
         {{--  csrf_token  --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -67,7 +67,7 @@
                     <div class="logo">
 
                         <a href="{{route('admin.dashboard')}}" class="simple-text"> 
-                            <img src="{{asset('assets/img/logo2.png')}}">
+                            <img src="{{asset('assets/img/logo3.png')}}" style="height:150px;width:160px">
                             <!--                    Jernixon Motorparts and Accessories-->
                         </a>
 
@@ -78,7 +78,7 @@
                         @if(Auth::guard('adminGuard')->check())
                         <li @yield('dashboard_link')>
 
-                            <a href={{route('admin.dashboard')}}> <i class="fa fa-fw fa-dashboard"></i><p>Dashboard</p></a>
+                            <a href={{route('admin.dashboard')}}><i class="fa fa-fw fa-dashboard"></i><p>Dashboard</p></a>
                         </li>       
 
                         <li @yield('sales_link')>
@@ -139,14 +139,23 @@
                 <nav class="navbar navbar-default navbar-fixed navbar1">
 
                     <div class="container-fluid">
+                        
 
                         <div class="navbar-header">
 
                             @yield('linkName')
 
                         </div>
+                        <div>
+                            
+                            <ul class="nav navbar-nav navbar-right ">
+                            
+                                <li>
+                                
+    <span class="glyphicon glyphicon-bell"></span>
 
-                        <ul class="nav navbar-nav navbar-right ">
+  <span class="badge badge-notify">3</span>
+                            </li>
 
                             <li class="dropdown">
 
@@ -197,6 +206,9 @@
                             </li>
 
                         </ul>
+                        </div>
+                        
+                        
 
                     </div>
 
@@ -220,6 +232,12 @@
                             <a class="brand">Jernixon Motorparts and Accessories </a>   
                         </div>
                         <div class="small-logo-container">
+                            <ul class="nav navbar-right user-margin">
+                                <button class="btn btn-default btn-lg btn-link" style="font-size:36px;">
+    <span class="glyphicon glyphicon-bell"></span>
+  </button>
+  <span class="badge badge-notify">3</span>
+                            </ul>
 
                             <ul class="nav navbar-right user-margin">
                                 <li class="dropdown">

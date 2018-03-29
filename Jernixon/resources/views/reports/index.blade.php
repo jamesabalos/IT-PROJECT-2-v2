@@ -83,7 +83,7 @@ class="active"
 @endsection
 
 @section('linkName')
-<h3>Reports</h3>
+<h3><i class="fa fa-line-chart" style="margin-right: 20px"> </i>Reports</h3>
 @endsection
 
 @section('right')  
@@ -120,10 +120,10 @@ class="active"
                                 <table id="transactionsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead >
                                         <tr>
-                                            <th>Item Purchased</th>
-                                            <th>Quantity</th>
-                                            <th>Wholesale Price</th>
-                                            <th>Retail Price</th>
+                                            <td>Item Purchased</td>
+                                            <td>Quantity</td>
+                                            <td>Wholesale Price</td>
+                                            <td>Retail Price</td>
                                             {{--  <td>Total Price</td>  --}}
                                         </tr>
                                     </thead>

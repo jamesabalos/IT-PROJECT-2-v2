@@ -46,6 +46,33 @@ class="active"
     .bg-red{
         background-color: #FF7857;
     }
+
+    .morris-hover {
+  position:absolute;
+  z-index:1000;
+}
+
+.morris-hover.morris-default-style {     border-radius:10px;
+  padding:6px;
+  color:#666;
+  background:rgba(255, 255, 255, 0.8);
+  border:solid 2px rgba(230, 230, 230, 0.8);
+  font-family:sans-serif;
+  font-size:12px;
+  text-align:center;
+}
+
+.morris-hover.morris-default-style .morris-hover-row-label {
+  font-weight:bold;
+  margin:0.25em 0;
+}
+
+.morris-hover.morris-default-style .morris-hover-point {
+  white-space:nowrap;
+  margin:0.1em 0;
+}
+
+svg { width: 100%; }
     
     
 </style>
@@ -195,10 +222,17 @@ class="active"
                 
             }
 </script>
+        
+
+
+<!-- <link rel="stylesheet" href="https://www.cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css" /> -->
+<script src="{{asset('assets/js/raphael2.1.0.js')}}"></script>
+<script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
+<script src="{{asset('assets/js/morrisv05.js')}}"></script>
 @endsection
         
 @section('linkName')
-<h3><i class="fa fa-fw fa-dashboard"></i> Dashboard</h3>
+<h3>Dashboard</h3>
 @endsection
 
 @section('right')
@@ -209,36 +243,38 @@ class="active"
                 <div class="row">
                     <div class="panel-heading" >
                         <div class="row">
+                    <div class="panel-heading" >
+                        <div class="row">
                             <div class="col-md-4">
                                 <div class="panel panel-box clearfix">
                                     <div class="panel-icon pull-left bg-green">
                                         <i class="glyphicon glyphicon-user"></i>
                                     </div>
                                     <div class="panel-value">
-                                        <h2 class="margin-top"> ? </h2>
+                                        <h2 class="margin-top"> 2 </h2>
                                         <p class="text-muted">Users</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="panel panel-box clearfix">
-                                    <div class="panel-icon pull-left bg-red">
+                                    <div class="panel-icon pull-left bg-blue">
                                         <i class="glyphicon glyphicon-list"></i>
                                     </div>
                                     <div class="panel-value">
-                                        <h2 class="margin-top"> ? </h2>
-                                        <p class="text-muted">Accessories</p>
+                                        <h2 class="margin-top"> 1290 </h2>
+                                        <p class="text-muted">Total Items</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="panel panel-box clearfix">
-                                    <div class="panel-icon pull-left bg-blue">
-                                        <i class="glyphicon glyphicon-shopping-cart"></i>
+                                    <div class="panel-icon pull-left bg-red">
+                                        <i class="glyphicon glyphicon-exclamation-sign"></i>
                                     </div>
                                     <div class="panel-value ">
-                                        <h2 class="margin-top"> ? </h2>
-                                        <p class="text-muted">Motorparts</p>
+                                        <h2 class="margin-top"> 5 </h2>
+                                        <p class="text-muted">Re-order</p>
                                     </div>
                                 </div>
                             </div>
@@ -246,7 +282,33 @@ class="active"
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Bar Chart -->
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Top Items
+
+                    </div>
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div id="bar-chart"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                  </div>
+
+                  <!-- end of chart -->
+
                 {{--  <div class="row">
                     
                     <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
@@ -322,6 +384,7 @@ class="active"
     </div>
 </div>
 
+<!--
 <div class="row">
     <div class="col-md-12" >
         <div class="card" >
@@ -331,6 +394,7 @@ class="active"
         </div>
     </div>
 </div>
+-->
 
 
 @endsection     
@@ -416,8 +480,10 @@ class="active"
 <script src="{{asset('assets/js/canvasjs.min.js')}}"></script>
 
 <!-- Chart -->
+<!-- <script src="{{asset('assets/js/morris-data.js')}}"></script> -->
 <script src="{{asset('assets/js/morris.min.js')}}"></script>
 <script src="{{asset('assets/js/morris.js')}}"></script>
+
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -448,5 +514,7 @@ function barChart() {
 }
 
 </script>
+
+
 
 @endsection

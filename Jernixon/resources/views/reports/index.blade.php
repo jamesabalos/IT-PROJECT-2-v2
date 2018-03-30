@@ -85,7 +85,7 @@ class="active"
 @endsection
 
 @section('linkName')
-<h3>Reports</h3>
+<h3><i class="fa fa-line-chart" style="margin-right: 15px"></i> Reports</h3>
 @endsection
 
 @section('right')  

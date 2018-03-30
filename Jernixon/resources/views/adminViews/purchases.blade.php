@@ -11,7 +11,7 @@ onload="refresh()"
 ng-app="ourAngularJsApp"
 @endsection  --}}
 @section('linkName')
-<h3>Purchases</h3>
+<h3><i class="fa fa-cube" style="margin-right: 10px"></i> Purchases</h3>
 @endsection
 
 @section('headScript')
@@ -39,115 +39,115 @@ ng-app="ourAngularJsApp"
 
 
 
-<script type="text/javascript">
-    function addRow(div){
-        var items =[];
-        var thatTbody = $("#purchasetable tr td:first-child");
+      <script type="text/javascript">
+          function addRow(div){
+          var items =[];
+          var thatTbody = $("#purchasetable tr td:first-child");
 
-        for (var i = 0; i < thatTbody.length; i++) {
-            items[i] = thatTbody[i].innerHTML;
-        }
+          for (var i = 0; i < thatTbody.length; i++) {
+              items[i] = thatTbody[i].innerHTML;
+          }
 
-        if( items.indexOf(div.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
+          if( items.indexOf(div.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
 
-            var thatTable = document.getElementById("purchasetable");
-            var newRow = thatTable.insertRow(-1);
+              var thatTable = document.getElementById("purchasetable");
+              var newRow = thatTable.insertRow(-1);
 
-            newRow.insertCell(-1).innerHTML = "<td>" +div.firstChild.innerHTML+ "</td>";
-            newRow.insertCell(-1).innerHTML = "<td><input name='quantity[]' type='number' min='1' value='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input name='price[]' type='number' min='1.00' value='1.00' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='product_id[]' value='" +div.getAttribute("id")+ "'><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
-        }
-        document.getElementById("searchItemInput").value = "";
-        document.getElementById("searchResultDiv").innerHTML = "";
-    }
+              newRow.insertCell(-1).innerHTML = "<td>" +div.firstChild.innerHTML+ "</td>";
+              newRow.insertCell(-1).innerHTML = "<td><input name='quantity[]' type='number' min='1' value='1' class='form-control'></td>";
+              newRow.insertCell(-1).innerHTML = "<td><input name='price[]' type='number' min='1.00' value='1.00' class='form-control'></td>";
+              newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='product_id[]' value='" +div.getAttribute("id")+ "'><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+          }
+          document.getElementById("searchItemInput").value = "";
+          document.getElementById("searchResultDiv").innerHTML = "";
+      }
 
-    function searchItem(a){
-        if(a.value === ""){
-            document.getElementById("searchResultDiv").innerHTML ="";   
-        }
-        $.ajax({
-            method: 'get',
-            //url: 'items/' + document.getElementById("inputItem").value,
-            url: 'searchItem/' + a.value,
-            dataType: "json",
-            success: function(data){
-                //    console.log(data)
-                // <div>
-                //     <strong>Phi</strong>lippines
-                //     <input type="hidden" value="Philippines">
-                // </div>
+      function searchItem(a){
+          if(a.value === ""){
+              document.getElementById("searchResultDiv").innerHTML ="";   
+          }
+          $.ajax({
+              method: 'get',
+              //url: 'items/' + document.getElementById("inputItem").value,
+              url: 'searchItem/' + a.value,
+              dataType: "json",
+              success: function(data){
+                  //    console.log(data)
+                  // <div>
+                  //     <strong>Phi</strong>lippines
+                  //     <input type="hidden" value="Philippines">
+                  // </div>
 
-                var resultDiv = document.getElementById("searchResultDiv");
-                resultDiv.innerHTML = "";
-                for (var i = 0;  i< data.length; i++) {
-                    var node = document.createElement("DIV");
-                    node.setAttribute("id",data[i].product_id)
-                    node.setAttribute("onclick","addRow(this)")
-                    var pElement = document.createElement("P");
-                    var textNode = document.createTextNode(data[i].description);
-                    pElement.appendChild(textNode);
-                    node.appendChild(pElement);          
-                    resultDiv.appendChild(node);  
+                  var resultDiv = document.getElementById("searchResultDiv");
+                  resultDiv.innerHTML = "";
+                  for (var i = 0;  i< data.length; i++) {
+                      var node = document.createElement("DIV");
+                      node.setAttribute("id",data[i].product_id)
+                      node.setAttribute("onclick","addRow(this)")
+                      var pElement = document.createElement("P");
+                      var textNode = document.createTextNode(data[i].description);
+                      pElement.appendChild(textNode);
+                      node.appendChild(pElement);          
+                      resultDiv.appendChild(node);  
 
-                }
-            }
-        });
+                  }
+              }
+          });
 
-    }
-	
-	function getItems(button){
-		
-		var itemId = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
-		// console.log(itemId);
-		var fullRoute = "/admin/purchases/getPurchaseOrder/"+itemId;
-		$.ajax({
-			type:'GET',
-			url: fullRoute,
-            // dataType: JSON,
+      }
 
-			success:function(data){
-				//add data to modal
-				//   console.log(data)
-                console.log(data)
-                $("#purchaseOrdertableTbody tr").remove();
+      function getItems(button){
 
-                var modalPurchaseTable = document.getElementById("purchaseOrdertableTbody");
-                for(var i = 0; i < data.length; i++){
-                    var newRow = modalPurchaseTable.insertRow(-1);
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                }
-                document.getElementById("supplierName").innerHTML = data[0].supplier_name;
-                document.getElementById("poDate").innerHTML = data[0].created_at;
-                document.getElementById("officialReceiptNumber").innerHTML = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+          var itemId = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+          // console.log(itemId);
+          var fullRoute = "/admin/purchases/getPurchaseOrder/"+itemId;
+          $.ajax({
+              type:'GET',
+              url: fullRoute,
+              // dataType: JSON,
 
-			}
-		});
+              success:function(data){
+                  //add data to modal
+                  //   console.log(data)
+                  console.log(data)
+                  $("#purchaseOrdertableTbody tr").remove();
 
-	
-	}
+                  var modalPurchaseTable = document.getElementById("purchaseOrdertableTbody");
+                  for(var i = 0; i < data.length; i++){
+                      var newRow = modalPurchaseTable.insertRow(-1);
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                  }
+                  document.getElementById("supplierName").innerHTML = data[0].supplier_name;
+                  document.getElementById("poDate").innerHTML = data[0].created_at;
+                  document.getElementById("officialReceiptNumber").innerHTML = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
 
-    document.addEventListener("click", function (e) {
-        document.getElementById("searchResultDiv").innerHTML = "";
-    });
-    function removeRow(a){
-        $(a.parentNode.parentNode).hide(500,function(){
-            this.remove();  
-        });
-        // a.parentNode.parentNode.remove();
+              }
+          });
 
-    }
 
-    $(document).ready(function(){
-		
-		$.ajaxSetup({
-			headers: {
-				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			}
-        });
-        $('#purchasesDataTable').DataTable({
+      }
+
+      document.addEventListener("click", function (e) {
+          document.getElementById("searchResultDiv").innerHTML = "";
+      });
+      function removeRow(a){
+          $(a.parentNode.parentNode).hide(500,function(){
+              this.remove();  
+          });
+          // a.parentNode.parentNode.remove();
+
+      }
+
+      $(document).ready(function(){
+
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+          $('#purchasesDataTable').DataTable({
               "destroy": true,
               "processing": true,
               "serverSide": true,
@@ -191,49 +191,49 @@ ng-app="ourAngularJsApp"
               ]
           });
 
-        $('#formPurchaseOrder').on('submit',function(e){
-            e.preventDefault();
-            var data = $(this).serialize();
+          $('#formPurchaseOrder').on('submit',function(e){
+              e.preventDefault();
+              var data = $(this).serialize();
 
-            $.ajax({
-                type:'POST',
-                url: "{{route('admin.createPurchases')}}",
-                data: data,
+              $.ajax({
+                  type:'POST',
+                  url: "{{route('admin.createPurchases')}}",
+                  data: data,
 
-                success:function(data){
-                    //remove rows in purchase table
-                    $("#purchasetable tr").remove();
-                    //prompt the message
-                    $("#successDiv p").remove();
-                    $("#successDiv").removeClass("hidden");
-                                    // .addClass("alert-success")
-                                    // .html("<h3>Transaction successful</h3>");
-                    $("#successDiv").slideDown("slow")
-                                    .delay(1000)                        
-                                    .hide(1500);
-                    $("#errorDivCreatePurchase").html("");
-                    document.getElementById("formPurchaseOrder").reset(); //reset the form
-                    // $('#purchase').modal('hide')                    
-                    
-                    
-                },
-                error:function(data){
-                    var response = data.responseJSON;
-                    $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
-                    $("#errorDivCreatePurchase").html(function(){
-                        var addedHtml="";
-                        for (var key in response.errors) {
-                            addedHtml += "<p>"+response.errors[key]+"</p>";
-                        }
-                        return addedHtml;
-                    });
-                }
+                  success:function(data){
+                      //remove rows in purchase table
+                      $("#purchasetable tr").remove();
+                      //prompt the message
+                      $("#successDiv p").remove();
+                      $("#successDiv").removeClass("hidden");
+                      // .addClass("alert-success")
+                      // .html("<h3>Transaction successful</h3>");
+                      $("#successDiv").slideDown("slow")
+                          .delay(1000)                        
+                          .hide(1500);
+                      $("#errorDivCreatePurchase").html("");
+                      document.getElementById("formPurchaseOrder").reset(); //reset the form
+                      // $('#purchase').modal('hide')                    
 
-		  });
 
-        })
+                  },
+                  error:function(data){
+                      var response = data.responseJSON;
+                      $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
+                      $("#errorDivCreatePurchase").html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });
+                  }
 
-    });
+              });
+
+          })
+
+      });
 
 </script>
 
@@ -279,7 +279,7 @@ ng-app="ourAngularJsApp"
             <div class="card">
                 <div class="header">
                     <a href = "#purchase" data-toggle="modal">
-                            <button type="button" class="btn btn-success">Create Purchase Order</button>
+                        <button type="button" class="btn btn-success">Create Purchase Order</button>
                     </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="purchasesDataTable">
@@ -321,13 +321,14 @@ ng-app="ourAngularJsApp"
                                 <h3>Transaction successful</h3>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
-                        <div id="errorDivCreatePurchase" class="hidden">
+                    <div id="errorDivCreatePurchase" class="hidden">
 
-                        </div>
+                    </div>
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
@@ -335,7 +336,7 @@ ng-app="ourAngularJsApp"
                         </strong>
                     </div>
                     <div class="panel-body">
-           
+
 
                         <div class="form-group">
                             <div class="row">
@@ -384,17 +385,17 @@ ng-app="ourAngularJsApp"
                                 </tbody>
                             </table>
 
-                            
+
                         </div> 
-                                <div class="autocomplete" style="width:100%;">
-                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
-                                    <div id="searchResultDiv" class="searchResultDiv">
-                                        {{--  <div>
-                                        <strong>Phi</strong>lippines
-                                        <input type="hidden" value="Philippines">
-                                        </div>  --}}
-                                    </div>
-                                </div>
+                        <div class="autocomplete" style="width:100%;">
+                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                            <div id="searchResultDiv" class="searchResultDiv">
+                                {{--  <div>
+                                <strong>Phi</strong>lippines
+                                <input type="hidden" value="Philippines">
+                                </div>  --}}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}
@@ -485,7 +486,6 @@ ng-app="ourAngularJsApp"
                                 </tbody>
                             </table>
                         </div>
-                {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}
                     </div>
                 </div>
                 <div class="row">
@@ -497,13 +497,11 @@ ng-app="ourAngularJsApp"
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@endsection
+        @endsection
 
 
-@section('js_link')
-<!--   Core JS Files   -->
-{{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>  --}}
-<script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
-@endsection
+        @section('js_link')
+        <!--   Core JS Files   -->
+        {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>  --}}
+        <script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
+        @endsection

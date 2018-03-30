@@ -126,39 +126,39 @@ svg { width: 100%; }
                 });
                 chart.render();
                 
-                // var chart2 = new CanvasJS.Chart("leastItemsChart", {
-                //     animationEnabled: true,
-                //     animationDuration:5000,
-                //     exportEnabled:true,
-                //     exportFileName:"Least-Items",
-                //     // creditText:"Jernixon",
-                //     theme: "dark2", // "light1", "light2", "dark1", "dark2"
-                //     title:{
-                //         text: "Least items last February",
-                //         // backgroundColor:"black",
-                //         // fontColor:"white"
-                //     },
-                //     toolTip: {
-                //         shared: true  
-                //     },
-                //     axisY: {
-                //         title: "Quantity"
-                //     },
-                //     data: [{        
-                //         type: "column", //column,line,area,pie,bar,doughnut 
-                //         // showInLegend: true, 
-                //         // legendMarkerColor: "grey",
-                //         // legendText: "MMbbl = one million barrels",  
-                //         dataPoints: [      
-                //         { y: 17, label: "Item1",color:"orange" },
-                //         { y: 58,  label: "Item2" },
-                //         { y: 79,  label: "Item3" },
-                //         ]
-                //         // dataPoints: queryDataPoints,
-                //     }]
+                var chart2 = new CanvasJS.Chart("leastItemsChart", {
+                    animationEnabled: true,
+                    animationDuration:5000,
+                    exportEnabled:true,
+                    exportFileName:"Least-Items",
+                    // creditText:"Jernixon",
+                    theme: "dark2", // "light1", "light2", "dark1", "dark2"
+                    title:{
+                        text: "Least items last February",
+                        // backgroundColor:"black",
+                        // fontColor:"white"
+                    },
+                    toolTip: {
+                        shared: true  
+                    },
+                    axisY: {
+                        title: "Quantity"
+                    },
+                    data: [{        
+                        type: "column", //column,line,area,pie,bar,doughnut 
+                        // showInLegend: true, 
+                        // legendMarkerColor: "grey",
+                        // legendText: "MMbbl = one million barrels",  
+                        dataPoints: [      
+                        { y: 17, label: "Item1",color:"orange" },
+                        { y: 58,  label: "Item2" },
+                        { y: 79,  label: "Item3" },
+                        ]
+                        // dataPoints: queryDataPoints,
+                    }]
                     
-                // });
-                // chart2.render();
+                });
+                chart2.render();
             }
             
             function searchItem(a){
@@ -223,18 +223,21 @@ svg { width: 100%; }
             }
 </script>
 
+
         <?php 
             //index.php
-            $connect = mysqli_connect("localhost", "root", "", "world");
-            $query = "SELECT population, name FROM country order by population DESC limit 10";
+            $connect = mysqli_connect("localhost", "root", "", "inventory_jernixon");
+            $query = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id limit 10";
             $result = mysqli_query($connect, $query);
+			
             $chart_data = '';
             while($row = mysqli_fetch_array($result))
             {
-             $chart_data .= "{name:'".$row["name"]."', population:".$row["population"]."}, ";
+             $chart_data .= "{name:'".$row["name"]."', population:".$row["quantity"]."}, ";
             }
             $chart_data = substr($chart_data, 0, -2);
         ?>
+
         
 
 
@@ -245,7 +248,7 @@ svg { width: 100%; }
 @endsection
         
 @section('linkName')
-<h3>Dashboard</h3>
+<h3><i class="fa fa-fw fa-dashboard"></i> Dashboard</h3>
 @endsection
 
 @section('right')
@@ -256,45 +259,47 @@ svg { width: 100%; }
                 <div class="row">
                     <div class="panel-heading" >
                         <div class="row">
-                    <div class="panel-heading" >
-                        <div class="row">
                             <div class="col-md-4">
                                 <div class="panel panel-box clearfix">
                                     <div class="panel-icon pull-left bg-green">
                                         <i class="glyphicon glyphicon-user"></i>
                                     </div>
                                     <div class="panel-value">
-                                        <h2 class="margin-top">  
-                                            <?php 
+                                        <h2 class="margin-top"> 
+
+                                             <?php 
                                                 //index.php
-                                                $connect = mysqli_connect("localhost", "root", "", "world");
-                                                $query = "SELECT COUNT(name) as number from country";
+                                                //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
+                                                $query = "SELECT COUNT(id) as id from users where status='active'";
                                                 $result = mysqli_query($connect, $query);
                                                 $row = $result->fetch_assoc();
-                                                print_r($row["number"]);
+                                                print_r($row["id"]);
                                                 
                                             ?> 
+
                                         </h2>
-                                        <p class="text-muted">Users</p>
+                                        <p class="text-muted" >Users</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="panel panel-box clearfix">
-                                    <div class="panel-icon pull-left bg-blue">
+                                    <div class="panel-icon pull-left bg-red">
                                         <i class="glyphicon glyphicon-list"></i>
                                     </div>
                                     <div class="panel-value">
-                                        <h2 class="margin-top"> 
+                                        <h2 class="margin-top">
+                                        
                                             <?php 
                                                 //index.php
-                                                $connect = mysqli_connect("localhost", "root", "", "world");
-                                                $query = "SELECT COUNT(name) as number from country";
+                                                //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
+                                                $query = "SELECT COUNT(product_id) as product_id from products where status='available'";
                                                 $result = mysqli_query($connect, $query);
                                                 $row = $result->fetch_assoc();
-                                                print_r($row["number"]);
+                                                print_r($row["product_id"]);
                                                 
-                                            ?> 
+                                            ?>
+                                            
                                         </h2>
                                         <p class="text-muted">Total Items</p>
                                     </div>
@@ -302,20 +307,36 @@ svg { width: 100%; }
                             </div>
                             <div class="col-md-4">
                                 <div class="panel panel-box clearfix">
-                                    <div class="panel-icon pull-left bg-red">
-                                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                                    <div class="panel-icon pull-left bg-blue">
+                                        <i class="glyphicon glyphicon-shopping-cart"></i>
                                     </div>
                                     <div class="panel-value ">
-                                        <h2 class="margin-top"> 
-                                            <?php 
+                                        <h2 class="margin-top">
+                                            
+                                        <?php 
                                                 //index.php
-                                                $connect = mysqli_connect("localhost", "root", "", "world");
-                                                $query = "SELECT COUNT(name) as number from country";
+                                                //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
+                                                $query = "SELECT product_id from products where status='available'";
                                                 $result = mysqli_query($connect, $query);
-                                                $row = $result->fetch_assoc();
-                                                print_r($row["number"]);
+												$row = $result->fetch_assoc();
+												$count = 0;
+												while($row = mysqli_fetch_array($result)){
+													$dataQuery = "SELECT product_id from products join salable_items using(product_id) where status='available' and quantity < (Select reorder_level from products where product_id='" .$row['product_id']. "')";
+													
+													$dataResult = mysqli_query($connect, $dataQuery);
+													$dataRow = $dataResult->fetch_assoc();
+													
+													if (mysqli_num_rows($dataResult)!=0){
+														$count++;
+													}
+													// while($rowData = mysqli_fetch_array($data)){
+														// $count++;
+													// }
+												}
+                                                echo($count);
                                                 
                                             ?> 
+                                            
                                         </h2>
                                         <p class="text-muted">Re-order</p>
                                     </div>
@@ -551,7 +572,6 @@ function barChart() {
 }
 
 </script>
-
 
 
 @endsection

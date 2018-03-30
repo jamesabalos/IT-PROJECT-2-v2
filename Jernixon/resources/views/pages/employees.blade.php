@@ -78,7 +78,7 @@ class="active"
 
                         newRow.insertCell(-1).innerHTML ="<td class='text-center'>"+arrayOfData[1].value+"</td>";
                         newRow.insertCell(-1).innerHTML ="<td class='text-center'>"+arrayOfData[2].value+"</td>";
-                        newRow.insertCell(-1).innerHTML ="<td class='text-center'>active</td>";
+                        newRow.insertCell(-1).innerHTML ="<td class='text-center'>Active</td>";
                         // newRow.insertCell(-1).innerHTML ="<td class='text-center'>\
                         //                 <div class='btn-group'>\
                         //                     <a href='#editEmployee' onclick='showDetails(this)' class='btn btn-xs btn-warning' data-toggle='modal' >\
@@ -86,7 +86,7 @@ class="active"
                         //                     </a>\
                         //                 </div>\
                         //             </td>";
-                        newRow.insertCell(-1).innerHTML = "<td class='text-center'><button data-id='" +data.id+"' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount'>Deactivate</button></td>";
+                        newRow.insertCell(-1).innerHTML = "<td class='text-center'><button data-id='" +data.id+"' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount btn btn-danger'>Deactivate</button><a href = '#reset' data-toggle='modal'><button type='button' class='btn btn-info'>Reset Password</button></a></td>";
 
 
                     })
@@ -220,6 +220,9 @@ class="active"
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","Active");
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse","Active");
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Deactivate";
+                            
+                document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("class","formUpdateEmployeeAccount btn btn-danger");
+                            
                         }else{
                             // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='' data-status='active' data-status-reverse='inactive' data-button-reverse='Diactivate' class='formUpdateEmployeeAccount'>Activate</button>";
 
@@ -228,6 +231,7 @@ class="active"
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","Inactive");
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse","Deactivate");
                             document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Activate";
+                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("class","formUpdateEmployeeAccount btn btn-success");
                         }
 
                     })
@@ -416,7 +420,7 @@ class="active"
                     <div class="row">
                         <div class="text-right">                                           
                             <div class="col-md-12">   
-                                <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
+                                <button type="submit" class="btn btn-success">Save</button>
                                 <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>

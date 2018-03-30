@@ -242,9 +242,9 @@
                             <span class="icon-bar"></span>
                         </button>
                         <div class="small-title">
-                            <img id = "logo" src = "{{asset('assets/img/logo.png')}}" width = "50" height = "50">
+                            <img id = "logo" src = "{{asset('assets/img/logo3.png')}}" width = "40" height = "40">
 
-                            <a class="brand">Jernixon Motorparts and Accessories </a>   
+                            <p class="brand">Jernixon Motorparts and Accessories </p>   
                         </div>
                         <div class="small-logo-container">
                             <ul class="nav navbar-right user-margin">

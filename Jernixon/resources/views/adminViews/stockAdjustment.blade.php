@@ -197,7 +197,7 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('linkName')
-<h3>Stock Adjustment</h3>
+<h3><i class="fa fa-adjust" style="margin-right: 10px"></i> Stock Adjustment</h3>
 @endsection
 
 @section('right')

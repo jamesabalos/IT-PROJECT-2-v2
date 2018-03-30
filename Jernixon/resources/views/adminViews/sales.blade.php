@@ -197,7 +197,7 @@ ng-app="ourAngularJsApp"
         @endsection
         
         @section('linkName')
-        <h3>Sales</h3>
+        <h3><i class="fa fa-dollar"></i> Sales</h3>
         @endsection
         
         @section('right')

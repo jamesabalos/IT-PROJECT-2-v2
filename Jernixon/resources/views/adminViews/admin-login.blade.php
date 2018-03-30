@@ -81,7 +81,7 @@
 
     <!-- Styles -->
 <!--===============================================================================================-->	
-<link rel="icon" type="image/png" href="{{ asset('assets/login_v2/images/icons/logo.png') }}"/>
+<link rel="icon" type="image/png" href="{{ asset('assets/img/logo3.png') }}"/>
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/vendor/bootstrap/css/bootstrap.min.css')}}">
 <!--===============================================================================================-->

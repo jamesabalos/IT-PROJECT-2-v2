@@ -11,7 +11,7 @@ onload="refresh()"
 ng-app="ourAngularJsApp"
 @endsection  --}}
 @section('linkName')
-<h3>Purchases</h3>
+<h3><i class="fa fa-cube" style="margin-right: 10px"></i> Purchases</h3>
 @endsection
 
 @section('headScript')

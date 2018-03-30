@@ -302,7 +302,7 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('linkName')
-<h3>Returns</h3>
+<h3><i class="fa fa-mail-reply" style="margin-right: 20px"></i>Returns</h3>
 @endsection
 
 @section('right')

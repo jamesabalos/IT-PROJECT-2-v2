@@ -246,7 +246,7 @@ svg { width: 100%; }
 @endsection
         
 @section('linkName')
-<h3>Dashboard</h3>
+<h3><i class="fa fa-fw fa-dashboard"></i> Dashboard</h3>
 @endsection
 
 @section('right')

@@ -388,11 +388,11 @@ $('#dashboardDatatable').DataTable({
         // },
         {
             "title": "Quantity in Stock",
-            "data": "wholesale_price"
+            "data": "quantity"
         },
         {
             "title": "Wholesale Price",
-            "data": "retail_price"
+            "data": "wholesale_price"
         },
         {
             "title": "Retail Price",

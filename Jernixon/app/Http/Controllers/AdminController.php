@@ -153,21 +153,33 @@ class AdminController extends Controller
                     ['po_id' => $request->Official_Receipt_Number, 'product_id' => $request->product_id[$i], 'supplier_name' => $request->Supplier, 'price' => $request->price[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date]
                 );
 
-                $price = DB::table('purchases')
-					->select('price')
-                    ->where('po_id' , '=' , $request->Official_Receipt_Number)
-                    ->latest()
-                    ->first();
-
-                $newPrice = $price->price;
+                $prod_id = DB::table('salable_items')
+					->select('product_id')
+					->where('product_id' , '=' , $request->product_id[$i])
+                    ->get();
                     
-                DB::table('salable_items')
-                    ->where('product_id', $request->product_id[$i])
-                    ->increment('quantity', $request->quantity[$i]);
-                
+                if($prod_id->isEmpty()){
+                    $insertSalableItems = DB::table('salable_items')->insert(
+                        ['product_id' => $request->product_id[$i], 'wholesale_price' => $request->price[$i], 'retail_price' => $request->price[$i], 'quantity' => $request->quantity[$i]]
+                    );
+                }else{
+                    $price = DB::table('purchases')
+                        ->select('price')
+                        ->where('po_id' , '=' , $request->Official_Receipt_Number)
+                        ->latest()
+                        ->first();
+    
+                    $newPrice = $price->price;
+                        
                     DB::table('salable_items')
-                    ->where('product_id', $request->product_id[$i])
-                    ->update(['retail_price' => $newPrice]);
+                        ->where('product_id', $request->product_id[$i])
+                        ->increment('quantity', $request->quantity[$i]);
+                    
+                        DB::table('salable_items')
+                        ->where('product_id', $request->product_id[$i])
+                        ->update(['wholesale_price' => $newPrice]);
+                }
+
             }
             return "successful";
         }else{

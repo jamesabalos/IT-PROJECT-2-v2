@@ -227,15 +227,26 @@ svg { width: 100%; }
         <?php 
             //index.php
             $connect = mysqli_connect("localhost", "root", "", "inventory_jernixon");
-            $query = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id limit 10";
-            $result = mysqli_query($connect, $query);
+			//top items query
+            $queryTopItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id limit 10";
+            $result = mysqli_query($connect, $queryTopItems);
 			
-            $chart_data = '';
+            $chart_data_top_items = '';
             while($row = mysqli_fetch_array($result))
             {
-             $chart_data .= "{name:'".$row["name"]."', population:".$row["quantity"]."}, ";
+             $chart_data_top_items .= "{name:'".$row["name"]."', population:".$row["quantity"]."}, ";
             }
-            $chart_data = substr($chart_data, 0, -2);
+            $chart_data_top_items = substr($chart_data_top_items, 0, -2);
+			//least items query
+			$queryLeastItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id order by quantity asc limit 10";
+            $result = mysqli_query($connect, $queryLeastItems);
+			
+            $chart_data_least_items = '';
+            while($row = mysqli_fetch_array($result))
+            {
+             $chart_data_least_items .= "{name:'".$row["name"]."', population:".$row["quantity"]."}, ";
+            }
+            $chart_data_least_items = substr($chart_data_least_items, 0, -2);
         ?>
 
         
@@ -341,108 +352,37 @@ svg { width: 100%; }
                                         <p class="text-muted">Re-order</p>
                                     </div>
                                 </div>
-                            </div>
-                            
+                            </div>                           
                         </div>
                     </div>
                 </div>
 
                 <!-- Bar Chart -->
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-bar-chart-o fa-fw"></i> Top Items
-
                     </div>
-
                     <div class="container-fluid">
-
                         <div class="row">
-
                             <div class="col-md-12">
-
-                                <div id="bar-chart"></div>
-
+                                <div id="bar-chart-top-items"></div>
                             </div>
-
                         </div>
-
                     </div>
-
                   </div>
-
-                  <!-- end of chart -->
-
-                {{--  <div class="row">
-                    
-                    <table class="table table-hover table-condensed" style="width:100%" id="dashboardDatatable">
-                        <thead> 
-                            <tr>
-                                
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Quantity in Stock</th>
-                                <th>Wholesale Price</th>
-                                <th>Retail Price</th>
-                                <th>Add to Cart</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
-                    
-                </div>  --}}
-                {{--  <div class="row">
-                    <h4>Customer Purchase</h4>
-                    <div class="row">
-                        <div class="col-md-3 text-right">
-                            <label>Customer Name: </label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control border-input" form="purchase" required>
+				  <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Least Items
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="bar-chart"></div>
+                            </div>
                         </div>
                     </div>
-                    
-                    
-                    <div class="row"> 
-                        <div class="col-md-12 table-responsive">
-                            <table id="cartTable" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        
-                                        <td>Item</td>
-                                        <td>Quantity Left</td>
-                                        <td>Wholesale Price</td>
-                                        <td>Retail Price</td>
-                                        <td>Quantity Purchase</td>
-                                        <td>Total Price</td>
-                                        <td>Action</td>
-                                    </tr> 
-                                </thead>
-                                <tbody id="cartTbody">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="text-right">                                           
-                            <div class="col-md-5">                                                    
-                                <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
-                                
-                            </div>                             
-                        </div>
-                        <div class="col-md-4 text-right">
-                            <label>Total Price: </label>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" disabled class="form-control border-input" form="purchase" value="0">
-                        </div>
-                    </div>
-                </div>                            
-                --}}
-                
+                  </div>
+                  <!-- end of chart -->              
             </div>
         </div>
     </div>
@@ -463,76 +403,7 @@ svg { width: 100%; }
 
 @endsection     
 
-@section('modals')
-{{--  <div id="openCart" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-    <div class = "modal-dialog modal-lg">
-        <div class = "modal-content">
-            <div class = "modal-body">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h4>Customer Purchase</h4>
-                <div class="row">
-                    <div class="col-md-3 text-right">
-                        <label>Customer Name: </label>
-                    </div>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control border-input" form="purchase" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 text-right">
-                        <label>Date of Purchased</label>    
-                    </div>
-                    <div class="col-md-9">
-                        
-                        <span class="add-on">
-                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                            
-                        </span>   
-                    </div>
-                    
-                </div>
-                
-                <div class="row"> 
-                    <div class="col-md-12 table-responsive">
-                        <table id="cartTable" class="table table-striped table-bordered table-list">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Item</th>
-                                    <th>Quantity Left</th>
-                                    <th>Wholesale Price</th>
-                                    <th>Retail Price</th>
-                                    <th>Quantity Purchase</th>
-                                    <th>Total Price</th>
-                                    <th>Action</th>
-                                </tr> 
-                            </thead>
-                            <tbody id="cartTbody">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-md-4 text-right">
-                            <label>Total Price: </label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" disabled class="form-control border-input" form="purchase" value="0">
-                        </div>
-                        <div class="text-right">                                           
-                            <div class="col-md-4">                                                    
-                                <button class="btn btn-primary" onclick="window.alert('to be continue..')">Submit</button>
-                                <button class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                            </div>                             
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>  --}}
-@endsection
+
 
 @section('js_link')
 <!--   Core JS Files   -->
@@ -551,16 +422,32 @@ svg { width: 100%; }
 
 <script type="text/javascript">
 $(document).ready(function() {
-  barChart();
+  barChartTopItems();
+  barChartLeastItems();
   $(window).resize(function() {
-    window.barChart.redraw();
+    window.barChartTopItems.redraw();
+	window.barChartLeastItems.redraw();
   });
 });
 
-function barChart() {
-  window.barChart = Morris.Bar({
+function barChartTopItems() {
+  window.barChartTopItems = Morris.Bar({
+    element: 'bar-chart-top-items',
+    data: [<?php echo $chart_data_top_items; ?>],
+    xkey: 'name',
+    ykeys: ['population'],
+    labels: ['population'],
+    lineColors: ['#1e88e5'],
+    lineWidth: '3px',
+    resize: true,
+    redraw: true
+  });
+}
+  
+function barChartLeastItems() {
+  window.barChartLeastItems = Morris.Bar({
     element: 'bar-chart',
-    data: [<?php echo $chart_data; ?>],
+    data: [<?php echo $chart_data_least_items; ?>],
     xkey: 'name',
     ykeys: ['population'],
     labels: ['population'],

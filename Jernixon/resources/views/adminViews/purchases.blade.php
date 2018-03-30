@@ -11,6 +11,9 @@ onload="refresh()"
 ng-app="ourAngularJsApp"
 @endsection  --}}
 @section('linkName')
+<div class="alert alert-success hidden" id="successDiv">
+
+</div>
 <h3><i class="fa fa-cube" style="margin-right: 10px"></i> Purchases</h3>
 @endsection
 
@@ -201,19 +204,21 @@ ng-app="ourAngularJsApp"
                   data: data,
 
                   success:function(data){
+                      //close modal
+                      $('#purchase').modal('hide')                    
                       //remove rows in purchase table
                       $("#purchasetable tr").remove();
                       //prompt the message
                       $("#successDiv p").remove();
-                      $("#successDiv").removeClass("hidden");
+                      $("#successDiv").removeClass("hidden")
                       // .addClass("alert-success")
-                      // .html("<h3>Transaction successful</h3>");
+                             .html("<h3>Transaction successful</h3>");
+                    $("#successDiv").css("display:block");                             
                       $("#successDiv").slideDown("slow")
                           .delay(1000)                        
                           .hide(1500);
                       $("#errorDivCreatePurchase").html("");
                       document.getElementById("formPurchaseOrder").reset(); //reset the form
-                      // $('#purchase').modal('hide')                    
 
 
                   },
@@ -312,18 +317,13 @@ ng-app="ourAngularJsApp"
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <div class="row">
+                    <div class="row">
                         <div class="col-sm-3">
                             <h3 class="modal-title">Purchase</h3>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="alert-success" id="successDiv">
-                                <h3>Transaction successful</h3>
-                            </div>
-                        </div>
                     </div>
-                </div>
             </div>
+            
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div id="errorDivCreatePurchase" class="hidden">

@@ -4,6 +4,8 @@ class="active"
 @endsection
 
 @section('linkName')
+<div class="alert alert-success hidden" id="successDiv">
+    </div>
 <h3><i class="fa fa-users" style="margin-right: 15px"></i> Employees</h3>
 @endsection
 
@@ -270,8 +272,7 @@ class="active"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <div class="alert alert-success hidden" id="successDiv">
-                    </div>
+
                     <a href = "#addEmployee" data-toggle="modal">
                         <button type="button" class="btn btn-success"><i class = "ti-plus"></i> Add Employee</button>
                     </a>

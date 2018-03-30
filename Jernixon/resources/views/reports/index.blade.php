@@ -29,13 +29,15 @@ class="active"
       <script type="text/javascript">
           $(document).ready(function() {
           $('#transactionsTable').DataTable({
+              "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
               "destroy": true,
               "processing": true,
               "serverSide": true,
               "colReorder": true,  
               //"autoWidth": true,
               "pagingType": "full_numbers",
-              dom: 'Bfrtip',
+              dom: 'Blfrtip',
+              
               // buttons: ['excel', 'pdf','print'], 
 
               // buttons:[{
@@ -55,11 +57,12 @@ class="active"
                       extend: 'collection',
                       text: 'EXPORT',
                       buttons: [
-                          'copy',
-                          'excel',
-                          'csv',
-                          'pdf',
-                          'print'
+                          {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
+                          {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
+                          {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
+                          {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
+                          {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+                          
                       ]
                   }
               ],
@@ -73,6 +76,7 @@ class="active"
                   {data: 'price'},
                   {data: 'created_at'},
               ]
+              
           });
        
 

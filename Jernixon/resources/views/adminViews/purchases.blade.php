@@ -126,7 +126,7 @@ ng-app="ourAngularJsApp"
 			}
 		});
 
-		
+	
 	}
 
     document.addEventListener("click", function (e) {
@@ -317,7 +317,7 @@ ng-app="ourAngularJsApp"
                             <h3 class="modal-title">Purchase</h3>
                         </div>
                         <div class="col-sm-6">
-                            <div class="alert-success hidden" id="successDiv">
+                            <div class="alert-success" id="successDiv">
                                 <h3>Transaction successful</h3>
                             </div>
                         </div>
@@ -484,19 +484,18 @@ ng-app="ourAngularJsApp"
                                 <tbody id="purchaseOrdertableTbody">
                                 </tbody>
                             </table>
-                </div>
+                        </div>
                 {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}
+                    </div>
+                </div>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitPurchases" type="button" class="btn btn-success">Close</button>
+                            <button id="submitPurchases" type="button" data-dismiss="modal" class="btn btn-success">Close</button>
                         </div>
                     </div>
                 </div>
-                {{--  {!! Form::close() !!}  --}}
-
             </div>
-
         </div>
     </div>
 </div>

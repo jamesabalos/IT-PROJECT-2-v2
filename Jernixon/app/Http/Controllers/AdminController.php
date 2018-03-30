@@ -117,7 +117,7 @@ class AdminController extends Controller
     }
 
     public function searchItem($itemName){
-        $item = Product::where('description','LIKE','%'.$itemName.'%')
+        $item = Product::where([['description','LIKE','%'.$itemName.'%'],['status', '=', 'available'],])
                     ->orderBy('description','asc')
                     ->limit(5)
                     ->get();
@@ -191,8 +191,8 @@ class AdminController extends Controller
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
-                <a href = '#' data-toggle='modal' >
-                    <button class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
+                <a href = '#viewReturn' data-toggle='modal' >
+                    <button onclick='getItems(this)' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
                 </a>
 
                 ";
@@ -218,6 +218,11 @@ class AdminController extends Controller
                         ->where('or_number', '=', $request->ORNumber)
                         ->get();
         return $data;
+        
+    }
+
+    public function gerReturnedItems($ORNumber){
+        return $ORNumber;
         
     }
     

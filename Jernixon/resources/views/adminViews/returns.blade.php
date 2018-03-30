@@ -90,7 +90,7 @@ ng-app="ourAngularJsApp"
                 for(var i = 0; i < data.length; i++){
                     var newRow = modalReturnItemTbody.insertRow(-1);
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "'></td>";
+                    newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1'></td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td><input type='checkbox' class='form-control'></td>";
                 }
@@ -111,35 +111,37 @@ ng-app="ourAngularJsApp"
     function searchItem(a){
         if(a.value === ""){
             document.getElementById("searchResultDiv").innerHTML ="";   
-        }
-        $.ajax({
-            method: 'get',
-            //url: 'items/' + document.getElementById("inputItem").value,
-            url: 'searchItem/' + a.value,
-            dataType: "json",
-            success: function(data){
-                //    console.log(data)
-                // <div>
-                //     <strong>Phi</strong>lippines
-                //     <input type="hidden" value="Philippines">
-                // </div>
+        }else{
+            $.ajax({
+                method: 'get',
+                //url: 'items/' + document.getElementById("inputItem").value,
+                url: 'searchItem/' + a.value,
+                dataType: "json",
+                success: function(data){
+                    //    console.log(data)
+                    // <div>
+                    //     <strong>Phi</strong>lippines
+                    //     <input type="hidden" value="Philippines">
+                    // </div>
 
-                var resultDiv = document.getElementById("searchResultDiv");
-                resultDiv.innerHTML = "";
-                for (var i = 0;  i< data.length; i++) {
-                    var node = document.createElement("DIV");
-                    node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
-                    var pElement = document.createElement("P");
-                    //add the price
-                    //pElement.setAttribute("data-price" , data[i].) 
-                    var textNode = document.createTextNode(data[i].description);
-                    pElement.appendChild(textNode);
-                    node.appendChild(pElement);          
-                    resultDiv.appendChild(node);  
+                    var resultDiv = document.getElementById("searchResultDiv");
+                    resultDiv.innerHTML = "";
+                    for (var i = 0;  i< data.length; i++) {
+                        var node = document.createElement("DIV");
+                        node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                        var pElement = document.createElement("P");
+                        //add the price
+                        //pElement.setAttribute("data-price" , data[i].) 
+                        var textNode = document.createTextNode(data[i].description);
+                        pElement.appendChild(textNode);
+                        node.appendChild(pElement);          
+                        resultDiv.appendChild(node);  
 
+                    }
                 }
-            }
-        });
+            });
+
+        }
 
     }
       
@@ -154,7 +156,6 @@ ng-app="ourAngularJsApp"
             method: 'get',
             //url: 'items/' + document.getElementById("inputItem").value,
             url: fullRoute,
-//            dataType: "json",
             
             success: function(data){
                 var resultORNumberDiv = document.getElementById("resultORNumberDiv");
@@ -169,7 +170,6 @@ ng-app="ourAngularJsApp"
                     pElement.appendChild(textNode);
                     node.appendChild(pElement);          
                     resultORNumberDiv.appendChild(node);  
-//
                 }
                 console.log(data)
                 
@@ -178,6 +178,35 @@ ng-app="ourAngularJsApp"
         }
         
     }
+    	
+	function getItems(button){
+		
+		var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+		// console.log(itemId);
+		var fullRoute = "/admin/returns/getReturnedItems/"+ORnumber;
+		$.ajax({
+			type:'GET',
+			url: fullRoute,
+
+			success:function(data){
+                console.log(data)
+                // $("#veiwReturnedItemTbody tr").remove();
+                // var modalPurchaseTable = document.getElementById("veiwReturnedItemTbody");
+                // for(var i = 0; i < data.length; i++){
+                //     var newRow = modalPurchaseTable.insertRow(-1);
+                //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                // }
+                // document.getElementById("supplierName").innerHTML = data[0].supplier_name;
+                document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
+                document.getElementById("returnedORNumber").innerHTML = ORnumber;
+
+			}
+		});
+
+	
+	}
 
     document.addEventListener("click", function (e) {
         document.getElementById("searchResultDiv").innerHTML = "";
@@ -373,7 +402,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Official Receipt No:')}}
                                 </div>
                                 <div class="col-md-9">
-<!--                                    {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}-->
+                                  {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
                         <input autocomplete="off" id="searchORNumberInput" type="number" id="searchOR" onkeyup="searchOfficialReceipt(this)" name="ORnumber" class="form-control border-input">
                                      <div id="resultORNumberDiv" class="searchResultDiv">
                             </div>
@@ -460,10 +489,105 @@ ng-app="ourAngularJsApp"
                 {!! Form::close() !!}
             </div>
         </div>
+    </div>
+</div>
+
+<div id="viewReturn" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Official Receipt Information</h3>
+            </div>
+            <div class="modal-body">
+                    <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>
+                                    <span class="glyphicon glyphicon-th"></span>
+                                     Information
+                                </strong>
+                            </div>
+                            <div class="panel-body">
+        
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Date', 'Date:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{--  {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
+                                            <p class="form-control" id="returnedDate"></p>   
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">                                
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Official Receipt No:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
+                                            <p class="form-control" id="returnedORNumber"></p>
+
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Customer', 'Customer:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{--  {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
+                                        <p class="form-control" id="customerName"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-th"></span>
+                            Returned Item
+                        </strong>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Price</th>
+                                        <th class="text-left">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="veiwReturnedItemTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="text-right">                                           
+                            <div class="col-md-12">   
+                                <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
-    @endsection
+
+@endsection
 
 
     @section('js_link')

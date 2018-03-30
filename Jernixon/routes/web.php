@@ -70,6 +70,7 @@ Route::get('admin/returns/getReturns', 'AdminController@getReturns')->name('retu
 Route::Post('admin/returns/createReturnItem', 'AdminController@createReturnItem')->name('admin.createReturnItem');
 Route::get('admin/returns/getORNumber/{ORNumber}', 'AdminController@getORNumber');
 Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')->name('admin.getORNumberItems');
+Route::get('admin/returns/getReturnedItems/{ORNumber}', 'AdminController@gerReturnedItems');
 
 Route::get('admin/physical_count', 'AdminController@physicalCount')->name('admin.physicalCount');
     

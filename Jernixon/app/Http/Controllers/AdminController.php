@@ -104,6 +104,9 @@ class AdminController extends Controller
 				$insert = DB::table('sales')->insert(
 					['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $mytime,]
 				);
+                DB::table('salable_items')
+                    ->where('product_id', $request->productIds[$i])
+                    ->decrement('quantity', $request->quantity[$i]);
 			}
 			return "successful";
 		}else{
@@ -146,9 +149,12 @@ class AdminController extends Controller
 		
         if($data->isEmpty()){
             for($i = 0;$i<$arrayCount;$i++){
-                $insert = DB::table('purchases')->insert(
+                $insertPurchases = DB::table('purchases')->insert(
                     ['po_id' => $request->Official_Receipt_No, 'product_id' => $request->product_id[$i], 'supplier_name' => $request->Supplier, 'price' => $request->price[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date]
                 );
+                DB::table('salable_items')
+                    ->where('product_id', $request->product_id[$i])
+                    ->increment('quantity', $request->quantity[$i]);
             }
             return "successful";
         }else{

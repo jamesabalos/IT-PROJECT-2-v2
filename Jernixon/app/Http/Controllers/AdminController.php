@@ -303,25 +303,29 @@ class AdminController extends Controller
 
         $data = DB::table('products')
 					->join('salable_items', 'products.product_id', '=', 'salable_items.product_id')
-                    ->select('status','products.product_id','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'created_at', 'updated_at')
-                    ->where('status','=','available');
+                    ->select('status','products.product_id','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'created_at', 'updated_at');
+                    // ->where('status','=','available');
                     // $string = "";
                     // if(true){
             
                     // }
                     return Datatables::of($data)
             ->addColumn('action',function($data){
-                
-                return "    
-                    <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i>$data->status</button>
-                <a href = '#editModal' data-toggle='modal' >
-                    <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
-                </a>
-                <a href = '#viewHistory' data-toggle='modal' >
-                    <button class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>
-                </a>
+                $buttons = "<a href = '#editModal' data-toggle='modal' >
+                        <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
+                    </a>
+                    <a href = '#viewHistory' data-toggle='modal' >
+                        <button class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>
+                    </a>";
+                if($data->status === "available"){
+                   return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i>Disable</button>";
+                }else{
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-remove'></i>Enable</button>";
+                }
+                // return "    
+                //     <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i>$data->status</button>
+                // ";
 
-                ";
 
 
             })
@@ -362,11 +366,9 @@ class AdminController extends Controller
         return "successful";
 
     }
-	public function itemsChangeStatus(Request $request, $id){
-		$product = Product::find($id);
-		$product->status= $request->input('status');
-		$product->save();
-		return response($request->all());
+	public function updateItemStatus(Request $request){
+
+        
 	}
 
     // public function getTransactions(){

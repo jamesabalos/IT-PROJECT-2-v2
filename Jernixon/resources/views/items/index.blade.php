@@ -114,6 +114,30 @@ class="active"
             $("#errorDivEditItem").html("");
             
         }
+        function formUpdateChangeStatus(button){
+                // button.preventDefault(); //prevent the page to load when submitting form
+                // var fullRoute = "/admin/items/updateStatus/"+button.currentTarget.attributes[0].value; //id
+                var fullRoute = "/admin/items/updateStatus"; //id
+                var status = "";
+                if(button.childNodes[1].nodeValue === "Enable"){
+                    status="unavailable";
+                }else{
+                    status="available";
+                }
+                $.ajax({
+                    type:'Post',
+                    url: fullRoute,
+                    dataType:'json',
+                    data:{
+                        'itemId':button.id,
+                        'status': status //'status': inactive | active 
+                    },
+                    success:function(data){
+                        console.log(data)
+                    }
+                });
+         
+        }
         $(document).ready(function() {
             //alert(document.querySelectorAll("#removeItemTbody tr>td:last-child button").length);
 
@@ -213,32 +237,12 @@ class="active"
                 
             })
 
-            $(".formUpdatechangeStatus").on('click',function(button){
-                button.preventDefault(); //prevent the page to load when submitting form
-                var fullRoute = "/admin/items/updateItemStatus/"+button.currentTarget.attributes[0].value; //id
-                $.ajax({ 
-                    type:'PUT',
-                    // url:'admin/storeNewItem',
-                    // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
-                    url: fullRoute,
 
-                    dataType:'json',
-                    data:{
-                        // 'description':'',
-                        // 'quantityInStock':4,
-                        // 'wholeSalePrice':10,
-                        'status': button.currentTarget.attributes[1].value, //'status': inactive | active
-                        // 'buttonName':button.currentTarget.attributes[2].value, 
-                    },
-                    success:function(data){
-                    }
-                });
-            })
 
             $('#formEdit').on('submit',function(e){
-            e.preventDefault(); //prevent the page to load when submitting form
-            //key value pair of form
-            var data = $(this).serialize();
+                e.preventDefault(); //prevent the page to load when submitting form
+                //key value pair of form
+                var data = $(this).serialize();
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.editItem')}}",
@@ -535,72 +539,66 @@ class="active"
     </div>
 
     <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-            <div class = "modal-dialog modal-lg">
-                    <div class = "modal-content">
-                        <div class = "modal-body">
-                                <div class="modal-header">
-                                        <button class="close" data-dismiss="modal">&times;</button>
-                                        <h3 class="modal-title">Item History</h3>
-                                </div>
-                                <div class = "modal-body">  
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <strong>
-                                                <span class=" fa fa-bars"></span>
-                                                List of Item History
-                                            </strong>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="autocomplete" style="width:200px;">
-                                                <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
-                                                <div id="searchResultDiv" class="searchResultDiv">
-                                                </div>
-                                            </div>
-                                            <div class="card">
-                                                <div class="container">
-                                                    <p></p>
-                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
-                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                                    <p style="font-size: 12px"><b>Date: </b></p>
-                                                </div>          
-                                            </div>
-                                            <div class="card">
-                                                <div class="container">
-                                                    <p></p>
-                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
-                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                                    <p style="font-size: 12px"><b>Date: </b></p>
-                                                </div>
-                                            </div>
-                                            <div class="card">
-                                                <div class="container">
-                                                    <p></p>
-                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
-                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                                    <p style="font-size: 12px"><b>Date: </b></p>
-                                                </div>
-                                            </div>
-                                        </div>
+        <div class = "modal-dialog modal-lg">
+            <div class = "modal-content">
+                <div class = "modal-body">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">Item History</h3>
+                    </div>
+                    <div class = "modal-body">  
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>
+                                    <span class=" fa fa-bars"></span>
+                                    List of Item History
+                                </strong>
+                            </div>
+                            <div class="panel-body">
+                                <div class="autocomplete" style="width:200px;">
+                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
+                                    <div id="searchResultDiv" class="searchResultDiv">
                                     </div>
-                                    <div class="row">
-                                        <div class="text-right">                                           
-                                            <div class="col-md-12">   
-                                                <button class="btn btn-danger" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {!! Form::close() !!}
-                    
                                 </div>
-                    
+                                <div class="card">
+                                    <div class="container">
+                                        <p></p>
+                                        <p style="font-size: 12px"><b>Items Added: </b></p>
+                                        <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                        <p style="font-size: 12px"><b>Date: </b></p>
+                                    </div>          
+                                </div>
+                                <div class="card">
+                                    <div class="container">
+                                        <p></p>
+                                        <p style="font-size: 12px"><b>Items Added: </b></p>
+                                        <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                        <p style="font-size: 12px"><b>Date: </b></p>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="container">
+                                        <p></p>
+                                        <p style="font-size: 12px"><b>Items Added: </b></p>
+                                        <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                        <p style="font-size: 12px"><b>Date: </b></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="text-right">                                           
+                                <div class="col-md-12">   
+                                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                        </div>
-                    </div>
+                    
+                           
+                </div>
             </div>
- 
- 
+        </div>
     </div>
     
     @endsection

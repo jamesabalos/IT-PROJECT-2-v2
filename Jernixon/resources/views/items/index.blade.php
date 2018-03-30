@@ -136,10 +136,24 @@ class="active"
                         'status': status //'status': inactive | active 
                     },
                     success:function(data){
-                        console.log(data)
+                       $("#tableItems").DataTable().ajax.reload();//reload the dataTables                        
+
                     }
                 });
          
+        }
+        function viewItemHistory(button){
+            var fullRoute = "/admin/items/viewHistory/" + button.parentNode.nextSibling.id; //id
+            
+            $.ajax({
+                type:'Get',
+                url: fullRoute,
+                // dataType:"json",
+                success:function(data){
+                    console.log(data)                    
+
+                }
+            });
         }
         $(document).ready(function() {
             //alert(document.querySelectorAll("#removeItemTbody tr>td:last-child button").length);
@@ -326,19 +340,17 @@ class="active"
     @endsection
     
     @section('modals')
-    <div id="addNewItemModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-        <div class = "modal-dialog modal-md">
-            <div class = "modal-content">
-                    <div class = "modal-header">
-                    <button class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="modal-title">Add New Item</h3>
-                    </div>
-                    <div class="alert alert-danger hidden" id="errorDivAddNewItem">
-                    </div>
-                    
-                
-                    <div class = "modal-body">
-                    <div class="panel panel-default">
+<div id="addNewItemModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Add New Item</h3>
+            </div>
+            <div class="alert alert-danger hidden" id="errorDivAddNewItem">
+            </div>
+            <div class = "modal-body">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
@@ -347,68 +359,46 @@ class="active"
                     </div>
                     {!! Form::open(['method'=>'post','id'=>'formAddNewItem']) !!}
                     {{--  <form action="" role="form">  --}}
-                        <div class="panel-heading">
+                    <div class="panel-heading">
                         <input type="hidden" id="_token" value="{{ csrf_token() }}">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('description', 'Description:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{Form::text('description','',['class'=>'form-control','placeholder'=>'Description'])}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">                                
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Reorder Level:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{ Form::number('reorderLevel','',['class'=>'form-control','placeholder'=>'Reorder Level','min'=>'1']) }}
-                                </div>
-                            </div>
-                        </div>
-                        {{--  <div class="form-group">    
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{Form::number('wholeSalePrice','',['class'=>'form-control','placeholder'=>'Whole Sale Price','min'=>'1'])}}
-                                </div>
-                            </div>
-                        </div>  --}}
-                        {{--  <div class="form-group">   
-                            <div class="row">
-                                <div class="col-md-3">                                                             
-                                    {{Form::label('Retail Price', 'Retail Price:')}}
-                                </div>
-                                <div class="col-md-9">                                    
-                                    {{Form::number('retailPrice','',['class'=>'form-control','placeholder'=>'Retail Price','min'=>'1'])}}
-                                </div>
-                            </div>
-                        </div>  --}}
-                        @include('inc.messages')
-                    {{--  </form>  --}}
-                    {{--  <div class="modal-footer">  --}}
+                    <div class="form-group">
                         <div class="row">
-                            <div class="text-right">                                           
-                                <div class="col-md-12">   
-                                    {{--  {{Form::submit('Submit',['class'=>'btn btn-primary'])}}  --}}
-                                    <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
-                                    <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                </div>
+                            <div class="col-md-3">
+                                {{Form::label('description', 'Description:')}}
+                            </div>
+                            <div class="col-md-9">
+                                {{Form::text('description','',['class'=>'form-control','placeholder'=>'Description'])}}
                             </div>
                         </div>
-                        {{--  </div>                      --}}
-                        {!! Form::close() !!}
+                    </div>
+                    <div class="form-group">                                
+                        <div class="row">
+                            <div class="col-md-3">
+                                {{Form::label('Reorder Level:')}}
+                            </div>
+                            <div class="col-md-9">
+                                {{ Form::number('reorderLevel','',['class'=>'form-control','placeholder'=>'Reorder Level','min'=>'1']) }}
+                            </div>
+                        </div>
+                    </div>
+                    @include('inc.messages')
+                    <div class="row">
+                        <div class="text-right">                                           
+                            <div class="col-md-12">   
+                                {{--  {{Form::submit('Submit',['class'=>'btn btn-primary'])}}  --}}
+                                <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
+                    </div>
                 </div>
             </div>
-                </div>
         </div>
     </div>
 </div>
+
     <div id="editModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
         <div class = "modal-dialog modal-md">
             <div class = "modal-content">
@@ -556,94 +546,45 @@ class="active"
     <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
         <div class = "modal-dialog modal-lg">
             <div class = "modal-content">
-                <div class = "modal-body">
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal">&times;</button>
-                        <h3 class="modal-title">Item History</h3>
-                    </div>
-                    <div class = "modal-body">  
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <strong>
-                                    <span class=" fa fa-bars"></span>
-                                    List of Item History
-                                </strong>
-                            </div>
-                            <div class="panel-body">
-                                <div class="autocomplete" style="width:200px;">
-                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
-                                    <div id="searchResultDiv" class="searchResultDiv">
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="container">
-                                        <p></p>
-                                        <p style="font-size: 12px"><b>Items Added: </b></p>
-                                        <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                        <p style="font-size: 12px"><b>Date: </b></p>
-                                    </div>          
-                                </div>
-                                <div class = "modal-body">  
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <strong>
-                                                <span class=" fa fa-bars"></span>
-                                                List of Item History
-                                            </strong>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="autocomplete" style="width:200px;">
-                                                <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
-                                                <div id="searchResultDiv" class="searchResultDiv">
-                                                </div>
-                                            </div>
-                                            <div class="card">
-                                                <div class="card-container bg-success" style="padding: 1em;">
-                                                    <p></p>
-                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
-                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                                    <p style="font-size: 12px"><b>Date: </b></p>
-                                                </div>          
-                                            </div>
-                                            <div class="card">
-                                                <div class="card-container bg-success" style="padding: 1em;">
-                                                    <p></p>
-                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
-                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                                    <p style="font-size: 12px"><b>Date: </b></p>
-                                                </div>
-                                            </div>
-                                            <div class="card">
-                                                <div class="card-container bg-success" style="padding: 1em;">
-                                                    <p></p>
-                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
-                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                                    <p style="font-size: 12px"><b>Date: </b></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="container">
-                                        <p></p>
-                                        <p style="font-size: 12px"><b>Items Added: </b></p>
-                                        <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                        <p style="font-size: 12px"><b>Date: </b></p>
-                                    </div>
-                                </div>
-                            </div>
+                <div class = "modal-body">  
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <strong>
+                                <span class=" fa fa-bars"></span>
+                                List of Item History
+                            </strong>
                         </div>
-                        <div class="row">
-                            <div class="text-right">                                           
-                                <div class="col-md-12">   
-                                    <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <div class="panel-body">
+                            <div class="autocomplete" style="width:200px;">
+                                <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
+                                <div id="searchResultDiv" class="searchResultDiv">
                                 </div>
+                            </div>
+                            {{--  <div class="card">
+                                <div class="card-container bg-danger" style="padding: 1em;">
+                                    <p></p>
+                                    <p style="font-size: 12px"><b>Items Subtracted: </b></p>
+                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                    <p style="font-size: 12px"><b>Date: </b></p>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-container bg-success" style="padding: 1em;">
+                                    <p></p>
+                                    <p style="font-size: 12px"><b>Items Added: </b></p>
+                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                    <p style="font-size: 12px"><b>Date: </b></p>
+                                </div>
+                            </div>  --}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="text-right">                                           
+                            <div class="col-md-12">   
+                                <button class="btn btn-danger" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
-                    
-                           
                 </div>
             </div>
         </div>

@@ -315,7 +315,7 @@ class AdminController extends Controller
                         <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
                     </a>
                     <a href = '#viewHistory' data-toggle='modal' >
-                        <button class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>
+                        <button onclick='viewItemHistory(this)' class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>
                     </a>";
                 if($data->status === "available"){
                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i>Disable</button>";
@@ -377,6 +377,9 @@ class AdminController extends Controller
 				->update(['status' => 'available']);
 		}
 		return $request->all();
+	}
+	public function viewItemHistory($id){
+		return $id;
 	}
 
     // public function getTransactions(){

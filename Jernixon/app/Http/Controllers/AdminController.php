@@ -367,8 +367,16 @@ class AdminController extends Controller
 
     }
 	public function updateItemStatus(Request $request){
-
-        
+		if($request->status == "available"){
+			DB::table('products')
+				->where('product_id', $request->itemId)
+				->update(['status' => 'unavailable']);
+        }else{
+			DB::table('products')
+				->where('product_id', $request->itemId)
+				->update(['status' => 'available']);
+		}
+		return $request->all();
 	}
 
     // public function getTransactions(){

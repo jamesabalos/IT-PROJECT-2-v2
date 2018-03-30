@@ -114,49 +114,60 @@ ng-app="ourAngularJsApp"
                         data:data,
                         //_token:$("#_token"),
                         success:function(data){
-                            document.getElementById("formSales").reset();
-                            var items = [];
-                            var len=localStorage.length;
-                            for(var i=0; i<len; i++) {
-                                var key = localStorage.key(i);
-                                var value = localStorage[key];
-                                if(value.includes("item")){
-                                    items.push(key);
+                            if(data === "successful"){
+                                document.getElementById("formSales").reset();
+                                var items = [];
+                                var len=localStorage.length;
+                                for(var i=0; i<len; i++) {
+                                    var key = localStorage.key(i);
+                                    var value = localStorage[key];
+                                    if(value.includes("item")){
+                                        items.push(key);
+                                    }
                                 }
+
+                                //delete items in localStorage
+                                for(var i=0; i < items.length; i++){
+                                    localStorage.removeItem(items[i]);
+                                }
+                                //clear total sales
+                                document.getElementById("totalSalesDiv").firstChild.innerHTML="";
+                                
+                                //show the plus sign button again in dataTables
+                                var itemId = $("#cartTbody tr td:nth-child(5) button");
+                                for(var i = 0; i<itemId.length; i++){
+                                document.getElementById(itemId[i].getAttribute("data-item-id")).removeAttribute("style");
+                                }
+                                
+                                //remove all rows in cart
+                                $("#cartTbody tr").remove();
+                                
+                                //prompt the message
+                                
+    //                            $("#successDiv").css("display:block");
+    //                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
+    //                            $("#successDiv").slideDown("slow");
+                                
+                                $("#successDiv p").remove();
+                                $("#successDiv").removeClass("alert-danger hidden").addClass("alert-success")
+                                // .addClass("alert-success")
+                                    .html("<h3>Transaction successful</h3>");
+
+    //                            $("#successDiv").css("display:block");
+                                $("#successDiv").slideDown("slow")
+                                                .delay(1000)                        
+                                                .hide(1500);
+    //                            $("#successDiv").removeAttribute("style")
+
+                                //refresh dataTable
+                                $("#dashboardDatatable").DataTable().ajax.reload();
+                            }else{
+                                $("#successDiv").css("display","block");
+                                $("#successDiv").removeClass("alert-success hidden").addClass("alert-danger");
+                                $("#successDiv").html("Receipt Number duplicated");
                             }
 
-                            //delete items in localStorage
-                            for(var i=0; i < items.length; i++){
-                                localStorage.removeItem(items[i]);
-                            }
-                            //clear total sales
-                            document.getElementById("totalSalesDiv").firstChild.innerHTML="";
-                             
-                             //show the plus sign button again in dataTables
-                             var itemId = $("#cartTbody tr td:nth-child(5) button");
-                             for(var i = 0; i<itemId.length; i++){
-                               document.getElementById(itemId[i].getAttribute("data-item-id")).removeAttribute("style");
-                             }
-                             
-                            //remove all rows in cart
-                            $("#cartTbody tr").remove();
-                            
-                            //prompt the message
-                            
-//                            $("#successDiv").css("display:block");
-//                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
-//                            $("#successDiv").slideDown("slow");
-                            
-                            $("#successDiv p").remove();
-                            $("#successDiv").removeClass("alert-danger hidden").addClass("alert-success")
-                            // .addClass("alert-success")
-                                .html("<h3>Transaction successful</h3>");
-
-//                            $("#successDiv").css("display:block");
-                            $("#successDiv").slideDown("slow")
-                                            .delay(1000)                        
-                                            .hide(1500);
-//                            $("#successDiv").removeAttribute("style")
+                           
                             
 
                         },
@@ -484,7 +495,7 @@ $('#dashboardDatatable').DataTable({
         var temp0 = $compile(retailPrice)($scope);                
         angular.element( lastRow.insertCell(-1) ).append(temp0);    
         
-        var inputNumber = "<input type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1'></input>";
+        var inputNumber = "<input type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1'></input>";
         var temp1 = $compile(inputNumber)($scope);
         // var newRow = thatTbody.insertRow(-1);
         // angular.element( newRow.insertCell(-1) ).append(temp);

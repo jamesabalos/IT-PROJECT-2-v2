@@ -557,7 +557,7 @@ class="active"
                                                 </div>
                                             </div>
                                             <div class="card">
-                                                <div class="container">
+                                                <div class="card-container bg-success" style="padding: 1em;">
                                                     <p></p>
                                                     <p style="font-size: 12px"><b>Items Added: </b></p>
                                                     <p style="font-size: 12px"><b>Supplied by: </b></p>
@@ -565,7 +565,7 @@ class="active"
                                                 </div>          
                                             </div>
                                             <div class="card">
-                                                <div class="container">
+                                                <div class="card-container bg-success" style="padding: 1em;">
                                                     <p></p>
                                                     <p style="font-size: 12px"><b>Items Added: </b></p>
                                                     <p style="font-size: 12px"><b>Supplied by: </b></p>
@@ -573,7 +573,7 @@ class="active"
                                                 </div>
                                             </div>
                                             <div class="card">
-                                                <div class="container">
+                                                <div class="card-container bg-success" style="padding: 1em;">
                                                     <p></p>
                                                     <p style="font-size: 12px"><b>Items Added: </b></p>
                                                     <p style="font-size: 12px"><b>Supplied by: </b></p>

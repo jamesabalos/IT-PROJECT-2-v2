@@ -247,76 +247,57 @@
                             <p class="brand">Jernixon Motorparts and Accessories </p>   
                         </div>
                         <div class="small-logo-container">
-                            <ul class="nav navbar-right user-margin">
+                            <ul class="list-inline">                                
+                                <li>
 
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <ul class="nav navbar-right user-margin">
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                <p>
+                                                    {{ Auth::user()->name }}
+                                                    <b class="caret"></b>
+                                                </p>
 
-                                        <i class="fa fa-bell"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    @if(Auth::guard('adminGuard')->check())
+                                                    <a href="#notification" data-toggle="modal">
+                                                        Notifications
+                                                    </a>
+                                                    <a href="#changePassword" data-toggle="modal">
+                                                        Change Password
+                                                    </a>
+                                                    <a href="{{ route('admin.logout') }}">
+                                                        {{--  onclick="event.preventDefault();  --}}
+                                                        {{--  document.getElementById('logout-form').submit();">  --}}
+                                                        Logout
+                                                    </a>
 
-                                        <b class="caret"></b>
+                                                    {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                                    {{ csrf_field() }}
+                                                    </form>  --}}
+                                                    @elseif(Auth::guard('web')->check())
+                                                    <a href="{{ route('salesAssistant.logout') }}">
+                                                        {{--  onclick="event.preventDefault();
+                                                        document.getElementById('logout-form').submit();">  --}}
+                                                        Logout
+                                                    </a>
 
-                                    </a>
+                                                    {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
+                                                    {{ csrf_field() }}
+                                                    </form>   --}}
+                                                    @endif
+                                                </li>
 
-                                    <ul class="dropdown-menu">
-
-                                        <li><a href="#">Notification 1</a></li>
-                                        <li><a href="#">Notification 2</a></li>
-                                        <li><a href="#">Notification 3</a></li>
-                                        <li><a href="#">Notification 4</a></li>
-                                        <li><a href="#">Another notification</a></li>
+                                            </ul>
+                                        </li>
 
                                     </ul>
-
                                 </li>
 
-                                <ul class="nav navbar-right user-margin">
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <p>
-                                                {{ Auth::user()->name }}
-                                                <b class="caret"></b>
-                                            </p>
-
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                @if(Auth::guard('adminGuard')->check())
-                                                <a href="#notification" data-toggle="modal">
-                                                    Notifications
-                                                </a>
-                                                <a href="#changePassword" data-toggle="modal">
-                                                    Change Password
-                                                </a>
-                                                <a href="{{ route('admin.logout') }}">
-                                                    {{--  onclick="event.preventDefault();  --}}
-                                                    {{--  document.getElementById('logout-form').submit();">  --}}
-                                                    Logout
-                                                </a>
-
-                                                {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                                {{ csrf_field() }}
-                                                </form>  --}}
-                                                @elseif(Auth::guard('web')->check())
-                                                <a href="{{ route('salesAssistant.logout') }}">
-                                                    {{--  onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">  --}}
-                                                    Logout
-                                                </a>
-
-                                                {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
-                                                {{ csrf_field() }}
-                                                </form>   --}}
-                                                @endif
-                                            </li>
-
-                                        </ul>
-                                    </li>
-
-                                </ul>
-
-                                </div>
-                        </div>
+                            </div>
+                    </div>
                         <div class="navbar-collapse collapse">
 
                             <ul class="nav navbar-nav navbar-right">

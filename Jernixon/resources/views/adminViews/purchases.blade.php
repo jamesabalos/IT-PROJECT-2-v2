@@ -177,11 +177,11 @@ ng-app="ourAngularJsApp"
                       extend: 'collection',
                       text: 'EXPORT',
                       buttons: [
-                          'copy',
-                          'excel',
-                          'csv',
-                          'pdf',
-                          'print'
+                          {extend: 'copy', title: 'Jernixon Motorparts - Purchases'},
+                          {extend: 'excel', title: 'Jernixon Motorparts - Purchases'},
+                          {extend: 'csv', title: 'Jernixon Motorparts - Purchases'},
+                          {extend: 'pdf', title: 'Jernixon Motorparts - Purchases'},
+                          {extend: 'print', title: 'Jernixon Motorparts - Purchases'}
                       ]
                   }
               ],

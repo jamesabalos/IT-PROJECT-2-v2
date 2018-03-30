@@ -86,6 +86,7 @@ class="active"
       
 
 </script>
+
 @endsection
 
 @section('linkName')
@@ -101,11 +102,10 @@ class="active"
                     <div class = "content">
                         <div class="row">
                             <p class = "col-md-12">
-                                <label>From:</label>
-                                <input type="date" name="myDate">
-
-                                <label>To:</label>
-                                <input type="date" name="myDate">
+                                <label for="from">From</label>
+                                <input type="date" id="from" name="from">
+                                <label for="to">to</label>
+                                <input type="date" id="to" name="to">
                             </p>  
                         </div>
                         <!--                             <p>

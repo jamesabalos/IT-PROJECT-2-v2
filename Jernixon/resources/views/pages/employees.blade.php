@@ -1,15 +1,7 @@
-@extends('layouts.navbar')
-@section('employees_link')
-class="active"
-@endsection
-
-@section('linkName')
+@extends('layouts.navbar') @section('employees_link') class="active" @endsection @section('linkName')
 <div class="alert alert-success hidden" id="successDiv">
-    </div>
-<h3><i class="fa fa-users" style="margin-right: 15px"></i> Employees</h3>
-@endsection
-
-@section('headScript')
+</div>
+<h3><i class="fa fa-users" style="margin-right: 15px"></i> Employees</h3> @endsection @section('headScript')
 <script type="text/javascript">
     // function showDetails(button){
     //     //alert(button.parentNode.parentNode.parentNode);
@@ -41,21 +33,21 @@ class="active"
             }
         });
 
-        $('#formAddNewEmployee').on('submit',function(e){
+        $('#formAddNewEmployee').on('submit', function(e) {
             e.preventDefault(); //prevent the page to load when submitting form
             //key value pair of form
             // var data = $(this).serialize();
             var arrayOfData = $(this).serializeArray();
-            var password = (arrayOfData[1].value).split(" ",1) + "@jernixon";
+            var password = (arrayOfData[1].value).split(" ", 1) + "@jernixon";
 
             $.ajax({
-                type:'POST',
+                type: 'POST',
                 // url:'admin/storeNewItem',
                 url: "{{route('admin.addNewEmployee')}}",
-                dataType:'json',
-                data:{
+                dataType: 'json',
+                data: {
                     'name': arrayOfData[1].value,
-                    'email':  arrayOfData[2].value,
+                    'email': arrayOfData[2].value,
                     'contactNumber': arrayOfData[3].value,
                     'address': arrayOfData[4].value,
                     'password': password,
@@ -65,43 +57,43 @@ class="active"
                 //data:{data},
                 // data:data,
                 //_token:$("#_token"),
-                success:function(data){
+                success: function(data) {
                     console.log(data)
-                    $('#addEmployee').modal('hide')                    
+                    $('#addEmployee').modal('hide')
                     $("#successDiv p").remove();
                     $("#successDiv").removeClass("hidden")
                         .html("<h3>Success</h3>");
                     document.getElementById("formAddNewEmployee").reset();
 
                     $("#successDiv").css("display:block");
-                    $("#successDiv").slideDown("slow",function(){
-                        var thatTbody = document.getElementById("employeeTbody");
-                        var newRow = thatTbody.insertRow(-1);
+                    $("#successDiv").slideDown("slow", function() {
+                            var thatTbody = document.getElementById("employeeTbody");
+                            var newRow = thatTbody.insertRow(-1);
 
-                        newRow.insertCell(-1).innerHTML ="<td class='text-center'>"+arrayOfData[1].value+"</td>";
-                        newRow.insertCell(-1).innerHTML ="<td class='text-center'>"+arrayOfData[2].value+"</td>";
-                        newRow.insertCell(-1).innerHTML ="<td class='text-center'>Active</td>";
-                        // newRow.insertCell(-1).innerHTML ="<td class='text-center'>\
-                        //                 <div class='btn-group'>\
-                        //                     <a href='#editEmployee' onclick='showDetails(this)' class='btn btn-xs btn-warning' data-toggle='modal' >\
-                        //                         <i class='glyphicon glyphicon-pencil'></i>\
-                        //                     </a>\
-                        //                 </div>\
-                        //             </td>";
-                        newRow.insertCell(-1).innerHTML = "<td class='text-center'><button data-id='" +data.id+"' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount btn btn-danger'>Deactivate</button><a href = '#reset' data-toggle='modal'><button type='button' class='btn btn-info'>Reset Password</button></a></td>";
+                            newRow.insertCell(-1).innerHTML = "<td class='text-center'>" + arrayOfData[1].value + "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td class='text-center'>" + arrayOfData[2].value + "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td class='text-center'>Active</td>";
+                            // newRow.insertCell(-1).innerHTML ="<td class='text-center'>\
+                            //                 <div class='btn-group'>\
+                            //                     <a href='#editEmployee' onclick='showDetails(this)' class='btn btn-xs btn-warning' data-toggle='modal' >\
+                            //                         <i class='glyphicon glyphicon-pencil'></i>\
+                            //                     </a>\
+                            //                 </div>\
+                            //             </td>";
+                            newRow.insertCell(-1).innerHTML = "<td class='text-center'><button data-id='" + data.id + "' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount btn btn-danger'>Deactivate</button><a href = '#reset' data-toggle='modal'><button type='button' class='btn btn-info'>Reset Password</button></a></td>";
 
 
-                    })
-                        .delay(1000)                        
+                        })
+                        .delay(1000)
                         .hide(1500);
                 },
-                error:function(data){
+                error: function(data) {
                     var response = data.responseJSON;
                     $("#errorDivAddNewEmployee").removeClass("hidden").addClass("alert-danger text-center");
-                    $("#errorDivAddNewEmployee").html(function(){
-                        var addedHtml="";
+                    $("#errorDivAddNewEmployee").html(function() {
+                        var addedHtml = "";
                         for (var key in response.errors) {
-                            addedHtml += "<p>"+response.errors[key]+"</p>";
+                            addedHtml += "<p>" + response.errors[key] + "</p>";
                         }
                         return addedHtml;
                     });
@@ -176,17 +168,17 @@ class="active"
 
         // });
 
-        $(".formUpdateEmployeeAccount").on('click',function(button){
+        $(".formUpdateEmployeeAccount").on('click', function(button) {
             button.preventDefault(); //prevent the page to load when submitting form
-            var fullRoute = "/admin/employees/updateEmployeeAccount/"+button.currentTarget.attributes[0].value; //id
-            $.ajax({ 
-                type:'PUT',
+            var fullRoute = "/admin/employees/updateEmployeeAccount/" + button.currentTarget.attributes[0].value; //id
+            $.ajax({
+                type: 'PUT',
                 // url:'admin/storeNewItem',
                 // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
                 url: fullRoute,
 
-                dataType:'json',
-                data:{
+                dataType: 'json',
+                data: {
                     // 'description':'',
                     // 'quantityInStock':4,
                     // 'wholeSalePrice':10,
@@ -197,84 +189,80 @@ class="active"
                 //data:{data},
                 // data:data,
                 //_token:$("#_token"),
-                success:function(data){
-                    // $('#editEmployee').modal('hide')
-                    $("#successDiv p").remove();
-                    $("#successDiv").removeClass("hidden")
-                    // .addClass("alert-success")
-                        .html("<h3>Employee updated</h3>");
+                success: function(data) {
+                        // $('#editEmployee').modal('hide')
+                        $("#successDiv p").remove();
+                        $("#successDiv").removeClass("hidden")
+                            // .addClass("alert-success")
+                            .html("<h3>Employee updated</h3>");
 
-                    $("#successDiv").css("display:block");
-                    $("#successDiv").slideDown("slow",function(){
-                        //document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
-                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='" +button.currentTarget.attributes[0].value+ "' data-status='" +button.currentTarget.attributes[1].value+ "' data-status-reverse='" +button.currentTarget.attributes[2].value+ "' data-button-reverse='" +button.currentTarget.attributes[3].value+ "' class='formUpdateEmployeeAccount'>" +button.currentTarget.attributes[3].value+ "</button>"; 
+                        $("#successDiv").css("display:block");
+                        $("#successDiv").slideDown("slow", function() {
+                                //document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
+                                // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='" +button.currentTarget.attributes[0].value+ "' data-status='" +button.currentTarget.attributes[1].value+ "' data-status-reverse='" +button.currentTarget.attributes[2].value+ "' data-button-reverse='" +button.currentTarget.attributes[3].value+ "' class='formUpdateEmployeeAccount'>" +button.currentTarget.attributes[3].value+ "</button>"; 
 
-                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status",button.currentTarget.attributes[1].value);
-                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse",button.currentTarget.attributes[2].value);
-                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse",button.currentTarget.attributes[3].value);
-                        // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = button.currentTarget.attributes[3].value;
+                                // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status",button.currentTarget.attributes[1].value);
+                                // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse",button.currentTarget.attributes[2].value);
+                                // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse",button.currentTarget.attributes[3].value);
+                                // document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = button.currentTarget.attributes[3].value;
 
-                        if( button.currentTarget.attributes[1].value == "Active"){
-                            // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML ="<button data-id='' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount'>Deactivate</button>";
+                                if (button.currentTarget.attributes[1].value == "Active") {
+                                    // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML ="<button data-id='' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount'>Deactivate</button>";
 
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;                            
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status","Inactive");
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","Active");
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse","Active");
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Deactivate";
-                            
-                document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("class","formUpdateEmployeeAccount btn btn-danger");
-                            
-                        }else{
-                            // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='' data-status='active' data-status-reverse='inactive' data-button-reverse='Diactivate' class='formUpdateEmployeeAccount'>Activate</button>";
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status", "Inactive");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse", "Active");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse", "Active");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Deactivate";
 
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status","Active");
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse","Inactive");
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse","Deactivate");
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Activate";
-                            document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("class","formUpdateEmployeeAccount btn btn-success");
-                        }
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("class", "formUpdateEmployeeAccount btn btn-danger");
 
-                    })
-                        .delay(1000)                        
-                        .hide(1500);
+                                } else {
+                                    // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='' data-status='active' data-status-reverse='inactive' data-button-reverse='Diactivate' class='formUpdateEmployeeAccount'>Activate</button>";
 
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status", "Active");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse", "Inactive");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse", "Deactivate");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Activate";
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("class", "formUpdateEmployeeAccount btn btn-success");
+                                }
 
+                            })
+                            .delay(1000)
+                            .hide(1500);
 
 
-                }
-                // error:function(data){
-                //     var response = data.responseJSON;
-                //     $("#errorDivEditEmployee").removeClass("hidden")
-                //     $("#errorDivEditEmployee").html(function(){
-                //         var addedHtml="";
-                //         for (var key in response.errors) {
-                //             addedHtml += "<p>"+response.errors[key]+"</p>";
-                //         }
-                //         return addedHtml;
-                //     });
+
+
+                    }
+                    // error:function(data){
+                    //     var response = data.responseJSON;
+                    //     $("#errorDivEditEmployee").removeClass("hidden")
+                    //     $("#errorDivEditEmployee").html(function(){
+                    //         var addedHtml="";
+                    //         for (var key in response.errors) {
+                    //             addedHtml += "<p>"+response.errors[key]+"</p>";
+                    //         }
+                    //         return addedHtml;
+                    //     });
 
                 // }
             });
 
-        }); 
+        });
 
     })
-
-
 </script>
-@endsection
-
-@section('right')
+@endsection @section('right')
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
 
-                    <a href = "#addEmployee" data-toggle="modal">
-                        <button type="button" class="btn btn-success"><i class = "ti-plus"></i> Add Employee</button>
+                    <a href="#addEmployee" data-toggle="modal">
+                        <button type="button" class="btn btn-success"><i class="ti-plus"></i> Add Employee</button>
                     </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="employeeTable">
@@ -283,61 +271,53 @@ class="active"
                                     <th class="text-center hidden" style="width: 50px;">#</th>
                                     <th class="text-center">Name </th>
                                     <th class="text-center">Email</th>
-                                    {{--  <th class="text-center" style="width: 15%;">User Role</th>  --}}
-                                    {{--  <th class="text-center" style="width: 10%;">Status</th>  --}}
+                                    {{--
+                                    <th class="text-center" style="width: 15%;">User Role</th> --}} {{--
+                                    <th class="text-center" style="width: 10%;">Status</th> --}}
                                     <th class="text-center" style="width: 20%;">Status</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="employeeTbody">
-                                @if(count($employees) >= 0)
-                                @foreach($employees as $employee)
+                                @if(count($employees) >= 0) @foreach($employees as $employee)
                                 <tr id="{{$employee->id}}">
-                                    <td class="text-center hidden" >{{$employee->id}}</td>
+                                    <td class="text-center hidden">{{$employee->id}}</td>
                                     <td class="text-center">{{$employee->name}}</td>
                                     <td class="text-center">{{$employee->email}}</td>
-                                    {{--  <td class="text-center">under-construction</td>  --}}
+                                    {{--
+                                    <td class="text-center">under-construction</td> --}}
                                     <td class="text-center">{{$employee->status}}</td>
                                     <td class="text-center">
-                                        {{--  <a href="#editEmployee" onclick="showDetails(this)" class="btn btn-xs btn-warning" data-toggle="modal" >
-                                        <i class="glyphicon glyphicon-pencil"></i>
-                                        </a>  --}}
-
-                                        {{--  {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
-                                        <input type="hidden"  value="{{$employee->id}}" name="employeeId">                                                
-                                        @if( $employee->status == "active")
-                                        <input type="hidden" name="status" value="Inactive">  
-
-                                        {{Form::hidden('_method','PUT')}}                                          
+                                        {{--
+                                        <a href="#editEmployee" onclick="showDetails(this)" class="btn btn-xs btn-warning" data-toggle="modal">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                        </a> --}} {{-- {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount']) !!}
+                                        <input type="hidden" value="{{$employee->id}}" name="employeeId"> @if( $employee->status == "active")
+                                        <input type="hidden" name="status" value="Inactive"> {{Form::hidden('_method','PUT')}}
                                         <button type="submit">Deactivate</button>
                                         @else
-                                        <input type="hidden" name="status" value="Active">                                                                                                        
-                                        {{Form::hidden('_method','PUT')}}                                                    
-                                        <button type="submit">Activate</button>                                                    
-                                        @endif
-                                        {!! Form::close() !!}                                                --}}
+                                        <input type="hidden" name="status" value="Active"> {{Form::hidden('_method','PUT')}}
+                                        <button type="submit">Activate</button>
+                                        @endif {!! Form::close() !!} --}} @if( $employee->status == "active")
 
-                                        @if( $employee->status == "active")
-        
-                                            <button data-id="{{$employee->id}}" data-status="Inactive" data-status-reverse="active"  data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger">Deactivate</button>
-                                            <a href = "#reset" data-toggle="modal">
-                                                <button type="button" class="btn btn-info">Reset Password</button>
-                                            </a>
-                                            
+                                        <button data-id="{{$employee->id}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger">Deactivate</button>
+                                        <a href="#reset" data-toggle="modal">
+                                            <button type="button" class="btn btn-info">Reset Password</button>
+                                        </a>
+
 
                                         @else
-                                    
-                                            <button data-id="{{$employee->id}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success">Activate</button>
-                                            <a href = "#reset" data-toggle="modal">
-                                                <button type="button" class="btn btn-info">Reset Password</button>
-                                            </a>
 
-                                        @endif 
+                                        <button data-id="{{$employee->id}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success">Activate</button>
+                                        <a href="#reset" data-toggle="modal">
+                                            <button type="button" class="btn btn-info">Reset Password</button>
+                                        </a>
+
+                                        @endif
 
                                     </td>
                                 </tr>
-                                @endforeach
-                                @else
+                                @endforeach @else
                                 <p>no account</p>
                                 @endif
 
@@ -350,11 +330,10 @@ class="active"
     </div>
 </div>
 
-@endsection
-@section('modals')
-<div id="addEmployee" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-    <div class = "modal-dialog modal-md">
-        <div class = "modal-content">
+@endsection @section('modals')
+<div id="addEmployee" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title">Add Employee</h3>
@@ -362,7 +341,7 @@ class="active"
             <div id="errorDivAddNewEmployee" class="hidden">
                 <p>hello</p>
             </div>
-            <div class = "modal-body">  
+            <div class="modal-body">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
@@ -371,7 +350,7 @@ class="active"
                         </strong>
                     </div>
 
-                    {!! Form::open(['method'=>'post','id'=>'formAddNewEmployee']) !!}                    
+                    {!! Form::open(['method'=>'post','id'=>'formAddNewEmployee']) !!}
                     <div class="panel-body">
                         <input type="hidden" id="_token" value="{{ csrf_token() }}">
 
@@ -386,7 +365,7 @@ class="active"
                             </div>
                         </div>
 
-                        <div class="form-group">                                
+                        <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
                                     {{Form::label('Email:')}}
@@ -397,7 +376,7 @@ class="active"
                             </div>
                         </div>
 
-                        <div class="form-group">    
+                        <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
                                     {{Form::label('Contact No', 'Contact No:')}}
@@ -408,7 +387,7 @@ class="active"
                             </div>
                         </div>
 
-                        <div class="form-group">    
+                        <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
                                     {{Form::label('Address', 'Address:')}}
@@ -422,13 +401,13 @@ class="active"
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="text-right">                                           
-                            <div class="col-md-12">   
+                        <div class="text-right">
+                            <div class="col-md-12">
                                 <button type="submit" class="btn btn-success">Save</button>
                                 <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 </div>
 
                 {!! Form::close() !!}
@@ -438,14 +417,14 @@ class="active"
     </div>
 </div>
 
-<div id="editEmployee" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
-        <div class = "modal-content">
+<div id="editEmployee" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title">Edit Employee</h3>
             </div>
-            <div class = "modal-body">  
+            <div class="modal-body">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
@@ -459,10 +438,9 @@ class="active"
                         </div>
                         {!! Form::open(['method'=>'POST','id'=>'formUpdateEmployeeAccount2']) !!}
 
-                        <input type="hidden"  value="" name="employeeId">
+                        <input type="hidden" value="" name="employeeId">
                         <div class="form-group">
-                            {{Form::label('name', 'Name:',['class'=>'control-label'])}}                                
-                            {{Form::text('name','',['class'=>'form-control'])}}
+                            {{Form::label('name', 'Name:',['class'=>'control-label'])}} {{Form::text('name','',['class'=>'form-control'])}}
 
                         </div>
 
@@ -474,13 +452,11 @@ class="active"
                                 <option value="inactive">inactive</option>
                             </select>
                         </div>
-                        {{--  <div class="form-group">
-                        {{Form::label('password', 'Update Password:',['class'=>'control-label'])}}                                                                
-                        {{Form::password('password','',['class'=>'form-control','placeholder'=>'Type user new password'])}}
+                        {{--
+                        <div class="form-group">
+                            {{Form::label('password', 'Update Password:',['class'=>'control-label'])}} {{Form::password('password','',['class'=>'form-control','placeholder'=>'Type user new password'])}}
 
-                        </div>  --}}
-
-                        {{Form::hidden('_method','PUT')}}
+                        </div> --}} {{Form::hidden('_method','PUT')}}
                         <div class="form-group clearfix">
                             <button type="submit" name="update" class="btn btn-info">Update</button>
                         </div>
@@ -494,9 +470,9 @@ class="active"
     </div>
 </div>
 
-<div id="reset" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
-        <div class = "modal-content">
+<div id="reset" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
                 <p></p>
@@ -519,9 +495,7 @@ class="active"
         </div>
     </div>
 </div>
-@endsection
-
-@section('js_link')
+@endsection @section('js_link')
 <!--   Core JS Files   -->
 <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>

@@ -25,6 +25,10 @@ class="active"
                 <div class="card">
                     <div class="header">
                         <div class = "content">
+                                 <a href = "#addNewItemModal" data-toggle="modal" >
+                                            <button type="button" class="btn btn-success"><i class = "ti-plus"></i>Add new Item</button>
+                                 </a>        
+<!--
                             <form class = "form-inline">
                                 <div class="row">
                                     {{--  <div class="col-md-12">
@@ -33,6 +37,8 @@ class="active"
                                     </div>  --}}
                                 </div>
                             </form>
+-->
+<!--
                             <div class="row">
                                 {{--  <div class="col-md-6">
                                     <ul class="nav nav-pills">
@@ -46,16 +52,13 @@ class="active"
                                 </div>  --}}
                                 
                                 {{--  <div class="col-md-6">  --}}
-                                    <div class = "text-right">
                                         <a href = "#addNewItemModal" data-toggle="modal" >
-                                            <button type="submit" class="btn btn-info btn-fill btn-wd btn-success"><i class = "ti-plus"></i> Add new item</button> 
-                                        </a>       
-                                        {{--  <a href = "#remove" data-toggle="modal">
-                                            <button type="submit" class="btn btn-info btn-fill btn-wd btn-danger"><i class="ti-minus"></i> Remove item</button>
-                                        </a>                                              --}}
-                                    </div>
+                                            <button type="button" class="btn btn-success"><i class = "ti-plus"></i>Add new Item</button>
+                                        </a>        
+                                        
                                 </div>
                             </div>
+-->
                             {{--  <div class="row">
                                 <div id="belowAddNewItem" class="col-lg-10" style="display:none">
                                     
@@ -324,16 +327,27 @@ class="active"
     
     @section('modals')
     <div id="addNewItemModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-        <div class = "modal-dialog">
+        <div class = "modal-dialog modal-md">
             <div class = "modal-content">
-                <div class = "modal-body">
+                    <div class = "modal-header">
                     <button class="close" data-dismiss="modal">&times;</button>
-                    <h4>Add New Item</h4>
+                    <h3 class="modal-title">Add New Item</h3>
+                    </div>
                     <div class="alert alert-danger hidden" id="errorDivAddNewItem">
-                     
+                    </div>
+                    
+                
+                    <div class = "modal-body">
+                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-th"></span>
+                            Add New Item
+                        </strong>
                     </div>
                     {!! Form::open(['method'=>'post','id'=>'formAddNewItem']) !!}
                     {{--  <form action="" role="form">  --}}
+                        <div class="panel-heading">
                         <input type="hidden" id="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <div class="row">
@@ -391,9 +405,10 @@ class="active"
                         {!! Form::close() !!}
                 </div>
             </div>
+                </div>
         </div>
-        
     </div>
+</div>
     <div id="editModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
         <div class = "modal-dialog modal-md">
             <div class = "modal-content">
@@ -568,12 +583,45 @@ class="active"
                                         <p style="font-size: 12px"><b>Date: </b></p>
                                     </div>          
                                 </div>
-                                <div class="card">
-                                    <div class="container">
-                                        <p></p>
-                                        <p style="font-size: 12px"><b>Items Added: </b></p>
-                                        <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                        <p style="font-size: 12px"><b>Date: </b></p>
+                                <div class = "modal-body">  
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <strong>
+                                                <span class=" fa fa-bars"></span>
+                                                List of Item History
+                                            </strong>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="autocomplete" style="width:200px;">
+                                                <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
+                                                <div id="searchResultDiv" class="searchResultDiv">
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-container bg-success" style="padding: 1em;">
+                                                    <p></p>
+                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
+                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                                    <p style="font-size: 12px"><b>Date: </b></p>
+                                                </div>          
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-container bg-success" style="padding: 1em;">
+                                                    <p></p>
+                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
+                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                                    <p style="font-size: 12px"><b>Date: </b></p>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-container bg-success" style="padding: 1em;">
+                                                    <p></p>
+                                                    <p style="font-size: 12px"><b>Items Added: </b></p>
+                                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
+                                                    <p style="font-size: 12px"><b>Date: </b></p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card">

@@ -43,7 +43,7 @@ ng-app="ourAngularJsApp"
 
 
       <script type="text/javascript">
-          function addRow(div){
+        function addRow(div){
           var items =[];
           var thatTbody = $("#purchasetable tr td:first-child");
 
@@ -204,6 +204,7 @@ ng-app="ourAngularJsApp"
                   data: data,
 
                   success:function(data){
+                    if(data === "successful"){
                       //close modal
                       $('#purchase').modal('hide')                    
                       //remove rows in purchase table
@@ -213,12 +214,19 @@ ng-app="ourAngularJsApp"
                       $("#successDiv").removeClass("hidden")
                       // .addClass("alert-success")
                              .html("<h3>Transaction successful</h3>");
-                    $("#successDiv").css("display:block");                             
+                      $("#successDiv").css("display:block");                             
                       $("#successDiv").slideDown("slow")
                           .delay(1000)                        
                           .hide(1500);
                       $("#errorDivCreatePurchase").html("");
                       document.getElementById("formPurchaseOrder").reset(); //reset the form
+
+                       $("#purchasesDataTable").DataTable().ajax.reload();//reload the dataTables
+
+                    }else{
+                        $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreatePurchase").html("Official Receipt Number duplicated");
+                    }
 
 
                   },
@@ -352,10 +360,10 @@ ng-app="ourAngularJsApp"
                         <div class="form-group">                                
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{Form::label('Official Receipt No:')}}
+                                    {{Form::label('Official Receipt Number:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{ Form::text('Official Receipt No','',['class'=>'form-control']) }}
+                                    {{ Form::text('Official Receipt Number','',['class'=>'form-control']) }}
                                 </div>
                             </div>
                         </div>

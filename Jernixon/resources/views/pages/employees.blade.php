@@ -320,7 +320,10 @@ class="active"
                                         @if( $employee->status == "active")
         
                                             <button data-id="{{$employee->id}}" data-status="Inactive" data-status-reverse="active"  data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger">Deactivate</button>
-                                            <button type="button" class="btn btn-info">Reset Password</button>
+                                            <a href = "#reset" data-toggle="modal">
+                                                <button type="button" class="btn btn-info">Reset Password</button>
+                                            </a>
+                                            
 
                                         @else
                                     

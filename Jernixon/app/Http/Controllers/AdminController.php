@@ -132,7 +132,7 @@ class AdminController extends Controller
         
         $this->validate($request,[
             'Date' => 'required',
-            'Official_Receipt_No' => 'required',
+            'Official_Receipt_Number' => 'required',
             'Supplier' => 'required',
             'price' => 'required',
             // 'product_id' => 'required',
@@ -144,17 +144,30 @@ class AdminController extends Controller
 		
 		$data = DB::table('purchases')
 					->select('po_id')
-					->where('po_id' , '=' , $request->Official_Receipt_No)
+					->where('po_id' , '=' , $request->Official_Receipt_Number)
 					->get();
 		
         if($data->isEmpty()){
             for($i = 0;$i<$arrayCount;$i++){
                 $insertPurchases = DB::table('purchases')->insert(
-                    ['po_id' => $request->Official_Receipt_No, 'product_id' => $request->product_id[$i], 'supplier_name' => $request->Supplier, 'price' => $request->price[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date]
+                    ['po_id' => $request->Official_Receipt_Number, 'product_id' => $request->product_id[$i], 'supplier_name' => $request->Supplier, 'price' => $request->price[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date]
                 );
+
+                $price = DB::table('purchases')
+					->select('price')
+                    ->where('po_id' , '=' , $request->Official_Receipt_Number)
+                    ->latest()
+                    ->first();
+
+                $newPrice = $price->price;
+                    
                 DB::table('salable_items')
                     ->where('product_id', $request->product_id[$i])
                     ->increment('quantity', $request->quantity[$i]);
+                
+                    DB::table('salable_items')
+                    ->where('product_id', $request->product_id[$i])
+                    ->update(['retail_price' => $newPrice]);
             }
             return "successful";
         }else{
@@ -278,13 +291,17 @@ class AdminController extends Controller
 
         $data = DB::table('products')
 					->join('salable_items', 'products.product_id', '=', 'salable_items.product_id')
-					->select('description', 'wholesale_price', 'retail_price', 'reorder_level', 'created_at');
-        return Datatables::of($data)
+                    ->select('status','products.product_id','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'created_at', 'updated_at')
+                    ->where('status','=','available');
+                    // $string = "";
+                    // if(true){
+            
+                    // }
+                    return Datatables::of($data)
             ->addColumn('action',function($data){
-                return "
-                <a href = '#removeModal' data-toggle='modal' >
-                    <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i> Disable</button>
-                </a>
+                
+                return "    
+                    <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i>$data->status</button>
                 <a href = '#editModal' data-toggle='modal' >
                     <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
                 </a>
@@ -301,9 +318,9 @@ class AdminController extends Controller
     public function storeNewItem(Request $request){
         $this->validate($request,[
             'description' => 'required',
-            'quantityInStock' => 'required',
-            'wholeSalePrice' => 'required',
-            'retailPrice' => 'required'
+            'reorderLevel' => 'required',
+            // 'wholeSalePrice' => 'required',
+            // 'retailPrice' => 'required'
         ]);
 
    
@@ -311,12 +328,27 @@ class AdminController extends Controller
         $item = new Product;
         $item->description = $request->input('description');
         //$item->quantityInStock = $request->input('quantityInStock');
-        $item->price = $request->input('wholeSalePrice');
+        $item->reorder_level = $request->input('reorderLevel');
         //$item->retailPrice = $request->input('retailPrice');
         $item->save();
         return response($request->all());
         // return "success";
         // return redirect('/items')->with('success','Success adding item');
+    }
+    public function editItem(Request $request){
+        $this->validate($request,[
+            'description' => 'required',
+            'reOrder_Level' => 'required',
+            'retailPrice' => 'required'
+        ]);
+        DB::table('products')
+            ->where('product_id', $request->productId)
+            ->update(['description' => $request->description,'reorder_level' => $request->reOrder_Level]);
+        DB::table('salable_items')
+            ->where('product_id', $request->productId)
+            ->update(['retail_price' => $request->retailPrice]);
+        return "successful";
+
     }
 	public function itemsChangeStatus(Request $request, $id){
 		$product = Product::find($id);

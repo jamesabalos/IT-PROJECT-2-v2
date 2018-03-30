@@ -75,6 +75,7 @@ Route::get('admin/returns/getReturnedItems/{ORNumber}', 'AdminController@gerRetu
 Route::get('admin/physical_count', 'AdminController@physicalCount')->name('admin.physicalCount');
     
 
+Route::Post('admin/items/editItem', 'AdminController@editItem')->name('admin.editItem');
 Route::Post('admin/storeNewItem', 'AdminController@storeNewItem')->name('admin.Newitems');
 Route::Post('admin/items/addQuantity','AdminController@addQuantity');
 Route::Post('admin/items/subtractQuantity','AdminController@subtractQuantity');

@@ -272,11 +272,11 @@ ng-app="ourAngularJsApp"
                       extend: 'collection',
                       text: 'EXPORT',
                       buttons: [
-                          'copy',
-                          'excel',
-                          'csv',
-                          'pdf',
-                          'print'
+                         {extend: 'copy', title: 'Jernixon Motorparts - Returns'},
+                          {extend: 'excel', title: 'Jernixon Motorparts - Returns'},
+                          {extend: 'csv', title: 'Jernixon Motorparts - Returns'},
+                          {extend: 'pdf', title: 'Jernixon Motorparts - Returns'},
+                          {extend: 'print', title: 'Jernixon Motorparts - Returns'}
                       ]
                   }
               ],

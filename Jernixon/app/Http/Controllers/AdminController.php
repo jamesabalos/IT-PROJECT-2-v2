@@ -307,6 +307,9 @@ class AdminController extends Controller
         return Datatables::of($data)
             ->make(true);
     }
+    public function createStockAdjustment(Request $request){
+        return $request->all();
+    }
 
 
 

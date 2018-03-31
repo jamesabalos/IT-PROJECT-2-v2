@@ -53,7 +53,7 @@ ng-app="ourAngularJsApp"
         document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
     }
 
-    function addRow(itemName){
+    function addRow(button){
         var items =[];
         var thatTbody = $("#stockTable tr td:first-child");
 
@@ -61,14 +61,14 @@ ng-app="ourAngularJsApp"
             items[i] = thatTbody[i].innerHTML;
         }        
 
-        if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
+        if( items.indexOf(button.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
             var thatTable = document.getElementById("stockTable");
             var newRow = thatTable.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='text' value='" +itemName+ "' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' ></td>";
-            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
-            newRow.insertCell(-1).innerHTML = "<td><button type='button' class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+            // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='text'  value='" +button.firstChild.innerHTML+ "' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' class='form-control' ></td>";
+            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+button.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+button.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
 
@@ -97,7 +97,8 @@ ng-app="ourAngularJsApp"
                 resultDiv.innerHTML = "";
                 for (var i = 0;  i< data.length; i++) {
                     var node = document.createElement("DIV");
-                    node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                    node.setAttribute("id",data[i].product_id)
+                    node.setAttribute("onclick","addRow(this)")
                     var pElement = document.createElement("P");
                     var textNode = document.createTextNode(data[i].description);
                     pElement.appendChild(textNode);
@@ -156,6 +157,23 @@ ng-app="ourAngularJsApp"
 				  {data: 'created_at'},
               ]
           });
+
+           $('#formAdjustment').on('submit',function(e){
+              e.preventDefault();
+              var data = $(this).serialize();
+
+              $.ajax({
+                  type:'POST',
+                  url: "{{route('admin.createStockAdjustment')}}",
+                  data: data,
+
+                  success:function(data){
+                      console.log(data)
+                  }
+              })
+           })
+          
+
     })
 
 </script>
@@ -293,7 +311,7 @@ ng-app="ourAngularJsApp"
                             </table>
                         </div>
                         <div class="autocomplete" style="width:100%;">
-                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
+                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
                             <div id="searchResultDiv" class="searchResultDiv">
                             </div>
                         </div>
@@ -302,12 +320,14 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitNewItems" type="submit" onclick="window.alert('to be continue..')" class="btn btn-success">Save</button>
+                            <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
             </div>
+            {!! Form::close() !!}
+            
         </div>
     </div>
 </div>

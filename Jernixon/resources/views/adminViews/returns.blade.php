@@ -214,17 +214,19 @@ ng-app="ourAngularJsApp"
 
 			success:function(data){
                 console.log(data)
-                // $("#veiwReturnedItemTbody tr").remove();
-                // var modalPurchaseTable = document.getElementById("veiwReturnedItemTbody");
-                // for(var i = 0; i < data.length; i++){
-                //     var newRow = modalPurchaseTable.insertRow(-1);
-                //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
-                //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                // }
-                // document.getElementById("supplierName").innerHTML = data[0].supplier_name;
+                $("#veiwReturnedItemTbody tr").remove();
+                var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
+                for(var i = 0; i < data.length; i++){
+                    var newRow = returnedItemTable.insertRow(-1);
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+
+                }
+
                 document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
+                document.getElementById("customerName").innerHTML = data[0].customer_name;
 
 			}
 		});
@@ -589,7 +591,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Purchase Price</th>
-                                        <th class="text-left">Action</th>
+                                        {{-- <th class="text-left">Action</th> --}}
                                     </tr>
                                 </thead>
 

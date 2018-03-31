@@ -36,6 +36,7 @@ ng-app="ourAngularJsApp"
             var thatTbody = document.getElementById("cartTbody");
             var newRow = thatTbody.insertRow(-1);
             newRow.insertCell(-1).innerHTML = button.parentNode.parentNode.firstChild.innerHTML;
+        button.parentNode.parentNode.setAttribute("class","hidden");
             
             // newRow.innerHTML = a.parentNode.parentNode.innerHTML ;
             // thatTbody.append(newTr);
@@ -70,6 +71,8 @@ ng-app="ourAngularJsApp"
             }
             
             function removeRowInCart(button){
+                document.getElementById(button.getAttribute("data-item-id")).parentNode.parentNode.removeAttribute("class","hidden");
+                
                 //var i = a.parentNode.parentNode.rowIndex;
                 //document.getElementById("cartTable").deleteRow(i);
                 // var row = button.parentNode.parentNode; //row
@@ -425,11 +428,13 @@ $('#dashboardDatatable').DataTable({
             
             var totalSalesNgBinds ="";
             for(var i=0; i<len; i++) {
+                
                 var key = localStorage.key(i);
                 var value = localStorage[key];
                 if(value.includes("item")){
-                    // console.log(key + " => " + value);          
                     var myItemJSON = JSON.parse(localStorage.getItem(key));            
+                    //hide row
+                    document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
                     var newRow = thatTbody.insertRow(-1);
                     newRow.insertCell(-1).innerHTML = myItemJSON.item ;
                     // newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;

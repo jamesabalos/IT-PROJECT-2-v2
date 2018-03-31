@@ -26,6 +26,34 @@
 
     // }
 
+        function passEmployeeId(id){
+            document.getElementById("resetPasswordEmployeeId").setAttribute("data-employee-id",id);
+        }
+        function resetPasswordConfirmation(button){
+            var employeeId = button.getAttribute("data-employee-id");
+            var fullRoute = "/admin/employees/resetPassword"; //id
+            
+            $.ajax({
+                    type: 'Post',
+                    // url:'admin/storeNewItem',
+                    // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
+                    url: fullRoute,
+                    data:{"employeeId":employeeId},
+                    success:function(data){
+                        $("#successDiv p").remove();
+                        $("#successDiv").removeClass("hidden")
+                            // .addClass("alert-success")
+                            .html("<h3>Reset password successful</h3>");
+
+                        $("#successDiv").css("display:block");
+                        $("#successDiv").slideDown("slow").delay(1000).hide(1500);;
+                      $('#reset').modal('hide')                    
+                        
+                    }
+                })
+         
+        }
+
     $(document).ready(function() {
         $.ajaxSetup({
             headers: {
@@ -211,22 +239,22 @@
                                     // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML ="<button data-id='' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount'>Deactivate</button>";
 
                                     document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status", "Inactive");
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse", "Active");
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse", "Active");
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Deactivate";
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-status", "Inactive");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-status-reverse", "Active");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-button-reverse", "Active");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].innerHTML = "Deactivate";
 
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("class", "formUpdateEmployeeAccount btn btn-danger");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("class", "formUpdateEmployeeAccount btn btn-danger");
 
                                 } else {
                                     // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='' data-status='active' data-status-reverse='inactive' data-button-reverse='Diactivate' class='formUpdateEmployeeAccount'>Activate</button>";
 
                                     document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status", "Active");
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-status-reverse", "Inactive");
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("data-button-reverse", "Deactivate");
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].innerHTML = "Activate";
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[4].childNodes[1].setAttribute("class", "formUpdateEmployeeAccount btn btn-success");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-status", "Active");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-status-reverse", "Inactive");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-button-reverse", "Deactivate");
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].innerHTML = "Activate";
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("class", "formUpdateEmployeeAccount btn btn-success");
                                 }
 
                             })
@@ -302,7 +330,7 @@
 
                                         <button data-id="{{$employee->id}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger">Deactivate</button>
                                         <a href="#reset" data-toggle="modal">
-                                            <button type="button" class="btn btn-info">Reset Password</button>
+                                            <button onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" type="button" class="btn btn-info">Reset Password</button>
                                         </a>
 
 
@@ -487,7 +515,7 @@
             <div class="panel-body">
                 <div class="text-center">
                     <div class="form-group clearfix">
-                        <button type="submit" name="update" class="btn btn-success">Reset</button>
+                        <button id="resetPasswordEmployeeId" onclick="resetPasswordConfirmation(this)" type="button" class="btn btn-success">Reset</button>
                         <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>

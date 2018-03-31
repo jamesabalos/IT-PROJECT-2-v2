@@ -246,7 +246,7 @@ class AdminController extends Controller
         
         $data = DB::table('sales')
                         ->join('products', 'products.product_id', '=', 'sales.product_id')
-                        ->select('description', 'customer_name', 'quantity', 'price', 'sales.created_at')
+                        ->select('sales.product_id','description', 'customer_name', 'quantity', 'price', 'sales.created_at')
                         ->where('or_number', '=', $request->ORNumber)
                         ->get();
         return $data;
@@ -255,6 +255,10 @@ class AdminController extends Controller
 
     public function gerReturnedItems($ORNumber){
         return $ORNumber;
+        
+    }
+    public function createReturnItem(Request $request){
+        return $request->all();
         
     }
     
@@ -405,7 +409,7 @@ class AdminController extends Controller
             $arrayCount1 = count($sales);
             for($i = 0;$i<$arrayCount1;$i++){
                 // array_push($data, [$sales[$i]->customer_name]);
-                array_push($data, ["deducted", "bought", $sales[$i]->description, $sales[$i]->quantity, $sales[$i]->customer_name, $sales[$i]->date]);
+                array_push($data, ["deducted", "bought", $sales[$i]->description, $sales[$i]->quantity, $sales[$i]->customer_name, 'date'=>$sales[$i]->date]);
            }
 
         $purchases = DB::table('purchases')
@@ -416,7 +420,7 @@ class AdminController extends Controller
 
             $arrayCount2 = count($purchases);
             for($i = 0;$i<$arrayCount2;$i++){
-                array_push($data, ["added", "purchased", $purchases[$i]->description, $purchases[$i]->quantity, $purchases[$i]->supplier_name, $purchases[$i]->date]);
+                array_push($data, ["added", "purchased", $purchases[$i]->description, $purchases[$i]->quantity, $purchases[$i]->supplier_name, 'date'=>$purchases[$i]->date]);
             }
 
         $damaged_items = DB::table('damaged_items')
@@ -427,7 +431,7 @@ class AdminController extends Controller
 
             $arrayCount3 = count($damaged_items);
             for($i = 0;$i<$arrayCount3;$i++){
-                array_push($data, ["deducted", "damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, "ADMIN", $damaged_items[$i]->date]);
+                array_push($data, ["deducted", "damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, "ADMIN", 'date'=>$damaged_items[$i]->date]);
             }
 
         $lost_items = DB::table('lost_items')
@@ -438,15 +442,30 @@ class AdminController extends Controller
 
             $arrayCount4 = count($lost_items);
             for($i = 0;$i<$arrayCount4;$i++){
-                array_push($data, ["deducted", "lost", $lost_items[$i]->description, $lost_items[$i]->quantity, "ADMIN", $lost_items[$i]->date]);                
+                array_push($data, ["deducted", "lost", $lost_items[$i]->description, $lost_items[$i]->quantity, "ADMIN", 'date'=>$lost_items[$i]->date]);                
             }
 
-
+        foreach ($data as $key => $row){
+            $date[$key] = $row['date'];
+            // $edition[$key] = $row['edition'];
+        }
+        array_multisort($date, SORT_DESC, $data);
+        return $data;
+        // return rsort($data);
         // $data = $sales + $purchases +  $damaged_items + $lost_items;
         // $data = {"sales":"$sales"};
         //return [$sales,$purchases,$damaged_items,$lost_items];
-        return $data;
-	}
+    }
+    
+    function date_compare($a,$b){
+        $t1 = strtotime($a['date']);
+        $t2 = strtotime($b['date']);
+        return $t1 - $t2;
+    }
+
+    public function compare_date($a,$b){
+        return strnatcmp($a['date'],$b['date']);
+    }
 
     // public function getTransactions(){
     //     $data = DB::table('products')->select('*');
@@ -506,10 +525,15 @@ class AdminController extends Controller
         $employee->save();
         return response($request->all());
     }
-    public function destroyEmployeeAccount($id){
-        $employee = User::find($id);
-        $employee->delete();
-        return redirect('/admin/employees');
+    public function employeeResetPassword(Request $request){
+        $employee = User::find($request->employeeId);
+        // $employee->password = $request->input('password');
+        $pieces = explode(" ",$employee->name);
+        $resetPassword = $pieces[0]."@jernixon";
+        $employee->password = $resetPassword;
+        $employee->save();
+        return response($resetPassword);
+ 
 
     }
 

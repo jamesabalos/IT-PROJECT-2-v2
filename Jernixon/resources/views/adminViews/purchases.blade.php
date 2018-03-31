@@ -75,7 +75,7 @@ ng-app="ourAngularJsApp"
               url: 'searchItem/' + a.value,
               dataType: "json",
               success: function(data){
-                  //    console.log(data)
+                     console.log(data)
                   // <div>
                   //     <strong>Phi</strong>lippines
                   //     <input type="hidden" value="Philippines">
@@ -352,7 +352,9 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::date('Date','',['class'=>'form-control','value'=>''])}}
+                                    {{-- {{Form::date('Date','',['class'=>'form-control','value'=>''])}} --}}
+                                    <input type="datetime-local" name="datetime" class="form-control"
+                                    value="<?php echo date('Y-m-d').'T'.date('h:m'); ?>" />
                                 </div>
                             </div>
                         </div>

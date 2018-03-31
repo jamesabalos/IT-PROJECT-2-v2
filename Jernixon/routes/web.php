@@ -96,6 +96,7 @@ Route::get('admin/reports/getReports', 'AdminController@getReports')->name('repo
 Route::Put('admin/employees/updateEmployeeAccount/{id}', 'AdminController@updateEmployeeAccount')->name('admin.updateEmployeeAccount');
 Route::Post('admin/employees/addNewEmployee', 'AdminController@addNewEmployee')->name('admin.addNewEmployee');
 Route::get('admin/employees', 'AdminController@employees')->name('admin.employees');
+Route::Post('admin/employees/resetPassword', 'AdminController@employeeResetPassword');
 
 
 Route::get('admin/stockAjustment', 'AdminController@stockAdjustment')->name('admin.stockAdjustment');

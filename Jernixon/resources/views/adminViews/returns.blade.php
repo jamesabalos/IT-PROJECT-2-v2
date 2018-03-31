@@ -90,9 +90,9 @@ ng-app="ourAngularJsApp"
                 for(var i = 0; i < data.length; i++){
                     var newRow = modalReturnItemTbody.insertRow(-1);
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1'></td>";
+                    newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled></td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td><input type='checkbox' class='form-control'></td>";
+                    newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control' onchange='toggleCheckbox(this)'></td>";
                 }
                 document.getElementById("Date").value = data[0].created_at;
                 document.getElementById("Customer").value = data[0].customer_name;
@@ -106,6 +106,29 @@ ng-app="ourAngularJsApp"
         document.getElementById("searchORNumberInput").value = ORNumber ;
         document.getElementById("resultORNumberDiv").innerHTML = "";
 
+    }
+    function toggleCheckbox(button){
+        var data  = $(button.parentNode.parentNode.innerHTML).slice(0,-1);
+        var itemName = data[0].innerHTML;
+        var itemsInExchangeTable = $("#inExchangeTbody tr td:first-child");
+        var exchangeTable = document.getElementById("inExchangeTbody");
+        
+        if(button.checked){
+            var newRow = exchangeTable.insertRow(-1);
+            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='" +button.getAttribute("data-productId")+ "'>" +data[0].innerHTML+ "</td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' class='form-control' value='" +data[1].childNodes[0].value+ "' max='" +data[1].childNodes[0].value+ "' min='1'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='price[]' value='" +data[2].innerHTML+ "'>" +data[2].innerHTML+ "</td>";
+            button.parentNode.previousSibling.previousSibling.childNodes[0].removeAttribute("disabled");
+
+        }else{
+            for(var i = 0; i < itemsInExchangeTable.length; i++){
+                if(itemsInExchangeTable[i].outerText === itemName){
+
+                    document.getElementById("inEchangeTable").deleteRow(i+1);
+                }
+            }
+
+        }
     }
 
     function searchItem(a){
@@ -218,6 +241,7 @@ ng-app="ourAngularJsApp"
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
         $('#formReturnItem').on('submit',function(e){
             e.preventDefault();
             var data = $(this).serialize();           
@@ -458,24 +482,24 @@ ng-app="ourAngularJsApp"
                     </div>
                     <div class="modal-body">
                         <div class="content table-responsive">
-                            <table class="table table-bordered table-striped">
+                            <table id="inEchangeTable" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Price</th>
-                                        <th class="text-left">Action</th>
+                                        {{-- <th class="text-left">Action</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody id="inExchangeTbody">
                                 </tbody>
                             </table>
                         </div>
-                        <div class="autocomplete" style="width:100%;">
+                        {{-- <div class="autocomplete" style="width:100%;">
                             <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
                             <div id="searchResultDiv" class="searchResultDiv">
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="row">

@@ -112,7 +112,7 @@ class="active"
             document.getElementById("itemWholeSalePrice").value = data[2].innerHTML;
             document.getElementById("itemRetailPrice").value = data[3].innerHTML;
             document.getElementById("itemReorderLevel").value = data[4].innerHTML;
-            document.getElementById("productId").value = button.parentNode.parentNode.childNodes[1].id;
+            document.getElementById("productId").value = button.parentNode.parentNode.lastChild.id;
 
             $("#errorDivEditItem").html("");
             
@@ -151,10 +151,55 @@ class="active"
                 // dataType:"json",
                 success:function(data){
                     console.log(data)
-                    // for (var i = 0; i < array.lengv++) {
-                    //     const element = arv];
-                        
-                    // }                  
+                        // <div class="card">
+                        //  <div class="card-container bg-danger" style="padding: 1em;">
+                        //     <p></p>
+                        //     <p style="font-size: 12px"><b>Items Subtracted: </b></p>
+                        //     <p style="font-size: 12px"><b>Supplied by: </b></p>
+                        //     <p style="font-size: 12px"><b>Date: </b></p>
+                        //     </div>
+                        // </div>
+                    var result = "";
+                    for (var i = 0; i < data.length; i++) {
+                        result += "<div class='card'>";
+                        if(data[i][0] === "added"){
+                            result += "<div class='card-container bg-success' style='padding: 1em;'>\
+                                         <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Added</b></p>\
+                                         <p style='font-size: 12px'><b>Supplied by: " +data[i][4]+ "</b></p>\
+                                         <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                                        </div>\
+                                    </div>";
+                        }else{
+                            if(data[i][1] === "bought"){
+                                result += "<div class='card-container bg-danger' style='padding: 1em;'>\
+                                            <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+                                            <p style='font-size: 12px'><b>Bought by " +data[i][4]+ "</b></p>\
+                                            <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                                        </div>\
+                                        </div>";
+
+                            }else if(data[i][0] === "damaged"){
+                                result += "<div class='card-container bg-danger' style='padding: 1em;'>\
+                                            <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+                                            <p style='font-size: 12px'><b>Damaged item.</b></p>\
+                                            <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                                        </div>\
+                                        </div>";
+                            }else{
+                                result += "<div class='card-container bg-danger' style='padding: 1em;'>\
+                                            <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+                                            <p style='font-size: 12px'><b>Lost item.</b></p>\
+                                            <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                                        </div>\
+                                        </div>";
+                            }
+                            
+                        }
+                    }
+                    document.getElementById("historyResult").innerHTML = "";
+                    document.getElementById("historyResult").innerHTML = result;
+                    
+                    
 
                 }
             });
@@ -264,6 +309,7 @@ class="active"
                 e.preventDefault(); //prevent the page to load when submitting form
                 //key value pair of form
                 var data = $(this).serialize();
+                console.log(data)
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.editItem')}}",
@@ -424,7 +470,7 @@ class="active"
                             </div>
                         </div>
                     </div>  --}}
-                    <input type="hidden" id="productId" name="productId">
+                    <input type="hidden" id="productId" name="productId" >
                     <div class="modal-body">
                             <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -565,6 +611,9 @@ class="active"
                                 <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
                                 <div id="searchResultDiv" class="searchResultDiv">
                                 </div>
+                            </div>
+                            <div id="historyResult">
+
                             </div>
                             {{--  <div class="card">
                                 <div class="card-container bg-danger" style="padding: 1em;">

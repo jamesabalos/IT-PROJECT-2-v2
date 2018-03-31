@@ -124,7 +124,7 @@ class="active"
                                           <th>Item Purchased</th>
                                           <th>Customer Name</th>
                                           <th>Quantity</th>
-                                          <th>Price</th>
+                                          <th>Purchase Price</th>
                                           <th>Created At</th>
                                         </tr>
                                     </thead>

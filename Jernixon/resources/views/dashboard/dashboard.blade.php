@@ -165,10 +165,10 @@ class="active"
 <?php 
     //index.php
     $connect = mysqli_connect("localhost", "root", "", "inventory_jernixon");
-	//top items query
+    //top items query
     $queryTopItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id limit 10";
     $result = mysqli_query($connect, $queryTopItems);
-	
+    
     $chart_data_top_items = '';
 
     while($row = mysqli_fetch_array($result))
@@ -179,10 +179,10 @@ class="active"
     }
 
     $chart_data_top_items = substr($chart_data_top_items, 0, -2);
-	//least items query
-	$queryLeastItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id order by quantity asc limit 10";
+    //least items query
+    $queryLeastItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id order by quantity asc limit 10";
     $result = mysqli_query($connect, $queryLeastItems);
-	
+    
     $chart_data_least_items = '';
     while($row = mysqli_fetch_array($result))
     {
@@ -268,21 +268,21 @@ class="active"
                                                 //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
                                                 $query = "SELECT product_id from products where status='available'";
                                                 $result = mysqli_query($connect, $query);
-												$row = $result->fetch_assoc();
-												$count = 0;
-												while($row = mysqli_fetch_array($result)){
-													$dataQuery = "SELECT product_id from products join salable_items using(product_id) where status='available' and quantity < (Select reorder_level from products where product_id='" .$row['product_id']. "')";
-													
-													$dataResult = mysqli_query($connect, $dataQuery);
-													$dataRow = $dataResult->fetch_assoc();
-													
-													if (mysqli_num_rows($dataResult)!=0){
-														$count++;
-													}
-													// while($rowData = mysqli_fetch_array($data)){
-														// $count++;
-													// }
-												}
+                                                $row = $result->fetch_assoc();
+                                                $count = 0;
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $dataQuery = "SELECT product_id from products join salable_items using(product_id) where status='available' and quantity < (Select reorder_level from products where product_id='" .$row['product_id']. "')";
+                                                    
+                                                    $dataResult = mysqli_query($connect, $dataQuery);
+                                                    $dataRow = $dataResult->fetch_assoc();
+                                                    
+                                                    if (mysqli_num_rows($dataResult)!=0){
+                                                        $count++;
+                                                    }
+                                                    // while($rowData = mysqli_fetch_array($data)){
+                                                        // $count++;
+                                                    // }
+                                                }
                                                 echo($count);
                                                 
                                             ?> 
@@ -300,7 +300,7 @@ class="active"
                 <!-- Bar Chart -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Top Items
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Fast Moving Items
                     </div>
                     <div class="container-fluid">
                         <div class="row">
@@ -311,9 +311,9 @@ class="active"
                     </div>
                   </div>
 
-				  <div class="panel panel-default">
+                  <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Least Items
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Slow Moving Items
                     </div>
                     <div class="container-fluid">
                         <div class="row">
@@ -366,7 +366,7 @@ $(document).ready(function() {
   barChartLeastItems();
   $(window).resize(function() {
     window.barChartTopItems.redraw();
-	window.barChartLeastItems.redraw();
+    window.barChartLeastItems.redraw();
   });
 });
 

@@ -228,7 +228,7 @@ ng-app="ourAngularJsApp"
                                             <th>Description</th>
                                             <th>Category</th>
                                             <th>Quantity in Stock</th>
-                                            <th>Wholesale Price</th>
+                                            <th>Purchase Price</th>
                                             <th>Retail Price</th>
                                             <th>Add to Cart</th>
                                         </tr>
@@ -405,7 +405,7 @@ $('#dashboardDatatable').DataTable({
             "data": "quantity"
         },
         {
-            "title": "Wholesale Price",
+            "title": "Purchase Price",
             "data": "wholesale_price"
         },
         {

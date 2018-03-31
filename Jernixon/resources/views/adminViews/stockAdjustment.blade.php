@@ -64,9 +64,9 @@ ng-app="ourAngularJsApp"
         if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
             var thatTable = document.getElementById("stockTable");
             var newRow = thatTable.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' value=" +itemName+ " disabled></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='text' value='" +itemName+ "' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' ></td>";
             newRow.insertCell(-1).innerHTML = "<td><select class='form-control' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
             newRow.insertCell(-1).innerHTML = "<td><button type='button' class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 

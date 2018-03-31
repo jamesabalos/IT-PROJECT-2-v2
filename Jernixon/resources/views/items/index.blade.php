@@ -483,6 +483,7 @@ class="active"
                         </div>
                             </div>
                         </div>
+                        <div class="form-group">
                         <div class="row">
                                 <div class="text-right">                                           
                                     <div class="col-md-12">   
@@ -492,6 +493,7 @@ class="active"
                                     </div>
                                 </div>
                             </div>
+                        </div>
                             {!! Form::close() !!}
                         </div>
                     @include('inc.messages')

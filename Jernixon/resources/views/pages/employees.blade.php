@@ -480,14 +480,14 @@
             <div class="text-center">
                 <strong>
                     <h3> <i class="fa fa-exclamation-triangle" style="margin-right: 15px"> </i> Are you sure?</h3>
-                    <p>Do you really want to reset the password? This process cannot be undone!</p>
+                    <p>Do you really want to reset the password? This process cannot be undone.</p>
                 </strong>
             </div>
 
             <div class="panel-body">
                 <div class="text-center">
                     <div class="form-group clearfix">
-                        <button type="submit" name="update" class="btn btn-success">Okay</button>
+                        <button type="submit" name="update" class="btn btn-success">Reset</button>
                         <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>

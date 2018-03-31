@@ -136,7 +136,7 @@ ng-app="ourAngularJsApp"
               "buttons": [
                   {
                       extend: 'collection',
-                      text: 'EXPORT (excel : pdf : csv : print)',
+                      text: 'EXPORT',
                       buttons: [
                           'copy',
                           'excel',

@@ -66,8 +66,8 @@ ng-app="ourAngularJsApp"
             var newRow = thatTable.insertRow(-1);
             newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' value=" +itemName+ " disabled></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' disabled></td>";
-            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
+            // newRow.insertCell(-1).innerHTML = "<td><input type='number' min='1' class='form-control' disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
             newRow.insertCell(-1).innerHTML = "<td><button type='button' class='btn btn-danger form-control' data-item-id=' +button.getAttribute('id')+ ' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
@@ -260,7 +260,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}
+                                    {{Form::date('Date','',['class'=>'form-control','value'=>''])}}
                                 </div>
                             </div>
                         </div>
@@ -280,7 +280,7 @@ ng-app="ourAngularJsApp"
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Employee Name</th>
+                                        <!--<th class="text-left">Employee Name</th>-->
                                         <th class="text-left">Item Name</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Status</th>

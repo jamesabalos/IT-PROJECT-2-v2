@@ -174,7 +174,7 @@ class="active"
     while($row = mysqli_fetch_array($result))
     {
 
-     $chart_data_top_items .= "{name:'".$row["name"]."', population:".$row["quantity"]."}, ";
+     $chart_data_top_items .= "{name:'".$row["name"]."', quantity:".$row["quantity"]."}, ";
 
     }
 
@@ -187,7 +187,7 @@ class="active"
     while($row = mysqli_fetch_array($result))
     {
 
-     $chart_data_least_items .= "{name:'".$row["name"]."', population:".$row["quantity"]."}, ";
+     $chart_data_least_items .= "{name:'".$row["name"]."', quantity:".$row["quantity"]."}, ";
 
     }
 
@@ -375,8 +375,8 @@ function barChartTopItems() {
     element: 'bar-chart-top-items',
     data: [<?php echo $chart_data_top_items; ?>],
     xkey: 'name',
-    ykeys: ['population'],
-    labels: ['population'],
+    ykeys: ['quantity'],
+    labels: ['quantity'],
     lineColors: ['#1e88e5'],
     lineWidth: '3px',
     resize: true,
@@ -389,8 +389,8 @@ function barChartLeastItems() {
     element: 'bar-chart',
     data: [<?php echo $chart_data_least_items; ?>],
     xkey: 'name',
-    ykeys: ['population'],
-    labels: ['population'],
+    ykeys: ['quantity'],
+    labels: ['quantity'],
     lineColors: ['#1e88e5'],
     lineWidth: '3px',
     resize: true,

@@ -260,7 +260,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}
+                                    {{Form::date('Date','',['class'=>'form-control','value'=>''])}}
                                 </div>
                             </div>
                         </div>
@@ -280,7 +280,7 @@ ng-app="ourAngularJsApp"
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Employee Name</th>
+                                        <!--<th class="text-left">Employee Name</th>-->
                                         <th class="text-left">Item Name</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Status</th>

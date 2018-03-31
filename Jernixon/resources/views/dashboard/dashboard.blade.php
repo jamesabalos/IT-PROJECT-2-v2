@@ -19,53 +19,6 @@ class="active"
     <script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
     <script src="{{asset('assets/js/morrisv05.js')}}"></script>
 
- <style>
-    .panel-box{
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        border: none;
-        /* background-color: #eaeaea; */
-        border:2px solid #eaeaea;
-    }
-    .panel-icon{
-        padding: 30px;
-        width: 40%;
-        border-radius: 0;
-    }.panel-icon{
-        -webkit-border-radius: 3px 0 0 3px;
-        -moz-border-radius: 3px 0 0 3px;
-       border-radius: 3px 0 0 3px;
-    }.panel-value{
-        -webkit-border-radius: 0 3px 3px 0;
-        -moz-border-radius: 0 3px 3px 0;
-        border-radius: 0 3px 3px 0;
-    }.panel-value h2{
-        margin-top: 30px;
-    }
-    .panel-icon i{
-        line-height:65px;
-        font-size: 40px;
-        color: #fff;
-    }
-    .bg-green{
-        background-color: #A3C86D;
-    }
-    .bg-blue{
-        background-color: #7ACBEE;
-    }
-    .bg-yellow{
-        background-color: #FDD761;
-    }
-    .bg-red{
-        background-color: #FF7857;
-   }
-
-    .morris-hover {
- position:absolute;
-  z-index:1000;
-}
-        </style>
 <script>
     window.onload = function () {
         var queryDataPoints = [];
@@ -212,10 +165,10 @@ class="active"
 <?php 
     //index.php
     $connect = mysqli_connect("localhost", "root", "", "inventory_jernixon");
-	//top items query
+    //top items query
     $queryTopItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id limit 10";
     $result = mysqli_query($connect, $queryTopItems);
-	
+    
     $chart_data_top_items = '';
 
     while($row = mysqli_fetch_array($result))
@@ -226,10 +179,10 @@ class="active"
     }
 
     $chart_data_top_items = substr($chart_data_top_items, 0, -2);
-	//least items query
-	$queryLeastItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id order by quantity asc limit 10";
+    //least items query
+    $queryLeastItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id order by quantity asc limit 10";
     $result = mysqli_query($connect, $queryLeastItems);
-	
+    
     $chart_data_least_items = '';
     while($row = mysqli_fetch_array($result))
     {
@@ -315,21 +268,21 @@ class="active"
                                                 //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
                                                 $query = "SELECT product_id from products where status='available'";
                                                 $result = mysqli_query($connect, $query);
-												$row = $result->fetch_assoc();
-												$count = 0;
-												while($row = mysqli_fetch_array($result)){
-													$dataQuery = "SELECT product_id from products join salable_items using(product_id) where status='available' and quantity < (Select reorder_level from products where product_id='" .$row['product_id']. "')";
-													
-													$dataResult = mysqli_query($connect, $dataQuery);
-													$dataRow = $dataResult->fetch_assoc();
-													
-													if (mysqli_num_rows($dataResult)!=0){
-														$count++;
-													}
-													// while($rowData = mysqli_fetch_array($data)){
-														// $count++;
-													// }
-												}
+                                                $row = $result->fetch_assoc();
+                                                $count = 0;
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $dataQuery = "SELECT product_id from products join salable_items using(product_id) where status='available' and quantity < (Select reorder_level from products where product_id='" .$row['product_id']. "')";
+                                                    
+                                                    $dataResult = mysqli_query($connect, $dataQuery);
+                                                    $dataRow = $dataResult->fetch_assoc();
+                                                    
+                                                    if (mysqli_num_rows($dataResult)!=0){
+                                                        $count++;
+                                                    }
+                                                    // while($rowData = mysqli_fetch_array($data)){
+                                                        // $count++;
+                                                    // }
+                                                }
                                                 echo($count);
                                                 
                                             ?> 
@@ -358,7 +311,7 @@ class="active"
                     </div>
                   </div>
 
-				  <div class="panel panel-default">
+                  <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-bar-chart-o fa-fw"></i> Least Items
                     </div>
@@ -413,7 +366,7 @@ $(document).ready(function() {
   barChartLeastItems();
   $(window).resize(function() {
     window.barChartTopItems.redraw();
-	window.barChartLeastItems.redraw();
+    window.barChartLeastItems.redraw();
   });
 });
 

@@ -150,7 +150,11 @@ class="active"
                 url: fullRoute,
                 // dataType:"json",
                 success:function(data){
-                    console.log(data)                    
+                    console.log(data)
+                    // for (var i = 0; i < array.lengv++) {
+                    //     const element = arv];
+                        
+                    // }                  
 
                 }
             });
@@ -233,7 +237,7 @@ class="active"
                         })
                                         .delay(1000)                        
                                         .hide(1500);
-
+                        $("#tableItems").DataTable().ajax.reload();
                     },
                     error:function(data){   
                         var response = data.responseJSON;

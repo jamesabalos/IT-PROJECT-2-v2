@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use App\User;
+use App\Salable_item;
 use Datatables;
 use DB;
 class AdminController extends Controller
@@ -303,7 +304,7 @@ class AdminController extends Controller
 
         $data = DB::table('products')
 					->join('salable_items', 'products.product_id', '=', 'salable_items.product_id')
-                    ->select('status','products.product_id','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'created_at', 'updated_at');
+                    ->select('status','products.product_id','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'products.created_at', 'products.updated_at');
                     // ->where('status','=','available');
                     // $string = "";
                     // if(true){
@@ -340,13 +341,28 @@ class AdminController extends Controller
         ]);
 
    
-        //Create new Item
+        //Create new Item Products Table
         $item = new Product;
         $item->description = $request->input('description');
         //$item->quantityInStock = $request->input('quantityInStock');
         $item->reorder_level = $request->input('reorderLevel');
         //$item->retailPrice = $request->input('retailPrice');
         $item->save();
+
+        $prod_id = DB::table('products')
+                        ->select('product_id')
+                        ->orderBy('product_id', 'desc')
+                        ->first();
+                
+        //Create new Item Salable_items Table
+        $item_salable = new Salable_item;
+        $item_salable->product_id = $prod_id->product_id;
+        //$item->quantityInStock = $request->input('quantityInStock');
+        $item_salable->quantity = 0;
+        $item_salable->wholesale_price = 0.00;
+        $item_salable->retail_price = 0.00;
+        //$item->retailPrice = $request->input('retailPrice');
+        $item_salable->save();
         return response($request->all());
         // return "success";
         // return redirect('/items')->with('success','Success adding item');
@@ -379,7 +395,57 @@ class AdminController extends Controller
 		return $request->all();
 	}
 	public function viewItemHistory($id){
-		return $id;
+        $data = [];
+        $sales = DB::table('sales')
+                    ->join('products', 'products.product_id' , '=' , 'sales.product_id')
+                    ->select('products.product_id as product_id', 'description', 'sales.quantity as quantity', 'customer_name', 'sales.created_at as date')
+                    ->where('sales.product_id', '=', $id)
+                    ->get();
+
+            $arrayCount1 = count($sales);
+            for($i = 0;$i<$arrayCount1;$i++){
+                // array_push($data, [$sales[$i]->customer_name]);
+                array_push($data, ["deducted", "bought", $sales[$i]->description, $sales[$i]->quantity, $sales[$i]->customer_name, $sales[$i]->date]);
+           }
+
+        $purchases = DB::table('purchases')
+                    ->join('products', 'products.product_id' , '=' , 'purchases.product_id')
+                    ->select('products.product_id as product_id', 'description', 'purchases.quantity as quantity', 'supplier_name', 'purchases.created_at as date')
+                    ->where('purchases.product_id', '=', $id)
+                    ->get();
+
+            $arrayCount2 = count($purchases);
+            for($i = 0;$i<$arrayCount2;$i++){
+                array_push($data, ["added", "purchased", $purchases[$i]->description, $purchases[$i]->quantity, $purchases[$i]->supplier_name, $purchases[$i]->date]);
+            }
+
+        $damaged_items = DB::table('damaged_items')
+                    ->join('products', 'products.product_id' , '=' , 'damaged_items.product_id')
+                    ->select('products.product_id as product_id', 'description', 'damaged_items.quantity as quantity', 'damaged_items.created_at as date')
+                    ->where('damaged_items.product_id', '=', $id)
+                    ->get();
+
+            $arrayCount3 = count($damaged_items);
+            for($i = 0;$i<$arrayCount3;$i++){
+                array_push($data, ["deducted", "damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, "ADMIN", $damaged_items[$i]->date]);
+            }
+
+        $lost_items = DB::table('lost_items')
+                    ->join('products', 'products.product_id' , '=' , 'lost_items.product_id')
+                    ->select('products.product_id as product_id', 'description', 'lost_items.quantity as quantity', 'lost_items.created_at as date')
+                    ->where('lost_items.product_id', '=', $id)
+                    ->get();
+
+            $arrayCount4 = count($lost_items);
+            for($i = 0;$i<$arrayCount4;$i++){
+                array_push($data, ["deducted", "lost", $lost_items[$i]->description, $lost_items[$i]->quantity, "ADMIN", $lost_items[$i]->date]);                
+            }
+
+
+        // $data = $sales + $purchases +  $damaged_items + $lost_items;
+        // $data = {"sales":"$sales"};
+        //return [$sales,$purchases,$damaged_items,$lost_items];
+        return $data;
 	}
 
     // public function getTransactions(){

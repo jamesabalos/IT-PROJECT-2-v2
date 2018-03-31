@@ -81,11 +81,12 @@
                             //                 </div>\
                             //             </td>";
                             newRow.insertCell(-1).innerHTML = "<td class='text-center'><button data-id='" + data.id + "' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount btn btn-danger'>Deactivate</button><a href = '#reset' data-toggle='modal'><button type='button' class='btn btn-info'>Reset Password</button></a></td>";
-
+                            
 
                         })
                         .delay(1000)
                         .hide(1500);
+                        location.reload();
                 },
                 error: function(data) {
                     var response = data.responseJSON;
@@ -271,9 +272,8 @@
                                     <th class="text-center hidden" style="width: 50px;">#</th>
                                     <th class="text-center">Name </th>
                                     <th class="text-center">Email</th>
-                                    {{--
-                                    <th class="text-center" style="width: 15%;">User Role</th> --}} {{--
-                                    <th class="text-center" style="width: 10%;">Status</th> --}}
+                                    <th class="text-center" style="width: 15%;">Contact Number</th>
+                                    <th class="text-center" style="width: 10%;">Address</th>
                                     <th class="text-center" style="width: 20%;">Status</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -284,8 +284,8 @@
                                     <td class="text-center hidden">{{$employee->id}}</td>
                                     <td class="text-center">{{$employee->name}}</td>
                                     <td class="text-center">{{$employee->email}}</td>
-                                    {{--
-                                    <td class="text-center">under-construction</td> --}}
+                                    <td class="text-center">{{$employee->contact_number}}</td>
+                                    <td class="text-center">{{$employee->address}}</td>
                                     <td class="text-center">{{$employee->status}}</td>
                                     <td class="text-center">
                                         {{--

@@ -300,7 +300,7 @@ class="active"
                 <!-- Bar Chart -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Top Items
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Fast Moving Items
                     </div>
                     <div class="container-fluid">
                         <div class="row">
@@ -313,7 +313,7 @@ class="active"
 
                   <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Least Items
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Slow Moving Items
                     </div>
                     <div class="container-fluid">
                         <div class="row">

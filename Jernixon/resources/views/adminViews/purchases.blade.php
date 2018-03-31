@@ -385,7 +385,7 @@ ng-app="ourAngularJsApp"
                                     <tr>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Quantity</th>
-                                        <th class="text-left">Price</th>
+                                        <th class="text-left">Purchase Price</th>
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
@@ -398,10 +398,6 @@ ng-app="ourAngularJsApp"
                         <div class="autocomplete" style="width:100%;">
                             <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
                             <div id="searchResultDiv" class="searchResultDiv">
-                                {{--  <div>
-                                <strong>Phi</strong>lippines
-                                <input type="hidden" value="Philippines">
-                                </div>  --}}
                             </div>
                         </div>
                     </div>
@@ -487,7 +483,7 @@ ng-app="ourAngularJsApp"
                                     <tr>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Quantity</th>
-                                        <th class="text-left">Price</th>
+                                        <th class="text-left">Purchase Price</th>
                                     </tr>
                                 </thead>
                                 <tbody id="purchaseOrdertableTbody">

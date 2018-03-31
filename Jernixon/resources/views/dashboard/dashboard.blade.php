@@ -283,6 +283,7 @@ class="active"
                                                         // $count++;
                                                     // }
                                                 }while($row = mysqli_fetch_array($result));
+<<<<<<< HEAD
                                                 echo($count);
                                                 
                                             ?> 
@@ -687,6 +688,8 @@ class="active"
                                                         // $count++;
                                                     // }
                                                 }while($row = mysqli_fetch_array($result));
+=======
+>>>>>>> 3af0716324abd993b1c1d17063ea9bec8a745375
                                                 echo($count);
                                                 
                                             ?> 

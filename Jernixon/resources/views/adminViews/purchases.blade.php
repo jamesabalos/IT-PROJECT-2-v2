@@ -353,8 +353,8 @@ ng-app="ourAngularJsApp"
                                 </div>
                                 <div class="col-md-9">
                                     {{-- {{Form::date('Date','',['class'=>'form-control','value'=>''])}} --}}
-                                    <input type="datetime-local" name="datetime" class="form-control"
-                                    value="<?php echo date('Y-m-d').'T'.date('hh:mm'); ?>" />
+                                    <input type="date" name="Date" class="form-control"/>
+
                                 </div>
                             </div>
                         </div>

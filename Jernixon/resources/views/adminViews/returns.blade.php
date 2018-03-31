@@ -85,7 +85,7 @@ ng-app="ourAngularJsApp"
             },        
             success: function(data){
                 $("#returnItemTbody tr").remove();
-                console.log(data)
+     
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
                 for(var i = 0; i < data.length; i++){
                     var newRow = modalReturnItemTbody.insertRow(-1);
@@ -93,9 +93,10 @@ ng-app="ourAngularJsApp"
                     newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled></td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control' onchange='toggleCheckbox(this)'></td>";
-                }
+                } 
                 document.getElementById("Date").value = data[0].created_at;
                 document.getElementById("Customer").value = data[0].customer_name;
+                document.getElementById("returnCustomerName").value = data[0].customer_name;
               
 
                 
@@ -441,6 +442,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                                 <div class="col-md-9">
                                     {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}
+                        <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
                                 </div>
                             </div>
                         </div>

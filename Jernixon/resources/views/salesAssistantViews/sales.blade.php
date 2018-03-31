@@ -1,613 +1,442 @@
 @extends('layouts.navbar')
-{{--  @extends('layouts.app')  --}}
-
 @section('sales_link')
 class="active"
 @endsection
 
+{{--  @section('onload')
+onload="refresh()"
+@endsection  --}}
+
+@section('ng-app')
+ng-app="ourAngularJsApp"
+@endsection
+
+
 @section('headScript')
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+<!--AngularJs-->
+{{--  <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>  --}}
 
-@endsection
+<script src="{{asset('assets/js/angularJs.js')}}"></script>
+<script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
 
-@extends('inc.headScripts')
-
-@section('linkName')
-<div class="alert alert-success hidden" id="successDiv">
-</div>
-    <h3>Sales</h3>
-@endsection
-
-@section('right')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="header">
-                        <div class = "content">
-                                 <a href = "#addNewItemModal" data-toggle="modal" >
-                                            <button type="button" class="btn btn-success"><i class = "ti-plus"></i>Add new Item</button>
-                                 </a>        
-<!--
-                            <form class = "form-inline">
-                                <div class="row">
-                                    {{--  <div class="col-md-12">
-                                        <label><i class = "ti-search"></i> Search</label>
-                                        <input type="text" onkeyup="searchItem2(this)" class="form-control border-input" placeholder="Enter name of item">
-                                    </div>  --}}
-                                </div>
-                            </form>
--->
-<!--
-                            <div class="row">
-                                {{--  <div class="col-md-6">
-                                    <ul class="nav nav-pills">
-                                        <li >
-                                            <a href = "#addquan" data-toggle="modal"   >Add</a>
-                                        </li>
-                                        <li >
-                                            <a href = "#subtract" data-toggle="modal" >Subtract </a>
-                                        </li>                                                      
-                                    </ul>
-                                </div>  --}}
-                                
-                                {{--  <div class="col-md-6">  --}}
-                                        <a href = "#addNewItemModal" data-toggle="modal" >
-                                            <button type="button" class="btn btn-success"><i class = "ti-plus"></i>Add new Item</button>
-                                        </a>        
-                                        
-                                </div>
-                            </div>
--->
-                            {{--  <div class="row">
-                                <div id="belowAddNewItem" class="col-lg-10" style="display:none">
-                                    
-                                </div>      
-                            </div>  --}}
-                            <div class="content table-responsive table-full-width table-stripped">
-                            <table id="tableItems" class="table table-bordered table-striped dt-responsive nowrap" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Description</th>
-                                        <th>Quantity</th>
-                                        <th>Wholesale Price</th>
-                                        <th>Retail Price</th>
-                                        <th>Reorder Level</th>
-                                        <th>Created At</th>
-                                        <th>Updated At</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                            </div>
-
-                        </div>    
-                    </div>
-                    <br>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-    {{--  @if(count($products) > 1)
-        @foreach ($products as $product)
-        <div class="well">
-            <h3>{{$product->description}}</h3>
-        </div>
-        @endforeach
-        @else
-        <h5>No items</h5>
-        @endif  --}}
-
+<script>
     
-    @endsection
-    
-    @section('jqueryScript')
-    <script type="text/javascript">
-
-        function insertDataToModal(button){
-            var data  = $(button.parentNode.parentNode.parentNode.innerHTML).slice(0,-1);
-            document.getElementById("itemDescription").value = data[0].innerHTML;
-            document.getElementById("itemQuantity").value = data[1].innerHTML;
-            document.getElementById("itemWholeSalePrice").value = data[2].innerHTML;
-            document.getElementById("itemRetailPrice").value = data[3].innerHTML;
-            document.getElementById("itemReorderLevel").value = data[4].innerHTML;
-            document.getElementById("productId").value = button.parentNode.parentNode.childNodes[1].id;
-
-            $("#errorDivEditItem").html("");
+    function addItemToCart(button){
+        $(button).hide(500).delay(1000);
+        
+            var thatTbody = document.getElementById("cartTbody");
+            var newRow = thatTbody.insertRow(-1);
+            newRow.insertCell(-1).innerHTML = button.parentNode.parentNode.firstChild.innerHTML;
+            button.parentNode.parentNode.setAttribute("class","hidden");            
+        
+    }       
             
+        function removeRowInCart(button){
+            document.getElementById(button.getAttribute("data-item-id")).parentNode.parentNode.removeAttribute("class","hidden");
+            
+            //remove item in local storage
+            var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
+            localStorage.removeItem(data[0].innerHTML);
+            
+            //show the plus sign button again in dataTables
+            document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
         }
-        function formUpdateChangeStatus(button){
-                // button.preventDefault(); //prevent the page to load when submitting form
-                // var fullRoute = "/admin/items/updateStatus/"+button.currentTarget.attributes[0].value; //id
-                var fullRoute = "/admin/items/updateStatus"; //id
-                var status = "";
-                if(button.childNodes[1].nodeValue === "Enable"){
-                    status="unavailable";
-                }else{
-                    status="available";
-                }
-                $.ajax({
-                    type:'Post',
-                    url: fullRoute,
-                    dataType:'json',
-                    data:{
-                        'itemId':button.id,
-                        'status': status //'status': inactive | active 
-                    },
-                    success:function(data){
-                       $("#tableItems").DataTable().ajax.reload();//reload the dataTables                        
-
+        
+            $(document).ready(function(){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-         
-        }
-        function viewItemHistory(button){
-            var fullRoute = "/admin/items/viewHistory/" + button.parentNode.nextSibling.id; //id
-            
-            $.ajax({
-                type:'Get',
-                url: fullRoute,
-                // dataType:"json",
-                success:function(data){
-                    console.log(data)
-                    // for (var i = 0; i < array.lengv++) {
-                    //     const element = arv];
-                        
-                    // }                  
+                
+                $('#formSales').on('submit',function(e){
+                    e.preventDefault();
+                    var data = $(this).serialize();   
+                    var arrayOfData = $(this).serializeArray();           
 
-                }
-            });
-        }
-        $(document).ready(function() {
-            //alert(document.querySelectorAll("#removeItemTbody tr>td:last-child button").length);
+                    var thatTbody = $("#cartTbody tr td:first-child");
+                   
 
-            //$("#removeItemTbody button").on("click",function(e){
-              //  alert("hi");
-                //alert($(this).attr("id"))
-                //e.preventDefault(); //prevent the page to load when submitting form
-                /*$.ajax({
-                    method: 'get',
-                    //url: 'items/' + document.getElementById("inputItem").value,
-                    url: 'items/' + e.value,
-                    dataType: "json",
-                    success: function(data){
+                    $.ajax({
+                        type:'POST',
+                        url: "{{route('salesAssistant.createSales')}}",
+                        data:data,                        
+                        success:function(data){
+                            if(data === "successful"){
+                                document.getElementById("formSales").reset();
+                                var items = [];
+                                var len=localStorage.length;
+                                for(var i=0; i<len; i++) {
+                                    var key = localStorage.key(i);
+                                    var value = localStorage[key];
+                                    if(value.includes("item")){
+                                        items.push(key);
+                                    }
+                                }
 
-                    }
-                })
-                */
-            //});
-            $.ajaxSetup({
-                headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $('#tableItems').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "pagingType": "full_numbers",
+                                //delete items in localStorage
+                                for(var i=0; i < items.length; i++){
+                                    localStorage.removeItem(items[i]);
+                                }
+                                //clear total sales
+                                document.getElementById("totalSalesDiv").firstChild.innerHTML="";
+                                
+                                //show the plus sign button again in dataTables
+                                var itemId = $("#cartTbody tr td:nth-child(5) button");
+                                for(var i = 0; i<itemId.length; i++){
+                                    document.getElementById(itemId[i].getAttribute("data-item-id")).removeAttribute("style");
+                                }
+                                
+                                //remove all rows in cart
+                                $("#cartTbody tr").remove();                           
+                                $("#successDiv p").remove();
+                                $("#successDiv").removeClass("alert-danger hidden").addClass("alert-success")
+                                    .html("<h3>Transaction successful</h3>");
+                                $("#successDiv").slideDown("slow")
+                                                .delay(1000)                        
+                                                .hide(1500);
 
-                @if(Auth::guard('adminGuard')->check())
-                    "ajax":  "{{ route('items.getItems') }}",
-                @elseif(Auth::guard('web')->check())
-                    "ajax":  "{{ route('salesAssistant.getItems') }}",                    
-                @endif
-
-                "columns": [
-                // {data: 'product_id'},
-                {data: 'description'},
-                {data: 'quantity'},
-                {data: 'wholesale_price'},
-                {data: 'retail_price'},
-                {data: 'reorder_level'},
-                {data: 'created_at'},
-                {data: 'updated_at'},
-                {data: 'action'},
-                ]
-            });
-            
-    
-            $('#formAddNewItem').on('submit',function(e){
-                e.preventDefault(); //prevent the page to load when submitting form
-                //key value pair of form
-                var data = $(this).serialize();
-                $.ajax({
-                    type:'POST',
-                    // url:'admin/storeNewItem',
-                    url: "{{route('admin.Newitems')}}",
-                    dataType:'json',
-                    /*  data:{
-                        'description':'',
-                        'quantityInStock':4,
-                        'wholeSalePrice':10,
-                        'retailPrice':15,
-                    },
-                */
-                    //data:{data},
-                    data:data,
-                        //_token:$("#_token"),
-                    success:function(data){
-                        $("#errorDivAddNewItem p").remove();
-                        $("#errorDivAddNewItem").removeClass("alert-danger hidden")
-                                        .addClass("alert-success")
-                                        .html("<h1>Success</h1>");
-                        $("#errorDivAddNewItem").css("display:block");
-                        $("#errorDivAddNewItem").slideDown("slow",function(){
-                                        document.getElementById("formAddNewItem").reset();
-                        })
-                                        .delay(1000)                        
-                                        .hide(1500);
-                        $("#tableItems").DataTable().ajax.reload();
-                    },
-                    error:function(data){   
-                        var response = data.responseJSON;
-                        $("#errorDivAddNewItem").removeClass("hidden").addClass("alert-danger");
-                        $("#errorDivAddNewItem").html(function(){
-                            var addedHtml="";
-                            for (var key in response.errors) {
-                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                                //refresh dataTable
+                                $("#dashboardDatatable").DataTable().ajax.reload();
+                            }else{
+                                $("#successDiv").css("display","block");
+                                $("#successDiv").removeClass("alert-success hidden").addClass("alert-danger");
+                                $("#successDiv").html("Receipt Number duplicated");
                             }
-                            return addedHtml;
-                        });
-                        // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
-                        //alert(Object.keys(error.errors).length)
-                        //console.log(error)
+
+                        },
                         
-                    }
+                       
+                        error:function(data){
+                            var response = data.responseJSON;
+                            console.log(response)
+
+                             //prompt the message
+                            $("#successDiv").css("display","block");
+                            $("#successDiv").removeClass("alert-success hidden").addClass("alert-danger");
+                            $("#successDiv").html(function(){
+                                var addedHtml="";
+                                for (var key in response.errors) {
+                                    addedHtml += "<p>"+response.errors[key]+"</p>";
+                                }
+                                return addedHtml;
+                            });
+                        }
+                    });
+                   
+
+
                 })
                 
-            })
-
-
-
-            $('#formEdit').on('submit',function(e){
-                e.preventDefault(); //prevent the page to load when submitting form
-                //key value pair of form
-                var data = $(this).serialize();
-                $.ajax({
-                    type:'POST',
-                    url: "{{route('admin.editItem')}}",
-                    data:data,
-                    success:function(data){
-                        $('#editModal').modal('hide') ;                   
-                        //prompt the message
-                        // $("#successDiv p").remove();
-                        $("#successDiv").removeClass("hidden")
-                        // .addClass("alert-success")
-                                .html("<h3>Edit successful</h3>");
-                        $("#successDiv").css("display:block");                             
-                        $("#successDiv").slideDown("slow")
-                            .delay(1000)                        
-                            .hide(1500);
-                        $("#tableItems").DataTable().ajax.reload();//reload the dataTables
-                            
-                    },
-                    error: function(data){
-                        var response = data.responseJSON;
-                        $("#errorDivEditItem").removeClass("hidden").addClass("alert-danger text-center");
-                        $("#errorDivEditItem").html(function(){
-                            var addedHtml="";
-                            for (var key in response.errors) {
-                                addedHtml += "<p>"+response.errors[key]+"</p>";
-                            }
-                            return addedHtml;
-                        });
-                    }
-                })
-            })
-
-
-//            $('#formReturnItem').on('submit',function(e){
-//                e.preventDefault(); //prevent the page to load when submitting form
-//                //key value pair of form
-//                var data = $(this).serialize();
-//
-//                $.ajax({
-//                    type:'POST',
-//                    url:'/items/returnItem',
-//                    //dataType:'json',
-//                    data:data,
-//                    success:function(dataReceive){
-//                        $("#errorDivReturnItem p").remove();
-//                        //$("#errorDivReturnItem").removeClass("alert-danger hidden")
-//                        $("#errorDivReturnItem").removeClass("alert-danger")
-//                                                .addClass("alert-success")
-//                                                .html("<h1>Success</h1>");
-//
-//                        $("#errorDivReturnItem").css("display:block");
-//                        $("#errorDivReturnItem").slideDown("slow",function(){
-//                            document.getElementById("formReturnItem").reset();
-//                        })
-//                        .delay(1000)                        
-//                        .hide(1500);
-//                    },
-//                    error:function(dataReceived){
-//                        var response = dataReceived.responseJSON;
-//                        $("#errorDivReturnItem").removeClass("alert-success")
-//                                                .addClass("alert-danger"); 
-//                        $("#errorDivReturnItem").css("display:block");
-//                        $("#errorDivReturnItem").slideDown("slow")                                               
-//                                                .html(function(){
-//                                                    var addedHtml="";
-//                                                    for (var key in response.errors) {
-//                                                        addedHtml += "<p>"+response.errors[key]+"</p>";
-//                                                    }
-//                                                    return addedHtml;
-//                        });
-//                    
-//                    }
-//                })
-//                
-//            })
-        });
-    </script>
-    @endsection
-    
-    @section('modals')
-<div id="addNewItemModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-    <div class = "modal-dialog modal-md">
-        <div class = "modal-content">
-            <div class = "modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add New Item</h3>
-            </div>
-            <div class="alert alert-danger hidden" id="errorDivAddNewItem">
-            </div>
-            <div class = "modal-body">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>
-                            <span class="glyphicon glyphicon-th"></span>
-                            Add New Item
-                        </strong>
-                    </div>
-                    {!! Form::open(['method'=>'post','id'=>'formAddNewItem']) !!}
-                    {{--  <form action="" role="form">  --}}
-                    <div class="panel-heading">
-                        <input type="hidden" id="_token" value="{{ csrf_token() }}">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{Form::label('description', 'Description:')}}
-                            </div>
-                            <div class="col-md-9">
-                                {{Form::text('description','',['class'=>'form-control','placeholder'=>'Description'])}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">                                
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{Form::label('Reorder Level:')}}
-                            </div>
-                            <div class="col-md-9">
-                                {{ Form::number('reorderLevel','',['class'=>'form-control','placeholder'=>'Reorder Level','min'=>'1']) }}
-                            </div>
-                        </div>
-                    </div>
-                    @include('inc.messages')
-                    <div class="row">
-                        <div class="text-right">                                           
-                            <div class="col-md-12">   
-                                {{--  {{Form::submit('Submit',['class'=>'btn btn-primary'])}}  --}}
-                                <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
-                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
-                    {!! Form::close() !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-    <div id="editModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-        <div class = "modal-dialog modal-md">
-            <div class = "modal-content">
-                    <div class="modal-header">
-                            <div id="errorDivEditItem" class="hidden">
-
-                                </div>
-                            <button class="close" data-dismiss="modal">&times;</button>
-                            <h3 class="modal-title">Edit</h3>
-                    </div>
-                    {!! Form::open(['method'=>'post','id'=>'formEdit']) !!}
-                    {{--  <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{Form::label('id', 'Id:')}}
-                            </div>
-                            <div class="col-md-9">
-                                {{Form::text('id','',['class'=>'form-control','disabled'])}}
-                            </div>
-                        </div>
-                    </div>  --}}
-                    <input type="hidden" id="productId" name="productId">
-                    <div class="modal-body">
-                            <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <strong>
-                                            <span class="glyphicon glyphicon-th"></span>
-                                             Information
-                                        </strong>
-                                    </div>
-                            <div class="panel-body">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{Form::label('description', 'Description:')}}
-                            </div>
-                            <div class="col-md-9">
-                                {{Form::text('description','',['class'=>'form-control','id'=>'itemDescription'])}}
-                                {{--  <input type="text" id="itemDescription" class="form-control">  --}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">                                
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{Form::label('Quantity in stock:')}}
-                            </div>
-                            <div class="col-md-9">
-                                {{ Form::number('quantityInStock','',['class'=>'form-control','disabled','id'=>'itemQuantity']) }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">    
-                        <div class="row">
-                            <div class="col-md-3">
-                                {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
-                            </div>
-                            <div class="col-md-9">
-                                {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1','disabled','id'=>'itemWholeSalePrice'])}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">   
-                        <div class="row">
-                            <div class="col-md-3">                                                             
-                                {{Form::label('Retail Price', 'Retail Price:')}}
-                            </div>
-                            <div class="col-md-9">                                    
-                                {{Form::number('retailPrice','',['class'=>'form-control','id'=>'itemRetailPrice'])}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">   
-                            <div class="row">
-                                <div class="col-md-3">                                                             
-                                    {{Form::label('Reorder Level', 'Reorder Level:')}}
-                                </div>
-                                <div class="col-md-9">                                    
-                                    {{Form::number('reOrder Level','',['class'=>'form-control','id'=>'itemReorderLevel'])}}
-                                </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                        <div class="row">
-                                <div class="text-right">                                           
-                                    <div class="col-md-12">   
-                                        {{--  {{Form::submit('Submit',['class'=>'btn btn-primary'])}}  --}}
-                                        <button id="submitAddQuantity" type="submit" class="btn btn-success">Save</button>
-                                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                            {!! Form::close() !!}
-                        </div>
-                    @include('inc.messages')
-                {{--  </form>  --}}
-                {{--  <div class="modal-footer">  --}}
-            </div>
-        </div>
+                
+            });
+            
+            
+        </script>
         
-    </div>
-    <div id="removeModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-        <div class = "modal-dialog modal-lg">
-            <div class = "modal-content">
-                <div class = "modal-body">
-                    <button class="close" data-dismiss="modal">&times;</button>
-                    <h4>Remove</h4>
-                    <div class="alert alert-success" id="errorDivRemove" style="display:none">
-                        <h1>Success</h1>
-                    </div>
-                    <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                    {{--  <div class="row">
-                        <div class="col-md-12">
-                            <div class="col-md-3">
-                                <label><i class = "ti-search"></i> Search</label>
-                            </div>
-                            <div class="col-md-5">
-                                <input type="text" onkeyup="searchItem2(this)" id="removeItem" class="form-control border-input" placeholder="Name of the returned item">
-                            </div>
-                        </div>
-                    </div>  --}}
-                    {{--  <div class="content table-responsive">
-
-                    <div class="content table-responsive table-full-width table-stripped">
-                        <table id="tableItems" class="table table-striped dt-responsive nowrap" style="width:100%">
-                            <thead>
-                                <th>Id</th>
-                                <th>Description</th>
-                                <th>Quantity in Stock</th>
-                                <th>WholeSale Price</th>
-                                <th>Retail Price</th>
-                                <th>Action</th>
-                            </thead>
-                            <tbody id="removeItemTbody" >
-                            </tbody>
-                        </table>
-                    </div>
-                    </div>  --}}
-                </div>    
-            </div>
-        </div>
-    </div>
-
-    <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-        <div class = "modal-dialog modal-lg">
-            <div class = "modal-content">
-                <div class = "modal-body">  
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <strong>
-                                <span class=" fa fa-bars"></span>
-                                List of Item History
-                            </strong>
-                        </div>
-                        <div class="panel-body">
-                            <div class="autocomplete" style="width:200px;">
-                                <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
-                                <div id="searchResultDiv" class="searchResultDiv">
+        @endsection
+        
+        @section('linkName')
+        <h3><i class="fa fa-dollar"></i> Sales</h3>
+        @endsection
+        
+        @section('right')
+        <div class="row" >
+            <div class="col-md-12" >
+                <div class="card" >
+                    <div class="header">
+                        <div class="row">
+                            <div class="content table-responsive table-full-width table-stripped">
+                                <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
+                                    {{--  <thead> 
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Description</th>
+                                            <th>Category</th>
+                                            <th>Quantity in Stock</th>
+                                            <th>Purchase Price</th>
+                                            <th>Retail Price</th>
+                                            <th>Add to Cart</th>
+                                        </tr>
+                                    </thead>  --}}
+                                    {{--  <tbody id="dashboardDatatable">  --}}
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </div>
-                            {{--  <div class="card">
-                                <div class="card-container bg-danger" style="padding: 1em;">
-                                    <p></p>
-                                    <p style="font-size: 12px"><b>Items Subtracted: </b></p>
-                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                    <p style="font-size: 12px"><b>Date: </b></p>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-container bg-success" style="padding: 1em;">
-                                    <p></p>
-                                    <p style="font-size: 12px"><b>Items Added: </b></p>
-                                    <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                    <p style="font-size: 12px"><b>Date: </b></p>
-                                </div>
-                            </div>  --}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="text-right">                                           
-                            <div class="col-md-12">   
-                                <button class="btn btn-danger" data-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+            
+            <div class="row" >
+                <div class="col-md-12" >
+                    <div class="card" >
+                        <div class="header" >
+                            <div class="alert alert-success hidden" id="successDiv">
+                            </div>
+                            {!! Form::open(['method'=>'post','id'=>'formSales']) !!}                                
+                            <h4 ng-bind="name">Customer Purchase</h4>
+                            <div class="row">
+                                <div class="col-md-5" margin >
+                                    {{Form::label('customerName', 'Customer Name:')}}
+                                    {{Form::text('customerName','',['class'=>'form-control'])}}
+                                </div>
+                                <div class="col-md-5" margin >
+                                    {{Form::label('receiptNumber', 'Receipt Number:')}}
+                                    {{Form::text('receiptNumber','',['class'=>'form-control'])}}
+                                </div>
+                            </div>
+                            
+                            <div class="row"> 
+                                <div class="col-md-12 table-responsive">
+                                    <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
+                                        <thead>
+                                            <tr>
+                                                <td>Item</td>
+                                                {{--  <td>Quantity Left</td>  --}}
+                                                {{--  <td>Purchase Price</td>  --}}
+                                                <td>Price</td>
+                                                <td>Quantity Purchase</td>
+                                                <td>Sales Price</td>
+                                                <td>Action</td>
+                                            </tr> 
+                                            
+                                        </thead>
+                                        <tbody id="cartTbody">
+                                            {{--  <td><input type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>  --}}
+                                            {{--  <tr ng-repeat="user in users">
+                                                <td ng-bind="$index + 1"></td>
+                                                <td ng-bind="user.fullname"></td>
+                                                <td ng-bind="user.email"></td>
+                                            </tr>  --}}
+                                        </tbody>
+                                    </table>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-9 text-right">
+                                                <label>Total Sales:</label>
+                                            </div>
+                                            <div class="col-md-3" id="totalSalesDiv">
+                                                <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
+                                            </div>
+                                            <div class="text-right">                                           
+                                                <div class="col-md-12">   
+                                                    <button class="btn btn-primary" type="submit">Submit</button>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                            {!! Form::close() !!}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endsection
+            
+@section('jqueryScript')
+<script type="text/javascript">
+
+//////////////////////////////////////////////
+// AngularJs javascript
+var ourAngularJsApp = angular.module("ourAngularJsApp", []); 
+
+///////////////////////////////////////////////
+ourAngularJsApp.controller('customerPurchase', ['$scope','$compile',
+function($scope, $compile) {
+var _this = this;
+
+$('#dashboardDatatable').DataTable({
+"ajax":  "{{ route('salesAssistant.getItemsSales') }}",        
+        
+        columns: [
+        {
+            "title": "Description",
+            "data": "description"
+        },
+        {
+            "title": "Quantity in Stock",
+            "data": "quantity"
+        },
+        {
+            "title": "Retail Price",
+            "data": "retail_price"
+        },
+        {
+            "title": "Add to Cart",
+            "data": "action"
+        }],
+        
+        createdRow: function(row, data, dataIndex) {
+            $compile(angular.element(row).contents())($scope);
+        },
+        
+        //fetch the items in localStorage after the dataTables initialization
+        "initComplete": function(settings, json) {
+            var len=localStorage.length;
+            var thatTbody = document.getElementById("cartTbody");
+            
+            var totalSalesNgBinds ="";
+            for(var i=0; i<len; i++) {
+                
+                var key = localStorage.key(i);
+                var value = localStorage[key];
+                if(value.includes("item")){
+                    var myItemJSON = JSON.parse(localStorage.getItemSales(key));            
+                    //hide row
+                    document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
+                    var newRow = thatTbody.insertRow(-1);
+                    newRow.insertCell(-1).innerHTML = myItemJSON.item ;
+                   
+                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.retailPrice)($scope) );
+                    
+                    
+                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );
+                    
+                    
+                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.salesPrice)($scope) );
+                    
+                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
+                    
+                    
+                    //remove the add button after the datatables load
+                    var button = document.getElementById(myItemJSON.itemId);
+                    $(button).hide();
+                    
+                    var temp = document.createElement('div');
+                    temp.innerHTML = myItemJSON.salesPrice;  
+                    if(totalSalesNgBinds==""){
+                        totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
+                    }else{
+                        totalSalesNgBinds += " + " + temp.firstChild.getAttribute("ng-bind");
+                    }
+                    
+                    
+                }
+            }
+            
+            //initialize totalSales
+            document.getElementById("totalSalesDiv").innerHTML="";
+            var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+            angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+            
+            
+        }
+        
+        
+    });
     
-    @endsection
-    
+    $scope.addButton = function(event) {
+        var thatTable = document.getElementById("cartTable");
+        var numberOfRows = thatTable.rows.length;
+        var lastRow = thatTable.rows[numberOfRows-1];
+        var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'');
+        
+        var retailPrice = "<p class='form-control' style='color:green'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
+        var temp0 = $compile(retailPrice)($scope);                
+        angular.element( lastRow.insertCell(-1) ).append(temp0);    
+        
+        var inputNumber = "<input type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1'></input>";
+        var temp1 = $compile(inputNumber)($scope);
+        
+        angular.element( lastRow.insertCell(-1) ).append(temp1);
+        
+        var salesPrice = "<p class='form-control style='color:green' ng-bind='" +itemName+ "SP'></p><input type='hidden' name='salesPrices[]'>";
+        var temp2 = $compile(salesPrice)($scope);
+        angular.element( lastRow.insertCell(-1) ).append(temp2);
+        
+        var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
+        var temp3 = $compile(removeButton)($scope);
+        angular.element( lastRow.insertCell(-1) ).append(temp3);
+        
+        //store in localStorage
+        var tds  = $(lastRow.innerHTML).slice(0);     
+        var itemObject = {
+            item: tds[0].innerHTML,
+            retailPrice: tds[1].childNodes[0].outerHTML + tds[1].childNodes[1].outerHTML,
+            quantityPurchase: tds[2].firstChild.outerHTML,
+            salesPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
+            removeButton: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
+            itemId: event.currentTarget.getAttribute("id")
+        };
+        
+        var jsonObject = JSON.stringify(itemObject);
+        localStorage.setItem(tds[0].innerHTML,jsonObject);
+        
+        
+                
+                var totalSalesDiv = document.getElementById("totalSalesDiv");
+        
+                var ngBindAttributes = totalSalesDiv.firstChild.getAttribute("ng-bind"); //get ng-bind attribute/s
+                totalSalesDiv.innerHTML =""; //remove h4 element;
+                if(ngBindAttributes==""){
+                    var newNgBinds = itemName+"SP";
+                }else{
+                    var newNgBinds = ngBindAttributes + " + " + itemName+"SP";
+                }
+                var price = "<p class='form-control' style='color:green' ng-bind='" +newNgBinds+ "'></p>";
+                angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+                
+                
+            };
+            
+            $scope.changing = function(event) {
+        
+                console.log( event.currentTarget.attributes["ng-model"].value );
+                var ngModelName = event.currentTarget.attributes["ng-model"].value;        
+                var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
+                var sellingPrice = ngModelName+"SP";
+                $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
+                console.log($scope[sellingPrice])
+            }
+            
+            $scope.remove = function(event){
+                
+                    event.currentTarget.parentNode.parentNode.remove();
+                    
+                
+                    var thatTable = document.querySelectorAll('#cartTable > tbody > tr')
+                    var numberOfRows = thatTable.length;
+                    var ngBinds = "";
+                    
+                    if(numberOfRows > 0){
+                        for(var i=0; i < numberOfRows; i++){
+                            if(ngBinds==""){
+                                ngBinds += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
+                            }else{
+                                ngBinds += " + " + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
+                            }
+                        }
+                    }
+                    console.log(ngBinds)    
+                    
+                    document.getElementById("totalSalesDiv").innerHTML="";
+                    var price = "<p class='form-control' style='color:green' ng-bind='" +ngBinds+ "'></p>";
+                    angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+                }
+                
+            }
+            ]);
+            
+            
+        </script>
+        {{--  <script src="{{asset('assets/js/angularJsControllers.js')}}"></script>  --}}
+        
+        @endsection
+                                                                
     @section('js_link')
     <!--   Core JS Files   -->
-    
-
-    {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>  --}}
-    <script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
-    <script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
+    {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
+    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-
-
-
+    <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>
+    
     
     @endsection

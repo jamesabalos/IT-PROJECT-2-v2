@@ -6,91 +6,88 @@ class="active"
 
 <!--jquery-->
 <script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
-{{--  plugin DataTable  --}}
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-{{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/ comment>  --}}
+
+{{--  plugin DataTable  --}}
 
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+<script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('assets/js/jszip.min.js')}}"></script>
 
-{{--  <script src="{{asset('assets/js/DataTables/dataTables.js')}}"></script comment>  --}}
-    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
-        {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
-         <script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
-         {{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/jszip.min.js')}}"></script>
-         {{--  pdf    --}}
-             <script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
-    {{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
-      <script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
-      <script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
-      <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
+{{--  pdf    --}}
+<script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
+<script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
 
-      <script type="text/javascript">
-          $(document).ready(function() {
-          $('#transactionsTable').DataTable({
-              "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-              "destroy": true,
-              "processing": true,
-              "serverSide": true,
-              "colReorder": true,  
-              //"autoWidth": true,
-              "pagingType": "full_numbers",
-              dom: 'Blfrtip',
-              
-              // buttons: ['excel', 'pdf','print'], 
+{{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/ comment>  --}}
+{{--  <script src="{{asset('assets/js/DataTables/dataTables.js')}}"></script comment> --}}
+{{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
+{{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
 
-              // buttons:[{
-              //             extend: 'excel',
-              //             text: 'excel',
-              //             action: function (e, dt, node, config) {
-              //                     exportExtension = 'Excel';
-
-              //                     // $.fn.DataTable.ext.buttons.excelHtml5.action(e, dt, node, config);
-              //                     $.fn.DataTable.ext.buttons.excelHtml5.action.call( e, dt, node, config);
-              //                 }
-
-              //             },'print'],
-
-              "buttons": [
-                  {
-                      extend: 'collection',
-                      text: 'EXPORT',
-                      buttons: [
-                          {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
-                          {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
-                          {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
-                          {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
-                          {extend: 'print', title: 'Jernixon Motorparts - Reports'}
-                          
-                      ]
-                  }
-              ],
-
-              "ajax":  "{{ route('reports.getReports') }}",
-              "columns": [
-			  	  {data: 'or_number'},
-                  {data: 'description'},
-				  {data: 'customer_name'},
-				  {data: 'quantity'},
-                  {data: 'price'},
-                  {data: 'created_at'},
-              ]
-              
-          });
-       
-
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#transactionsTable').DataTable({
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "destroy": true,
+        "processing": true,
+        "serverSide": true,
+        "colReorder": true,  
+        //"autoWidth": true,
+        "pagingType": "full_numbers",
+        dom: 'Blfrtip',
       
-      });
+        // buttons: ['excel', 'pdf','print'], 
 
-      
+        // buttons:[{
+        //             extend: 'excel',
+        //             text: 'excel',
+        //             action: function (e, dt, node, config) {
+        //                     exportExtension = 'Excel';
+
+        //                     // $.fn.DataTable.ext.buttons.excelHtml5.action(e, dt, node, config);
+        //                     $.fn.DataTable.ext.buttons.excelHtml5.action.call( e, dt, node, config);
+        //                 }
+
+        //             },'print'],
+
+        "buttons": [
+            {
+                extend: 'collection',
+                text: 'EXPORT',
+                buttons: [
+                    {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+                    
+                ]
+            }
+        ],
+
+        "ajax":  "{{ route('reports.getReports') }}",
+        "columns": [
+          {data: 'or_number'},
+          {data: 'description'},
+          {data: 'customer_name'},
+          {data: 'quantity'},
+          {data: 'price'},
+          {data: 'created_at'},
+        ]
+        
+    });
+
+  });
 
 </script>
-
 @endsection
 
 @section('linkName')
-<h3><i class="fa fa-line-chart" style="margin-right: 15px"></i> Reports</h3>
+  <h3><i class="fa fa-line-chart" style="margin-right: 15px"></i> Reports</h3>
 @endsection
 
 @section('right')  
@@ -108,10 +105,6 @@ class="active"
                                 <input type="date" id="to" name="to">
                             </p>  
                         </div>
-                        <!--                             <p>
-<label class="category">Generate Report:</label>
-<button type="submit" class="btn btn-success"><i class = "fa fa-file-excel-o"></i> Excel</button> <button type="submit" class="btn btn-danger"><i class="  fa fa-file-pdf-o"></i> PDF</button>
-</p> -->
 
                         <div class="btn-group btn-group-lg">
                             {{--  <button type="button" id="transactionDTButton" class="btn btn-primary active">Transaction</button>
@@ -121,24 +114,27 @@ class="active"
                         </div>
 
                         {{--  <div id="paraentDivFour" style="border:2px solid green; display:none">  --}}
+
                         <div id="transactionDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
                                 <table id="transactionsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead >
                                         <tr>
-											<td>OR Number</td>
-                                            <td>Item Purchased</td>
-											<td>Customer Name</td>
-                                            <td>Quantity</td>
-                                            <td>Price</td>
-											<td>Created At</td>
+                                          <th>OR Number</th>
+                                          <th>Item Purchased</th>
+                                          <th>Customer Name</th>
+                                          <th>Quantity</th>
+                                          <th>Price</th>
+                                          <th>Created At</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
                                 </table>   
                             </div>
                         </div> 
+
                         {{--  <div id="returnsDiv" style="display:none">
+                        
                             <div class="content table-responsive table-full-width">
                                 <table id="returnsTable" class="table table-striped dt-responsive nowrap" style="width:100%">
                                     <thead>

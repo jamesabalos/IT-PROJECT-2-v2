@@ -165,7 +165,7 @@ class="active"
                         if(data[i][0] === "added"){
                             result += "<div class='card-container bg-success' style='padding: 1em;'>\
                                          <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Added</b></p>\
-                                         <p style='font-size: 12px'><b>Supplied by: " +data[i][4]+ "</b></p>\
+                                         <p style='font-size: 12px'><b>Supplied by " +data[i][4]+ "</b></p>\
                                          <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
                                         </div>\
                                     </div>";
@@ -178,7 +178,7 @@ class="active"
                                         </div>\
                                         </div>";
 
-                            }else if(data[i][0] === "damaged"){
+                            }else if(data[i][1] === "damaged"){
                                 result += "<div class='card-container bg-danger' style='padding: 1em;'>\
                                             <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
                                             <p style='font-size: 12px'><b>Damaged item.</b></p>\

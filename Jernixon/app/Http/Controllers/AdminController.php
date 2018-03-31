@@ -264,7 +264,7 @@ class AdminController extends Controller
     }
     public function createReturnItem(Request $request){
 		$this->validate($request,[
-            'ORnumber' => 'required',
+            'officialReceiptNumber' => 'required',
             'price' => 'required',
             'quantity' => 'required',
             'customerName' => 'required',
@@ -274,7 +274,7 @@ class AdminController extends Controller
 		$arrayCount = count($request->productId);
 		for($i = 0;$i<$arrayCount;$i++){
 			$insertReturns = DB::table('returns')->insert(
-				['or_number' => $request->ORnumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->quantity[$i]]
+				['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->quantity[$i]]
 			);
 			
 			DB::table('salable_items')

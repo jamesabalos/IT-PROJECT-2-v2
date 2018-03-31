@@ -7,6 +7,12 @@ class="active"
 onload="refresh()"
 @endsection
 
+@section('linkName')
+<div class="alert alert-success hidden" id="successDiv">
+
+</div>
+<h3><i class="fa fa-mail-reply" style="margin-right: 20px"></i>Returns</h3>
+@endsection
 {{--  @section('ng-app')
 ng-app="ourAngularJsApp"
 @endsection  --}}
@@ -213,7 +219,6 @@ ng-app="ourAngularJsApp"
 			url: fullRoute,
 
 			success:function(data){
-                console.log(data)
                 $("#veiwReturnedItemTbody tr").remove();
                 var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
                 for(var i = 0; i < data.length; i++){
@@ -253,7 +258,6 @@ ng-app="ourAngularJsApp"
                 type:'POST',
                 // url:'admin/storeNewItem',
                 url: "{{route('admin.createReturnItem')}}",
-                dataType:'json',
                 // data:{
                 //     'name': arrayOfData[1].value,
                 // },
@@ -262,11 +266,32 @@ ng-app="ourAngularJsApp"
                 data:data,
                 //_token:$("#_token"),
                 success:function(data){
-                    console.log(data)
+                    //close modal
+                    $('#return').modal('hide')                    
+                    //prompt the message
+                    $("#successDiv p").remove();
+                    $("#successDiv").removeClass("hidden")
+                            .html("<h3>Return Item(s) successful</h3>");
+                    $("#successDiv").css("display:block");                             
+                    $("#successDiv").slideDown("slow")
+                        .delay(1000)                        
+                        .hide(1500);
+                    $("#errorDivCreateReturns").html("");
+
+                    $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
+
 
                 },
                 error:function(data){
-                    console.log(data)
+                    var response = data.responseJSON;
+                      $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+                      $("#errorDivCreateReturns").html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });
                 }
             });
 
@@ -357,9 +382,6 @@ ng-app="ourAngularJsApp"
 
 @endsection
 
-@section('linkName')
-<h3><i class="fa fa-mail-reply" style="margin-right: 20px"></i>Returns</h3>
-@endsection
 
 @section('right')
 <div class="container-fluid">
@@ -404,6 +426,9 @@ ng-app="ourAngularJsApp"
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
+                        <div id="errorDivCreateReturns" class="hidden">
+
+                        </div>
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
@@ -430,7 +455,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                                 <div class="col-md-9">
                                   {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
-                        <input autocomplete="off" id="searchORNumberInput" type="number" id="searchOR" onkeyup="searchOfficialReceipt(this)" name="ORnumber" class="form-control border-input">
+                        <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
                                      <div id="resultORNumberDiv" class="searchResultDiv">
                             </div>
                                 </div>

@@ -19,6 +19,53 @@ class="active"
     <script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
     <script src="{{asset('assets/js/morrisv05.js')}}"></script>
 
+ <style>
+    .panel-box{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        border: none;
+        /* background-color: #eaeaea; */
+        border:2px solid #eaeaea;
+    }
+    .panel-icon{
+        padding: 30px;
+        width: 40%;
+        border-radius: 0;
+    }.panel-icon{
+        -webkit-border-radius: 3px 0 0 3px;
+        -moz-border-radius: 3px 0 0 3px;
+       border-radius: 3px 0 0 3px;
+    }.panel-value{
+        -webkit-border-radius: 0 3px 3px 0;
+        -moz-border-radius: 0 3px 3px 0;
+        border-radius: 0 3px 3px 0;
+    }.panel-value h2{
+        margin-top: 30px;
+    }
+    .panel-icon i{
+        line-height:65px;
+        font-size: 40px;
+        color: #fff;
+    }
+    .bg-green{
+        background-color: #A3C86D;
+    }
+    .bg-blue{
+        background-color: #7ACBEE;
+    }
+    .bg-yellow{
+        background-color: #FDD761;
+    }
+    .bg-red{
+        background-color: #FF7857;
+   }
+
+    .morris-hover {
+ position:absolute;
+  z-index:1000;
+}
+        </style>
 <script>
     window.onload = function () {
         var queryDataPoints = [];

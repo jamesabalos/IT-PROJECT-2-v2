@@ -37,6 +37,15 @@ class HomeController extends Controller
         return view('items.index')   ;
         // return view('items.index')->with('products',$products);
     }
+    public function return(){
+        return view('salesAssistantViews.return');
+    }
+    public function sales(){
+        return view('salesAssistantViews.sales');
+    }
+    public function stockAdjustment(){
+        return view('salesAssistantViews.stockAdjustment');
+    }
     public function getDataPoints(){
 
     }

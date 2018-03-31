@@ -109,13 +109,22 @@
 
                     {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
                     @elseif(Auth::guard('web')->check())
-                    <li @yield('dashboard_link')>
-                        <a href={{route('home')}}><i class="fa fa-dashboard"></i><p>Dashboard</p></a>
-                    </li> 
-
-                    <li  @yield('items_link') >
-                        <a href={{route('salesAssistant.items')}}><i class="fa fa-bars"></i><p>Items</p></a>
-                    </li>
+                        <li @yield('dashboard_link')>
+                            <a href={{route('home')}}><i class="fa fa-dashboard"></i><p>Dashboard</p></a>
+                        </li> 
+                        <li   @yield('sales_link')>
+                            <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
+                        </li>
+                        <li  @yield('items_link') >
+                            <a href={{route('salesAssistant.items')}}><i class="fa fa-bars"></i><p>Items</p></a>
+                        </li>
+                        <li   @yield('return_link')>
+                            <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
+                        </li>
+                        
+                        <li   @yield('stockAdjustment_link')>
+                            <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
+                        </li>
                     {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
                     @endif
 
@@ -308,6 +317,23 @@
                                 <li  @yield('items_link') >
                                     <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i>Items</a>
                                 </li>
+                                <li @yield('dashboard_link')>
+                                    <a href={{route('home')}}><i class="fa fa-dashboard"></i><p>Dashboard</p></a>
+                                </li> 
+                                <li   @yield('sales_link')>
+                                    <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
+                                </li>
+                                <li  @yield('items_link') >
+                                    <a href={{route('salesAssistant.items')}}><i class="fa fa-bars"></i><p>Items</p></a>
+                                </li>
+                                <li   @yield('return_link')>
+                                    <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
+                                </li>
+                                
+                                <li   @yield('stockAdjustment_link')>
+                                    <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
+                                </li>
+
 
                             {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
                         @endif

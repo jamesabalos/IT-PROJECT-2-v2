@@ -3933,7 +3933,7 @@ fieldset[disabled] .btn-neutral.active {
     .navbar-custom{
 
         font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
-        text-transform: uppercase;
+        /*text-transform: uppercase;*/
         font-weight: 300;
         border: none;
         background: #af3939;
@@ -3972,11 +3972,6 @@ fieldset[disabled] .btn-neutral.active {
         border-color: #000;
     }
 
-    .nav{
-
-        text-transform: uppercase;
-    }
-
     .navbar-custom .navbar-toggle:focus,
     .navbar-custom .navbar-toggle:hover {
 
@@ -3989,10 +3984,17 @@ fieldset[disabled] .btn-neutral.active {
     .dropdown:hover .dropdown-content {
         display: block;
     }
+
     .brand{
         font-weight: bold;
-        margin: 10px;
+        margin: 15px;
+        text-transform: uppercase;
     }
+
+    .title{
+        padding-top: 10px;
+    }
+
     .small-title{
         margin:10px;
         line-height: 50px;

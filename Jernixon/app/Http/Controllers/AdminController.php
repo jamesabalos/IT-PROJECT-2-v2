@@ -254,7 +254,12 @@ class AdminController extends Controller
     }
 
     public function gerReturnedItems($ORNumber){
-        return $ORNumber;
+		$data = DB::table('returns')
+					->join('products', 'products.product_id', '=', 'returns.product_id')
+					->select('returns.product_id','description', 'customer_name', 'quantity', 'price', 'quantity', 'returns.created_at')
+					->where('or_number', '=', $ORNumber)
+					->get();
+        return $data;
         
     }
     public function createReturnItem(Request $request){

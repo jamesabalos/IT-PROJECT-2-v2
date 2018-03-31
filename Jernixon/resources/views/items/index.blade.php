@@ -70,8 +70,8 @@ class="active"
                                     <tr>
                                         <th>Description</th>
                                         <th>Quantity</th>
-                                        <th>Wholesale Price</th>
-										<th>Retail Price</th>
+                                        <th>Purchase Price</th>
+										<th>Selling Price</th>
                                         <th>Reorder Level</th>
                                         <th>Created At</th>
                                         <th>Updated At</th>
@@ -504,7 +504,7 @@ class="active"
                     <div class="form-group">    
                         <div class="row">
                             <div class="col-md-3">
-                                {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
+                                {{Form::label('Purchase Price', 'Purchase Price:')}}
                             </div>
                             <div class="col-md-9">
                                 {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1','disabled','id'=>'itemWholeSalePrice'])}}
@@ -514,7 +514,7 @@ class="active"
                     <div class="form-group">   
                         <div class="row">
                             <div class="col-md-3">                                                             
-                                {{Form::label('Retail Price', 'Retail Price:')}}
+                                {{Form::label('Selling Price', 'Selling Price:')}}
                             </div>
                             <div class="col-md-9">                                    
                                 {{Form::number('retailPrice','',['class'=>'form-control','id'=>'itemRetailPrice'])}}
@@ -581,8 +581,8 @@ class="active"
                                 <th>Id</th>
                                 <th>Description</th>
                                 <th>Quantity in Stock</th>
-                                <th>WholeSale Price</th>
-                                <th>Retail Price</th>
+                                <th>Purchase Price</th>
+                                <th>Selling Price</th>
                                 <th>Action</th>
                             </thead>
                             <tbody id="removeItemTbody" >

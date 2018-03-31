@@ -141,8 +141,8 @@ class="active"
                                         <tr>
                                             <td>description</td>
                                             <td>Quantity</td>
-                                            <td>Wholesale Price</td>
-                                            <td>Retail Price</td>
+                                            <td>Purchase Price</td>
+                                            <td>Selling Price</td>
                                             <td>Total Price</td>
                                             <td>Reason</td>
                                             <td>Status</td>
@@ -157,8 +157,8 @@ class="active"
                                     <thead>
                                         <tr>
                                             <td>Description</td>
-                                            <td>Wholesale Price</td>
-                                            <td>Retail Price</td>
+                                            <td>Purchase Price</td>
+                                            <td>Selling Price</td>
                                             <td>Quantity Added</td>
                                         </tr>
                                     </thead>
@@ -171,8 +171,8 @@ class="active"
                                     <thead>
                                         <tr>
                                             <td>Description</td>
-                                            <td>Wholesale Price</td>
-                                            <td>Retail Price</td>
+                                            <td>Purchase Price</td>
+                                            <td>Selling Price</td>
                                             <td>Quantity Added</td>
                                             <td>Reason</td>
                                         </tr>

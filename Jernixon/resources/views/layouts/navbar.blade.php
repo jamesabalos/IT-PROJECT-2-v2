@@ -147,7 +147,7 @@
                     <div>
                         <ul class="nav navbar-nav navbar-right ">
 
-                            <li class="dropdown">
+                            <!-- <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-bell"></i>
                                     <b class="caret"></b>
@@ -160,7 +160,7 @@
                                     <li><a href="#">Notification 4</a></li>
                                     <li><a href="#">Another notification</a></li>
                                 </ul>
-                            </li>
+                            </li> -->
 
 
                             <li class="dropdown">

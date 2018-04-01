@@ -145,6 +145,10 @@ ng-app="ourAngularJsApp"
 
       $(document).ready(function(){
 
+      let today = new Date().toISOString().substr(0, 10);
+      document.querySelector("#today").value = today;
+      
+
           $.ajaxSetup({
               headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -247,6 +251,7 @@ ng-app="ourAngularJsApp"
           })
 
       });
+
 
 </script>
 
@@ -353,7 +358,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                                 <div class="col-md-9">
                                     {{-- {{Form::date('Date','',['class'=>'form-control','value'=>''])}} --}}
-                                    <input type="date" name="Date" class="form-control"/>
+                                    <input type="date" name="Date" id="today"  class="form-control"/>
 
                                 </div>
                             </div>

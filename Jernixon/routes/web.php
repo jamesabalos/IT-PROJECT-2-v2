@@ -43,8 +43,12 @@ Route::get('salesAssistant/dashboard/getItems', 'HomeController@getItemsForDashb
 Route::get('salesAssistant/return', 'HomeController@return')->name('salesAssistant.return');
 Route::get('salesAssistant/stockAdjustment', 'HomeController@stockAdjustment')->name('salesAssistant.stockAdjustment');
 Route::get('salesAssistant/sales', 'HomeController@sales')->name('salesAssistant.sales');
+Route::get('salesAssistant/sales/getItemsSales', 'HomeController@getItemsForSales')->name('salesAssistant.getItemsSales');
+Route::Post('salesAssistant/sales/createSales', 'HomeController@createSales')->name('salesAssistant.createSales');
+
 Route::get('salesAssistant/items/getItems', 'HomeController@getItemsForItems')->name('salesAssistant.getItems');
 Route::get('salesAssistant/items', 'HomeController@items')->name('salesAssistant.items');
+
 Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('salesAssistant.logout');
 
 Route::get('admin/notification','Auth\AdminLoginController@notification')->name('admin.notification');

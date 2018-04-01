@@ -110,6 +110,10 @@ class="active"
     }
     
     $(document).ready(function(){
+      let today = new Date().toISOString().substr(0, 10);
+      document.querySelector("#today").value = today;
+      
+
          $('#stockAdjustmentDataTable').DataTable({
               "destroy": true,
               "processing": true,
@@ -292,7 +296,7 @@ class="active"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::date('Date','',['class'=>'form-control','value'=>''])}}
+                                    {{Form::date('Date','',['id'=>'today', 'class'=>'form-control','value'=>''])}}
                                 </div>
                             </div>
                         </div>

@@ -70,8 +70,8 @@ class="active"
                                     <tr>
                                         <th>Description</th>
                                         <th>Quantity</th>
-                                        <th>Wholesale Price</th>
-                                        <th>Retail Price</th>
+                                        <!-- <th>Wholesale Price</th> -->
+                                        <th>Selling Price</th>
                                         <th>Reorder Level</th>
                                         <th>Created At</th>
                                         <th>Updated At</th>
@@ -109,7 +109,7 @@ class="active"
             var data  = $(button.parentNode.parentNode.parentNode.innerHTML).slice(0,-1);
             document.getElementById("itemDescription").value = data[0].innerHTML;
             document.getElementById("itemQuantity").value = data[1].innerHTML;
-            document.getElementById("itemWholeSalePrice").value = data[2].innerHTML;
+            // document.getElementById("itemWholeSalePrice").value = data[2].innerHTML;
             document.getElementById("itemRetailPrice").value = data[3].innerHTML;
             document.getElementById("itemReorderLevel").value = data[4].innerHTML;
             document.getElementById("productId").value = button.parentNode.parentNode.childNodes[1].id;
@@ -197,7 +197,7 @@ class="active"
                 // {data: 'product_id'},
                 {data: 'description'},
                 {data: 'quantity'},
-                {data: 'wholesale_price'},
+                // {data: 'wholesale_price'},
                 {data: 'retail_price'},
                 {data: 'reorder_level'},
                 {data: 'created_at'},
@@ -455,7 +455,7 @@ class="active"
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">    
+<!--                     <div class="form-group">    
                         <div class="row">
                             <div class="col-md-3">
                                 {{Form::label('Whole Sale Price', 'Whole Sale Price:')}}
@@ -464,7 +464,7 @@ class="active"
                                 {{Form::number('wholeSalePrice','',['class'=>'form-control','min'=>'1','disabled','id'=>'itemWholeSalePrice'])}}
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">   
                         <div class="row">
                             <div class="col-md-3">                                                             
@@ -607,7 +607,4 @@ class="active"
     <script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 
-
-
-    
     @endsection

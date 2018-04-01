@@ -308,6 +308,29 @@ class AdminController extends Controller
             ->make(true);
     }
     public function createStockAdjustment(Request $request){
+		$this->validate($request,[
+            'productId' => 'required',
+            'status' => 'required',
+            'quantity' => 'required',
+            'Date' => 'required'
+        ]);
+		
+		$arrayCount = count($request->productId);
+		for($i = 0;$i<$arrayCount;$i++){
+			$insertReturns = DB::table('stock_adjustments')->insert(
+				['employee_name' => '', 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => $request->status, 'created_at' => $request->Date]
+			);
+			
+			if($request->status == "damaged"){
+				$insertDamagedItems = DB::table('damaged_items')->insert(
+					['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => date('Y-m-d H:i:s')]
+				);
+			}else{
+				$insertDamagedItems = DB::table('lost_items')->insert(
+					['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => date('Y-m-d H:i:s')]
+				);
+			}
+		}
         return $request->all();
     }
 

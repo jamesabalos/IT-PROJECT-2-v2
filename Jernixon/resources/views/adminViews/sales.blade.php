@@ -494,7 +494,7 @@ $('#dashboardDatatable').DataTable({
         var thatTable = document.getElementById("cartTable");
         var numberOfRows = thatTable.rows.length;
         var lastRow = thatTable.rows[numberOfRows-1];
-        var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'');
+        var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'');
         
         var retailPrice = "<p class='form-control' style='color:green'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
         var temp0 = $compile(retailPrice)($scope);                

@@ -359,7 +359,7 @@ ng-app="ourAngularJsApp"
                                 <div class="col-md-9">
                                     {{-- {{Form::date('Date','',['class'=>'form-control','value'=>''])}} --}}
                                     <input type="date" name="Date" id="today"  class="form-control"/>
-
+                                    
                                 </div>
                             </div>
                         </div>

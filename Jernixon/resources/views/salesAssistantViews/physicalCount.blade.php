@@ -62,7 +62,7 @@ ng-app="ourAngularJsApp"
               "colReorder": true,  
               //"autoWidth": true,
               "pagingType": "full_numbers",
-              dom: 'Bfrtip',
+            //   dom: 'Bfrtip',
               // buttons: ['excel', 'pdf','print'], 
 
               // buttons:[{
@@ -77,25 +77,12 @@ ng-app="ourAngularJsApp"
 
               //             },'print'],
 
-              "buttons": [
-                  {
-                      extend: 'collection',
-                      text: 'EXPORT',
-                      buttons: [
-                          {extend: 'copy', title: 'Jernixon Motorparts - Purchases'},
-                          {extend: 'excel', title: 'Jernixon Motorparts - Purchases'},
-                          {extend: 'csv', title: 'Jernixon Motorparts - Purchases'},
-                          {extend: 'pdf', title: 'Jernixon Motorparts - Purchases'},
-                          {extend: 'print', title: 'Jernixon Motorparts - Purchases'}
-                      ]
-                  }
-              ],
-
-              "ajax":  "{{ route('admin.getPhysicalCount') }}",
+        
+              "ajax":  "{{ route('salesAssistant.getPhysicalCount') }}",
               "columns": [
                   {data: 'description'},
                   {data: 'quantity'},
-                  {data: 'counted_quantity'},
+                //   {data: 'counted_quantity'},
               ]
           });
 
@@ -105,7 +92,7 @@ ng-app="ourAngularJsApp"
                     type: 'Post',
                     // url:'admin/storeNewItem',
                     // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
-                    url: '{{ route("admin.startPhysicalCount")}}',
+                    url: '{{ route("salesAssistant.startPhysicalCount")}}',
 
  
                     success:function(data){
@@ -127,7 +114,7 @@ ng-app="ourAngularJsApp"
                     type: 'Post',
                     // url:'admin/storeNewItem',
                     // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
-                    url: '{{ route("admin.stopPhysicalCount")}}',
+                    url: '{{ route("salesAssistant.stopPhysicalCount")}}',
 
  
                     success:function(data){
@@ -155,6 +142,19 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-bordered table-striped" id="physicalCountDataTable">
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Item Name</th>
+                                    <th class="text-left">Quantity</th>
+                                    {{-- <th class="text-left">Counted Quantity</th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                         @if($physicalCount[0]["status"] === "inactive" )
                             <a href = "#startPhysicalCount" data-toggle="modal">
                                 <button id="triggerButton" type="button" class="btn btn-success">Start Physical Count</button>
@@ -164,19 +164,6 @@ ng-app="ourAngularJsApp"
                                 <button id="triggerButton"  type="button" class="btn btn-danger">Stop Physical Count</button>
                             </a>
                          @endif
-                    <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="physicalCountDataTable">
-                            <thead>
-                                <tr>
-                                    <th class="text-left">Item Name</th>
-                                    <th class="text-left">Quantity</th>
-                                    <th class="text-left">Counted Quantity</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>

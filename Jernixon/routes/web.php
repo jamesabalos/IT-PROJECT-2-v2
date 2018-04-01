@@ -18,7 +18,7 @@ Route::get('/', function(){
 
 
 // Route::get('/dashboard', 'DashboardController@index');
-// Route::get('/dashboard/getItems', 'DashboardController@getItems')->name('dashboard.getItems');
+
 
 // Route::get('/reports/getTransactions', 'ReportsController@getTransactions')->name('reports.getTransactions');
 // Route::get('/reports/getReturns', 'ReportsController@getReturns')->name('reports.getReturns');
@@ -39,15 +39,33 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('salesAssistant', 'SalesAssistantController@dashboard')->name('SA.dashboard');
+// Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('salesAssistant.getItems');
+
 Route::get('salesAssistant/dashboard/getItems', 'HomeController@getItemsForDashboard')->name('SADashboard.getItems');
-Route::get('salesAssistant/return', 'HomeController@return')->name('salesAssistant.return');
-Route::get('salesAssistant/stockAdjustment', 'HomeController@stockAdjustment')->name('salesAssistant.stockAdjustment');
-Route::get('salesAssistant/sales', 'HomeController@sales')->name('salesAssistant.sales');
+
 Route::get('salesAssistant/sales/getItemsSales', 'HomeController@getItemsForSales')->name('salesAssistant.getItemsSales');
+Route::get('salesAssistant/sales', 'HomeController@sales')->name('salesAssistant.sales');
 Route::Post('salesAssistant/sales/createSales', 'HomeController@createSales')->name('salesAssistant.createSales');
 
-Route::get('salesAssistant/items/getItems', 'HomeController@getItemsForItems')->name('salesAssistant.getItems');
-Route::get('salesAssistant/items', 'HomeController@items')->name('salesAssistant.items');
+Route::get('salesAssistant/return', 'HomeController@return')->name('salesAssistant.return');
+Route::get('salesAssistant/returns/getReturns', 'HomeController@getReturns')->name('salesAssistant.returns.getReturns');
+Route::Post('salesAssistant/returns/createReturnItem', 'HomeController@createReturnItem')->name('salesAssistant.createReturnItem');
+Route::get('salesAssistant/returns/getORNumber/{ORNumber}', 'HomeController@getORNumber');
+Route::get('salesAssistant/returns/getORNumberItems', 'HomeController@getORNumberItems')->name('salesAssistant.getORNumberItems');
+Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@gerReturnedItems');
+
+Route::get('salesAssistant/stockAdjustment', 'HomeController@stockAdjustment')->name('salesAssistant.stockAdjustment');
+Route::get('salesAssistant/stockAjustment/getStockAdjustment', 'HomeController@getStockAdjustment')->name('salesAssistant.getStockAdjustment');
+Route::Post('salesAssistant/stockAjustment/createStockAdjustment', 'HomeController@createStockAdjustment')->name('salesAssistant.createStockAdjustment');
+
+Route::get('salesAssistant/searchItem/{itemName}', 'HomeController@searchItem');
+
+Route::Get('salesAssistant/physicalCount', 'HomeController@physicalCount')->name('salesAssistant.physicalCount');
+Route::get('salesAssistant/physicalCount/getPhysicalCount', 'HomeController@getPhysicalCount')->name('salesAssistant.getPhysicalCount');
+Route::Post('salesAssistant/physicalCount/startPhysicalCount', 'HomeController@startPhysicalCount')->name('salesAssistant.startPhysicalCount');
+Route::Post('salesAssistant/physicalCount/stopPhysicalCount', 'HomeController@stopPhysicalCount')->name('salesAssistant.stopPhysicalCount');
+// Route::get('salesAssistant/items/getItems', 'HomeController@getItemsForItems')->name('salesAssistant.getItems');
+// Route::get('salesAssistant/items', 'HomeController@items')->name('salesAssistant.items');
 
 Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('salesAssistant.logout');
 
@@ -79,7 +97,10 @@ Route::get('admin/returns/getORNumber/{ORNumber}', 'AdminController@getORNumber'
 Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')->name('admin.getORNumberItems');
 Route::get('admin/returns/getReturnedItems/{ORNumber}', 'AdminController@gerReturnedItems');
 
-Route::get('admin/physical_count', 'AdminController@physicalCount')->name('admin.physicalCount');
+Route::get('admin/physicalCount', 'AdminController@physicalCount')->name('admin.physicalCount');
+Route::get('admin/physicalCount/getPhysicalCount', 'AdminController@getPhysicalCount')->name('admin.getPhysicalCount');
+Route::Post('admin/physicalCount/startPhysicalCount', 'AdminController@startPhysicalCount')->name('admin.startPhysicalCount');
+Route::Post('admin/physicalCount/stopPhysicalCount', 'AdminController@stopPhysicalCount')->name('admin.stopPhysicalCount');
     
 
 Route::Get('/admin/items/viewHistory/{id}', 'AdminController@viewItemHistory');

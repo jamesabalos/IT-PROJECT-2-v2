@@ -64,8 +64,8 @@ class="active"
             var newRow = thatTable.insertRow(-1);
             // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
             newRow.insertCell(-1).innerHTML = "<td>"+button.firstChild.innerHTML+ "</td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' class='form-control' ></td>";
-            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' class='form-control' ></td>";
+            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+button.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+button.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
@@ -121,6 +121,7 @@ class="active"
               "colReorder": true,  
               //"autoWidth": true,
               "pagingType": "full_numbers",
+              "ajax":  "{{ route('stockAdjustment.getStockAdjustment') }}",
               dom: 'Bfrtip',
               // buttons: ['excel', 'pdf','print'], 
 
@@ -150,7 +151,6 @@ class="active"
                   }
               ],
 
-              "ajax":  "{{ route('stockAdjustment.getStockAdjustment') }}",
               "columns": [
                   {data: 'employee_name'},
                   {data: 'description'},
@@ -173,20 +173,31 @@ class="active"
                       //close modal
                       $('#adjustment').modal('hide')                    
                       //remove rows in purchase table
-                      $("#purchasetable tr").remove();
+                      $("#stockTable tr").remove();
                       //prompt the message
                       $("#successDiv p").remove();
                       $("#successDiv").removeClass("hidden")
                       // .addClass("alert-success")
-                             .html("<h3>Transaction successful</h3>");
+                             .html("<h3>Stock Adjustment successful</h3>");
                       $("#successDiv").css("display:block");                             
                       $("#successDiv").slideDown("slow")
                           .delay(1000)                        
                           .hide(1500);
-                      $("#errorDivCreatePurchase").html("");
-                      document.getElementById("formPurchaseOrder").reset(); //reset the form
+                      $("#errorDivCreateStockAdjustment").html("");
+                      document.getElementById("formAdjustment").reset(); //reset the form
+                       $("#stockAdjustmentDataTable").DataTable().ajax.reload();//reload the dataTables
 
-                       $("#purchasesDataTable").DataTable().ajax.reload();//reload the dataTables
+                  },
+                  error:function(data){
+                    var response = data.responseJSON;
+                      $("#errorDivCreateStockAdjustment").removeClass("hidden").addClass("alert-danger text-center");
+                      $("#errorDivCreateStockAdjustment").html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });
                   }
               })
            })
@@ -298,6 +309,7 @@ class="active"
                                 <div class="col-md-9">
                                     {{Form::date('Date','',['id'=>'today', 'class'=>'form-control','value'=>''])}}
                                 </div>
+                                <input type="hidden" name="authName" value="{{ Auth::user()->name }}">
                             </div>
                         </div>
                     </div>

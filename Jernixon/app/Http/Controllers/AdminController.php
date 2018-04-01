@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\User;
 use App\Salable_item;
+use App\Physical_count_item;
+use App\Physical_count;
 use Datatables;
 use DB;
 class AdminController extends Controller
@@ -43,8 +45,9 @@ class AdminController extends Controller
     }
     public function physicalCount()
     {
-        // return view('admin');
-        return view('adminViews.physicalCount');
+        $physicalCount = Physical_count::all();
+       
+        return view('adminViews.physicalCount')->with('physicalCount',$physicalCount);
     }
     public function items()
     {
@@ -78,7 +81,7 @@ class AdminController extends Controller
 
         return Datatables::of($data)
              ->addColumn('action',function($data){
-                 return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'><i class='glyphicon glyphicon-plus'></i></button>";
+                 return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'>Add</button>";
              })
             ->make(true);
 
@@ -115,10 +118,6 @@ class AdminController extends Controller
 		}
     }
 	 
-	 
-    public function getDataPoints(){
-
-    }
 
     public function searchItem($itemName){
         $item = Product::where([['description','LIKE','%'.$itemName.'%'],['status', '=', 'available'],])
@@ -292,6 +291,33 @@ class AdminController extends Controller
         return $request->all();
         
     }
+
+    public function getPhysicalCount(){
+        $data = DB::table('physical_count_items')
+                    ->join('products', 'products.product_id' , '=' , 'physical_count_items.product_id')
+                    ->join('salable_items', 'products.product_id' , '=' , 'salable_items.product_id')
+					->select('physical_count_items.product_id', 'description', 'salable_items.quantity as quantity' , 'physical_count_items.quantity as counted_quantity')
+                    ->where([['status' , '=' , 'available']]);//,['salable_items.quantity', '>', 0]
+
+        return Datatables::of($data)
+        ->make(true);
+    }
+    public function startPhysicalCount(){
+        DB::table('physical_counts')
+            ->update(['status' => 'active','date' => date('Y-m-d H:i:s')]);
+        // $data = DB::table('physical_count')
+        //             ->select('status')
+        //             ->get();
+        return "success";
+    }
+    public function stopPhysicalCount(){
+        DB::table('physical_counts')
+            ->update(['status' => 'inactive','date' => date('Y-m-d H:i:s')]);
+        // $data = DB::table('physical_count')
+        //             ->select('status')
+        //             ->get();
+        return "success";
+    }
     
     public function getReports(){
         $data = DB::table('sales')
@@ -309,7 +335,7 @@ class AdminController extends Controller
     }
     public function createStockAdjustment(Request $request){
 		$this->validate($request,[
-            'productId' => 'required',
+            // 'productId' => 'required',
             'status' => 'required',
             'quantity' => 'required',
             'Date' => 'required'
@@ -318,49 +344,22 @@ class AdminController extends Controller
 		$arrayCount = count($request->productId);
 		for($i = 0;$i<$arrayCount;$i++){
 			$insertReturns = DB::table('stock_adjustments')->insert(
-				['employee_name' => '', 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => $request->status, 'created_at' => $request->Date]
+				['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => $request->status[$i], 'created_at' => $request->Date]
 			);
 			
 			if($request->status == "damaged"){
 				$insertDamagedItems = DB::table('damaged_items')->insert(
-					['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => date('Y-m-d H:i:s')]
+					['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
 				);
 			}else{
 				$insertDamagedItems = DB::table('lost_items')->insert(
-					['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => date('Y-m-d H:i:s')]
+					['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
 				);
 			}
 		}
         return $request->all();
     }
 
-
-
-    public function addQuantity(Request $request){
-        //update purchase set price='$newUnitCost', quantity='$newPurchase' WHERE item_id='$item_id' and price='$oldUnitCost' and quantity='$oldPurchase'"
-        //$name = $request->input('user.name'); 
-        //dd=(json_decode($request->getContent(), true));
-        //$data = $request->json()->all();
-        return "pending query...";
-        // $item = DB::select("UPDATE product set _='$request->input('inputValue')'");
-    }
-    public function subtractQuantity(Request $request){
-        // $item = DB::select("");        
-        return "pending query...";        
-    }
-    public function returnItem(Request $request){
-        $this->validate($request,[
-            'customerName' => 'required',
-            'itemName' => 'required',
-            'quantity' => 'required',
-            'totalPrice' => 'required',
-            'reason' => 'required',
-            'status' => 'required'
-        ]);
-        // $item = DB::select("");
-
-        return "pending query for return item...";        
-    }
     public function getItemsForItems(){
 
         $data = DB::table('products')
@@ -424,6 +423,15 @@ class AdminController extends Controller
         $item_salable->retail_price = 0.00;
         //$item->retailPrice = $request->input('retailPrice');
         $item_salable->save();
+        return response($request->all());
+
+        //Create new Item Salable_items Table
+        $physical_count = new Physical_count_item;
+        $physical_count->product_id = $prod_id->product_id;
+        //$item->quantityInStock = $request->input('quantityInStock');
+        $physical_count->quantity = 0;
+        //$item->retailPrice = $request->input('retailPrice');
+        $physical_count->save();
         return response($request->all());
         // return "success";
         // return redirect('/items')->with('success','Success adding item');

@@ -307,7 +307,8 @@
                                 </tr>
                             </thead>
                             <tbody id="employeeTbody">
-                                @if(count($employees) >= 0) @foreach($employees as $employee)
+                                @if(count($employees) >= 0)
+                                 @foreach($employees as $employee)
                                 <tr id="{{$employee->id}}">
                                     <td class="text-center hidden">{{$employee->id}}</td>
                                     <td class="text-center">{{$employee->name}}</td>

@@ -110,15 +110,15 @@
 
                     {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
                     @elseif(Auth::guard('web')->check())
-                        <li @yield('dashboard_link')>
+                        {{-- <li @yield('dashboard_link')>
                             <a href={{route('home')}}><i class="fa fa-dashboard"></i><p>Dashboard</p></a>
-                        </li> 
+                        </li>  --}}
                         <li   @yield('sales_link')>
                             <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
                         </li>
-                        <li  @yield('items_link') >
+                        {{-- <li  @yield('items_link') >
                             <a href={{route('salesAssistant.items')}}><i class="fa fa-bars"></i><p>Items</p></a>
-                        </li>
+                        </li> --}}
                         <li   @yield('return_link')>
                             <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
                         </li>
@@ -126,6 +126,9 @@
                         <li   @yield('stockAdjustment_link')>
                             <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
                         </li>
+                        <li @yield('physicalCount_link')>
+                                <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                            </li>  
                     {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
                     @endif
 
@@ -311,22 +314,22 @@
                             {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
 
                             @elseif(Auth::guard('web')->check())
-                                <li @yield('dashboard_link')>
+                                {{-- <li @yield('dashboard_link')>
                                     <a href={{route('home')}}><i class="ti-panel"></i>Dashboard</a>
-                                </li> 
+                                </li>  --}}
 
-                                <li  @yield('items_link') >
+                                {{-- <li  @yield('items_link') >
                                     <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i>Items</a>
                                 </li>
                                 <li @yield('dashboard_link')>
                                     <a href={{route('home')}}><i class="fa fa-dashboard"></i><p>Dashboard</p></a>
-                                </li> 
+                                </li>  --}}
                                 <li   @yield('sales_link')>
                                     <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
                                 </li>
-                                <li  @yield('items_link') >
+                                {{-- <li  @yield('items_link') >
                                     <a href={{route('salesAssistant.items')}}><i class="fa fa-bars"></i><p>Items</p></a>
-                                </li>
+                                </li> --}}
                                 <li   @yield('return_link')>
                                     <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
                                 </li>
@@ -334,6 +337,9 @@
                                 <li   @yield('stockAdjustment_link')>
                                     <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
                                 </li>
+                                <li @yield('physicalCount_link')>
+                                        <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                                    </li>  
 
 
                             {{--  Hello {{Auth::guard('user')->user()->name}}  --}}

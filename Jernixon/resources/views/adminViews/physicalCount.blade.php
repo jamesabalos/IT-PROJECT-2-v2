@@ -93,9 +93,9 @@ ng-app="ourAngularJsApp"
 
               "ajax":  "{{ route('admin.getPhysicalCount') }}",
               "columns": [
-                  {data: 'description'},
-                  {data: 'quantity'},
-                  {data: 'counted_quantity'},
+                  {data: 'description', name: 'products.description'},
+                  {data: 'quantity', name: 'salable_items.quantity'},
+                  {data: 'counted_quantity', name: 'physical_count_items.quantity'},
               ]
           });
 

@@ -153,7 +153,7 @@ class="active"
 
               "columns": [
                   {data: 'employee_name'},
-                  {data: 'description'},
+                  {data: 'description', name: 'products.description'},
                   {data: 'quantity'},
                   {data: 'status'},
 				  {data: 'created_at'},

@@ -444,10 +444,10 @@ class AdminController extends Controller
         ]);
         DB::table('products')
             ->where('product_id', $request->productId)
-            ->update(['description' => $request->description,'reorder_level' => $request->reOrder_Level]);
+            ->update(['description' => $request->description,'reorder_level' => $request->reOrder_Level,'updated_at' => date('Y-m-d H:i:s'););
         DB::table('salable_items')
             ->where('product_id', $request->productId)
-            ->update(['retail_price' => $request->retailPrice]);
+            ->update(['retail_price' => $request->retailPrice],'updated_at' => date('Y-m-d H:i:s'););
         return "successful";
 
     }

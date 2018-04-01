@@ -72,7 +72,7 @@ class="active"
         "ajax":  "{{ route('reports.getReports') }}",
         "columns": [
           {data: 'or_number'},
-          {data: 'description'},
+          {data: 'description', name: 'products.description'},
           {data: 'customer_name'},
           {data: 'quantity'},
           {data: 'price'},

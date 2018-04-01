@@ -163,7 +163,7 @@ class="active"
                     for (var i = 0; i < data.length; i++) {
                         result += "<div class='card'>";
                         if(data[i][0] === "added"){
-                            result += "<div class='card-container bg-success' style='padding: 1em;'>\
+                            result += "<div class='card-container bg-success' style='padding: 1em; margin-bottom: -1.7em'>\
                                          <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Added</b></p>\
                                          <p style='font-size: 12px'><b>Supplied by " +data[i][4]+ "</b></p>\
                                          <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
@@ -171,7 +171,7 @@ class="active"
                                     </div>";
                         }else{
                             if(data[i][1] === "bought"){
-                                result += "<div class='card-container bg-danger' style='padding: 1em;'>\
+                                result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
                                             <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
                                             <p style='font-size: 12px'><b>Bought by " +data[i][4]+ "</b></p>\
                                             <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
@@ -179,14 +179,14 @@ class="active"
                                         </div>";
 
                             }else if(data[i][1] === "damaged"){
-                                result += "<div class='card-container bg-danger' style='padding: 1em;'>\
+                                result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
                                             <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
                                             <p style='font-size: 12px'><b>Damaged item.</b></p>\
                                             <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
                                         </div>\
                                         </div>";
                             }else{
-                                result += "<div class='card-container bg-danger' style='padding: 1em;'>\
+                                result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
                                             <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
                                             <p style='font-size: 12px'><b>Lost item.</b></p>\
                                             <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
@@ -596,7 +596,7 @@ class="active"
     </div>
 
     <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-        <div class = "modal-dialog modal-lg">
+        <div class = "modal-dialog">
             <div class = "modal-content">
                 <div class = "modal-body">  
                     <div class="panel panel-default">

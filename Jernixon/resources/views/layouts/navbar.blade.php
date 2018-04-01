@@ -50,6 +50,30 @@
          
               success: function(data){
                 console.log(data)
+				
+				var result = "";
+                    for (var i = 0; i < data.length; i++) {
+                        result += "<div class='card'>";
+                        if(data[i][0] === "reorder"){
+                            result += "<div class='card-container bg-info' style='padding: 1em; margin-bottom: -1.7em'>\
+										<p style='font-size: 12px'><b>Item " +data[i][2]+ " is below reorder level.</b></p>\
+                                        <p style='font-size: 12px'><b>"+data[i][3]+" item(s) left</b></p>\
+                                        <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                                        </div>\
+                                    </div>";
+                        }else{
+                            result += "<div class='card-container bg-info' style='padding: 1em; margin-bottom: -1.7em'>\
+										<p style='font-size: 12px'><b>Item " +data[i][2]+ " quantity adjusted.</b></p>\
+                                        <p style='font-size: 12px'><b>"+data[i][3]+" item(s) deducted by " + data[i][5] +".</b></p>\
+										<p style='font-size: 12px'><b>Reason: " +data[i][4]+ "</b></p>\
+                                        <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                                        </div>\
+                                    </div>";
+                            
+                        }
+                    }
+                    document.getElementById("listOfNotif").innerHTML = "";
+                    document.getElementById("listOfNotif").innerHTML = result;
                   
               }
           });
@@ -459,16 +483,16 @@
             </div>
         </div>
         <div id="notification" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-            <div class = "modal-dialog modal-md">
+            <div class = "modal-dialog">
                 <div class = "modal-content">
 
                     {!! Form::open(['method'=>'get','id'=>'formNotification']) !!}
                     <input type="hidden" id="_token" value="{{ csrf_token() }}">
 
-                    <div class="modal-header">
+                    <!--div class="modal-header">
                         <button class="close" data-dismiss="modal">&times;</button>
                         <h3 class="modal-title">Notifications</h3>
-                    </div>
+                    </div-->
 
                     <div class = "modal-body">  
 
@@ -479,8 +503,11 @@
                                     List of Notifications
                                 </strong>
                             </div>
+							<div class="panel-body">
+								<div id="listOfNotif">
 
-                            <div class="panel-body">
+								</div>
+                            <!--<div class="panel-body">
                                 <div class="autocomplete" style="width:200px;">
                                     <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
                                     <div id="searchResultDiv" class="searchResultDiv">
@@ -500,8 +527,16 @@
                                         </tbody>
                                     </table> 
                                 </div>
-                            </div>
+                            </div>-->
+							</div>
                         </div>
+						<div class="row">
+							<div class="text-right">                                           
+								<div class="col-md-12">   
+									<button class="btn btn-danger" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
                     </div>
                 </div>
             </div>

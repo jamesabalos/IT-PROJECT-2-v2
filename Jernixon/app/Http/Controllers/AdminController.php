@@ -444,10 +444,10 @@ class AdminController extends Controller
         ]);
         DB::table('products')
             ->where('product_id', $request->productId)
-            ->update(['description' => $request->description,'reorder_level' => $request->reOrder_Level,'updated_at' => date('Y-m-d H:i:s'););
+            ->update(['description' => $request->description,'reorder_level' => $request->reOrder_Level,'updated_at' => date('Y-m-d H:i:s')]);
         DB::table('salable_items')
             ->where('product_id', $request->productId)
-            ->update(['retail_price' => $request->retailPrice],'updated_at' => date('Y-m-d H:i:s'););
+            ->update(['retail_price' => $request->retailPrice,'updated_at' => date('Y-m-d H:i:s')]);
         return "successful";
 
     }
@@ -603,6 +603,58 @@ class AdminController extends Controller
     }
 
     public function getNotification(){
+		$data = [];
+        $sales = DB::table('salable_items')
+                    ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
+                    ->select('products.product_id as product_id', 'description', 'salable_items.quantity as quantity', 'salable_items.created_at as date')
+                    ->where('sales.product_id', '=', $id)
+                    ->get();
+
+            $arrayCount1 = count($sales);
+            for($i = 0;$i<$arrayCount1;$i++){
+                // array_push($data, [$sales[$i]->customer_name]);
+                array_push($data, ["deducted", "bought", $sales[$i]->description, $sales[$i]->quantity, $sales[$i]->customer_name, 'date'=>$sales[$i]->date]);
+           }
+
+        $purchases = DB::table('purchases')
+                    ->join('products', 'products.product_id' , '=' , 'purchases.product_id')
+                    ->select('products.product_id as product_id', 'description', 'purchases.quantity as quantity', 'supplier_name', 'purchases.created_at as date')
+                    ->where('purchases.product_id', '=', $id)
+                    ->get();
+
+            $arrayCount2 = count($purchases);
+            for($i = 0;$i<$arrayCount2;$i++){
+                array_push($data, ["added", "purchased", $purchases[$i]->description, $purchases[$i]->quantity, $purchases[$i]->supplier_name, 'date'=>$purchases[$i]->date]);
+            }
+
+        $damaged_items = DB::table('damaged_items')
+                    ->join('products', 'products.product_id' , '=' , 'damaged_items.product_id')
+                    ->select('products.product_id as product_id', 'description', 'damaged_items.quantity as quantity', 'damaged_items.created_at as date')
+                    ->where('damaged_items.product_id', '=', $id)
+                    ->get();
+
+            $arrayCount3 = count($damaged_items);
+            for($i = 0;$i<$arrayCount3;$i++){
+                array_push($data, ["deducted", "damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, "ADMIN", 'date'=>$damaged_items[$i]->date]);
+            }
+
+        $lost_items = DB::table('lost_items')
+                    ->join('products', 'products.product_id' , '=' , 'lost_items.product_id')
+                    ->select('products.product_id as product_id', 'description', 'lost_items.quantity as quantity', 'lost_items.created_at as date')
+                    ->where('lost_items.product_id', '=', $id)
+                    ->get();
+
+            $arrayCount4 = count($lost_items);
+            for($i = 0;$i<$arrayCount4;$i++){
+                array_push($data, ["deducted", "lost", $lost_items[$i]->description, $lost_items[$i]->quantity, "ADMIN", 'date'=>$lost_items[$i]->date]);                
+            }
+
+        foreach ($data as $key => $row){
+            $date[$key] = $row['date'];
+            // $edition[$key] = $row['edition'];
+        }
+        array_multisort($date, SORT_DESC, $data);
+        return $data;
         return "query here";
     }
 

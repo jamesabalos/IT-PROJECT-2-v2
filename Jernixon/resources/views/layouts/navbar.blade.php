@@ -17,6 +17,7 @@
 
         <!-- Bootstrap core CSS     -->
         <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" />
+        {{-- <link href="{{asset('css/app.css')}}" rel="stylesheet" /> --}}
 
         <!-- Animation library for notifications   -->
         <link href="{{asset('assets/css/animate.min.css')}}" rel="stylesheet"/>
@@ -32,10 +33,10 @@
         <script src="{{asset('assets/js/chartist.min.js')}}"></script>
         <script src="{{asset('assets/js/bootstrap-notify.js')}}"></script>
 
-        <!-- <script src="{{asset('assets/js/light-bootstrap-dashboard.js?v=1.4.0')}}"></script> -->
+        
         {{--  <link href="{{asset('assets/css/font.css')}}" rel='stylesheet' type='text/css'>  --}}
         {{--  <link href="{{asset('assets/css/pe-icon-7-stroke.css')}}" rel='stylesheet' type='text/css'>  --}}
-        {{--  <script src="{{ asset('js/app.js') }}"></script>  --}}
+         {{-- <script src="{{ asset('js/app.js') }}"></script>  --}}
 
         @yield('headScript')
 

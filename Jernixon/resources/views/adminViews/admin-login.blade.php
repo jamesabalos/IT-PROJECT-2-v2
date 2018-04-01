@@ -121,11 +121,11 @@
 						Admin Login
                     </span>
                     
-                    {{--  <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                     {{-- <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label" >E-Mail Address</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" placeholder="abalos@pm.com" value="{{ old('email') }}" required autofocus>
+                                <input id="email" type="email" class="form-control" name="email" placeholder="abalos@pm.com" value="{{ old('email') }}" autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -134,21 +134,22 @@
                                 @endif
                             </div>
                     </div>  --}}
-					<div class="wrap-input100 validate-input{{ $errors->has('email') ? ' has-error' : '' }}" data-validate = "Enter username">
-						<input id="email" class="input100" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
-                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
+
+					<div class="wrap-input100" >
+                        <input id="email" class="input100" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
+                        <span class="focus-input100"></span>
                         @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
                         @endif
 					</div>
 
-                 {{--<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                 {{-- <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Password</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" placeholder="abalos" name="password" required>
+                                <input id="password" type="password" class="form-control" placeholder="abalos" name="password">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -157,9 +158,10 @@
                                 @endif
                             </div>
                     </div>  --}}
-					<div class="wrap-input100 validate-input{{ $errors->has('password') ? ' has-error' : '' }}" data-validate="Enter password">
+
+					<div class="wrap-input100">
 						<input id="password" class="input100" type="password" name="password" placeholder="Password" required>
-                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
+                        <span class="focus-input100" ></span>
                         @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>

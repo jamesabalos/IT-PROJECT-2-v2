@@ -51,11 +51,11 @@ Route::get('admin/notification','Auth\AdminLoginController@notification')->name(
 
 Route::get('admin/changePassword','Auth\AdminLoginController@changePassword')->name('admin.changePassword');
 
-Route::get('admin/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');
-Route::post('admin/login','Auth\AdminLoginController@login')->name('admin.login.submit');
 Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
 Route::get('admin/dashboard/getDataPoints', 'AdminController@getDataPoints')->name('dashboard.getDataPoints');
 Route::get('admin/logout','Auth\AdminLoginController@logout')->name('admin.logout');
+Route::get('admin/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');
+Route::post('admin/login','Auth\AdminLoginController@login')->name('admin.login.submit');
 
 Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('dashboard.getItems');
 Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');

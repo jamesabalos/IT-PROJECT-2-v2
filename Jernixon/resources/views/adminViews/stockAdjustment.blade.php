@@ -3,12 +3,10 @@
 class="active"
 @endsection
 
-@section('onload')
-onload="refresh()"
-@endsection
-
-@section('ng-app')
-ng-app="ourAngularJsApp"
+@section('linkName')
+<div class="alert alert-success hidden" id="successDiv">
+</div>
+<h3><i class="fa fa-adjust" style="margin-right: 10px"></i> Stock Adjustment</h3>
 @endsection
 
 
@@ -65,7 +63,7 @@ ng-app="ourAngularJsApp"
             var thatTable = document.getElementById("stockTable");
             var newRow = thatTable.insertRow(-1);
             // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='text'  value='" +button.firstChild.innerHTML+ "' class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td>"+button.firstChild.innerHTML+ "</td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' class='form-control' ></td>";
             newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged_not_sellable'>DAMAGED</option><option class='form-control' value='damaged_sellable'>DAMAGED SELLABLE</option></select></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+button.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+button.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
@@ -168,7 +166,23 @@ ng-app="ourAngularJsApp"
                   data: data,
 
                   success:function(data){
-                      console.log(data)
+                      //close modal
+                      $('#adjustment').modal('hide')                    
+                      //remove rows in purchase table
+                      $("#purchasetable tr").remove();
+                      //prompt the message
+                      $("#successDiv p").remove();
+                      $("#successDiv").removeClass("hidden")
+                      // .addClass("alert-success")
+                             .html("<h3>Transaction successful</h3>");
+                      $("#successDiv").css("display:block");                             
+                      $("#successDiv").slideDown("slow")
+                          .delay(1000)                        
+                          .hide(1500);
+                      $("#errorDivCreatePurchase").html("");
+                      document.getElementById("formPurchaseOrder").reset(); //reset the form
+
+                       $("#purchasesDataTable").DataTable().ajax.reload();//reload the dataTables
                   }
               })
            })
@@ -214,9 +228,6 @@ ng-app="ourAngularJsApp"
 
 @endsection
 
-@section('linkName')
-<h3><i class="fa fa-adjust" style="margin-right: 10px"></i> Stock Adjustment</h3>
-@endsection
 
 @section('right')
 <div class="container-fluid">
@@ -263,6 +274,9 @@ ng-app="ourAngularJsApp"
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
+                        <div id="errorDivCreateStockAdjustment" class="hidden">
+
+                            </div>
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>

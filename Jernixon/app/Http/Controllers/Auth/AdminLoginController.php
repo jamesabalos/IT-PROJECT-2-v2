@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use Illuminate\Support\MessageBag;
 
 class AdminLoginController extends Controller
 {
@@ -33,7 +34,8 @@ class AdminLoginController extends Controller
        //Validate the form data
         $this->validate($request,[
             'email' => 'required|email',
-            'password' => 'required|min:6'
+            // 'password' => 'required|min:6'
+            'password' => 'required'
         ]);
 
         //Attempt to log the user in
@@ -42,11 +44,15 @@ class AdminLoginController extends Controller
             //if successful, then redirect to their intended location
            return redirect()->intended(route('admin.dashboard')); //send them to the dashboard or their intended location
        }
-        
-       //if unssuccesful, then redirect to the login with the form data
+    //    else{
+    //     return response()->json(['response' => 'failed', 'message' => 'Sorry, you need to be logged in!']);
+    //    }
+    $errors = new MessageBag; // initiate MessageBag
+    $errors = new MessageBag(['email' => ['Email and/or password invalid.']]);
+    //    if unssuccesful, then redirect to the login with the form data
        //redirect them back to the form data
        //back(): send them the page they were at before which is login page
-       return redirect()->back()->withInput($request->only('email','remember'));
+       return redirect()->back()->withErrors($errors)->withInput($request->only('email','remember'));
        
     }
 

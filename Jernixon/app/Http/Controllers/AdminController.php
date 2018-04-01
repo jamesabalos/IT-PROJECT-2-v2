@@ -74,7 +74,7 @@ class AdminController extends Controller
         $data = DB::table('salable_items')
 					->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
 					->select('products.product_id', 'description', 'wholesale_price' , 'retail_price' , 'quantity')
-					->where('status' , '=' , 'available');
+					->where([['status' , '=' , 'available'],['quantity', '>', 0]]);
 
         return Datatables::of($data)
              ->addColumn('action',function($data){
@@ -166,7 +166,7 @@ class AdminController extends Controller
                 }else{
                     $price = DB::table('purchases')
                         ->select('price')
-                        ->where('po_id' , '=' , $request->Official_Receipt_Number)
+                        ->where([['product_id' , '=' , $request->product_id[$i]], ['po_id' , '=',  $request->Official_Receipt_Number]])
                         ->latest()
                         ->first();
     

@@ -602,6 +602,9 @@ class AdminController extends Controller
 
     }
 
+    public function getNotification(){
+        return "query here";
+    }
 
 
 

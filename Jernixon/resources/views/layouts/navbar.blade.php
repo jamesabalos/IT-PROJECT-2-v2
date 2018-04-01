@@ -39,7 +39,22 @@
          {{-- <script src="{{ asset('js/app.js') }}"></script>  --}}
 
         @yield('headScript')
+<script type="text/javascript">
+    function getNotifications(){
 
+        $.ajax({
+            
+              method: 'get',
+              //url: 'items/' + document.getElementById("inputItem").value,
+              url:"{{ route('admin.notification') }}",
+         
+              success: function(data){
+                console.log(data)
+                  
+              }
+          });
+    }
+</script>
     </head>
 
     <body @yield('ng-app')>
@@ -173,7 +188,7 @@
                                     <li>
 
                                         @if(Auth::guard('adminGuard')->check())
-                                        <a href="#notification" data-toggle="modal">
+                                        <a href="#notification" data-toggle="modal" onclick="getNotifications()">
                                             Notifications
                                         </a>
 
@@ -237,7 +252,7 @@
                                         <ul class="dropdown-menu">
                                             <li>
                                                 @if(Auth::guard('adminGuard')->check())
-                                                <a href="#notification" data-toggle="modal">
+                                                <a href="#notification" data-toggle="modal" onclick="getNotifications()">
                                                     Notifications
                                                 </a>
                                                 <a href="#changePassword" data-toggle="modal">

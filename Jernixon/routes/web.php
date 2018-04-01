@@ -69,7 +69,7 @@ Route::Post('salesAssistant/physicalCount/stopPhysicalCount', 'HomeController@st
 
 Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('salesAssistant.logout');
 
-Route::get('admin/notification','Auth\AdminLoginController@notification')->name('admin.notification');
+Route::get('admin/notification','AdminController@getNotification')->name('admin.notification');
 
 Route::get('admin/changePassword','Auth\AdminLoginController@changePassword')->name('admin.changePassword');
 

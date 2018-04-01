@@ -15,7 +15,7 @@
 @section('linkName')
 <div class="alert alert-success hidden" id="successDiv">
 </div>
-    <h3>Items</h3>
+    <h3><i class = "fa fa-bars"> </i> Items</h3>
 @endsection
 
 @section('right')
@@ -30,8 +30,8 @@
                                 <thead>
                                     <tr>
                                         <th>Description</th>
-                                        <th>Quantity</th>                                        
-                                        <th>Retail Price</th>
+                                        <th>Quantity</th>                                  
+                                        <th>Selling Price</th>
                                         <th>Reorder Level</th>
                                     </tr>
                                 </thead>

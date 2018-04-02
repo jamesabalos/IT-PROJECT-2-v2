@@ -231,7 +231,7 @@ ng-app="ourAngularJsApp"
                                 <th>Id</th>
                                 <th>Description</th>
                                 <th>Category</th>
-                                <th>Quantity in Stock</th>
+                                <th>Qty in Stock</th>
                                 <th>Purchase Price</th>
                                 <th>Selling Price</th>
                                 <th>Add Item</th>
@@ -285,7 +285,7 @@ ng-app="ourAngularJsApp"
                                 <tr>
                                     <td>Item</td>
                                     <td>Price</td>
-                                    <td>Quantity Purchase</td>
+                                    <td>Qty Purchase</td>
                                     <td>Sales</td>
                                     <td>Action</td>
                                 </tr> 
@@ -415,7 +415,7 @@ ng-app="ourAngularJsApp"
                                                                      //     "data": "status"
                                                                      // },
                                                                      {
-                                                                         "title": "Quantity in Stock",
+                                                                         "title": "Qty in Stock",
                                                                          "data": "quantity"
                                                                      },
                                                                      {

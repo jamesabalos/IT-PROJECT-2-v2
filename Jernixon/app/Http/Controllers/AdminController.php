@@ -402,7 +402,7 @@ class AdminController extends Controller
             // 'wholeSalePrice' => 'required',
             // 'retailPrice' => 'required'
         ]);
-
+		
 
         //Create new Item Products Table
         $item = new Product;
@@ -426,15 +426,17 @@ class AdminController extends Controller
         $item_salable->retail_price = 0.00;
         //$item->retailPrice = $request->input('retailPrice');
         $item_salable->save();
-        return response($request->all());
-
+        // return response($request->all());
+		
+		$insert = DB::table('physical_count_items')
+					->insertGetId(['product_id' => $prod_id->product_id, 'quantity' => 0]);
         //Create new Item Salable_items Table
-        $physical_count = new Physical_count_item;
-        $physical_count->product_id = $prod_id->product_id;
+        // $physical_count = new Physical_count_item;
+        // $physical_count->product_id = $prod_id->product_id;
         //$item->quantityInStock = $request->input('quantityInStock');
-        $physical_count->quantity = 0;
+        // $physical_count->quantity = 0;
         //$item->retailPrice = $request->input('retailPrice');
-        $physical_count->save();
+        // $physical_count->save();
         return response($request->all());
         // return "success";
         // return redirect('/items')->with('success','Success adding item');

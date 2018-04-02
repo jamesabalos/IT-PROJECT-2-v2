@@ -169,7 +169,7 @@ ng-app="ourAngularJsApp"
             <div class="text-center">
                 <strong>
                     <h3> <i class="fa fa-exclamation-triangle" style="margin-right: 15px"> </i> Submit Physical Count? </h3>
-                    <p>Some functions of the Sales Assistant will be disabled. Functions will be enabled after the physical count</p>
+                    <!--p>You won't be able to change your input.</p-->
                 </strong>
             </div>
 

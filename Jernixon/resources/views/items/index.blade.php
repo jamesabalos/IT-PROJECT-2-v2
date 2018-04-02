@@ -604,7 +604,7 @@ class="active"
                             List of Item History
                         </strong>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="overflow-y: scroll; max-height:60%;">
                         <div class="autocomplete" style="width:200px;">
                             <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
                             <div id="searchResultDiv" class="searchResultDiv">

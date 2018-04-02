@@ -292,10 +292,6 @@ ng-app="ourAngularJsApp"
                 <div class="autocomplete" style="width:100%;">
                     <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
                     <div id="searchResultDiv" class="searchResultDiv">
-                        {{--  <div>
-                        <strong>Phi</strong>lippines
-                        <input type="hidden" value="Philippines">
-                        </div>  --}}
                     </div>
                 </div>
                 <div class="row">

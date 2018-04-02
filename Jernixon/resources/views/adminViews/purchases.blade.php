@@ -388,7 +388,7 @@ ng-app="ourAngularJsApp"
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
-                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Qty</th>
                                         <th class="text-left">Purchase Price</th>
                                         <th class="text-left">Action</th>
                                     </tr>

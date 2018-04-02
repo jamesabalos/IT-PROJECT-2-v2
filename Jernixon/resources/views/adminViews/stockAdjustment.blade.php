@@ -259,7 +259,7 @@ class="active"
                                 <tr>
                                     <th class="text-left">Employee Name</th>
                                     <th class="text-left">Item Name</th>
-                                    <th class="text-left">Quantity</th>
+                                    <th class="text-left">Qty</th>
                                     <th class="text-left">Status</th>
 									<th class="text-left">Date</th>
                                 </tr>
@@ -330,7 +330,7 @@ class="active"
                                     <tr>
                                         <!--<th class="text-left">Employee Name</th>-->
                                         <th class="text-left">Item Name</th>
-                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Qty</th>
                                         <th class="text-left">Status</th>
                                         <th class="text-left">Action</th>
                                     </tr>

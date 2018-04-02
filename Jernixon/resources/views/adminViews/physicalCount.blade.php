@@ -96,6 +96,7 @@ ng-app="ourAngularJsApp"
 
               "ajax":  "{{ route('admin.getPhysicalCount') }}",
               "columns": [
+                  
                    
                 //   {data: 'product_id', name: 'physical_count_items.product_id'},
                   {data: 'description', name: 'products.description'},
@@ -175,8 +176,8 @@ ng-app="ourAngularJsApp"
                                 <tr>
                                     {{-- <th class="text-left">Item Id</th> --}}
                                     <th class="text-left">Item Name</th>
-                                    <th class="text-left">Quantity</th>
-                                    <th class="text-left">Counted Quantity</th>
+                                    <th class="text-left">Qty</th>
+                                    <th class="text-left">Counted Qty</th>
                                 </tr>
                             </thead>
                             <tbody>

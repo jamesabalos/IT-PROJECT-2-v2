@@ -69,7 +69,7 @@ class="active"
                                 <thead>
                                     <tr>
                                         <th>Description</th>
-                                        <th>Quantity</th>
+                                        <th>Qty</th>
                                         <th>Purchase Price</th>
                                         <th>Selling Price</th>
                                         <th>Reorder Level</th>
@@ -492,7 +492,7 @@ class="active"
                         <div class="form-group">                                
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{Form::label('Quantity in stock:')}}
+                                    {{Form::label('Qty in stock:')}}
                                 </div>
                                 <div class="col-md-9">
                                     {{ Form::number('quantityInStock','',['class'=>'form-control','disabled','id'=>'itemQuantity']) }}
@@ -578,7 +578,7 @@ class="active"
                         <thead>
                             <th>Id</th>
                             <th>Description</th>
-                            <th>Quantity in Stock</th>
+                            <th>Qty in Stock</th>
                             <th>Purchase Price</th>
                             <th>Selling Price</th>
                             <th>Action</th>

@@ -1199,7 +1199,6 @@ fieldset[disabled] .btn-neutral.active {
 .table > thead > tr > th {
     border-bottom-width: 1px;
     font-size: 15px;
-    text-transform: uppercase;
     color: #000;
     font-weight: bold;
     padding-bottom: 5px;

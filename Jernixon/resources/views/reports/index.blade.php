@@ -132,56 +132,6 @@ class="active"
                                 </table>   
                             </div>
                         </div> 
-
-                        {{--  <div id="returnsDiv" style="display:none">
-                        
-                            <div class="content table-responsive table-full-width">
-                                <table id="returnsTable" class="table table-striped dt-responsive nowrap" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <td>description</td>
-                                            <td>Quantity</td>
-                                            <td>Purchase Price</td>
-                                            <td>Selling Price</td>
-                                            <td>Total Price</td>
-                                            <td>Reason</td>
-                                            <td>Status</td>
-                                        </tr>
-                                    </thead>
-                                </table>  
-                            </div>
-                        </div>   --}}
-                        {{--  <div id="itemsAddedDiv" style="display:none">
-                            <div class="content table-responsive table-full-width">
-                                <table id="itemsAddedTable" class="table table-striped dt-responsive nowrap" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <td>Description</td>
-                                            <td>Purchase Price</td>
-                                            <td>Selling Price</td>
-                                            <td>Quantity Added</td>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>   --}}
-                        {{--  <div id="removedItemsDiv" style="display:none">
-                            <div class="content table-responsive table-full-width">
-                                <table id="removedItemsTable" class="table table-striped dt-responsive nowrap" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <td>Description</td>
-                                            <td>Purchase Price</td>
-                                            <td>Selling Price</td>
-                                            <td>Quantity Added</td>
-                                            <td>Reason</td>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>   --}}
-                        {{--  </div>  --}}
-
                     </div>
                 </div>
             </div>

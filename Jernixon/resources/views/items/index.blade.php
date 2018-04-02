@@ -73,8 +73,8 @@ class="active"
                                         <th>Purchase Price</th>
                                         <th>Selling Price</th>
                                         <th>Reorder Level</th>
-                                        <th>Created At</th>
-                                        <th>Updated At</th>
+                                        <!--th>Created At</th>
+                                        <th>Updated At</th-->
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -245,8 +245,8 @@ class="active"
                                    {data: 'wholesale_price', name: 'salable_items.wholesale_price'},
                                    {data: 'retail_price', name: 'salable_items.retail_price'},
                                    {data: 'reorder_level'},
-                                   {data: 'created_at'},
-                                   {data: 'updated_at'},
+                                   // {data: 'created_at'},
+                                   // {data: 'updated_at'},
                                    {data: 'action'},
                                    ]
                                    });
@@ -431,7 +431,6 @@ class="active"
                             </div>
                         </div>
                         @include('inc.messages')
-                        {!! Form::close() !!}
                     </div>
                 </div>
                 <div class="row">
@@ -443,6 +442,7 @@ class="active"
                         </div>
                     </div>
                 </div>
+                        {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -613,22 +613,7 @@ class="active"
                         <div id="historyResult">
 
                         </div>
-                        {{--  <div class="card">
-                        <div class="card-container bg-danger" style="padding: 1em;">
-                            <p></p>
-                            <p style="font-size: 12px"><b>Items Subtracted: </b></p>
-                            <p style="font-size: 12px"><b>Supplied by: </b></p>
-                            <p style="font-size: 12px"><b>Date: </b></p>
-                        </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-container bg-success" style="padding: 1em;">
-                                <p></p>
-                                <p style="font-size: 12px"><b>Items Added: </b></p>
-                                <p style="font-size: 12px"><b>Supplied by: </b></p>
-                                <p style="font-size: 12px"><b>Date: </b></p>
-                            </div>
-                        </div>  --}}
+                        
                     </div>
                 </div>
                 <div class="row">

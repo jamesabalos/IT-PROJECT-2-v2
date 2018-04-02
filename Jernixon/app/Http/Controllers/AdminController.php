@@ -179,7 +179,7 @@ class AdminController extends Controller
                     
                         DB::table('salable_items')
                         ->where('product_id', $request->product_id[$i])
-                        ->update(['wholesale_price' => $newPrice]);
+                        ->update(['wholesale_price' => $newPrice, 'retail_price' => $newPrice]);
                 }
 
             }
@@ -193,6 +193,7 @@ class AdminController extends Controller
     public function getPurchases(){
         $data = DB::table('purchases')
                     ->select('po_id', 'created_at')
+					->orderBy('created_at', 'desc')
                     ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){

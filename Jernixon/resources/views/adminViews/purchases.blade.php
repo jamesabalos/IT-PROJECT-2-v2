@@ -339,9 +339,6 @@ ng-app="ourAngularJsApp"
             
             <div class = "modal-body">  
                 <div class="panel panel-default">
-                    <div id="errorDivCreatePurchase" class="hidden">
-
-                    </div>
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
@@ -409,6 +406,9 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
+                    <div id="errorDivCreatePurchase" class="hidden">
+
+                    </div>
                 {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}
                 <div class="row">
                     <div class="text-right">                                           

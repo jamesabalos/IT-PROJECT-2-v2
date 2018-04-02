@@ -437,17 +437,6 @@ ng-app="ourAngularJsApp"
                     </div>
                     <div class="panel-body">
 
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Date', 'Date:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-group">                                
                             <div class="row">
                                 <div class="col-md-3">
@@ -461,6 +450,18 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
+						
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date', 'Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::date('Date','',['class'=>'form-control','value'=>''])}}
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="form-group">    
                             <div class="row">

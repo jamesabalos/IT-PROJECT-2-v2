@@ -82,9 +82,7 @@
 
                 },
 
-                //data:{data},
-                // data:data,
-                //_token:$("#_token"),
+
                 success: function(data) {
                     console.log(data)
                     $('#addEmployee').modal('hide')
@@ -238,7 +236,7 @@
                                 if (button.currentTarget.attributes[1].value == "Active") {
                                     // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML ="<button data-id='' data-status='inactive' data-status-reverse='active'  data-button-reverse='Activate' class='formUpdateEmployeeAccount'>Deactivate</button>";
 
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[5].innerHTML = "Inactive";
                                     document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-status", "Inactive");
                                     document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-status-reverse", "Active");
                                     document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-button-reverse", "Active");
@@ -249,7 +247,7 @@
                                 } else {
                                     // document.getElementById(button.currentTarget.attributes[0].value).cells[4].innerHTML = "<button data-id='' data-status='active' data-status-reverse='inactive' data-button-reverse='Diactivate' class='formUpdateEmployeeAccount'>Activate</button>";
 
-                                    document.getElementById(button.currentTarget.attributes[0].value).cells[3].innerHTML = button.currentTarget.attributes[1].value;
+                                    document.getElementById(button.currentTarget.attributes[0].value).cells[5].innerHTML = "Active";
                                     document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-status", "Active");
                                     document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-status-reverse", "Inactive");
                                     document.getElementById(button.currentTarget.attributes[0].value).cells[6].childNodes[1].setAttribute("data-button-reverse", "Deactivate");

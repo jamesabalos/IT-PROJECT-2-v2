@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
+use App\Physical_count;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,13 @@ class RedirectIfAuthenticated
             
             default: //for sales assistant
                 if (Auth::guard($guard)->check()) {
-                    return redirect('/home');
+                    // return redirect('/home');
+                    $physicalCount = Physical_count::all();
+                    if($physicalCount[0]["status"] === "inactive"){
+                        return redirect('/salesAssistant/sales');
+                    }else{
+                        return redirect('/salesAssistant/physicalCount');
+                    }
                 }
              
                 break;

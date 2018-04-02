@@ -64,6 +64,10 @@ Route::Get('salesAssistant/physicalCount', 'HomeController@physicalCount')->name
 Route::get('salesAssistant/physicalCount/getPhysicalCount', 'HomeController@getPhysicalCount')->name('salesAssistant.getPhysicalCount');
 Route::Post('salesAssistant/physicalCount/startPhysicalCount', 'HomeController@startPhysicalCount')->name('salesAssistant.startPhysicalCount');
 Route::Post('salesAssistant/physicalCount/stopPhysicalCount', 'HomeController@stopPhysicalCount')->name('salesAssistant.stopPhysicalCount');
+Route::Post('salesAssistant/physicalCount/submitPhysicalCount', 'HomeController@submitPhysicalCount')->name('salesAssistant.submitPhysicalCount');
+// Route::get('salesAssistant/physicalCount/getInputValue', 'PhysicalCountController@getPhysicalCount')->name('admin.getPhysicalCount');
+// Route::get('physicalCount/getInputValue', 'PhysicalCountController@getPhysicalCount')->name('admin.getPhysicalCount');
+
 // Route::get('salesAssistant/items/getItems', 'HomeController@getItemsForItems')->name('salesAssistant.getItems');
 // Route::get('salesAssistant/items', 'HomeController@items')->name('salesAssistant.items');
 
@@ -71,7 +75,7 @@ Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('sa
 
 Route::get('admin/notification','AdminController@getNotification')->name('admin.notification');
 
-Route::get('admin/changePassword','Auth\AdminLoginController@changePassword')->name('admin.changePassword');
+Route::Post('admin/changePassword','AdminController@changePassword')->name('admin.changePassword');
 
 Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
 Route::get('admin/dashboard/getDataPoints', 'AdminController@getDataPoints')->name('dashboard.getDataPoints');

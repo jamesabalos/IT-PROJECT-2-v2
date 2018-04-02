@@ -13,6 +13,9 @@ ng-app="ourAngularJsApp"
 @section('linkName')
 <div class="alert alert-success hidden" id="successDiv">
 
+    </div>
+<div class="alert alert-success hidden" id="successDiv">
+
 </div>
 <h3><i class="fa fa-cube" style="margin-right: 10px"></i> Physical Count</h3>
 @endsection
@@ -43,6 +46,30 @@ ng-app="ourAngularJsApp"
 
 
 <script type="text/javascript">
+    function continueSubmit(){
+        var data = $("#formPhysicalCount").serialize();     
+        $.ajax({
+			type:'Post',
+			url: "{{route('salesAssistant.submitPhysicalCount')}}",
+            data:data,
+			success:function(data){
+               console.log(data)
+               $('#continueSubmitModal').modal('hide');
+               document.getElementById("formPhysicalCount").reset(); //reset the form
+        
+                //prompt the message
+                $("#successDiv p").remove();
+                $("#successDiv").removeClass("hidden")
+                // .addClass("alert-success")
+                        .html("<h3>Physical Count successful</h3>");
+                $("#successDiv").css("display:block");                             
+                $("#successDiv").slideDown("slow")
+                    .delay(1000)                        
+                    .hide(1500);
+                    location.reload();
+			}
+		});
+    }
 
       $(document).ready(function(){
 
@@ -81,52 +108,12 @@ ng-app="ourAngularJsApp"
               "ajax":  "{{ route('salesAssistant.getPhysicalCount') }}",
               "columns": [
                   {data: 'description'},
-                  {data: 'quantity'},
+                  {data: 'action'},
                 //   {data: 'counted_quantity'},
               ]
           });
 
-          $("#startPhysicalCountbutton").on('click', function(button) {
-                button.preventDefault(); //prevent the page to load when submitting form
-                $.ajax({
-                    type: 'Post',
-                    // url:'admin/storeNewItem',
-                    // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
-                    url: '{{ route("salesAssistant.startPhysicalCount")}}',
 
- 
-                    success:function(data){
-                        $('#startPhysicalCount').modal('hide');
-                       $("#physicalCountDataTable").DataTable().ajax.reload();//reload the dataTables
-                       document.getElementById("triggerButton").innerHTML = "Stop Physical Count";
-                       document.getElementById("triggerButton").parentNode.setAttribute("href","#stopPhysicalCount");                       
-                       $("#triggerButton").removeClass("btn-success").addClass("btn-danger");
-
-                        
-                        
-                    }
-                })
-
-          })
-          $("#stopPhysicalCountbutton").on('click', function(button) {
-                button.preventDefault(); //prevent the page to load when submitting form
-                $.ajax({
-                    type: 'Post',
-                    // url:'admin/storeNewItem',
-                    // url: '{{ route("admin.updateEmployeeAccount", ["id" =>"1"]) }}',
-                    url: '{{ route("salesAssistant.stopPhysicalCount")}}',
-
- 
-                    success:function(data){
-                        $('#stopPhysicalCount').modal('hide');
-                        $("#physicalCountDataTable").DataTable().ajax.reload();//reload the dataTables
-                       document.getElementById("triggerButton").innerHTML = "Start Physical Count";
-                       document.getElementById("triggerButton").parentNode.setAttribute("href","#startPhysicalCount");
-                       $("#triggerButton").removeClass("btn-danger").addClass("btn-success");
-                    }
-                })
-
-          })
 
         
       });
@@ -143,6 +130,7 @@ ng-app="ourAngularJsApp"
             <div class="card">
                 <div class="header">
                     <div class="content table-responsive table-full-width">
+                    {!! Form::open(['method'=>'post','id'=>'formPhysicalCount']) !!}
                         <table class="table table-bordered table-striped" id="physicalCountDataTable">
                             <thead>
                                 <tr>
@@ -154,16 +142,14 @@ ng-app="ourAngularJsApp"
                             <tbody>
                             </tbody>
                         </table>
+                        {!! Form::close() !!}
                     </div>
-                        @if($physicalCount[0]["status"] === "inactive" )
-                            <a href = "#startPhysicalCount" data-toggle="modal">
-                                <button id="triggerButton" type="button" class="btn btn-success">Start Physical Count</button>
-                            </a>
-                         @else
-                            <a href = "#stopPhysicalCount" data-toggle="modal">
-                                <button id="triggerButton"  type="button" class="btn btn-danger">Stop Physical Count</button>
-                            </a>
-                         @endif
+                    
+                    <a href = "#continueSubmitModal" data-toggle="modal">
+                        <button id="triggerButton" type="button" class="btn btn-success">Submit</button>
+                    </a>
+                        
+
                 </div>
             </div>
         </div>
@@ -173,7 +159,7 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('modals')
-<div id="startPhysicalCount" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true">
+<div id="continueSubmitModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -182,7 +168,7 @@ ng-app="ourAngularJsApp"
             </div>
             <div class="text-center">
                 <strong>
-                    <h3> <i class="fa fa-exclamation-triangle" style="margin-right: 15px"> </i> Start physical count? </h3>
+                    <h3> <i class="fa fa-exclamation-triangle" style="margin-right: 15px"> </i> Submit Physical Count? </h3>
                     <p>Some functions of the Sales Assistant will be disabled. Functions will be enabled after the physical count</p>
                 </strong>
             </div>
@@ -190,7 +176,7 @@ ng-app="ourAngularJsApp"
             <div class="panel-body">
                 <div class="text-center">
                     <div class="form-group clearfix">
-                        <button id="startPhysicalCountbutton" type="button" class="btn btn-success">Continue</button>
+                        <button onclick="continueSubmit()" type="button" class="btn btn-success">Continue</button>
                         <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -199,31 +185,6 @@ ng-app="ourAngularJsApp"
     </div>
 </div>
 
-<div id="stopPhysicalCount" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <p></p>
-            </div>
-            <div class="text-center">
-                <strong>
-                    <h3> <i class="fa fa-exclamation-triangle" style="margin-right: 15px"> </i> Stop physical count? </h3>
-                    <p>Physical count ongoing. Physical count will be terminated.</p>
-                </strong>
-            </div>
-
-            <div class="panel-body">
-                <div class="text-center">
-                    <div class="form-group clearfix">
-                        <button id="stopPhysicalCountbutton" type="button" class="btn btn-success">Continue</button>
-                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 

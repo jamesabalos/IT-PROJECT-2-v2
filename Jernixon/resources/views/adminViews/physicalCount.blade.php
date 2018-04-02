@@ -44,6 +44,9 @@ ng-app="ourAngularJsApp"
 
 <script type="text/javascript">
 
+
+
+
       $(document).ready(function(){
 
     //   let today = new Date().toISOString().substr(0, 10);
@@ -93,6 +96,8 @@ ng-app="ourAngularJsApp"
 
               "ajax":  "{{ route('admin.getPhysicalCount') }}",
               "columns": [
+                   
+                //   {data: 'product_id', name: 'physical_count_items.product_id'},
                   {data: 'description', name: 'products.description'},
                   {data: 'quantity', name: 'salable_items.quantity'},
                   {data: 'counted_quantity', name: 'physical_count_items.quantity'},
@@ -168,6 +173,7 @@ ng-app="ourAngularJsApp"
                         <table class="table table-bordered table-striped" id="physicalCountDataTable">
                             <thead>
                                 <tr>
+                                    {{-- <th class="text-left">Item Id</th> --}}
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Quantity</th>
                                     <th class="text-left">Counted Quantity</th>

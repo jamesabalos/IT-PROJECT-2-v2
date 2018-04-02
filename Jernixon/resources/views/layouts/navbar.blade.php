@@ -41,9 +41,7 @@
         @yield('headScript')
 <script type="text/javascript">
     function getNotifications(){
-
         $.ajax({
-            
               method: 'get',
               //url: 'items/' + document.getElementById("inputItem").value,
               url:"{{ route('admin.notification') }}",
@@ -54,6 +52,31 @@
               }
           });
     }
+    $(document).ready(function(){
+        $('#formChangePassword').on('submit',function(e){
+              e.preventDefault();
+              var data = $(this).serialize();
+
+              $.ajax({
+                  type:'POST',
+                  url: "{{route('admin.changePassword')}}",
+                  data: data,
+
+                  success:function(data){
+                    $('#changePassword').modal('hide');
+                    $("#successDiv p").remove();
+                      $("#successDiv").removeClass("hidden")
+                      // .addClass("alert-success")
+                             .html("<h3>Change password successful</h3>");
+                      $("#successDiv").css("display:block");                             
+                      $("#successDiv").slideDown("slow")
+                          .delay(1000)                        
+                          .hide(1500);
+                    
+                  }
+              })
+        })
+    })
 </script>
     </head>
 
@@ -84,7 +107,7 @@
                 <ul class="nav" id="navs">
 
                     @if(Auth::guard('adminGuard')->check())
-                    <li @yield('dashboard_link')>
+                    <li  @yield('dashboard_link')>
 
                         <a href={{route('admin.dashboard')}}><i class="fa fa-fw fa-dashboard"></i><p>Dashboard</p></a>
                     </li>       
@@ -125,26 +148,27 @@
 
                     {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
                     @elseif(Auth::guard('web')->check())
-                        {{-- <li @yield('dashboard_link')>
-                            <a href={{route('home')}}><i class="fa fa-dashboard"></i><p>Dashboard</p></a>
-                        </li>  --}}
-                        <li   @yield('sales_link')>
-                            <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
-                        </li>
-                        {{-- <li  @yield('items_link') >
-                            <a href={{route('salesAssistant.items')}}><i class="fa fa-bars"></i><p>Items</p></a>
-                        </li> --}}
-                        <li   @yield('return_link')>
-                            <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
-                        </li>
-                        
-                        <li   @yield('stockAdjustment_link')>
-                            <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
-                        </li>
-                        <li @yield('physicalCount_link')>
-                                <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
-                            </li>  
-                    {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
+                        @if($physicalCount[0]["status"] === "inactive" )
+                            <li @yield('sales_link')>
+                                <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
+                            </li>
+                     
+                            <li   @yield('return_link')>
+                                <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
+                            </li>
+                            
+                            <li   @yield('stockAdjustment_link')>
+                                <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
+                            </li>
+                            {{-- <li @yield('physicalCount_link')>
+                                    <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                            </li> --}}
+                        @else
+                            <li @yield('physicalCount_link')>
+                                    <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                            </li>
+                        @endif
+
                     @endif
 
                 </ul>
@@ -157,6 +181,9 @@
                 <div class="container-fluid">
                     <div class="navbar-header">
                         @yield('linkName')
+                        {{-- <div class="alert alert-success hidden" id="successDiv">
+
+                        </div> --}}
                     </div>
 
                     <div>
@@ -329,32 +356,26 @@
                             {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
 
                             @elseif(Auth::guard('web')->check())
-                                {{-- <li @yield('dashboard_link')>
-                                    <a href={{route('home')}}><i class="ti-panel"></i>Dashboard</a>
-                                </li>  --}}
-
-                                {{-- <li  @yield('items_link') >
-                                    <a href={{route('salesAssistant.items')}}><i class="ti-clipboard"></i>Items</a>
-                                </li>
-                                <li @yield('dashboard_link')>
-                                    <a href={{route('home')}}><i class="fa fa-dashboard"></i><p>Dashboard</p></a>
-                                </li>  --}}
-                                <li   @yield('sales_link')>
-                                    <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
-                                </li>
-                                {{-- <li  @yield('items_link') >
-                                    <a href={{route('salesAssistant.items')}}><i class="fa fa-bars"></i><p>Items</p></a>
-                                </li> --}}
-                                <li   @yield('return_link')>
-                                    <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
-                                </li>
+                                @if($physicalCount[0]["status"] === "inactive" )
+                                    <li   @yield('sales_link')>
+                                        <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
+                                    </li>
+                                    <li   @yield('return_link')>
+                                        <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
+                                    </li>
+                                    
+                                    <li   @yield('stockAdjustment_link')>
+                                        <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
+                                    </li>
+                                    {{-- <li @yield('physicalCount_link')>
+                                            <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                                    </li>  --}}
+                                @else
+                                    <li @yield('physicalCount_link')>
+                                            <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                                    </li>
+                                @endif 
                                 
-                                <li   @yield('stockAdjustment_link')>
-                                    <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
-                                </li>
-                                <li @yield('physicalCount_link')>
-                                        <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
-                                    </li>  
 
 
                             {{--  Hello {{Auth::guard('user')->user()->name}}  --}}
@@ -376,7 +397,7 @@
             <div class = "modal-dialog modal-md">
                 <div class = "modal-content">
 
-                    {!! Form::open(['method'=>'post','id'=>'formchangePassword']) !!}
+                    {!! Form::open(['method'=>'post','id'=>'formChangePassword']) !!}
 
                     <div class="modal-header">
                         <button class="close" data-dismiss="modal">&times;</button>
@@ -394,7 +415,9 @@
                             </div>
 
                             <div class="panel-body">
-                                <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" value="{{ csrf_token() }}">
+                                <input type="hidden" name="authName" value=" {{ Auth::user()->name }}">
+                                <input type="hidden" name="adminId" value=" {{ Auth::user()->id }}">
 
                                 <div class="form-group">
                                     <div class="row">
@@ -413,7 +436,7 @@
                                             {{Form::label('Current Password:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{ Form::text('Current Password','',['class'=>'form-control']) }}
+                                            {{ Form::password('Current Password',array('class'=>'form-control')) }}
                                         </div>
                                     </div>
                                 </div>
@@ -424,7 +447,7 @@
                                             {{Form::label('New Password', 'New Password:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::text('New Password','',['class'=>'form-control'])}}
+                                            {{Form::password('New Password',array('class'=>'form-control'))}}
                                         </div>
                                     </div>
                                 </div>
@@ -435,7 +458,7 @@
                                             {{Form::label('Confirm Password', 'Confirm Password:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::text('Confirm Password','',['class'=>'form-control'])}}
+                                            {{Form::password('Confirm Password',array('class'=>'form-control'))}}
                                         </div>
                                     </div>
                                 </div>
@@ -446,7 +469,7 @@
                         <div class="row">
                             <div class="text-right">                                           
                                 <div class="col-md-12">   
-                                    <button id="submitNewItems" type="submit" onclick="window.alert('to be continue..')" class="btn btn-success">Save</button>
+                                    <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
                                     <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>

@@ -41,8 +41,14 @@ class HomeController extends Controller
         // return view('items.index')->with('products',$products);
     }
     public function return(){
-        // return view('salesAssistantViews.return');
-        return view('salesAssistantViews.returns');
+        // return view('salesAssistantViews.returns');
+        $physicalCount = Physical_count::all();
+        if($physicalCount[0]["status"] === "inactive"){
+            return view('salesAssistantViews.returns')->with('physicalCount',$physicalCount);
+        }else{
+            // return view('salesAssistantViews.physicalCount')->with('physicalCount',$physicalCount);
+            return redirect('salesAssistant/physicalCount')->with('physicalCount',$physicalCount);
+        }
     }
     
     public function searchItem($itemName){
@@ -164,8 +170,12 @@ class HomeController extends Controller
 
     public function physicalCount(){
         $physicalCount = Physical_count::all();
-       
-        return view('salesAssistantViews.physicalCount')->with('physicalCount',$physicalCount);
+       if($physicalCount[0]["status"] === "inactive"){
+            //return view('salesAssistantViews.sales')->with('physicalCount',$physicalCount);
+            return redirect('salesAssistant/sales');
+       }else{
+           return view('salesAssistantViews.physicalCount')->with('physicalCount',$physicalCount);
+       }
     }
     public function getPhysicalCount(){
         $data = DB::table('physical_count_items')
@@ -175,7 +185,25 @@ class HomeController extends Controller
                     ->where([['status' , '=' , 'available']]);//,['salable_items.quantity', '>', 0]
 
         return Datatables::of($data)
+        ->addColumn('action',function($data){
+            // return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'>Add</button>";
+            return "<input type='number' class='form-control' value='0' name='quantity[]' min='0'>
+            <input type='hidden' value='$data->product_id' class='form-control' name='productId[]'>";
+        })
         ->make(true);
+    }
+    public function submitPhysicalCount(Request $request){
+        
+        $arrayCount = count($request->productId);
+        for($i = 0;$i<$arrayCount;$i++){
+            DB::table('physical_count_items')
+                ->where('product_id', $request->productId[$i])
+                ->update(['quantity' => $request->quantity[$i]]);
+        }
+        // return $request->all();
+        DB::table('physical_counts')
+                ->where('status', 'active')
+                ->update(['status' => 'inactive','date' => date('Y-m-d H:i:s')]);
     }
     public function startPhysicalCount(){
         DB::table('physical_counts')
@@ -196,11 +224,24 @@ class HomeController extends Controller
 
 
     public function sales(){
-        return view('salesAssistantViews.sales');
+        // return view('salesAssistantViews.sales');
+        $physicalCount = Physical_count::all();
+        if($physicalCount[0]["status"] === "inactive"){
+            return view('salesAssistantViews.sales')->with('physicalCount',$physicalCount);
+        }else{
+            // return view('salesAssistantViews.physicalCount')->with('physicalCount',$physicalCount);
+            return redirect('salesAssistant/physicalCount')->with('physicalCount',$physicalCount);
+        }
     }
     public function stockAdjustment(){
         // return view('salesAssistantViews.stockAdjustment');
-        return view('salesAssistantViews.stockAdjustment');
+        $physicalCount = Physical_count::all();
+        if($physicalCount[0]["status"] === "inactive"){
+            return view('salesAssistantViews.stockAdjustment')->with('physicalCount',$physicalCount);
+        }else{
+            // return view('salesAssistantViews.physicalCount')->with('physicalCount',$physicalCount);
+            return redirect('salesAssistant/physicalCount')->with('physicalCount',$physicalCount);
+        }
     }
 
     public function getItemsForDashboard(){

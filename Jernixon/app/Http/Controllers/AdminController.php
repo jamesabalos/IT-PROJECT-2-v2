@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use App\User;
+use App\Admin;
 use App\Salable_item;
 use App\Physical_count_item;
 use App\Physical_count;
 use Datatables;
 use DB;
+use Hash;
+use Auth;
+use Crypt;
 class AdminController extends Controller
 {
     /**
@@ -598,6 +602,45 @@ class AdminController extends Controller
         $employee->password = $resetPassword;
         $employee->save();
         return response($resetPassword);
+ 
+
+    }
+    public function changePassword(Request $request){
+        // $employee = User::find($request->employeeId);
+        // $pieces = explode(" ",$employee->name);
+        // $resetPassword = $pieces[0]."@jernixon";
+        // $employee->password = $resetPassword;
+        // $employee->save();
+        // return response($resetPassword);
+        // $this->validate($request,[
+        //     'Email' => 'required',
+        //     'Current_Password' => 'required',
+        //     // 'password' => 'required',
+        //     'New_Password' => 'required',
+        //     'Confirm_Password' => 'required'
+        // ]);
+
+        $employee = Admin::find($request->adminId);
+        $password = Hash::make($request->New_Password);
+        // return $password;
+        // $oldPassword = Crypt::decrypt($employee->password);
+        // return $oldPassword;
+        // return [$request->Email, $employee->email, $request->New_Password, $request->Confirm_Password, $password, Hash::make($request->Current_Password), $employee->password];
+        // $credentials = ['password'=>$request->Current_Password];
+        // if(Hash::check($request->Current_Password, $employee->password)){return "success";}
+        if($request->Email===$employee->email && $request->New_Password===$request->Confirm_Password && Hash::check($request->Current_Password, $employee->password)){
+            $employee->password = $password;
+            $employee->save();
+            return "successful";
+        }else{
+            return "unsuccessful";
+        }
+        // $employee->name = $request->input('name');
+        // $employee->email = $request->input('email');
+        // $employee->password = $request->input('password');
+        // $employsee->save();
+
+        return $request->all();
  
 
     }

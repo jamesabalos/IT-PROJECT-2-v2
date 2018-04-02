@@ -534,7 +534,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>

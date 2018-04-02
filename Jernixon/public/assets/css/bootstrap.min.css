@@ -5080,6 +5080,127 @@ button.close{
         width:900px
     }
 }
+.modal1{
+    position:fixed;
+    top:0;
+    right:8;
+    bottom:0;
+    z-index:1050;
+    display:none;
+    overflow:hidden;
+    -webkit-overflow-scrolling:touch;
+    outline:0
+}
+.modal1.fade .modal1-dialog{
+    -webkit-transition:-webkit-transform .3s ease-out;
+    -o-transition:-o-transform .3s ease-out;
+    transition:transform .3s ease-out;
+    -webkit-transform:translate(0,-25%);
+    -ms-transform:translate(0,-25%);
+    -o-transform:translate(0,-25%);
+    transform:translate(0,-25%)
+}
+.modal1.in .modal1-dialog{
+    -webkit-transform:translate(0,0);
+    -ms-transform:translate(0,0);
+    -o-transform:translate(0,0);
+    transform:translate(0,0)
+}
+.modal1-open .modal{
+    overflow-x:hidden;
+    overflow-y:auto;
+}
+.modal1-dialog{
+    position:relative;
+    width:auto;
+    margin:10px
+}
+.modal1-content{
+    position:relative;
+    background-color:#fff;
+    -webkit-background-clip:padding-box;
+    background-clip:padding-box;
+    border:1px solid #999;
+    border:1px solid rgba(0,0,0,.2);
+    border-radius:6px;
+    outline:0;
+    -webkit-box-shadow:0 3px 9px rgba(0,0,0,.5);
+    box-shadow:0 3px 9px rgba(0,0,0,.5)
+}
+.modal1-backdrop{
+    position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:1040;
+    background-color:#000
+}
+.modal1-backdrop.fade{
+    filter:alpha(opacity=0);
+    opacity:0
+}
+.modal1-backdrop.in{
+    filter:alpha(opacity=50);
+    opacity:.5
+}
+.modal1-header{
+    min-height:16.43px;
+    padding:15px;
+    border-bottom:1px solid #e5e5e5
+}
+.modal1-header .close{
+    margin-top:-2px
+}
+.modal1-title{
+    margin:0;
+    line-height:1.42857143
+}
+.modal1-body{
+    position:relative;
+    padding:15px
+}
+.modal1-footer{
+    padding:15px;
+    text-align:right;
+    border-top:1px solid #e5e5e5
+}
+.modal-footer .btn+.btn{
+    margin-bottom:0;
+    margin-left:5px
+}
+.modal1-footer .btn-group .btn+.btn{
+    margin-left:-1px
+}
+.modal1-footer .btn-block+.btn-block{
+    margin-left:0
+}
+.modal1-scrollbar-measure{
+    position:absolute;
+    top:-9999px;
+    width:50px;
+    height:50px;
+    overflow:scroll
+}
+@media (min-width:768px){
+    .modal1-dialog{
+        height: 850px;
+        width:350px;
+        margin:30px auto;
+    }
+    .modal1-content{
+        -webkit-box-shadow:0 5px 15px rgba(0,0,0,.5);
+        box-shadow:0 5px 15px rgba(0,0,0,.5)
+    }
+    .modal1-sm{
+        width:300px
+    }
+}
+@media (min-width:992px){
+    .modal1-lg{
+        width:900px
+    }
+}
 .tooltip{
     position:absolute;
     z-index:1070;
@@ -5525,6 +5646,13 @@ button.close{
     .carousel-indicators{
         bottom:20px
     }
+}
+.btn-group-vertical>.btn-group:after,.btn-group-vertical>.btn-group:before,.btn-toolbar:after,.btn-toolbar:before,.clearfix:after,.clearfix:before,.container-fluid:after,.container-fluid:before,.container:after,.container:before,.dl-horizontal dd:after,.dl-horizontal dd:before,.form-horizontal .form-group:after,.form-horizontal .form-group:before,.modal1-footer:after,.modal1-footer:before,.nav:after,.nav:before,.navbar-collapse:after,.navbar-collapse:before,.navbar-header:after,.navbar-header:before,.navbar:after,.navbar:before,.pager:after,.pager:before,.panel-body:after,.panel-body:before,.row:after,.row:before{
+    display:table;
+    content:" "
+}
+.btn-group-vertical>.btn-group:after,.btn-toolbar:after,.clearfix:after,.container-fluid:after,.container:after,.dl-horizontal dd:after,.form-horizontal .form-group:after,.modal1-footer:after,.nav:after,.navbar-collapse:after,.navbar-header:after,.navbar:after,.pager:after,.panel-body:after,.row:after{
+    clear:both
 }
 .btn-group-vertical>.btn-group:after,.btn-group-vertical>.btn-group:before,.btn-toolbar:after,.btn-toolbar:before,.clearfix:after,.clearfix:before,.container-fluid:after,.container-fluid:before,.container:after,.container:before,.dl-horizontal dd:after,.dl-horizontal dd:before,.form-horizontal .form-group:after,.form-horizontal .form-group:before,.modal-footer:after,.modal-footer:before,.nav:after,.nav:before,.navbar-collapse:after,.navbar-collapse:before,.navbar-header:after,.navbar-header:before,.navbar:after,.navbar:before,.pager:after,.pager:before,.panel-body:after,.panel-body:before,.row:after,.row:before{
     display:table;

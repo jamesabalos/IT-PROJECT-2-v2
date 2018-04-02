@@ -469,7 +469,7 @@
                         <div class="row">
                             <div class="text-right">                                           
                                 <div class="col-md-12">   
-                                    <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
+                                    <button type="submit" class="btn btn-success">Save</button>
                                     <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
@@ -486,7 +486,7 @@
                 <div class = "modal-content">
 
                     {!! Form::open(['method'=>'get','id'=>'formNotification']) !!}
-                    <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                    <input type="hidden" value="{{ csrf_token() }}">
 
                     <div class="modal-header">
                         <button class="close" data-dismiss="modal">&times;</button>
@@ -505,7 +505,7 @@
 
                             <div class="panel-body">
                                 <div class="autocomplete" style="width:200px;">
-                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
+                                    <input autocomplete="off" type="text" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
                                     <div id="searchResultDiv" class="searchResultDiv">
                                     </div>
                                 </div>

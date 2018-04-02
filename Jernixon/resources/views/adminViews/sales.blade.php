@@ -284,11 +284,9 @@ ng-app="ourAngularJsApp"
                             <thead>
                                 <tr>
                                     <td>Item</td>
-                                    {{--  <td>Quantity Left</td>  --}}
-                                    {{--  <td>Purchase Price</td>  --}}
                                     <td>Price</td>
                                     <td>Quantity Purchase</td>
-                                    <td>Sales Price</td>
+                                    <td>Sales</td>
                                     <td>Action</td>
                                 </tr> 
 
@@ -512,17 +510,17 @@ ng-app="ourAngularJsApp"
                                                             var lastRow = thatTable.rows[numberOfRows-1];
                                                             var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'');
 
-                                                            var retailPrice = "<p class='form-control' style='color:green'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
+                                                            var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
                                                             var temp0 = $compile(retailPrice)($scope);                
                                                             angular.element( lastRow.insertCell(-1) ).append(temp0);    
 
-                                                            var inputNumber = "<input type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1'></input>";
+                                                            var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1'></input>";
                                                             var temp1 = $compile(inputNumber)($scope);
                                                             // var newRow = thatTbody.insertRow(-1);
                                                             // angular.element( newRow.insertCell(-1) ).append(temp);
                                                             angular.element( lastRow.insertCell(-1) ).append(temp1);
 
-                                                            var salesPrice = "<p class='form-control style='color:green' ng-bind='" +itemName+ "SP'></p><input type='hidden' name='salesPrices[]'>";
+                                                            var salesPrice = "<p class='form-control style='color:green;' ng-bind='" +itemName+ "SP'></p><input type='hidden' name='salesPrices[]'>";
                                                             var temp2 = $compile(salesPrice)($scope);
                                                             angular.element( lastRow.insertCell(-1) ).append(temp2);
 

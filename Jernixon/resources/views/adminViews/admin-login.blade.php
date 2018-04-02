@@ -137,7 +137,7 @@
 
 					<div class="wrap-input100" >
                         <input id="email" class="input100" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
-                        <span class="focus-input100"></span>
+                        <span class="focus-input100" data-placeholder="&#xf207;"></span>
                         @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
@@ -161,7 +161,7 @@
 
 					<div class="wrap-input100">
 						<input id="password" class="input100" type="password" name="password" placeholder="Password" required>
-                        <span class="focus-input100" ></span>
+                        <span class="focus-input100" data-placeholder="&#xf191;"></span>
                         @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
@@ -207,9 +207,9 @@
                             Go to Sales Assistant Login
 					</a>
                         <br>
-                        <a class="txt1" href="{{ route('password.request') }}">
+                        {{-- <a class="txt1" href="{{ route('password.request') }}">
 							Forgot Password?
-						</a>
+						</a> --}}
 					</div>
 				</form>
 			</div>

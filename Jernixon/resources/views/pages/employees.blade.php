@@ -337,7 +337,7 @@
 
                                         <button data-id="{{$employee->id}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success">Activate</button>
                                         <a href="#reset" data-toggle="modal">
-                                            <button type="button" class="btn btn-info">Reset Password</button>
+                                            <button type="button" onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" class="btn btn-info">Reset Password</button>
                                         </a>
 
                                         @endif

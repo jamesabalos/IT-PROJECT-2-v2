@@ -97,14 +97,14 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content">
-                        <div class="row">
+                        {{-- <div class="row">
                             <p class = "col-md-12">
                                 <label for="from">From</label>
                                 <input type="date" id="from" name="from">
                                 <label for="to">to</label>
                                 <input type="date" id="to" name="to">
                             </p>  
-                        </div>
+                        </div> --}}
 
                         <div class="btn-group btn-group-lg">
                             {{--  <button type="button" id="transactionDTButton" class="btn btn-primary active">Transaction</button>

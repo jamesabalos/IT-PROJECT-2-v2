@@ -65,6 +65,9 @@ Route::get('salesAssistant/physicalCount/getPhysicalCount', 'HomeController@getP
 Route::Post('salesAssistant/physicalCount/startPhysicalCount', 'HomeController@startPhysicalCount')->name('salesAssistant.startPhysicalCount');
 Route::Post('salesAssistant/physicalCount/stopPhysicalCount', 'HomeController@stopPhysicalCount')->name('salesAssistant.stopPhysicalCount');
 Route::Post('salesAssistant/physicalCount/submitPhysicalCount', 'HomeController@submitPhysicalCount')->name('salesAssistant.submitPhysicalCount');
+
+Route::Post('salesAssistant/changePassword','HomeController@changePassword')->name('salesAssistant.changePassword');
+
 // Route::get('salesAssistant/physicalCount/getInputValue', 'PhysicalCountController@getPhysicalCount')->name('admin.getPhysicalCount');
 // Route::get('physicalCount/getInputValue', 'PhysicalCountController@getPhysicalCount')->name('admin.getPhysicalCount');
 

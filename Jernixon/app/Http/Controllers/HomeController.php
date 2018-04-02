@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\User;
 use App\Salable_item;
 use App\Physical_count_item;
 use App\Physical_count;
 use Datatables;
 use DB;
+use Hash;
+
 
 //class SalesAssistantController extends Controller
 class HomeController extends Controller
@@ -346,6 +349,26 @@ class HomeController extends Controller
 		}else{
 			return "unsuccessful";
 		}
+    }
+    public function changePassword(Request $request){
+       $this->validate($request,[
+            'Current_Password' => 'required',
+            'Email' => 'required',
+            'New_Password' => 'required',
+            'Confirm_Password' => 'required',
+        ]);
+        // return $request->all();
+        $employee = User::find($request->adminId);
+        // $password = Hash::make($request->New_Password);
+        if($request->Email===$employee->email && $request->New_Password===$request->Confirm_Password && Hash::check($request->Current_Password, $employee->password)){
+            $employee->password = $request->New_Password;
+            $employee->save();
+            return "successful";
+        }else{
+            return "unsuccessful";
+        }
+ 
+
     }
 
 

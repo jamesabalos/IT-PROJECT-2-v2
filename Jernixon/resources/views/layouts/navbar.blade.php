@@ -81,7 +81,12 @@
 
               $.ajax({
                   type:'POST',
-                  url: "{{route('admin.changePassword')}}",
+
+                  @if(Auth::guard('adminGuard')->check())
+                    url: "{{route('admin.changePassword')}}",
+                    @elseif(Auth::guard('web')->check())
+                    url: "{{route('salesAssistant.changePassword')}}",
+                    @endif
                   data: data,
 
                   success:function(data){
@@ -256,6 +261,9 @@
                                         </form>  --}}
 
                                         @elseif(Auth::guard('web')->check())
+                                        <a href="#changePassword" data-toggle="modal">
+                                                Change Password
+                                            </a>
                                         <a href="{{ route('salesAssistant.logout') }}">
                                             {{--  onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">  --}}
@@ -458,7 +466,7 @@
                                             {{Form::label('Current Password:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{ Form::password('Current Password',array('class'=>'form-control')) }}
+                                            {{ Form::password('Current_Password',array('class'=>'form-control')) }}
                                         </div>
                                     </div>
                                 </div>
@@ -469,7 +477,7 @@
                                             {{Form::label('New Password', 'New Password:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::password('New Password',array('class'=>'form-control'))}}
+                                            {{Form::password('New_Password',array('class'=>'form-control'))}}
                                         </div>
                                     </div>
                                 </div>
@@ -480,7 +488,7 @@
                                             {{Form::label('Confirm Password', 'Confirm Password:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::password('Confirm Password',array('class'=>'form-control'))}}
+                                            {{Form::password('Confirm_Password',array('class'=>'form-control'))}}
                                         </div>
                                     </div>
                                 </div>

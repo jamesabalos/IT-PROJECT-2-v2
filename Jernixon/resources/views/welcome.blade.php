@@ -62,7 +62,7 @@
                             @endif
                         </div>
                     </div>  --}}
-					<div class="wrap-input100 validate-input{{ $errors->has('email') ? ' has-error' : '' }}" data-validate = "Enter username">
+					<div class="wrap-input100">
 						<input id="email" type="email" class="input100"  name="email" placeholder="Email" value="{{ old('email') }}">
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
                         @if ($errors->has('email')) 
@@ -86,7 +86,7 @@
                             @endif
                         </div>
                     </div>  --}}
-					<div class="wrap-input100 validate-input" data-validate="Enter password">
+					<div class="wrap-input100">
 						<input id="password" class="input100" type="password" name="password" placeholder="Password" required>
                         <span class="focus-input100" data-placeholder="&#xf191;"></span>
                         @if ($errors->has('password'))

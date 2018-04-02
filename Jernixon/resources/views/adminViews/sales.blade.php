@@ -89,6 +89,10 @@ ng-app="ourAngularJsApp"
     }
 
     $(document).ready(function(){
+        
+              let today = new Date().toISOString().substr(0, 10);
+      document.querySelector("#today").value = today;
+      
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -249,8 +253,6 @@ ng-app="ourAngularJsApp"
     <div class="col-md-12" >
         <div class="card" >
             <div class="header" >
-                <div class="alert alert-success hidden" id="successDiv">
-                </div>
                 {!! Form::open(['method'=>'post','id'=>'formSales']) !!}                                
                 <h4 ng-bind="name">Customer Purchase</h4>
                 <div class="form-group">
@@ -312,7 +314,9 @@ ng-app="ourAngularJsApp"
                                     <div class="col-md-12">   
                                         <button class="btn btn-primary" type="submit">Submit</button>
                                     </div>
-                                </div> 
+                                </div>
+                            </div>
+                            <div class="alert alert-success hidden" id="successDiv">
                             </div>
                         </div>
                     </div> 

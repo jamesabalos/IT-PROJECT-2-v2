@@ -39,7 +39,7 @@ class ReportsController extends Controller
         return Datatables::of($data)
             ->make(true);
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *

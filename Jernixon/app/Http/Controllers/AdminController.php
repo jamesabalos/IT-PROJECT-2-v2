@@ -48,7 +48,7 @@ class AdminController extends Controller
     public function physicalCount()
     {
         $physicalCount = Physical_count::all();
-       
+
         return view('adminViews.physicalCount')->with('physicalCount',$physicalCount);
     }
     public function items()
@@ -77,61 +77,61 @@ class AdminController extends Controller
 
     public function getItemsForSales(){
         $data = DB::table('salable_items')
-					->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
-					->select('products.product_id', 'description', 'wholesale_price' , 'retail_price' , 'quantity')
-					->where([['status' , '=' , 'available'],['quantity', '>', 0]]);
+            ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
+            ->select('products.product_id', 'description', 'wholesale_price' , 'retail_price' , 'quantity')
+            ->where([['status' , '=' , 'available'],['quantity', '>', 0]]);
 
         return Datatables::of($data)
-             ->addColumn('action',function($data){
-                 return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'>Add</button>";
-             })
+            ->addColumn('action',function($data){
+                return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'>Add</button>";
+            })
             ->make(true);
 
     }
-	
-	public function createSales(Request $request){
-		$this->validate($request,[
+
+    public function createSales(Request $request){
+        $this->validate($request,[
             'customerName' => 'required',
             'receiptNumber' => 'required',
             'quantity' => 'required',
         ]);
 
         $arrayCount = count($request->productIds);
-		$mytime = date('Y-m-d H:i:s');
-		$successful = true;
-		
-		$data = DB::table('sales')
-					->select('or_number')
-					->where('or_number' , '=' , $request->receiptNumber)
-					->get();
-		
-		if($data->isEmpty()){
-			for($i = 0;$i<$arrayCount;$i++){
-				$insert = DB::table('sales')->insert(
-					['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $mytime,]
-				);
+        $mytime = date('Y-m-d H:i:s');
+        $successful = true;
+
+        $data = DB::table('sales')
+            ->select('or_number')
+            ->where('or_number' , '=' , $request->receiptNumber)
+            ->get();
+
+        if($data->isEmpty()){
+            for($i = 0;$i<$arrayCount;$i++){
+                $insert = DB::table('sales')->insert(
+                    ['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $mytime,]
+                );
                 DB::table('salable_items')
                     ->where('product_id', $request->productIds[$i])
                     ->decrement('quantity', $request->quantity[$i]);
-			}
-			return "successful";
-		}else{
-			return "unsuccessful";
-		}
+            }
+            return "successful";
+        }else{
+            return "unsuccessful";
+        }
     }
-	 
+
 
     public function searchItem($itemName){
         $item = Product::where([['description','LIKE','%'.$itemName.'%'],['status', '=', 'available'],])
-                    ->orderBy('description','asc')
-                    ->limit(5)
-                    ->get();
+            ->orderBy('description','asc')
+            ->limit(5)
+            ->get();
         return $item;
     }
 
     public function createPurchases(Request $request){
-        
-        
+
+
         $this->validate($request,[
             'Date' => 'required',
             'Official_Receipt_Number' => 'required',
@@ -140,15 +140,15 @@ class AdminController extends Controller
             // 'product_id' => 'required',
             'quantity' => 'required',
         ]);
-        
+
         $arrayCount = count($request->product_id);
-		$successful = true;
-		
-		$data = DB::table('purchases')
-					->select('po_id')
-					->where('po_id' , '=' , $request->Official_Receipt_Number)
-					->get();
-		
+        $successful = true;
+
+        $data = DB::table('purchases')
+            ->select('po_id')
+            ->where('po_id' , '=' , $request->Official_Receipt_Number)
+            ->get();
+
         if($data->isEmpty()){
             for($i = 0;$i<$arrayCount;$i++){
                 $insertPurchases = DB::table('purchases')->insert(
@@ -156,10 +156,10 @@ class AdminController extends Controller
                 );
 
                 $prod_id = DB::table('salable_items')
-					->select('product_id')
-					->where('product_id' , '=' , $request->product_id[$i])
+                    ->select('product_id')
+                    ->where('product_id' , '=' , $request->product_id[$i])
                     ->get();
-                    
+
                 if($prod_id->isEmpty()){
                     $insertSalableItems = DB::table('salable_items')->insert(
                         ['product_id' => $request->product_id[$i], 'wholesale_price' => $request->price[$i], 'retail_price' => $request->price[$i], 'quantity' => $request->quantity[$i]]
@@ -170,14 +170,14 @@ class AdminController extends Controller
                         ->where([['product_id' , '=' , $request->product_id[$i]], ['po_id' , '=',  $request->Official_Receipt_Number]])
                         ->latest()
                         ->first();
-    
+
                     $newPrice = $price->price;
-                        
+
                     DB::table('salable_items')
                         ->where('product_id', $request->product_id[$i])
                         ->increment('quantity', $request->quantity[$i]);
-                    
-                        DB::table('salable_items')
+
+                    DB::table('salable_items')
                         ->where('product_id', $request->product_id[$i])
                         ->update(['wholesale_price' => $newPrice, 'retail_price' => $newPrice]);
                 }
@@ -189,12 +189,12 @@ class AdminController extends Controller
         }
     }
 
-    
+
     public function getPurchases(){
         $data = DB::table('purchases')
-                    ->select('po_id', 'created_at')
-					->orderBy('created_at', 'desc')
-                    ->distinct();
+            ->select('po_id', 'created_at')
+            ->orderBy('created_at', 'desc')
+            ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
@@ -208,20 +208,20 @@ class AdminController extends Controller
             })
             ->make(true);
     }
-	
-	public function getPurchaseOrder($purchaseOrderId){
-		$data = DB::table('purchases')
-					->join('products', 'products.product_id' , '=' , 'purchases.product_id')
-					->select('description', 'supplier_name', 'quantity', 'price', 'purchases.created_at')
-					->where('po_id', '=', $purchaseOrderId)
-					->get();
-		return $data;
-	}
-    
+
+    public function getPurchaseOrder($purchaseOrderId){
+        $data = DB::table('purchases')
+            ->join('products', 'products.product_id' , '=' , 'purchases.product_id')
+            ->select('description', 'supplier_name', 'quantity', 'price', 'purchases.created_at')
+            ->where('po_id', '=', $purchaseOrderId)
+            ->get();
+        return $data;
+    }
+
     public function getReturns(){
         $data = DB::table('returns')
-                    ->select('or_number', 'created_at')
-                    ->distinct();
+            ->select('or_number', 'created_at')
+            ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
@@ -237,73 +237,73 @@ class AdminController extends Controller
     }
     public function getORNumber($ORNumber){
         $data = DB::table('sales')
-                    ->select('or_number')
-                    ->distinct()
-                    ->where('or_number','LIKE','%'.$ORNumber.'%')
-                    ->limit(5)
-                    ->get();
+            ->select('or_number')
+            ->distinct()
+            ->where('or_number','LIKE','%'.$ORNumber.'%')
+            ->limit(5)
+            ->get();
         return $data;
     }
     public function getORNumberItems(Request $request){
-        
+
         $data = DB::table('sales')
-                        ->join('products', 'products.product_id', '=', 'sales.product_id')
-                        ->select('sales.product_id','description', 'customer_name', 'quantity', 'price', 'sales.created_at')
-                        ->where('or_number', '=', $request->ORNumber)
-                        ->get();
+            ->join('products', 'products.product_id', '=', 'sales.product_id')
+            ->select('sales.product_id','description', 'customer_name', 'quantity', 'price', 'sales.created_at')
+            ->where('or_number', '=', $request->ORNumber)
+            ->get();
         return $data;
-        
+
     }
 
     public function gerReturnedItems($ORNumber){
-		$data = DB::table('returns')
-					->join('products', 'products.product_id', '=', 'returns.product_id')
-					->select('returns.product_id','description', 'customer_name', 'quantity', 'price', 'quantity', 'returns.created_at')
-					->where('or_number', '=', $ORNumber)
-					->get();
+        $data = DB::table('returns')
+            ->join('products', 'products.product_id', '=', 'returns.product_id')
+            ->select('returns.product_id','description', 'customer_name', 'quantity', 'price', 'quantity', 'returns.created_at')
+            ->where('or_number', '=', $ORNumber)
+            ->get();
         return $data;
-        
+
     }
     public function createReturnItem(Request $request){
-		$this->validate($request,[
+        $this->validate($request,[
             'officialReceiptNumber' => 'required',
             'price' => 'required',
             'quantity' => 'required',
             'customerName' => 'required',
             'quantity' => 'required',
         ]);
-		
-		$arrayCount = count($request->productId);
-		for($i = 0;$i<$arrayCount;$i++){
-			$insertReturns = DB::table('returns')->insert(
-				['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->quantity[$i]]
-			);
-			
-			DB::table('salable_items')
-				->where('product_id', $request->productId[$i])
-				->decrement('quantity', $request->quantity[$i]);
-			
-			$insertDamagedItems = DB::table('damaged_items')->insert(
-				['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => date('Y-m-d H:i:s')]
-			);
-			// DB::table('damaged_items')
-				// ->where('product_id', $request->productId[$i])
-				// ->increment(['quantity' => $request->quantity[$i]]);
-		}
+
+        $arrayCount = count($request->productId);
+        for($i = 0;$i<$arrayCount;$i++){
+            $insertReturns = DB::table('returns')->insert(
+                ['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->quantity[$i]]
+            );
+
+            DB::table('salable_items')
+                ->where('product_id', $request->productId[$i])
+                ->decrement('quantity', $request->quantity[$i]);
+
+            $insertDamagedItems = DB::table('damaged_items')->insert(
+                ['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => date('Y-m-d H:i:s')]
+            );
+            // DB::table('damaged_items')
+            // ->where('product_id', $request->productId[$i])
+            // ->increment(['quantity' => $request->quantity[$i]]);
+        }
 
         return $request->all();
-        
+
     }
 
     public function getPhysicalCount(){
         $data = DB::table('physical_count_items')
-                    ->join('products', 'products.product_id' , '=' , 'physical_count_items.product_id')
-                    ->join('salable_items', 'products.product_id' , '=' , 'salable_items.product_id')
-					->select('physical_count_items.product_id', 'description', 'salable_items.quantity as quantity' , 'physical_count_items.quantity as counted_quantity')
-                    ->where([['status' , '=' , 'available']]);//,['salable_items.quantity', '>', 0]
+            ->join('products', 'products.product_id' , '=' , 'physical_count_items.product_id')
+            ->join('salable_items', 'products.product_id' , '=' , 'salable_items.product_id')
+            ->select('physical_count_items.product_id', 'description', 'salable_items.quantity as quantity' , 'physical_count_items.quantity as counted_quantity')
+            ->where([['status' , '=' , 'available']]);//,['salable_items.quantity', '>', 0]
 
         return Datatables::of($data)
-        ->make(true);
+            ->make(true);
     }
     public function startPhysicalCount(){
         DB::table('physical_counts')
@@ -321,59 +321,59 @@ class AdminController extends Controller
         //             ->get();
         return "success";
     }
-    
+
     public function getReports(){
         $data = DB::table('sales')
-					->join('products', 'products.product_id', '=', 'sales.product_id')
-					->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at');
+            ->join('products', 'products.product_id', '=', 'sales.product_id')
+            ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at');
         return Datatables::of($data)
             ->make(true);
     }
     public function getStockAdjustment(){
         $data = DB::table('stock_adjustments')
-					->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
-					->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at');
+            ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
+            ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at');
         return Datatables::of($data)
             ->make(true);
     }
     public function createStockAdjustment(Request $request){
-		$this->validate($request,[
+        $this->validate($request,[
             // 'productId' => 'required',
             'status' => 'required',
             'quantity' => 'required',
             'Date' => 'required'
         ]);
-		
-		$arrayCount = count($request->productId);
-		for($i = 0;$i<$arrayCount;$i++){
-			$insertReturns = DB::table('stock_adjustments')->insert(
-				['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => $request->status[$i], 'created_at' => $request->Date]
-			);
-			
-			if($request->status == "damaged"){
-				$insertDamagedItems = DB::table('damaged_items')->insert(
-					['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
-				);
-			}else{
-				$insertDamagedItems = DB::table('lost_items')->insert(
-					['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
-				);
-			}
-		}
+
+        $arrayCount = count($request->productId);
+        for($i = 0;$i<$arrayCount;$i++){
+            $insertReturns = DB::table('stock_adjustments')->insert(
+                ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => $request->status[$i], 'created_at' => $request->Date]
+            );
+
+            if($request->status == "damaged"){
+                $insertDamagedItems = DB::table('damaged_items')->insert(
+                    ['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
+                );
+            }else{
+                $insertDamagedItems = DB::table('lost_items')->insert(
+                    ['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
+                );
+            }
+        }
         return $request->all();
     }
 
     public function getItemsForItems(){
 
         $data = DB::table('products')
-					->join('salable_items', 'products.product_id', '=', 'salable_items.product_id')
-                    ->select('status','products.product_id','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'products.created_at', 'products.updated_at');
-                    // ->where('status','=','available');
-                    // $string = "";
-                    // if(true){
-            
-                    // }
-                    return Datatables::of($data)
+            ->join('salable_items', 'products.product_id', '=', 'salable_items.product_id')
+            ->select('status','products.product_id','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'products.created_at', 'products.updated_at');
+        // ->where('status','=','available');
+        // $string = "";
+        // if(true){
+
+        // }
+        return Datatables::of($data)
             ->addColumn('action',function($data){
                 $buttons = "<a href = '#editModal' data-toggle='modal' >
                         <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
@@ -382,9 +382,9 @@ class AdminController extends Controller
                         <button onclick='viewItemHistory(this)' class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>
                     </a>";
                 if($data->status === "available"){
-                   return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Disable</button>";
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Disable</button>";
                 }else{
-                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-ok'></i>Enable</button>";
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-ok'></i> Enable</button>";
                 }
                 // return "    
                 //     <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i>$data->status</button>
@@ -403,7 +403,7 @@ class AdminController extends Controller
             // 'retailPrice' => 'required'
         ]);
 
-   
+
         //Create new Item Products Table
         $item = new Product;
         $item->description = $request->input('description');
@@ -413,10 +413,10 @@ class AdminController extends Controller
         $item->save();
 
         $prod_id = DB::table('products')
-                        ->select('product_id')
-                        ->orderBy('product_id', 'desc')
-                        ->first();
-                
+            ->select('product_id')
+            ->orderBy('product_id', 'desc')
+            ->first();
+
         //Create new Item Salable_items Table
         $item_salable = new Salable_item;
         $item_salable->product_id = $prod_id->product_id;
@@ -454,64 +454,64 @@ class AdminController extends Controller
         return "successful";
 
     }
-	public function updateItemStatus(Request $request){
-		if($request->status == "available"){
-			DB::table('products')
-				->where('product_id', $request->itemId)
-				->update(['status' => 'unavailable']);
+    public function updateItemStatus(Request $request){
+        if($request->status == "available"){
+            DB::table('products')
+                ->where('product_id', $request->itemId)
+                ->update(['status' => 'unavailable']);
         }else{
-			DB::table('products')
-				->where('product_id', $request->itemId)
-				->update(['status' => 'available']);
-		}
-		return $request->all();
-	}
-	public function viewItemHistory($id){
+            DB::table('products')
+                ->where('product_id', $request->itemId)
+                ->update(['status' => 'available']);
+        }
+        return $request->all();
+    }
+    public function viewItemHistory($id){
         $data = [];
         $sales = DB::table('sales')
-                    ->join('products', 'products.product_id' , '=' , 'sales.product_id')
-                    ->select('products.product_id as product_id', 'description', 'sales.quantity as quantity', 'customer_name', 'sales.created_at as date')
-                    ->where('sales.product_id', '=', $id)
-                    ->get();
+            ->join('products', 'products.product_id' , '=' , 'sales.product_id')
+            ->select('products.product_id as product_id', 'description', 'sales.quantity as quantity', 'customer_name', 'sales.created_at as date')
+            ->where('sales.product_id', '=', $id)
+            ->get();
 
-            $arrayCount1 = count($sales);
-            for($i = 0;$i<$arrayCount1;$i++){
-                // array_push($data, [$sales[$i]->customer_name]);
-                array_push($data, ["deducted", "bought", $sales[$i]->description, $sales[$i]->quantity, $sales[$i]->customer_name, 'date'=>$sales[$i]->date]);
-           }
+        $arrayCount1 = count($sales);
+        for($i = 0;$i<$arrayCount1;$i++){
+            // array_push($data, [$sales[$i]->customer_name]);
+            array_push($data, ["deducted", "bought", $sales[$i]->description, $sales[$i]->quantity, $sales[$i]->customer_name, 'date'=>$sales[$i]->date]);
+        }
 
         $purchases = DB::table('purchases')
-                    ->join('products', 'products.product_id' , '=' , 'purchases.product_id')
-                    ->select('products.product_id as product_id', 'description', 'purchases.quantity as quantity', 'supplier_name', 'purchases.created_at as date')
-                    ->where('purchases.product_id', '=', $id)
-                    ->get();
+            ->join('products', 'products.product_id' , '=' , 'purchases.product_id')
+            ->select('products.product_id as product_id', 'description', 'purchases.quantity as quantity', 'supplier_name', 'purchases.created_at as date')
+            ->where('purchases.product_id', '=', $id)
+            ->get();
 
-            $arrayCount2 = count($purchases);
-            for($i = 0;$i<$arrayCount2;$i++){
-                array_push($data, ["added", "purchased", $purchases[$i]->description, $purchases[$i]->quantity, $purchases[$i]->supplier_name, 'date'=>$purchases[$i]->date]);
-            }
+        $arrayCount2 = count($purchases);
+        for($i = 0;$i<$arrayCount2;$i++){
+            array_push($data, ["added", "purchased", $purchases[$i]->description, $purchases[$i]->quantity, $purchases[$i]->supplier_name, 'date'=>$purchases[$i]->date]);
+        }
 
         $damaged_items = DB::table('damaged_items')
-                    ->join('products', 'products.product_id' , '=' , 'damaged_items.product_id')
-                    ->select('products.product_id as product_id', 'description', 'damaged_items.quantity as quantity', 'damaged_items.created_at as date')
-                    ->where('damaged_items.product_id', '=', $id)
-                    ->get();
+            ->join('products', 'products.product_id' , '=' , 'damaged_items.product_id')
+            ->select('products.product_id as product_id', 'description', 'damaged_items.quantity as quantity', 'damaged_items.created_at as date')
+            ->where('damaged_items.product_id', '=', $id)
+            ->get();
 
-            $arrayCount3 = count($damaged_items);
-            for($i = 0;$i<$arrayCount3;$i++){
-                array_push($data, ["deducted", "damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, "ADMIN", 'date'=>$damaged_items[$i]->date]);
-            }
+        $arrayCount3 = count($damaged_items);
+        for($i = 0;$i<$arrayCount3;$i++){
+            array_push($data, ["deducted", "damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, "ADMIN", 'date'=>$damaged_items[$i]->date]);
+        }
 
         $lost_items = DB::table('lost_items')
-                    ->join('products', 'products.product_id' , '=' , 'lost_items.product_id')
-                    ->select('products.product_id as product_id', 'description', 'lost_items.quantity as quantity', 'lost_items.created_at as date')
-                    ->where('lost_items.product_id', '=', $id)
-                    ->get();
+            ->join('products', 'products.product_id' , '=' , 'lost_items.product_id')
+            ->select('products.product_id as product_id', 'description', 'lost_items.quantity as quantity', 'lost_items.created_at as date')
+            ->where('lost_items.product_id', '=', $id)
+            ->get();
 
-            $arrayCount4 = count($lost_items);
-            for($i = 0;$i<$arrayCount4;$i++){
-                array_push($data, ["deducted", "lost", $lost_items[$i]->description, $lost_items[$i]->quantity, "ADMIN", 'date'=>$lost_items[$i]->date]);                
-            }
+        $arrayCount4 = count($lost_items);
+        for($i = 0;$i<$arrayCount4;$i++){
+            array_push($data, ["deducted", "lost", $lost_items[$i]->description, $lost_items[$i]->quantity, "ADMIN", 'date'=>$lost_items[$i]->date]);                
+        }
 
         foreach ($data as $key => $row){
             $date[$key] = $row['date'];
@@ -524,7 +524,7 @@ class AdminController extends Controller
         // $data = {"sales":"$sales"};
         //return [$sales,$purchases,$damaged_items,$lost_items];
     }
-    
+
     function date_compare($a,$b){
         $t1 = strtotime($a['date']);
         $t2 = strtotime($b['date']);
@@ -572,7 +572,7 @@ class AdminController extends Controller
         $results = User::latest('created_at')->first();
         return $results;
         // return DB::table('users')->orderBy('created_at', 'desc')->first();
-        
+
 
         // return redirect('/admin/employees');
         //    return redirect('/items')->with('success','Success adding item');
@@ -601,7 +601,7 @@ class AdminController extends Controller
         $employee->password = $resetPassword;
         $employee->save();
         return response($resetPassword);
- 
+
 
     }
     public function changePassword(Request $request){
@@ -621,50 +621,50 @@ class AdminController extends Controller
             return "unsuccessful";
         }
         return $request->all();
- 
+
 
     }
 
     public function getNotification(){
-		$data = [];
-		$products = DB::table('products')
-                    ->select('product_id','reorder_level')
-                    ->where('status', '=', 'available')
-					->get();
-	
-		$arrayCount = count($products);
-		
-		for($i = 0;$i<$arrayCount;$i++){
+        $data = [];
+        $products = DB::table('products')
+            ->select('product_id','reorder_level')
+            ->where('status', '=', 'available')
+            ->get();
 
-			$sales = DB::table('salable_items')
-						->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
-						->select('products.product_id as product_id', 'description', 'salable_items.quantity as quantity', 'salable_items.created_at as date')
-						->where('products.product_id' , '=' , $products[$i]->product_id)
-						->where('salable_items.quantity', '<', $products[$i]->reorder_level)
-						->where('salable_items.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-						->where('salable_items.created_at','<=', DB::raw('NOW()'))
-						->first();
-						
-				// $arrayCount1 = count($sales);
-				// for($i = 0;$i<$arrayCount1;$i++){
-			if($sales){
-				array_push($data, ["reorder", $sales->product_id, $sales->description, $sales->quantity, 'date'=>$sales->date]);
-			}
-				// }
+        $arrayCount = count($products);
 
-		}
-		$stockAdjustment = DB::table('stock_adjustments')
-								->join('products', 'products.product_id' , '=' , 'stock_adjustments.product_id')
-								->select('products.product_id as product_id', 'description', 'stock_adjustments.quantity as quantity', 'stock_adjustments.created_at as date', 'stock_adjustments.status as status', 'stock_adjustments.employee_name as name')
-								->where('stock_adjustments.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-								->where('stock_adjustments.created_at','<=', DB::raw('NOW()'))
-								->get();
+        for($i = 0;$i<$arrayCount;$i++){
 
-			$arrayCount2 = count($stockAdjustment);
-			for($i = 0;$i<$arrayCount2;$i++){
-				array_push($data, ["stock_adjustment", $stockAdjustment[$i]->product_id, $stockAdjustment[$i]->description, $stockAdjustment[$i]->quantity, 'date'=>$stockAdjustment[$i]->date,  $stockAdjustment[$i]->status, $stockAdjustment[$i]->name]);
-			}
-	
+            $sales = DB::table('salable_items')
+                ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
+                ->select('products.product_id as product_id', 'description', 'salable_items.quantity as quantity', 'salable_items.created_at as date')
+                ->where('products.product_id' , '=' , $products[$i]->product_id)
+                ->where('salable_items.quantity', '<', $products[$i]->reorder_level)
+                ->where('salable_items.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
+                ->where('salable_items.created_at','<=', DB::raw('NOW()'))
+                ->first();
+
+            // $arrayCount1 = count($sales);
+            // for($i = 0;$i<$arrayCount1;$i++){
+            if($sales){
+                array_push($data, ["reorder", $sales->product_id, $sales->description, $sales->quantity, 'date'=>$sales->date]);
+            }
+            // }
+
+        }
+        $stockAdjustment = DB::table('stock_adjustments')
+            ->join('products', 'products.product_id' , '=' , 'stock_adjustments.product_id')
+            ->select('products.product_id as product_id', 'description', 'stock_adjustments.quantity as quantity', 'stock_adjustments.created_at as date', 'stock_adjustments.status as status', 'stock_adjustments.employee_name as name')
+            ->where('stock_adjustments.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
+            ->where('stock_adjustments.created_at','<=', DB::raw('NOW()'))
+            ->get();
+
+        $arrayCount2 = count($stockAdjustment);
+        for($i = 0;$i<$arrayCount2;$i++){
+            array_push($data, ["stock_adjustment", $stockAdjustment[$i]->product_id, $stockAdjustment[$i]->description, $stockAdjustment[$i]->quantity, 'date'=>$stockAdjustment[$i]->date,  $stockAdjustment[$i]->status, $stockAdjustment[$i]->name]);
+        }
+
 
         foreach ($data as $key => $row){
             $date[$key] = $row['date'];

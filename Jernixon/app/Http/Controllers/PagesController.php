@@ -7,7 +7,7 @@ use App\Product;
 
 class PagesController extends Controller
 {
-     /**
+    /**
      * Create a new controller instance.
      *
      * @return void

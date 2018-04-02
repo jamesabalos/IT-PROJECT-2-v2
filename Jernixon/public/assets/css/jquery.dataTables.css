@@ -1,6 +1,6 @@
 /*
- * Table styles
- */
+* Table styles
+*/
 table.dataTable {
   width: 100%;
   margin: 0 auto;
@@ -8,11 +8,11 @@ table.dataTable {
   border-collapse: separate;
   border-spacing: 0;
   /*
-   * Header and footer styles
-   */
+  * Header and footer styles
+  */
   /*
-   * Body styles
-   */
+  * Body styles
+  */
 }
 table.dataTable thead th,
 table.dataTable tfoot th {
@@ -271,8 +271,8 @@ table.dataTable td {
 }
 
 /*
- * Control feature layout
- */
+* Control feature layout
+*/
 .dataTables_wrapper {
   position: relative;
   clear: both;

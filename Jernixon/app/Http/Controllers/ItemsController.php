@@ -39,11 +39,11 @@ class ItemsController extends Controller
                 <a href = '#editModal' data-toggle='modal' >
                     <button id='Edit' class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i>Edit</button>
                 </a>
-                
+
                 ";
-    
-            
-                })
+
+
+            })
             ->make(true);
     }
     /**
@@ -65,10 +65,10 @@ class ItemsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-                    'description' => 'required',
-                    'quantityInStock' => 'required',
-                    'wholeSalePrice' => 'required',
-                    'retailPrice' => 'required'
+            'description' => 'required',
+            'quantityInStock' => 'required',
+            'wholeSalePrice' => 'required',
+            'retailPrice' => 'required'
         ]);
 
         //Create new Item
@@ -80,7 +80,7 @@ class ItemsController extends Controller
         $item->save();
         return response($request->all());
         // return "success";
-       // return redirect('/items')->with('success','Success adding item');
+        // return redirect('/items')->with('success','Success adding item');
     }
 
     /**
@@ -91,12 +91,12 @@ class ItemsController extends Controller
      */
     public function show($id)
     {
-    //    $item = Product::find($id);
+        //    $item = Product::find($id);
         // $item = DB::select("SELECT * from products where product_id=$id");
         $item = Product::where('description','LIKE','%'.$id.'%')
-                    ->orderBy('description','asc')
-                    //->paginate(2);
-                    ->get();
+            ->orderBy('description','asc')
+            //->paginate(2);
+            ->get();
         return $item;
     }
 
@@ -129,11 +129,11 @@ class ItemsController extends Controller
         //dd=(json_decode($request->getContent(), true));
         //$data = $request->json()->all();
         return "pending query...";
-       // $item = DB::select("UPDATE product set _='$request->input('inputValue')'");
+        // $item = DB::select("UPDATE product set _='$request->input('inputValue')'");
     }
 
     public function subtractQuantity(Request $request){
-       // $item = DB::select("");        
+        // $item = DB::select("");        
         return "pending query...";        
     }
     public function returnItem(Request $request){
@@ -145,7 +145,7 @@ class ItemsController extends Controller
             'reason' => 'required',
             'status' => 'required'
         ]);
-       // $item = DB::select("");
+        // $item = DB::select("");
 
         return "pending query for return item...";        
     }

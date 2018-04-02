@@ -296,7 +296,7 @@ table.dataTable td {
 }
 .dataTables_wrapper .dataTables_length {
 	float: left;
-    margin-top:6px
+	margin-top:6px
 }
 .dataTables_wrapper .dataTables_filter {
 	float: right;

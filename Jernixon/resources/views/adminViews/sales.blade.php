@@ -89,10 +89,10 @@ ng-app="ourAngularJsApp"
     }
 
     $(document).ready(function(){
-        
-              let today = new Date().toISOString().substr(0, 10);
-      document.querySelector("#today").value = today;
-      
+
+        let today = new Date().toISOString().substr(0, 10);
+        document.querySelector("#today").value = today;
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

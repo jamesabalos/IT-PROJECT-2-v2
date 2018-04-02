@@ -5,8 +5,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-align-items: flex-end;
-      -ms-flex-align: end;
-          align-items: flex-end;
+  -ms-flex-align: end;
+  align-items: flex-end;
   height: 425px;
   margin: 0;
 }
@@ -22,23 +22,23 @@
   height: 100%;
   margin: 0 1.8% 0 0;
   -webkit-flex: 1 1 15%;
-      -ms-flex: 1 1 15%;
-          flex: 1 1 15%;
+  -ms-flex: 1 1 15%;
+  flex: 1 1 15%;
 }
 
 .bar-graph .bar-graph-axis {
   -webkit-flex: 1 1 8%;
-      -ms-flex: 1 1 8%;
-          flex: 1 1 8%;
+  -ms-flex: 1 1 8%;
+  flex: 1 1 8%;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
 }
 
 .bar-graph .bar-graph-label {

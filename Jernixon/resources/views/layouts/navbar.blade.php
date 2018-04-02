@@ -482,9 +482,9 @@
                         </div>
                     </div>
                 </div>
-                <div id="notification" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-                    <div class = "modal-dialog">
-                        <div class = "modal-content">
+                <div id="notification" class="modal1 fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+                    <div class = "modal1-dialog">
+                        <div class = "modal1-content">
 
                             {!! Form::open(['method'=>'get','id'=>'formNotification']) !!}
                             <input type="hidden" id="_token" value="{{ csrf_token() }}">
@@ -494,7 +494,7 @@
 <h3 class="modal-title">Notifications</h3>
 </div-->
 
-                            <div class = "modal-body">  
+                            <div class = "modal1-body">  
 
                                 <div class="panel panel-default">
                                     <div class="panel-heading">

@@ -74,7 +74,7 @@ class="active"
                                         <th>Selling Price</th>
                                         <th>Reorder Level</th>
                                         <!--th>Created At</th>
-                                        <th>Updated At</th-->
+<th>Updated At</th-->
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -397,8 +397,6 @@ class="active"
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title">Add New Item</h3>
             </div>
-            <div class="alert alert-danger hidden" id="errorDivAddNewItem">
-            </div>
             <div class = "modal-body">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -433,6 +431,8 @@ class="active"
                         @include('inc.messages')
                     </div>
                 </div>
+                <div class="alert alert-danger hidden" id="errorDivAddNewItem">
+                </div>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
@@ -442,7 +442,7 @@ class="active"
                         </div>
                     </div>
                 </div>
-                        {!! Form::close() !!}
+                {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -613,7 +613,7 @@ class="active"
                         <div id="historyResult">
 
                         </div>
-                        
+
                     </div>
                 </div>
                 <div class="row">

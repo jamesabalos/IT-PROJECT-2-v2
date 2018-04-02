@@ -426,9 +426,6 @@ ng-app="ourAngularJsApp"
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
-                        <div id="errorDivCreateReturns" class="hidden">
-
-                        </div>
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
@@ -532,6 +529,9 @@ ng-app="ourAngularJsApp"
                         </div> --}}
                     </div>
                 </div>
+                <div id="errorDivCreateReturns" class="hidden">
+
+                        </div>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

@@ -212,7 +212,7 @@ ng-app="ourAngularJsApp"
 	function getItems(button){
 		
 		var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
-		var date = button.parentNode.parentNode.parentNode.childNodes[2].innerHTML;
+		var date = button.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
 		// console.log(itemId);
 		// var fullRoute = "/admin/returns/getReturnedItems/"+ORnumber;
 		$.ajax({
@@ -221,7 +221,7 @@ ng-app="ourAngularJsApp"
             data: {
                 'ORNumber': ORnumber,
                 'Date': date
-            }
+            },
 
 			success:function(data){
                 $("#veiwReturnedItemTbody tr").remove();

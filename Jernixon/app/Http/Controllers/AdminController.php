@@ -222,6 +222,7 @@ class AdminController extends Controller
     public function getReturns(){
         $data = DB::table('returns')
             ->select('or_number', 'created_at')
+			->orderBy('created_at', 'desc')
             ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){

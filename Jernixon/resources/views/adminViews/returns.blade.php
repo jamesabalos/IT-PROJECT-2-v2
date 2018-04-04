@@ -96,7 +96,7 @@ ng-app="ourAngularJsApp"
                 for(var i = 0; i < data.length; i++){
                     var newRow = modalReturnItemTbody.insertRow(-1);
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled></td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control' onchange='toggleCheckbox(this)'></td>";
                 } 
@@ -123,7 +123,7 @@ ng-app="ourAngularJsApp"
         if(button.checked){
             var newRow = exchangeTable.insertRow(-1);
             newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='" +button.getAttribute("data-productId")+ "'>" +data[0].innerHTML+ "</td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' class='form-control' value='" +data[1].childNodes[0].value+ "' max='" +data[1].childNodes[0].value+ "' min='1'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' class='form-control' value='" +data[1].innerHTML+ "' max='" +data[1].innerHTML+ "' min='1'></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='price[]' value='" +data[2].innerHTML+ "'>" +data[2].innerHTML+ "</td>";
             button.parentNode.previousSibling.previousSibling.childNodes[0].removeAttribute("disabled");
 

@@ -109,7 +109,7 @@ class AdminController extends Controller
         if($data->isEmpty()){
             for($i = 0;$i<$arrayCount;$i++){
                 $insert = DB::table('sales')->insert(
-                    ['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $mytime,]
+                    ['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date]
                 );
                 DB::table('salable_items')
                     ->where('product_id', $request->productIds[$i])
@@ -257,10 +257,12 @@ class AdminController extends Controller
     }
 
     public function gerReturnedItems(Request $request){
+
         $data = DB::table('returns')
             ->join('products', 'products.product_id', '=', 'returns.product_id')
             ->select('returns.product_id','description', 'customer_name', 'quantity', 'price', 'quantity', 'returns.created_at')
             ->where('or_number', '=',$request->ORNumber)
+            ->where('returns.created_at', '=',$request->Date)
             ->get();
         return $data;
 
@@ -272,6 +274,7 @@ class AdminController extends Controller
             'quantity' => 'required',
             'customerName' => 'required',
             'quantity' => 'required',
+			'Date' => 'required'
         ]);
 
         $arrayCount = count($request->productId);

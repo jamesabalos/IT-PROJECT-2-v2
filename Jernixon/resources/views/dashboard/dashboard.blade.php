@@ -166,7 +166,7 @@ class="active"
     //index.php
     $connect = mysqli_connect("localhost", "root", "", "inventory_jernixon");
     //top items query
-    $queryTopItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id limit 10";
+    $queryTopItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) group by product_id order by quantity desc limit 10";
     $result = mysqli_query($connect, $queryTopItems);
     
     $chart_data_top_items = '';
@@ -376,7 +376,7 @@ function barChartTopItems() {
     data: [<?php echo $chart_data_top_items; ?>],
     xkey: 'name',
     ykeys: ['quantity'],
-    labels: ['quantity'],
+    labels: ['Qty sold'],
     lineColors: ['#1e88e5'],
     lineWidth: '3px',
     resize: true,
@@ -390,7 +390,7 @@ function barChartLeastItems() {
     data: [<?php echo $chart_data_least_items; ?>],
     xkey: 'name',
     ykeys: ['quantity'],
-    labels: ['quantity'],
+    labels: ['Qty sold'],
     lineColors: ['#1e88e5'],
     lineWidth: '3px',
     resize: true,

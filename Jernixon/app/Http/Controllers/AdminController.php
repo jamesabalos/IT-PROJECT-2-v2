@@ -94,6 +94,7 @@ class AdminController extends Controller
             'customerName' => 'required',
             'receiptNumber' => 'required',
             'quantity' => 'required',
+            'Date' => 'required',
         ]);
 
         $arrayCount = count($request->productIds);
@@ -255,7 +256,9 @@ class AdminController extends Controller
 
     }
 
-    public function gerReturnedItems($ORNumber){
+    public function gerReturnedItems(Request $request){
+    // public function gerReturnedItems($ORNumber){
+        return $request->all();
         $data = DB::table('returns')
             ->join('products', 'products.product_id', '=', 'returns.product_id')
             ->select('returns.product_id','description', 'customer_name', 'quantity', 'price', 'quantity', 'returns.created_at')

@@ -212,11 +212,16 @@ ng-app="ourAngularJsApp"
 	function getItems(button){
 		
 		var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+		var date = button.parentNode.parentNode.parentNode.childNodes[2].innerHTML;
 		// console.log(itemId);
-		var fullRoute = "/admin/returns/getReturnedItems/"+ORnumber;
+		// var fullRoute = "/admin/returns/getReturnedItems/"+ORnumber;
 		$.ajax({
 			type:'GET',
-			url: fullRoute,
+			url: "{{route('admin.getReturnedItems')}}",
+            data: {
+                'ORNumber': ORnumber,
+                'Date': date
+            }
 
 			success:function(data){
                 $("#veiwReturnedItemTbody tr").remove();

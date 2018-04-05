@@ -151,53 +151,69 @@ class="active"
             // dataType:"json",
             success:function(data){
                 console.log(data)
-                // <div class="card">
-                //  <div class="card-container bg-danger" style="padding: 1em;">
-                //     <p></p>
-                //     <p style="font-size: 12px"><b>Items Subtracted: </b></p>
-                //     <p style="font-size: 12px"><b>Supplied by: </b></p>
-                //     <p style="font-size: 12px"><b>Date: </b></p>
-                //     </div>
-                // </div>
+                $("#historyTbody tr").remove();
+                
                 var result = "";
+//                 for (var i = 0; i < data.length; i++) {
+//                     result += "<div class='card'>";
+//                     if(data[i][0] === "added"){
+//                         result += "<div class='card-container bg-success' style='padding: 1em; margin-bottom: -1.7em'>\
+// <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Added</b></p>\
+// <p style='font-size: 12px'><b>Supplied by " +data[i][4]+ "</b></p>\
+// <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+//     </div>\
+//     </div>";
+//                     }else{
+//                         if(data[i][1] === "bought"){
+//                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
+// <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+// <p style='font-size: 12px'><b>Bought by " +data[i][4]+ "</b></p>\
+// <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+//     </div>\
+//     </div>";
+
+//                         }else if(data[i][1] === "damaged"){
+//                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
+// <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+// <p style='font-size: 12px'><b>Damaged item.</b></p>\
+// <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+//     </div>\
+//     </div>";
+//                         }else{
+//                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
+// <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+// <p style='font-size: 12px'><b>Lost item.</b></p>\
+// <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+//     </div>\
+//     </div>";
+//                         }
+
+//                     }
+//                 }
+                var thatTbody = document.getElementById("historyTbody");
+
                 for (var i = 0; i < data.length; i++) {
-                    result += "<div class='card'>";
+                    var newRow = thatTbody.insertRow(-1);
+                    var rows = $("#historyTbody tr");
                     if(data[i][0] === "added"){
-                        result += "<div class='card-container bg-success' style='padding: 1em; margin-bottom: -1.7em'>\
-<p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Added</b></p>\
-<p style='font-size: 12px'><b>Supplied by " +data[i][4]+ "</b></p>\
-<p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-    </div>\
-    </div>";
+                     rows[rows.length-1].setAttribute("style","background-color:#66cc66")
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td></td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
                     }else{
-                        if(data[i][1] === "bought"){
-                            result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
-<p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
-<p style='font-size: 12px'><b>Bought by " +data[i][4]+ "</b></p>\
-<p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-    </div>\
-    </div>";
-
-                        }else if(data[i][1] === "damaged"){
-                            result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
-<p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
-<p style='font-size: 12px'><b>Damaged item.</b></p>\
-<p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-    </div>\
-    </div>";
-                        }else{
-                            result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
-<p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
-<p style='font-size: 12px'><b>Lost item.</b></p>\
-<p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-    </div>\
-    </div>";
-                        }
-
+                        rows[rows.length-1].setAttribute("style","background-color:#ff6666")                                        
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td></td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
                     }
                 }
-                document.getElementById("historyResult").innerHTML = "";
-                document.getElementById("historyResult").innerHTML = result;
+
+                // document.getElementById("historyResult").innerHTML = "";
+                // document.getElementById("historyResult").innerHTML = result;
 
 
 
@@ -605,13 +621,27 @@ class="active"
                         </strong>
                     </div>
                     <div class="panel-body" style="overflow-y: scroll; max-height:60%;">
-                        <div class="autocomplete" style="width:200px;">
+                        {{-- <div class="autocomplete" style="width:200px;">
                             <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
                             <div id="searchResultDiv" class="searchResultDiv">
                             </div>
                         </div>
                         <div id="historyResult">
-
+                        </div> --}}
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">No. of items</th>
+                                        <th class="text-left">Action</th>
+                                        <th class="text-left">Bought/supplied by</th>
+                                        <th class="text-left">Amount</th>
+                                        <th class="text-left">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyTbody">
+                                </tbody>
+                            </table>
                         </div>
 
                     </div>

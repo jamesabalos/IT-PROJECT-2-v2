@@ -89,6 +89,10 @@ ng-app="ourAngularJsApp"
             }
             
             $(document).ready(function(){
+
+                let today = new Date().toISOString().substr(0, 10);
+                document.querySelector("#today").value = today;
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -147,20 +151,20 @@ ng-app="ourAngularJsApp"
                                 
                                 //prompt the message
                                 
-    //                            $("#successDiv").css("display:block");
-    //                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
-    //                            $("#successDiv").slideDown("slow");
+                                //$("#successDiv").css("display:block");
+                                //document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
+                                //$("#successDiv").slideDown("slow");
                                 
                                 $("#successDiv p").remove();
                                 $("#successDiv").removeClass("alert-danger hidden").addClass("alert-success")
                                 // .addClass("alert-success")
                                     .html("<h3>Transaction successful</h3>");
 
-    //                            $("#successDiv").css("display:block");
+                                // $("#successDiv").css("display:block");
                                 $("#successDiv").slideDown("slow")
                                                 .delay(1000)                        
                                                 .hide(1500);
-    //                            $("#successDiv").removeAttribute("style")
+                                 //$("#successDiv").removeAttribute("style")
 
                                 //refresh dataTable
                                 $("#dashboardDatatable").DataTable().ajax.reload();
@@ -170,21 +174,17 @@ ng-app="ourAngularJsApp"
                                 $("#successDiv").html("Receipt Number duplicated");
                             }
 
-                           
-                            
-
                         },
                         
-                       
                         error:function(data){
                             var response = data.responseJSON;
                             console.log(response)
 
                              //prompt the message
                             $("#successDiv").css("display","block");
-//                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
-//                            $("#successDiv").slideDown("slow");
-//                            $("#successDiv").css("display:block");
+                           // document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
+                           // $("#successDiv").slideDown("slow");
+                           // $("#successDiv").css("display:block");
                             $("#successDiv").removeClass("alert-success hidden").addClass("alert-danger");
                             $("#successDiv").html(function(){
                                 var addedHtml="";
@@ -253,16 +253,29 @@ ng-app="ourAngularJsApp"
                             </div>
                             {!! Form::open(['method'=>'post','id'=>'formSales']) !!}                                
                             <h4 ng-bind="name">Customer Purchase</h4>
-                            <div class="row">
-                                <div class="col-md-5" margin >
-                                    {{Form::label('customerName', 'Customer Name:')}}
-                                    {{Form::text('customerName','',['class'=>'form-control'])}}
-                                </div>
-                                <div class="col-md-5" margin >
-                                    {{Form::label('receiptNumber', 'Receipt Number:')}}
-                                    {{Form::text('receiptNumber','',['class'=>'form-control'])}}
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-0" margin>
+                            {{Form::label('Date', 'Date:')}}
+                        </div>
+                        <div class="col-md-2" margin>
+                            <input type="date" name="Date" id="today"  class="form-control"/>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-5" margin >
+                            {{Form::label('customerName', 'Customer Name:')}}
+                            {{Form::text('customerName','',['class'=>'form-control'])}}
+                        </div>
+                        <div class="col-md-5" margin >
+                            {{Form::label('receiptNumber', 'Receipt Number:')}}
+                            {{Form::number('receiptNumber','',['class'=>'form-control'])}}
+                        </div>
+                    </div>
+                </div>
                             
                             <div class="row"> 
                                 <div class="col-md-12 table-responsive">
@@ -288,21 +301,21 @@ ng-app="ourAngularJsApp"
                                             </tr>  --}}
                                         </tbody>
                                     </table>
-									<div class="form-group">
-										<div class="row">
-											<div class="col-md-9 text-right">
-												<label>Total Sales:</label>
-											</div>
-											<div class="col-md-3" id="totalSalesDiv">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-9 text-right">
+                                                <label>Total Sales:</label>
+                                            </div>
+                                            <div class="col-md-3" id="totalSalesDiv">
                                                 <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
                                             </div>
-											<div class="text-right">                                           
+                                            <div class="text-right">                                           
                                                 <div class="col-md-12">   
                                                     <button class="btn btn-primary" type="submit">Submit</button>
                                                 </div>
                                             </div> 
-										</div>
-									</div>
+                                        </div>
+                                    </div>
                                 </div> 
                             </div>
                             {!! Form::close() !!}
@@ -418,126 +431,134 @@ $('#dashboardDatatable').DataTable({
         }],
         
         createdRow: function(row, data, dataIndex) {
-            $compile(angular.element(row).contents())($scope);
-        },
-        
-        //fetch the items in localStorage after the dataTables initialization
-        "initComplete": function(settings, json) {
-            var len=localStorage.length;
-            var thatTbody = document.getElementById("cartTbody");
-            
-            var totalSalesNgBinds ="";
-            for(var i=0; i<len; i++) {
-                
-                var key = localStorage.key(i);
-                var value = localStorage[key];
-                if(value.includes("item")){
-                    var myItemJSON = JSON.parse(localStorage.getItem(key));            
-                    //hide row
-                    document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
-                    var newRow = thatTbody.insertRow(-1);
-                    newRow.insertCell(-1).innerHTML = myItemJSON.item ;
-                    // newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;
-                    // newRow.insertCell(-1).innerHTML = myItemJSON.wholeSalePrice;
-                    
-                    // var salesPrice = "<p class='form-control style='color:green' ng-bind='" +itemName+ "SP'></p>";
-                    // var temp2 = $compile(salesPrice)($scope);
-                    // angular.element( lastRow.insertCell(-1) ).append(temp2);
-                    
-                    //newRow.insertCell(-1).innerHTML = myItemJSON.retailPrice;
-                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.retailPrice)($scope) );
-                    
-                    //newRow.insertCell(-1).innerHTML = myItemJSON.quantityPurchase;
-                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );
-                    
-                    //newRow.insertCell(-1).innerHTML = myItemJSON.salesPrice;
-                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.salesPrice)($scope) );
-                    
-                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
-                    // newRow.insertCell(-1).innerHTML = myItemJSON.removeButton;
-                    // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
-                    
-                    //remove the add button after the datatables load
-                    var button = document.getElementById(myItemJSON.itemId);
-                    $(button).hide();
-                    
-                    var temp = document.createElement('div');
-                    temp.innerHTML = myItemJSON.salesPrice;  
-                    if(totalSalesNgBinds==""){
-                        totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
-                    }else{
-                        totalSalesNgBinds += " + " + temp.firstChild.getAttribute("ng-bind");
+                    $compile(angular.element(row).contents())($scope);
+                },
+
+                //fetch the items in localStorage after the dataTables initialization
+                "initComplete": function(settings, json) {
+                    var len=localStorage.length;
+                    var thatTbody = document.getElementById("cartTbody");
+
+                    var totalSalesNgBinds ="";
+                    for(var i=0; i<len; i++) {
+
+                        var key = localStorage.key(i);
+                        var value = localStorage[key];
+                        if(value.includes("item")){
+                            var myItemJSON = JSON.parse(localStorage.getItem(key));            
+                            //hide row
+                            document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
+                            var newRow = thatTbody.insertRow(-1);
+                            newRow.insertCell(-1).innerHTML = myItemJSON.item ;
+                            // newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;
+                            // newRow.insertCell(-1).innerHTML = myItemJSON.wholeSalePrice;
+
+                            // var salesPrice = "<p class='form-control style='color:green' ng-bind='" +itemName+ "SP'></p>";
+                            // var temp2 = $compile(salesPrice)($scope);
+                            // angular.element( lastRow.insertCell(-1) ).append(temp2);
+
+                            //newRow.insertCell(-1).innerHTML = myItemJSON.retailPrice;
+                            angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.retailPrice)($scope) );
+
+                            //newRow.insertCell(-1).innerHTML = myItemJSON.quantityPurchase;
+                            angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );
+
+                            //newRow.insertCell(-1).innerHTML = myItemJSON.salesPrice;
+                            angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.salesPrice)($scope) );
+
+                            angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
+                            // newRow.insertCell(-1).innerHTML = myItemJSON.removeButton;
+                            // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
+
+                            //remove the add button after the datatables load
+                            var button = document.getElementById(myItemJSON.itemId);
+                            $(button).hide();
+
+                            var temp = document.createElement('div');
+                            temp.innerHTML = myItemJSON.salesPrice;  
+                            if(totalSalesNgBinds==""){
+                                var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");                                
+                                // totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
+                                totalSalesNgBinds += splitBind[0];
+                            }else{
+                                var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");
+                                // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
+                                totalSalesNgBinds += "+ " + splitBind[0];
+                            }
+
+
+                        }
                     }
-                    
-                    
+
+                    //initialize totalSales
+                    document.getElementById("totalSalesDiv").innerHTML="";
+                    if(totalSalesNgBinds === ""){
+                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+                    }else{
+                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+                    }
+                    angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+
+
                 }
-            }
-            
-            //initialize totalSales
-            document.getElementById("totalSalesDiv").innerHTML="";
-            var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
-            angular.element( totalSalesDiv ).append( $compile(price)($scope) );
-            
-            
-        }
-        
-        
-    });
-    
-    $scope.addButton = function(event) {
-        // alert("yesssss!!!")
-        // var thatTbody = document.getElementById("cartTbody");
-        // console.log( event.currentTarget.parentNode.parentNode.innerHTML )
-        // alert( event.target.parentNode.parentNode.innerHTML )
-        // var data = $(event.target.parentNode.parentNode.innerHTML).slice(0,-1);
-        // console.log(event)
-        var thatTable = document.getElementById("cartTable");
-        var numberOfRows = thatTable.rows.length;
-        var lastRow = thatTable.rows[numberOfRows-1];
-        var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'');
-        
-        var retailPrice = "<p class='form-control' style='color:green'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
-        var temp0 = $compile(retailPrice)($scope);                
-        angular.element( lastRow.insertCell(-1) ).append(temp0);    
-        
-        var inputNumber = "<input type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1'></input>";
-        var temp1 = $compile(inputNumber)($scope);
-        // var newRow = thatTbody.insertRow(-1);
-        // angular.element( newRow.insertCell(-1) ).append(temp);
-        angular.element( lastRow.insertCell(-1) ).append(temp1);
-        
-        var salesPrice = "<p class='form-control style='color:green' ng-bind='" +itemName+ "SP'></p><input type='hidden' name='salesPrices[]'>";
-        var temp2 = $compile(salesPrice)($scope);
-        angular.element( lastRow.insertCell(-1) ).append(temp2);
-        
-        // var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";
-        var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
-        var temp3 = $compile(removeButton)($scope);
-        angular.element( lastRow.insertCell(-1) ).append(temp3);
-        
-        //store in localStorage
-        var tds  = $(lastRow.innerHTML).slice(0);     
-        var itemObject = {
-            item: tds[0].innerHTML,
-            // quantityLeft: tds[1].innerHTML,
-            // wholeSalePrice: tds[2].innerHTML,
-            retailPrice: tds[1].childNodes[0].outerHTML + tds[1].childNodes[1].outerHTML,
-            quantityPurchase: tds[2].firstChild.outerHTML,
-            salesPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
-            removeButton: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
-            itemId: event.currentTarget.getAttribute("id")
-        };
-        
-        var jsonObject = JSON.stringify(itemObject);
-        localStorage.setItem(tds[0].innerHTML,jsonObject);
-        
-        //display Total Sales with ng-bind/s
-        // var len=localStorage.length;
-        // var ngBinds = "";
-        // for(var i=0; i<len; i++) {
-            //         var key = localStorage.key(i);
-            //         var value = localStorage[key];
-            //         if(value.includes("item")){
+
+
+            });
+
+            $scope.addButton = function(event) {
+                // alert("yesssss!!!")
+                // var thatTbody = document.getElementById("cartTbody");
+                // console.log( event.currentTarget.parentNode.parentNode.innerHTML )
+                // alert( event.target.parentNode.parentNode.innerHTML )
+                // var data = $(event.target.parentNode.parentNode.innerHTML).slice(0,-1);
+                // console.log(event)
+                var thatTable = document.getElementById("cartTable");
+                var numberOfRows = thatTable.rows.length;
+                var lastRow = thatTable.rows[numberOfRows-1];
+                var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'');
+
+                var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
+                var temp0 = $compile(retailPrice)($scope);                
+                angular.element( lastRow.insertCell(-1) ).append(temp0);    
+
+                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1'></input>";
+                var temp1 = $compile(inputNumber)($scope);
+                // var newRow = thatTbody.insertRow(-1);
+                // angular.element( newRow.insertCell(-1) ).append(temp);
+                angular.element( lastRow.insertCell(-1) ).append(temp1);
+
+                var salesPrice = "<p class='form-control' style='color:green;' ng-bind='" +itemName+ "SP |number:2'></p><input type='hidden' name='salesPrices[]'>";
+                var temp2 = $compile(salesPrice)($scope);
+                angular.element( lastRow.insertCell(-1) ).append(temp2);
+
+                // var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";
+                var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
+                var temp3 = $compile(removeButton)($scope);
+                angular.element( lastRow.insertCell(-1) ).append(temp3);
+
+                //store in localStorage
+                var tds  = $(lastRow.innerHTML).slice(0);     
+                var itemObject = {
+                    item: tds[0].innerHTML,
+                    // quantityLeft: tds[1].innerHTML,
+                    // wholeSalePrice: tds[2].innerHTML,
+                    retailPrice: tds[1].childNodes[0].outerHTML + tds[1].childNodes[1].outerHTML,
+                    quantityPurchase: tds[2].firstChild.outerHTML,
+                    salesPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
+                    removeButton: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
+                    itemId: event.currentTarget.getAttribute("id")
+                };
+
+                var jsonObject = JSON.stringify(itemObject);
+                localStorage.setItem(tds[0].innerHTML,jsonObject);
+
+                //display Total Sales with ng-bind/s
+                // var len=localStorage.length;
+                // var ngBinds = "";
+                // for(var i=0; i<len; i++) {
+                //         var key = localStorage.key(i);
+                //         var value = localStorage[key];
+                //         if(value.includes("item")){
                 //             // console.log(key + " => " + value);          
                 //             var myItemJSON = JSON.parse(localStorage.getItem(key));  
                 //             var salesPriceString = myItemJSON.salesPrice
@@ -546,7 +567,7 @@ $('#dashboardDatatable').DataTable({
                 //             console.log(temp.firstChild.getAttribute("ng-bind"))        
                 //         }
                 // }
-                
+
                 var totalSalesDiv = document.getElementById("totalSalesDiv");
                 // console.log(totalSalesDiv.childNodes)
                 var ngBindAttributes = totalSalesDiv.firstChild.getAttribute("ng-bind"); //get ng-bind attribute/s
@@ -554,14 +575,27 @@ $('#dashboardDatatable').DataTable({
                 if(ngBindAttributes==""){
                     var newNgBinds = itemName+"SP";
                 }else{
-                    var newNgBinds = ngBindAttributes + " + " + itemName+"SP";
+                    var newNgBinds = ngBindAttributes + "+ " + itemName+"SP";
                 }
-                var price = "<p class='form-control' style='color:green' ng-bind='" +newNgBinds+ "'></p>";
+
+                var binds = newNgBinds.split(" ");
+                var ngBindsResult = "";
+                    for(var i = 0; i < binds.length; i++){
+                        if(i % 2 === 0){
+                            if(ngBindsResult === ""){
+                                ngBindsResult = binds[i];
+                            }else{
+                                ngBindsResult += "+" +binds[i];
+                            }
+                        }
+                    }
+                    console.log("correct: " + ngBindsResult)
+                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsResult+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
-                
-                
+
+
             };
-            
+
             $scope.changing = function(event) {
                 // alert("changing!!!");
                 // console.log( angular.element(event).attr('class') );
@@ -574,38 +608,41 @@ $('#dashboardDatatable').DataTable({
                 $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
                 // $scope.totalSales =  $scope[ngModelName];
                 console.log($scope[sellingPrice])
+
+                // var totalSales = document.getElementById("totalSalesDiv").firstChild.innerText;
+                // console.log("totalSales: " +totalSales)
             }
-            
+
             $scope.remove = function(event){
                 // $(event.currentTarget.parentNode.parentNode).hide(500,function(){
-                    event.currentTarget.parentNode.parentNode.remove();
-                    
-                    // })
-                    var thatTable = document.querySelectorAll('#cartTable > tbody > tr')
-                    var numberOfRows = thatTable.length;
-                    var ngBinds = "";
-                    
-                    if(numberOfRows > 0){
-                        for(var i=0; i < numberOfRows; i++){
-                            if(ngBinds==""){
-                                ngBinds += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
-                            }else{
-                                ngBinds += " + " + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
-                            }
+                event.currentTarget.parentNode.parentNode.remove();
+
+                // })
+                var thatTable = document.querySelectorAll('#cartTable > tbody > tr')
+                var numberOfRows = thatTable.length;
+                var ngBinds = "";
+
+                if(numberOfRows > 0){
+                    for(var i=0; i < numberOfRows; i++){
+                        if(ngBinds==""){
+                            ngBinds += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
+                        }else{
+                            ngBinds += " + " + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
                         }
                     }
-                    console.log(ngBinds)    
-                    
-                    document.getElementById("totalSalesDiv").innerHTML="";
-                    var price = "<p class='form-control' style='color:green' ng-bind='" +ngBinds+ "'></p>";
-                    angular.element( totalSalesDiv ).append( $compile(price)($scope) );
                 }
-                
+                console.log(ngBinds)    
+
+                document.getElementById("totalSalesDiv").innerHTML="";
+                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBinds+ "'></p>";
+                angular.element( totalSalesDiv ).append( $compile(price)($scope) );
             }
-            ]);
-            
-            
-        </script>
+
+        }
+        ]);
+
+
+</script>
         {{--  <script src="{{asset('assets/js/angularJsControllers.js')}}"></script>  --}}
         
         @endsection

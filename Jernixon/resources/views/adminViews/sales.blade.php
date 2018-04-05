@@ -283,11 +283,11 @@ ng-app="ourAngularJsApp"
                         <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
                             <thead>
                                 <tr>
-                                    <td>Item</td>
-                                    <td>Selling Price</td>
-                                    <td>Qty Purchase</td>
-                                    <td>Sales</td>
-                                    <td>Action</td>
+                                    <th>Item</th>
+                                    <th>Selling Price</th>
+                                    <th>Qty Purchase</th>
+                                    <th>Sales</th>
+                                    <th>Action</th>
                                 </tr> 
 
                             </thead>

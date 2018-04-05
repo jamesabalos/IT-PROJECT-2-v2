@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use App\Product;
 use App\User;
@@ -334,6 +334,21 @@ class AdminController extends Controller
         return Datatables::of($data)
             ->make(true);
     }
+
+    public function createReports(Request $request){
+        $this->validate($request,[
+            'dateFrom' => 'required',
+            'dateTo' => 'required',
+        ]);
+        
+        if($request->dateFrom > $request->dateTo){
+            return response()->json([
+                'errors' => ['The date must be correct.']
+            ],422);
+        }
+        return $request->all();
+    }
+
     public function getStockAdjustment(){
         $data = DB::table('stock_adjustments')
             ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
@@ -341,6 +356,7 @@ class AdminController extends Controller
         return Datatables::of($data)
             ->make(true);
     }
+
     public function createStockAdjustment(Request $request){
         $this->validate($request,[
             // 'productId' => 'required',

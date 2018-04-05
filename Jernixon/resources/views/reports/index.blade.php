@@ -29,6 +29,36 @@ class="active"
 {{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
 
 <script type="text/javascript">
+    function createReport(button){
+        var dateFrom = document.getElementById("from").value;
+        var dateTo = document.getElementById("to").value;
+        $.ajax({
+            type:'GET',
+            url: "{{route('reports.createReports')}}",
+            data: {
+                'dateFrom':dateFrom,
+                'dateTo':dateTo
+            },
+            success:function(data){
+                console.log(data)
+                $("#errorDivReport").html("");
+        
+            },
+            error:function(data){
+                var response = data.responseJSON;
+                console.log(response);
+                $("#errorDivReport").removeClass("hidden").addClass("alert-danger text-center");
+                $("#errorDivReport").html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });
+            }
+        });
+    }
+
   $(document).ready(function() {
     $('#transactionsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -97,14 +127,18 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content">
-                        {{-- <div class="row">
-                            <p class = "col-md-12">
+                        <div id="errorDivReport" class="hidden">
+
+                        </div>
+                        <div class="row">
+                            <p class = "col-md-8">
                                 <label for="from">From</label>
                                 <input type="date" id="from" name="from">
                                 <label for="to">to</label>
-                                <input type="date" id="to" name="to">
+                                <input type="date" id="to" name="to" >
+                                <button onclick="createReport(this)">Create</button>
                             </p>  
-                        </div> --}}
+                        </div>
 
                         <div class="btn-group btn-group-lg">
                             {{--  <button type="button" id="transactionDTButton" class="btn btn-primary active">Transaction</button>

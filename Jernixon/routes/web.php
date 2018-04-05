@@ -121,10 +121,8 @@ Route::get('admin/items/getItems', 'AdminController@getItemsForItems')->name('it
 Route::get('admin/items', 'AdminController@items')->name('admin.items');
 
 Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');
-// Route::get('admin/reports/getTransactions', 'AdminController@getTransactions')->name('reports.getTransactions');
-// Route::get('admin/reports/getItemsAdded', 'AdminController@getItemsAdded')->name('reports.getItemsAdded');
-// Route::get('admin/reports/getRemovedItems', 'AdminController@getRemovedItems')->name('reports.getRemovedItems');
 Route::get('admin/reports/getReports', 'AdminController@getReports')->name('reports.getReports');
+Route::get('admin/reports/createReports', 'AdminController@createReports')->name('reports.createReports');
 
 
 // Route::DELETE('admin/employees/destroyEmployeeAccount/{id}', 'AdminController@destroyEmployeeAccount')->name('admin.destroyEmployeeAccount');

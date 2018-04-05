@@ -274,7 +274,7 @@ ng-app="ourAngularJsApp"
                         </div>
                         <div class="col-md-5" margin >
                             {{Form::label('receiptNumber', 'Receipt Number:')}}
-                            {{Form::text('receiptNumber','',['class'=>'form-control'])}}
+                            {{Form::number('receiptNumber','',['class'=>'form-control'])}}
                         </div>
                     </div>
                 </div>
@@ -585,7 +585,7 @@ ng-app="ourAngularJsApp"
                 // var oldTs = parseInt(document.getElementById("totalSales").innerText);
                 var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
                 var sellingPrice = ngModelName+"SP";
-                $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
+                $scope[sellingPrice] =  retailPrice * $scope[ngModelName]+".00";
                 // $scope.totalSales =  $scope[ngModelName];
                 console.log($scope[sellingPrice])
             }

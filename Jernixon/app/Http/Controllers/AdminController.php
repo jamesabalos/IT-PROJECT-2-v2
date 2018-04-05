@@ -547,6 +547,10 @@ class AdminController extends Controller
             $date[$key] = $row['date'];
             // $edition[$key] = $row['edition'];
         }
+
+        if(empty($data)){
+            return $data;
+        }
         array_multisort($date, SORT_DESC, $data);
         return $data;
         // return rsort($data);

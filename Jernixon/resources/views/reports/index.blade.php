@@ -171,7 +171,7 @@ class="active"
                                         <tr>
                                           <th>OR Number</th>
                                           <th>Item Purchased</th>
-                                          <th>Customer Name</th>
+                                          <th>Customer</th>
                                           <th>Qty</th>
                                           <th>Purchase Price</th>
                                           <th>Created At</th>

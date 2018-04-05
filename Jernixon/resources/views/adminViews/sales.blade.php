@@ -284,7 +284,7 @@ ng-app="ourAngularJsApp"
                             <thead>
                                 <tr>
                                     <td>Item</td>
-                                    <td>Price</td>
+                                    <td>Selling Price</td>
                                     <td>Qty Purchase</td>
                                     <td>Sales</td>
                                     <td>Action</td>

@@ -478,9 +478,13 @@ ng-app="ourAngularJsApp"
                             var temp = document.createElement('div');
                             temp.innerHTML = myItemJSON.salesPrice;  
                             if(totalSalesNgBinds==""){
-                                totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
+                                var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");                                
+                                // totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
+                                totalSalesNgBinds += splitBind[0];
                             }else{
-                                totalSalesNgBinds += " + " + temp.firstChild.getAttribute("ng-bind");
+                                var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");
+                                // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
+                                totalSalesNgBinds += "+ " + splitBind[0];
                             }
 
 
@@ -489,7 +493,11 @@ ng-app="ourAngularJsApp"
 
                     //initialize totalSales
                     document.getElementById("totalSalesDiv").innerHTML="";
-                    var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+                    if(totalSalesNgBinds === ""){
+                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+                    }else{
+                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+                    }
                     angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
@@ -520,7 +528,7 @@ ng-app="ourAngularJsApp"
                 // angular.element( newRow.insertCell(-1) ).append(temp);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
-                var salesPrice = "<p class='form-control style='color:green;' ng-bind='" +itemName+ "SP'></p><input type='hidden' name='salesPrices[]'>";
+                var salesPrice = "<p class='form-control' style='color:green;' ng-bind='" +itemName+ "SP |number:2'></p><input type='hidden' name='salesPrices[]'>";
                 var temp2 = $compile(salesPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
@@ -568,9 +576,22 @@ ng-app="ourAngularJsApp"
                 if(ngBindAttributes==""){
                     var newNgBinds = itemName+"SP";
                 }else{
-                    var newNgBinds = ngBindAttributes + " + " + itemName+"SP";
+                    var newNgBinds = ngBindAttributes + "+ " + itemName+"SP";
                 }
-                var price = "<p class='form-control' style='color:green' ng-bind='" +newNgBinds+ "'></p>";
+
+                var binds = newNgBinds.split(" ");
+                var ngBindsResult = "";
+                    for(var i = 0; i < binds.length; i++){
+                        if(i % 2 === 0){
+                            if(ngBindsResult === ""){
+                                ngBindsResult = binds[i];
+                            }else{
+                                ngBindsResult += "+" +binds[i];
+                            }
+                        }
+                    }
+                    console.log("correct: " + ngBindsResult)
+                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsResult+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
@@ -585,9 +606,12 @@ ng-app="ourAngularJsApp"
                 // var oldTs = parseInt(document.getElementById("totalSales").innerText);
                 var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
                 var sellingPrice = ngModelName+"SP";
-                $scope[sellingPrice] =  retailPrice * $scope[ngModelName]+".00";
+                $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
                 // $scope.totalSales =  $scope[ngModelName];
                 console.log($scope[sellingPrice])
+
+                // var totalSales = document.getElementById("totalSalesDiv").firstChild.innerText;
+                // console.log("totalSales: " +totalSales)
             }
 
             $scope.remove = function(event){

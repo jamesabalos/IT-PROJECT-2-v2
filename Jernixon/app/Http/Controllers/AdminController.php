@@ -340,13 +340,20 @@ class AdminController extends Controller
             'dateFrom' => 'required',
             'dateTo' => 'required',
         ]);
-        
+
         if($request->dateFrom > $request->dateTo){
             return response()->json([
                 'errors' => ['The date must be correct.']
             ],422);
         }
-        return $request->all();
+        // return $request->all();
+
+        $data = DB::table('sales')
+        ->join('products', 'products.product_id', '=', 'sales.product_id')
+        ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at')
+        ->limit(2);
+        return Datatables::of($data)
+            ->make(true);
     }
 
     public function getStockAdjustment(){
@@ -403,9 +410,9 @@ class AdminController extends Controller
                         <button onclick='viewItemHistory(this)' class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>
                     </a>";
                 if($data->status === "available"){
-                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Disable</button>";
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i>Disable</button>";
                 }else{
-                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-ok'></i> Enable</button>";
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-ok'></i>Enable</button>";
                 }
                 // return "    
                 //     <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i>$data->status</button>

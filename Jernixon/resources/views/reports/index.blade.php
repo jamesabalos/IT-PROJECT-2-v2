@@ -42,7 +42,30 @@ class="active"
             success:function(data){
                 console.log(data)
                 $("#errorDivReport").html("");
-        
+                // $("#transactionsTable").dataTable().fnDestroy();
+                $("#transactionsTable").DataTable().clear().destroy();
+                // $('#transactionsTable').dataTable();
+
+                    $('#transactionsTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "destroy": true,
+                        // "processing": true,
+                        // "serverSide": true,
+                        // "colReorder": true,  
+
+                        "pagingType": "full_numbers",
+                        "aaData": data
+                        // "ajax":  "{{ route('reports.getReports') }}",
+                        // "columns": [
+                        // {data: 'or_number'},
+                        // {data: 'description', name: 'products.description'},
+                        // {data: 'customer_name'},
+                        // {data: 'quantity'},
+                        // {data: 'price'},
+                        // {data: 'created_at'},
+                        // ]
+                        
+                    });
             },
             error:function(data){
                 var response = data.responseJSON;
@@ -130,7 +153,7 @@ class="active"
                         <div id="errorDivReport" class="hidden">
 
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <p class = "col-md-8">
                                 <label for="from">From</label>
                                 <input type="date" id="from" name="from">
@@ -138,16 +161,8 @@ class="active"
                                 <input type="date" id="to" name="to" >
                                 <button onclick="createReport(this)">Create</button>
                             </p>  
-                        </div>
+                        </div> --}}
 
-                        <div class="btn-group btn-group-lg">
-                            {{--  <button type="button" id="transactionDTButton" class="btn btn-primary active">Transaction</button>
-                            <button type="button" id="returnsDTButton" class="btn btn-primary active">Returns</button>
-                            <button type="button" id="itemsAddedDTButton" class="btn btn-primary active">Items Added</button>
-                            <button type="button" id="removedItemsDTButton" class="btn btn-primary active">Removed Items</button>  --}}
-                        </div>
-
-                        {{--  <div id="paraentDivFour" style="border:2px solid green; display:none">  --}}
 
                         <div id="transactionDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">

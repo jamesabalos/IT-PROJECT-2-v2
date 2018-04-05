@@ -181,7 +181,7 @@
                             </li>
                      
                             <li   @yield('return_link')>
-                                <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Return</p></a>
+                                <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Returns</p></a>
                             </li>
                             
                             <li   @yield('stockAdjustment_link')>

@@ -269,13 +269,13 @@ ng-app="ourAngularJsApp"
                                     <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
                                         <thead>
                                             <tr>
-                                                <td>Item</td>
+                                                <th>Item</th>
                                                 {{--  <td>Quantity Left</td>  --}}
                                                 {{--  <td>Purchase Price</td>  --}}
-                                                <td>Price</td>
-                                                <td>Quantity Purchase</td>
-                                                <td>Sales Price</td>
-                                                <td>Action</td>
+                                                <th>Price</th>
+                                                <th>Qty Purchase</th>
+                                                <th>Sales</th>
+                                                <th>Action</th>
                                             </tr> 
                                             
                                         </thead>
@@ -401,7 +401,7 @@ $('#dashboardDatatable').DataTable({
         //     "data": "status"
         // },
         {
-            "title": "Quantity in Stock",
+            "title": "Qty in Stock",
             "data": "quantity"
         },
         // {
@@ -413,7 +413,7 @@ $('#dashboardDatatable').DataTable({
             "data": "retail_price"
         },
         {
-            "title": "Add to Cart",
+            "title": "Add Item",
             "data": "action"
         }],
         

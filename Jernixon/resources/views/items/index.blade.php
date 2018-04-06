@@ -259,15 +259,15 @@ class="active"
             "columns": [
             // {data: 'product_id'},
             {data: 'description', name: 'products.description'},
-                                   {data: 'quantity', name: 'salable_items.quantity'},
-                                   {data: 'wholesale_price', name: 'salable_items.wholesale_price'},
-                                   {data: 'retail_price', name: 'salable_items.retail_price'},
-                                   {data: 'reorder_level'},
-                                   // {data: 'created_at'},
-                                   // {data: 'updated_at'},
-                                   {data: 'action'},
-                                   ]
-                                   });
+            {data: 'quantity', name: 'salable_items.quantity'},
+            {data: 'wholesale_price', name: 'salable_items.wholesale_price'},
+            {data: 'retail_price', name: 'salable_items.retail_price'},
+            {data: 'reorder_level'},
+            // {data: 'created_at'},
+            // {data: 'updated_at'},
+            {data: 'action'},
+            ]
+        });
 
 
         $('#formAddNewItem').on('submit',function(e){

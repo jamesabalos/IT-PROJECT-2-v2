@@ -174,7 +174,7 @@ class="active"
                                           <th>Customer</th>
                                           <th>Qty</th>
                                           <th>Purchase Price</th>
-                                          <th>Created At</th>
+                                          <th>Date of Transaction</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

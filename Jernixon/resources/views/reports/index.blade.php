@@ -233,9 +233,32 @@ class="active"
                                 </table>   
                             </div>
                         </div> 
-                        <br>
-                        <br>
-                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <div class = "content" >
+                        <div id="errorDivReport" class="hidden">
+
+                        </div>
+                        {{-- <div class="row">
+                            <p class = "col-md-8">
+                                <label for="from">From</label>
+                                <input type="date" id="from" name="from">
+                                <label for="to">to</label>
+                                <input type="date" id="to" name="to" >
+                                <button onclick="createReport(this)">Create</button>
+                            </p>  
+                        </div> --}}
+
                         <h3>Damaged Items</h3>
                         <div id="damagedItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
@@ -251,9 +274,32 @@ class="active"
                                 </table>   
                             </div>
                         </div> 
-                        <br>
-                        <br>
-                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="header">
+                    <div class = "content" >
+                        <div id="errorDivReport" class="hidden">
+
+                        </div>
+                        {{-- <div class="row">
+                            <p class = "col-md-8">
+                                <label for="from">From</label>
+                                <input type="date" id="from" name="from">
+                                <label for="to">to</label>
+                                <input type="date" id="to" name="to" >
+                                <button onclick="createReport(this)">Create</button>
+                            </p>  
+                        </div> --}}
+
                         <h3>Lost Items</h3>
                         
                         <div id="lostItemsDiv" style="display: block;">
@@ -276,7 +322,6 @@ class="active"
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('js_link')

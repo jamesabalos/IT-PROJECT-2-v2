@@ -297,20 +297,30 @@ class="active"
                     $("#errorDivAddNewItem").css("display:block");
                     $("#errorDivAddNewItem").slideDown("slow",function(){
                         document.getElementById("formAddNewItem").reset();
+                        // $("#errorDivAddNewItem").addClas("hidden");
+
                     })
                         .delay(1000)                        
                         .hide(1500);
                     $("#tableItems").DataTable().ajax.reload();
+                    $("#errorDivAddNewItem").removeAttr("style");
                 },
                 error:function(data){   
                     var response = data.responseJSON;
-                    $("#errorDivAddNewItem").removeClass("hidden").addClass("alert-danger");
+                    $("#errorDivAddNewItem").removeAttr("style");
+                    $("#errorDivAddNewItem").removeClass("alert-success hidden").addClass("alert-danger");
                     $("#errorDivAddNewItem").html(function(){
                         var addedHtml="";
                         for (var key in response.errors) {
                             addedHtml += "<p>"+response.errors[key]+"</p>";
                         }
-                        return addedHtml;
+                        
+                        if(response.errors ){
+                            return addedHtml;   
+                        }else{
+                            // addedHtml += "<p>Duplicate item</p>";
+                            return "<p>Item already exist</p>";
+                        }
                     });
                     // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
                     //alert(Object.keys(error.errors).length)

@@ -214,6 +214,7 @@ class="active"
                             </p>  
                         </div> --}}
 
+                        <h3>Sold Items</h3>
 
                         <div id="transactionDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
@@ -235,6 +236,7 @@ class="active"
                         <br>
                         <br>
                         <br>
+                        <h3>Damaged Items</h3>
                         <div id="damagedItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
                                 <table id="damagedItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
@@ -252,6 +254,8 @@ class="active"
                         <br>
                         <br>
                         <br>
+                        <h3>Lost Items</h3>
+                        
                         <div id="lostItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
                                 <table id="lostItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">

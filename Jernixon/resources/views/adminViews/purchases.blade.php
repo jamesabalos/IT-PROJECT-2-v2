@@ -297,7 +297,7 @@ ng-app="ourAngularJsApp"
             <div class="card">
                 <div class="header">
                     <a href = "#purchase" data-toggle="modal">
-                        <button type="button" class="btn btn-success"><i class=" fa fa-cube"></i> Create Purchase Order</button>
+                        <button type="button" class="btn btn-success"><i class=" fa fa-plus"></i> Add Purchase Order</button>
                     </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="purchasesDataTable">
@@ -332,7 +332,7 @@ ng-app="ourAngularJsApp"
                 <button class="close" data-dismiss="modal">&times;</button>
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="modal-title"><i class="fa fa-cube" style="margin-right: 8px"></i> Purchase</h3>
+                            <h3 class="modal-title"><i class="fa fa-cube" style="margin-right: 8px"></i> Purchases</h3>
                         </div>
                     </div>
             </div>
@@ -341,8 +341,8 @@ ng-app="ourAngularJsApp"
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
-                            Create Purchase
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            Information
                         </strong>
                     </div>
                     <div class="panel-body">

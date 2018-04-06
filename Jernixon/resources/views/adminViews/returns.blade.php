@@ -562,7 +562,7 @@ ng-app="ourAngularJsApp"
                     <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
-                                    <span class="glyphicon glyphicon-th"></span>
+                                    <span class="glyphicon glyphicon-info-sign"></span>
                                      Information
                                 </strong>
                             </div>
@@ -609,7 +609,7 @@ ng-app="ourAngularJsApp"
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
+                            <span class="fa fa-reply"></span>
                             Returned Item
                         </strong>
                     </div>

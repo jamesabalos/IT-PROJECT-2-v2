@@ -289,7 +289,7 @@
                 <div class="header">
 
                     <a href="#addEmployee" data-toggle="modal">
-                        <button type="button" class="btn btn-success"><i class="ti-plus"></i> Add Employee</button>
+                        <button type="button" class="btn btn-success"><i class=" fa fa-plus"></i> Add Employee</button>
                     </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="employeeTable">
@@ -327,7 +327,7 @@
                                         <button type="submit">Activate</button>
                                         @endif {!! Form::close() !!} --}} @if( $employee->status == "active")
 
-                                        <button data-id="{{$employee->id}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger">Deactivate</button>
+                                        <button data-id="{{$employee->id}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger"><i class="fa fa-times-circle"></i> Deactivate</button>
                                         <a href="#reset" data-toggle="modal">
                                             <button onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" type="button" class="btn btn-info">Reset Password</button>
                                         </a>
@@ -335,7 +335,7 @@
 
                                         @else
 
-                                        <button data-id="{{$employee->id}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success">Activate</button>
+                                        <button data-id="{{$employee->id}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success"><i class="fa fa-check"></i> Activate</button>
                                         <a href="#reset" data-toggle="modal">
                                             <button type="button" onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" class="btn btn-info">Reset Password</button>
                                         </a>
@@ -363,15 +363,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add Employee</h3>
+                <h3 class="modal-title"><i class=" fa fa-plus" style="margin-right: 5px"></i> Add Employee</h3>
             </div>
 
             <div class="modal-body">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
-                            Update Employee
+                            <span class="fa fa-wrench"></span>
+                            New Employee
                         </strong>
                     </div>
 

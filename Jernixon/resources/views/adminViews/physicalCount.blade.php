@@ -14,7 +14,7 @@ ng-app="ourAngularJsApp"
 <div class="alert alert-success hidden" id="successDiv">
 
 </div>
-<h3><i class="fa fa-cube" style="margin-right: 10px"></i> Physical Count</h3>
+<h3><i class="fa fa-check-square-o" style="margin-right: 10px"></i>Physical Count</h3>
 @endsection
 
 @section('headScript')
@@ -157,11 +157,11 @@ ng-app="ourAngularJsApp"
                 <div class="header">
                         @if($physicalCount[0]["status"] === "inactive" )
                             <a href = "#startPhysicalCount" data-toggle="modal">
-                                <button id="triggerButton" type="button" class="btn btn-success">Start Physical Count</button>
+                                <button id="triggerButton" type="button" class="btn btn-success"><i class="fa fa-play-circle"></i> Start Physical Count</button>
                             </a>
                          @else
                             <a href = "#stopPhysicalCount" data-toggle="modal">
-                                <button id="triggerButton"  type="button" class="btn btn-danger">Stop Physical Count</button>
+                                <button id="triggerButton"  type="button" class="btn btn-danger"><i class="fa fa-stop-circle"></i> Stop Physical Count</button>
                             </a>
                          @endif
                     <div class="content table-responsive table-full-width">

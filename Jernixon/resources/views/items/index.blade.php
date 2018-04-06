@@ -196,19 +196,29 @@ class="active"
                     for (var i = 0; i < data.length; i++) {
                         var newRow = thatTbody.insertRow(-1);
                         var rows = $("#historyTbody tr");
-                        if(data[i][0] === "added"){
+                        if(data[i][0] === "Added"){
                         rows[rows.length-1].setAttribute("style","background-color:#66cc66")
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td></td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
+						if(data[i][1] === "Damaged" || data[i][1] === "Lost"){
+							newRow.insertCell(-1).innerHTML = "<td>" +data[i][1]+ "</td>";
+						}else{
+							newRow.insertCell(-1).innerHTML = "<td></td>";
+						}
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
                         }else{
                             rows[rows.length-1].setAttribute("style","background-color:#ff6666")                                        
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td></td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
+						if(data[i][1] === "Damaged" || data[i][1] === "Lost"){
+							newRow.insertCell(-1).innerHTML = "<td>" +data[i][1]+ "</td>";
+						}else{
+							newRow.insertCell(-1).innerHTML = "<td></td>";
+						}
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
                         }
                     }
@@ -259,15 +269,15 @@ class="active"
             "columns": [
             // {data: 'product_id'},
             {data: 'description', name: 'products.description'},
-            {data: 'quantity', name: 'salable_items.quantity'},
-            {data: 'wholesale_price', name: 'salable_items.wholesale_price'},
-            {data: 'retail_price', name: 'salable_items.retail_price'},
-            {data: 'reorder_level'},
-            // {data: 'created_at'},
-            // {data: 'updated_at'},
-            {data: 'action'},
-            ]
-        });
+                                   {data: 'quantity', name: 'salable_items.quantity'},
+                                   {data: 'wholesale_price', name: 'salable_items.wholesale_price'},
+                                   {data: 'retail_price', name: 'salable_items.retail_price'},
+                                   {data: 'reorder_level'},
+                                   // {data: 'created_at'},
+                                   // {data: 'updated_at'},
+                                   {data: 'action'},
+                                   ]
+                                   });
 
 
         $('#formAddNewItem').on('submit',function(e){
@@ -297,30 +307,20 @@ class="active"
                     $("#errorDivAddNewItem").css("display:block");
                     $("#errorDivAddNewItem").slideDown("slow",function(){
                         document.getElementById("formAddNewItem").reset();
-                        // $("#errorDivAddNewItem").addClas("hidden");
-
                     })
                         .delay(1000)                        
                         .hide(1500);
                     $("#tableItems").DataTable().ajax.reload();
-                    $("#errorDivAddNewItem").removeAttr("style");
                 },
                 error:function(data){   
                     var response = data.responseJSON;
-                    $("#errorDivAddNewItem").removeAttr("style");
-                    $("#errorDivAddNewItem").removeClass("alert-success hidden").addClass("alert-danger");
+                    $("#errorDivAddNewItem").removeClass("hidden").addClass("alert-danger");
                     $("#errorDivAddNewItem").html(function(){
                         var addedHtml="";
                         for (var key in response.errors) {
                             addedHtml += "<p>"+response.errors[key]+"</p>";
                         }
-                        
-                        if(response.errors ){
-                            return addedHtml;   
-                        }else{
-                            // addedHtml += "<p>Duplicate item</p>";
-                            return "<p>Item already exist</p>";
-                        }
+                        return addedHtml;
                     });
                     // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
                     //alert(Object.keys(error.errors).length)
@@ -501,7 +501,7 @@ class="active"
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-info-sign"></span>
+                            <span class="glyphicon glyphicon-th"></span>
                             Information
                         </strong>
                     </div>
@@ -653,8 +653,9 @@ class="active"
                                     <tr>
                                         <th class="text-left">No. of items</th>
                                         <th class="text-left">Action</th>
-                                        <th class="text-left">Bought/supplied by</th>
-                                        <th class="text-left">Amount</th>
+                                        <th class="text-left">Bought/Supplied/Stock adjusted by</th>
+                                        <th class="text-right">Amount</th>
+										<th class="text-left">Reason</th>
                                         <th class="text-left">Date</th>
                                     </tr>
                                 </thead>

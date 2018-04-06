@@ -359,7 +359,8 @@ class AdminController extends Controller
     public function getStockAdjustment(){
         $data = DB::table('stock_adjustments')
             ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
-            ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at');
+            ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at')
+			->latest();
         return Datatables::of($data)
             ->make(true);
     }
@@ -371,20 +372,34 @@ class AdminController extends Controller
             'quantity' => 'required',
             'Date' => 'required'
         ]);
-
+		
         $arrayCount = count($request->productId);
         for($i = 0;$i<$arrayCount;$i++){
-            $insertReturns = DB::table('stock_adjustments')->insert(
-                ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => $request->status[$i], 'created_at' => $request->Date]
-            );
-
-            if($request->status == "damaged"){
+            if($request->status[$i] == "damaged"){
+				$insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+					['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
+				);
+				
+				$data = DB::table('stock_adjustments')
+							->select('stock_adjustments_id')
+							->latest()
+							->first();
+							
                 $insertDamagedItems = DB::table('damaged_items')->insert(
-                    ['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
+                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
                 );
             }else{
-                $insertDamagedItems = DB::table('lost_items')->insert(
-                    ['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
+				$insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+					['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
+				);
+				
+				$data = DB::table('stock_adjustments')
+							->select('stock_adjustments_id')
+							->latest()
+							->first();
+				
+                $insertLostItems = DB::table('lost_items')->insert(
+                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
                 );
             }
         }
@@ -410,9 +425,9 @@ class AdminController extends Controller
                         <button onclick='viewItemHistory(this)' class='btn btn-info'><i class='fa fa-history'></i> History</button>
                     </a>";
                 if($data->status === "available"){
-                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i>Disable</button>";
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Disable</button>";
                 }else{
-                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-ok'></i>Enable</button>";
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-ok'></i> Enable</button>";
                 }
                 // return "    
                 //     <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i>$data->status</button>
@@ -500,47 +515,49 @@ class AdminController extends Controller
         $data = [];
         $sales = DB::table('sales')
             ->join('products', 'products.product_id' , '=' , 'sales.product_id')
-            ->select('products.product_id as product_id', 'description', 'sales.quantity as quantity', 'customer_name', 'sales.created_at as date')
+            ->select('products.product_id as product_id', 'description', 'sales.quantity as quantity', 'customer_name', 'sales.created_at as date', 'price')
             ->where('sales.product_id', '=', $id)
             ->get();
 
         $arrayCount1 = count($sales);
         for($i = 0;$i<$arrayCount1;$i++){
             // array_push($data, [$sales[$i]->customer_name]);
-            array_push($data, ["deducted", "bought", $sales[$i]->description, $sales[$i]->quantity, $sales[$i]->customer_name, 'date'=>$sales[$i]->date]);
+            array_push($data, ["Deducted", "bought", $sales[$i]->description, $sales[$i]->quantity, $sales[$i]->customer_name, $sales[$i]->price, 'date'=>$sales[$i]->date]);
         }
 
         $purchases = DB::table('purchases')
             ->join('products', 'products.product_id' , '=' , 'purchases.product_id')
-            ->select('products.product_id as product_id', 'description', 'purchases.quantity as quantity', 'supplier_name', 'purchases.created_at as date')
+            ->select('products.product_id as product_id', 'description', 'purchases.quantity as quantity', 'supplier_name', 'purchases.created_at as date', 'price')
             ->where('purchases.product_id', '=', $id)
             ->get();
 
         $arrayCount2 = count($purchases);
         for($i = 0;$i<$arrayCount2;$i++){
-            array_push($data, ["added", "purchased", $purchases[$i]->description, $purchases[$i]->quantity, $purchases[$i]->supplier_name, 'date'=>$purchases[$i]->date]);
+            array_push($data, ["Added", "purchased", $purchases[$i]->description, $purchases[$i]->quantity, $purchases[$i]->supplier_name, $purchases[$i]->price, 'date'=>$purchases[$i]->date]);
         }
 
         $damaged_items = DB::table('damaged_items')
             ->join('products', 'products.product_id' , '=' , 'damaged_items.product_id')
-            ->select('products.product_id as product_id', 'description', 'damaged_items.quantity as quantity', 'damaged_items.created_at as date')
+			->join('stock_adjustments', 'stock_adjustments.stock_adjustments_id' , '=' , 'damaged_items.stock_adjustments_id')
+            ->select('products.product_id as product_id', 'employee_name', 'description', 'damaged_items.quantity as quantity', 'damaged_items.created_at as date')
             ->where('damaged_items.product_id', '=', $id)
             ->get();
 
         $arrayCount3 = count($damaged_items);
         for($i = 0;$i<$arrayCount3;$i++){
-            array_push($data, ["deducted", "damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, "ADMIN", 'date'=>$damaged_items[$i]->date]);
+		array_push($data, ["Deducted", "Damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, $damaged_items[$i]->employee_name, "", 'date'=>$damaged_items[$i]->date]);
         }
 
         $lost_items = DB::table('lost_items')
             ->join('products', 'products.product_id' , '=' , 'lost_items.product_id')
-            ->select('products.product_id as product_id', 'description', 'lost_items.quantity as quantity', 'lost_items.created_at as date')
+			->join('stock_adjustments', 'stock_adjustments.stock_adjustments_id' , '=' , 'lost_items.stock_adjustments_id')
+            ->select('products.product_id as product_id', 'employee_name', 'description', 'lost_items.quantity as quantity', 'lost_items.created_at as date')
             ->where('lost_items.product_id', '=', $id)
             ->get();
 
         $arrayCount4 = count($lost_items);
         for($i = 0;$i<$arrayCount4;$i++){
-            array_push($data, ["deducted", "lost", $lost_items[$i]->description, $lost_items[$i]->quantity, "ADMIN", 'date'=>$lost_items[$i]->date]);                
+            array_push($data, ["Deducted", "Lost", $lost_items[$i]->description, $lost_items[$i]->quantity, $lost_items[$i]->employee_name, "", 'date'=>$lost_items[$i]->date]);                
         }
 
         foreach ($data as $key => $row){

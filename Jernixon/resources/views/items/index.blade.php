@@ -26,7 +26,7 @@ class="active"
                 <div class="header">
                     <div class = "content">
                         <a href = "#addNewItemModal" data-toggle="modal" >
-                            <button type="button" class="btn btn-success"><i class = "glyphicon-plus"></i> Add new Item</button>
+                            <button type="button" class="btn btn-success"><i class = "fa fa-plus"></i> Add new Item</button>
                         </a>        
                         <!--
 <form class = "form-inline">

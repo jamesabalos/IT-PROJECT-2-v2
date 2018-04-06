@@ -228,49 +228,6 @@
                                     <ul class="dropdown-menu">
                                         <li>
                                             @if(Auth::guard('adminGuard')->check())
-                                            <a href="#notification" data-toggle="modal" onclick="getNotifications()">
-                                                Notifications
-                                            </a>
-
-                                            <a href="#changePassword" data-toggle="modal">
-                                                Change Password
-                                            </a>
-
-                                            <a href="{{ route('admin.logout') }}">
-                                                {{--  onclick="event.preventDefault();  --}}
-                                                {{--  document.getElementById('logout-form').submit();">  --}}
-                                                Logout
-                                            </a>
-
-                                            {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            </form>  --}}
-
-                                            @elseif(Auth::guard('web')->check())
-                                            <a href="#changePassword" data-toggle="modal">
-                                                Change Password
-                                            </a>
-                                            <a href="{{ route('salesAssistant.logout') }}">
-                                                {{--  onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">  --}}
-                                                Logout
-                                            </a>
-
-                                            {{--  <form id="logout-form" action="{{ route('salesAssistant.logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            </form>   --}}
-                                            @endif
-
-                                        </li>
-                                    </ul>
-
-                                    <ul class="dropdown-menu">
-                                        <li>
-
-                                            @if(Auth::guard('adminGuard')->check())
-                                            <a href="#notification" data-toggle="modal" onclick="getNotifications()">
-                                                Notifications
-                                            </a>
 
                                             <a href="#changePassword" data-toggle="modal">
                                                 Change Password
@@ -314,7 +271,6 @@
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                             <span class="sr-only">Toggle navigation</span><i class = 'fa fa-bars'></i>
                         </button>
-
                         <div class="small-title">
                             <img id = "logo" src = "{{asset('assets/img/logo3.png')}}" width = "40" height = "40">
                             <p class="brand title">Jernixon Motorparts and Accessories </p> 
@@ -368,6 +324,7 @@
                                         </li>
                                     </ul>
                                 </li>
+                            </ul>
                                 </div>
                         </div>
                         <div class="navbar-collapse collapse">
@@ -446,9 +403,7 @@
                         <div class="linkName">@yield('linkName')</div>
                         @yield('right')
                     </div>
-
                     </div>
-
                 @yield('modals')
                 <div id="changePassword" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
                     <div class = "modal-dialog modal-md">
@@ -458,7 +413,7 @@
 
                             <div class="modal-header">
                                 <button class="close" data-dismiss="modal">&times;</button>
-                                <h3 class="modal-title">Change Password</h3>
+                                <h3 class="modal-title"><i class="fa fa-wrench" style="margin-right: 15px;"></i>Change Password</h3>
                             </div>
 
                             <div class = "modal-body">  
@@ -538,6 +493,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div id="notification" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
                     <div class = "modal-dialog modal-md">
                         <div class = "modal-content">
@@ -547,7 +503,7 @@
 
                             <div class="modal-header">
                                 <button class="close" data-dismiss="modal">&times;</button>
-                                <h3 class="modal-title"><i class="fa fa-envelope" style="margin-right: 10px;"></i> Notifications</h3>
+                                <h3 class="modal-title"><i class="fa fa-bell" style="margin-right: 10px;"></i> Notifications</h3>
                             </div>
 
                             <div class = "modal-body">  

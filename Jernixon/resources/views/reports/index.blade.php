@@ -89,24 +89,8 @@ class="active"
         "processing": true,
         "serverSide": true,
         "colReorder": true,  
-        //"autoWidth": true,
         "pagingType": "full_numbers",
         dom: 'Blfrtip',
-      
-        // buttons: ['excel', 'pdf','print'], 
-
-        // buttons:[{
-        //             extend: 'excel',
-        //             text: 'excel',
-        //             action: function (e, dt, node, config) {
-        //                     exportExtension = 'Excel';
-
-        //                     // $.fn.DataTable.ext.buttons.excelHtml5.action(e, dt, node, config);
-        //                     $.fn.DataTable.ext.buttons.excelHtml5.action.call( e, dt, node, config);
-        //                 }
-
-        //             },'print'],
-
         "buttons": [
             {
                 extend: 'collection',
@@ -121,7 +105,6 @@ class="active"
                 ]
             }
         ],
-
         "ajax":  "{{ route('reports.getReports') }}",
         "columns": [
           {data: 'or_number'},
@@ -130,9 +113,77 @@ class="active"
           {data: 'quantity'},
           {data: 'price'},
           {data: 'created_at'},
+        ] 
+    });
+
+    $('#damagedItemsTable').DataTable({
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "destroy": true,
+        "processing": true,
+        "serverSide": true,
+        "colReorder": true,  
+        "pagingType": "full_numbers",
+        dom: 'Blfrtip',
+        "buttons": [
+            {
+                extend: 'collection',
+                text: 'EXPORT',
+                buttons: [
+                    {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+                    
+                ]
+            }
+        ],
+        "ajax":  "{{ route('reports.getDamagedItems') }}",
+        "columns": [
+          {data: 'or_number'},
+          {data: 'description', name: 'products.description'},
+          {data: 'customer_name'},
+        //   {data: 'quantity'},
+        //   {data: 'price'},
+        //   {data: 'created_at'},
         ]
         
     });
+
+    $('#lostItemsTable').DataTable({
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "destroy": true,
+        "processing": true,
+        "serverSide": true,
+        "colReorder": true,  
+        "pagingType": "full_numbers",
+        dom: 'Blfrtip',
+        "buttons": [
+            {
+                extend: 'collection',
+                text: 'EXPORT',
+                buttons: [
+                    {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
+                    {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+                    
+                ]
+            }
+        ],
+        "ajax":  "{{ route('reports.getLostItems') }}",
+        "columns": [
+          {data: 'or_number'},
+          {data: 'description', name: 'products.description'},
+          {data: 'customer_name'},
+        //   {data: 'quantity'},
+        //   {data: 'price'},
+        //   {data: 'created_at'},
+        ]
+        
+    });
+
 
   });
 
@@ -149,7 +200,7 @@ class="active"
         <div class="col-lg-12">
             <div class="card">
                 <div class="header">
-                    <div class = "content">
+                    <div class = "content" >
                         <div id="errorDivReport" class="hidden">
 
                         </div>
@@ -175,6 +226,40 @@ class="active"
                                           <th>Qty</th>
                                           <th>Purchase Price</th>
                                           <th>Date of Transaction</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>   
+                            </div>
+                        </div> 
+                        <br>
+                        <br>
+                        <br>
+                        <div id="damagedItemsDiv" style="display: block;">
+                            <div class="content table-responsive table-full-width table-stripped">
+                                <table id="damagedItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                    <thead >
+                                        <tr>
+                                          <th>Item name</th>
+                                          <th>Quantity</th>
+                                          <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>   
+                            </div>
+                        </div> 
+                        <br>
+                        <br>
+                        <br>
+                        <div id="lostItemsDiv" style="display: block;">
+                            <div class="content table-responsive table-full-width table-stripped">
+                                <table id="lostItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                    <thead >
+                                        <tr>
+                                          <th>Item name</th>
+                                          <th>Quantity</th>
+                                          <th>Date</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

@@ -334,6 +334,13 @@ class AdminController extends Controller
         return Datatables::of($data)
             ->make(true);
     }
+    public function getDamagedItems(){
+
+    }
+    public function getLostItems(){
+
+    }
+
 
     public function createReports(Request $request){
         $this->validate($request,[

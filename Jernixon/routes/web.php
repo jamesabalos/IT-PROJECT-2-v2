@@ -122,6 +122,8 @@ Route::get('admin/items', 'AdminController@items')->name('admin.items');
 
 Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');
 Route::get('admin/reports/getReports', 'AdminController@getReports')->name('reports.getReports');
+Route::get('admin/reports/getDamagedItems', 'AdminController@getDamagedItems')->name('reports.getDamagedItems');
+Route::get('admin/reports/getLostItems', 'AdminController@getLostItems')->name('reports.getLostItems');
 Route::get('admin/reports/createReports', 'AdminController@createReports')->name('reports.createReports');
 
 

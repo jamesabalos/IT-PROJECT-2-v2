@@ -193,33 +193,28 @@ class="active"
                 if(data.length == 0){
                     thatTbody.insertRow(-1).innerHTML = "<td colspan='5' class='text-center'>No history</td>"
                 }else{
+                    console.log(data)
                     for (var i = 0; i < data.length; i++) {
                         var newRow = thatTbody.insertRow(-1);
                         var rows = $("#historyTbody tr");
                         if(data[i][0] === "Added"){
-                        rows[rows.length-1].setAttribute("style","background-color:#66cc66")
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
-						if(data[i][1] === "Damaged" || data[i][1] === "Lost"){
-							newRow.insertCell(-1).innerHTML = "<td>" +data[i][1]+ "</td>";
-						}else{
-							newRow.insertCell(-1).innerHTML = "<td></td>";
-						}
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
+                            rows[rows.length-1].setAttribute("style","background-color:#66cc66")
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
+
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][1]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
                         }else{
                             rows[rows.length-1].setAttribute("style","background-color:#ff6666")                                        
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
-						if(data[i][1] === "Damaged" || data[i][1] === "Lost"){
-							newRow.insertCell(-1).innerHTML = "<td>" +data[i][1]+ "</td>";
-						}else{
-							newRow.insertCell(-1).innerHTML = "<td></td>";
-						}
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
+                            
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][1]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
                         }
                     }
                 }

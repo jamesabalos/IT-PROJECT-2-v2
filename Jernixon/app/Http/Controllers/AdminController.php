@@ -83,7 +83,7 @@ class AdminController extends Controller
 
         return Datatables::of($data)
             ->addColumn('action',function($data){
-                return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'>Add</button>";
+                return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'><i class = 'fa fa-plus'></i>Add</button>";
             })
             ->make(true);
 
@@ -222,7 +222,7 @@ class AdminController extends Controller
     public function getReturns(){
         $data = DB::table('returns')
             ->select('or_number', 'created_at')
-			->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){
@@ -275,7 +275,7 @@ class AdminController extends Controller
             'quantity' => 'required',
             'customerName' => 'required',
             'quantity' => 'required',
-			'Date' => 'required'
+            'Date' => 'required'
         ]);
 
         $arrayCount = count($request->productId);
@@ -349,9 +349,9 @@ class AdminController extends Controller
         // return $request->all();
 
         $data = DB::table('sales')
-        ->join('products', 'products.product_id', '=', 'sales.product_id')
-        ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at')
-        ->limit(2);
+            ->join('products', 'products.product_id', '=', 'sales.product_id')
+            ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at')
+            ->limit(2);
         return Datatables::of($data)
             ->make(true);
     }
@@ -360,7 +360,7 @@ class AdminController extends Controller
         $data = DB::table('stock_adjustments')
             ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
             ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at')
-			->latest();
+            ->latest();
         return Datatables::of($data)
             ->make(true);
     }
@@ -372,32 +372,32 @@ class AdminController extends Controller
             'quantity' => 'required',
             'Date' => 'required'
         ]);
-		
+
         $arrayCount = count($request->productId);
         for($i = 0;$i<$arrayCount;$i++){
             if($request->status[$i] == "damaged"){
-				$insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-					['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
-				);
-				
-				$data = DB::table('stock_adjustments')
-							->select('stock_adjustments_id')
-							->latest()
-							->first();
-							
+                $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
+                );
+
+                $data = DB::table('stock_adjustments')
+                    ->select('stock_adjustments_id')
+                    ->latest()
+                    ->first();
+
                 $insertDamagedItems = DB::table('damaged_items')->insert(
                     ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
                 );
             }else{
-				$insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-					['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
-				);
-				
-				$data = DB::table('stock_adjustments')
-							->select('stock_adjustments_id')
-							->latest()
-							->first();
-				
+                $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
+                );
+
+                $data = DB::table('stock_adjustments')
+                    ->select('stock_adjustments_id')
+                    ->latest()
+                    ->first();
+
                 $insertLostItems = DB::table('lost_items')->insert(
                     ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
                 );
@@ -445,7 +445,7 @@ class AdminController extends Controller
             // 'wholeSalePrice' => 'required',
             // 'retailPrice' => 'required'
         ]);
-		
+
 
         //Create new Item Products Table
         $item = new Product;
@@ -470,9 +470,9 @@ class AdminController extends Controller
         //$item->retailPrice = $request->input('retailPrice');
         $item_salable->save();
         // return response($request->all());
-		
-		$insert = DB::table('physical_count_items')
-					->insertGetId(['product_id' => $prod_id->product_id, 'quantity' => 0]);
+
+        $insert = DB::table('physical_count_items')
+            ->insertGetId(['product_id' => $prod_id->product_id, 'quantity' => 0]);
         //Create new Item Salable_items Table
         // $physical_count = new Physical_count_item;
         // $physical_count->product_id = $prod_id->product_id;
@@ -538,19 +538,19 @@ class AdminController extends Controller
 
         $damaged_items = DB::table('damaged_items')
             ->join('products', 'products.product_id' , '=' , 'damaged_items.product_id')
-			->join('stock_adjustments', 'stock_adjustments.stock_adjustments_id' , '=' , 'damaged_items.stock_adjustments_id')
+            ->join('stock_adjustments', 'stock_adjustments.stock_adjustments_id' , '=' , 'damaged_items.stock_adjustments_id')
             ->select('products.product_id as product_id', 'employee_name', 'description', 'damaged_items.quantity as quantity', 'damaged_items.created_at as date')
             ->where('damaged_items.product_id', '=', $id)
             ->get();
 
         $arrayCount3 = count($damaged_items);
         for($i = 0;$i<$arrayCount3;$i++){
-		array_push($data, ["Deducted", "Damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, $damaged_items[$i]->employee_name, "", 'date'=>$damaged_items[$i]->date]);
+            array_push($data, ["Deducted", "Damaged", $damaged_items[$i]->description, $damaged_items[$i]->quantity, $damaged_items[$i]->employee_name, "", 'date'=>$damaged_items[$i]->date]);
         }
 
         $lost_items = DB::table('lost_items')
             ->join('products', 'products.product_id' , '=' , 'lost_items.product_id')
-			->join('stock_adjustments', 'stock_adjustments.stock_adjustments_id' , '=' , 'lost_items.stock_adjustments_id')
+            ->join('stock_adjustments', 'stock_adjustments.stock_adjustments_id' , '=' , 'lost_items.stock_adjustments_id')
             ->select('products.product_id as product_id', 'employee_name', 'description', 'lost_items.quantity as quantity', 'lost_items.created_at as date')
             ->where('lost_items.product_id', '=', $id)
             ->get();

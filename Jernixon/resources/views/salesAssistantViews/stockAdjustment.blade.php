@@ -34,87 +34,87 @@ class="active"
       <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
 
 
-<script>
-    function remove(button){
-        //var i = a.parentNode.parentNode.rowIndex;
-        //document.getElementById("cartTable").deleteRow(i);
-        var row = button.parentNode.parentNode; //row
-        $(row).hide(500,function(){
-            $(row).remove();
-        });
+      <script>
+          function remove(button){
+          //var i = a.parentNode.parentNode.rowIndex;
+          //document.getElementById("cartTable").deleteRow(i);
+          var row = button.parentNode.parentNode; //row
+          $(row).hide(500,function(){
+              $(row).remove();
+          });
 
-        //remove item in local storage
-        var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
-        localStorage.removeItem(data[0].innerHTML);
+          //remove item in local storage
+          var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
+          localStorage.removeItem(data[0].innerHTML);
 
-        //show the plus sign button again
-        document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
-    }
+          //show the plus sign button again
+          document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
+      }
 
-    function addRow(button){
-        var items =[];
-        var thatTbody = $("#stockTable tr td:first-child");
+      function addRow(button){
+          var items =[];
+          var thatTbody = $("#stockTable tr td:first-child");
 
-        for (var i = 0; i < thatTbody.length; i++) {
-            items[i] = thatTbody[i].innerHTML;
-        }        
+          for (var i = 0; i < thatTbody.length; i++) {
+              items[i] = thatTbody[i].innerHTML;
+          }        
 
-        if( items.indexOf(button.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
-            var thatTable = document.getElementById("stockTable");
-            var newRow = thatTable.insertRow(-1);
-            // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
-            newRow.insertCell(-1).innerHTML = "<td>"+button.firstChild.innerHTML+ "</td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' class='form-control' ></td>";
-            newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+button.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+button.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+          if( items.indexOf(button.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
+              var thatTable = document.getElementById("stockTable");
+              var newRow = thatTable.insertRow(-1);
+              // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
+              newRow.insertCell(-1).innerHTML = "<td>"+button.firstChild.innerHTML+ "</td>";
+              newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' class='form-control' ></td>";
+              newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
+              newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+button.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+button.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
-        }
+          }
 
-        document.getElementById("searchItemInput").value = "";
-        document.getElementById("searchResultDiv").innerHTML = "";
+          document.getElementById("searchItemInput").value = "";
+          document.getElementById("searchResultDiv").innerHTML = "";
 
-    }
+      }
 
-    function searchItem(a){
-        if(a.value === ""){
-            document.getElementById("searchResultDiv").innerHTML ="";   
-        }
-        $.ajax({
-            method: 'get',
-            //url: 'items/' + document.getElementById("inputItem").value,
-            url: 'searchItem/' + a.value,
-            dataType: "json",
-            success: function(data){
-                //    console.log(data)
-                // <div>
-                //     <strong>Phi</strong>lippines
-                //     <input type="hidden" value="Philippines">
-                // </div>
+      function searchItem(a){
+          if(a.value === ""){
+              document.getElementById("searchResultDiv").innerHTML ="";   
+          }
+          $.ajax({
+              method: 'get',
+              //url: 'items/' + document.getElementById("inputItem").value,
+              url: 'searchItem/' + a.value,
+              dataType: "json",
+              success: function(data){
+                  //    console.log(data)
+                  // <div>
+                  //     <strong>Phi</strong>lippines
+                  //     <input type="hidden" value="Philippines">
+                  // </div>
 
-                var resultDiv = document.getElementById("searchResultDiv");
-                resultDiv.innerHTML = "";
-                for (var i = 0;  i< data.length; i++) {
-                    var node = document.createElement("DIV");
-                    node.setAttribute("id",data[i].product_id)
-                    node.setAttribute("onclick","addRow(this)")
-                    var pElement = document.createElement("P");
-                    var textNode = document.createTextNode(data[i].description);
-                    pElement.appendChild(textNode);
-                    node.appendChild(pElement);          
-                    resultDiv.appendChild(node);  
+                  var resultDiv = document.getElementById("searchResultDiv");
+                  resultDiv.innerHTML = "";
+                  for (var i = 0;  i< data.length; i++) {
+                      var node = document.createElement("DIV");
+                      node.setAttribute("id",data[i].product_id)
+                      node.setAttribute("onclick","addRow(this)")
+                      var pElement = document.createElement("P");
+                      var textNode = document.createTextNode(data[i].description);
+                      pElement.appendChild(textNode);
+                      node.appendChild(pElement);          
+                      resultDiv.appendChild(node);  
 
-                }
-            }
-        });
+                  }
+              }
+          });
 
-    }
-    
-    $(document).ready(function(){
-      let today = new Date().toISOString().substr(0, 10);
-      document.querySelector("#today").value = today;
-      
+      }
 
-         $('#stockAdjustmentDataTable').DataTable({
+      $(document).ready(function(){
+          let today = new Date().toISOString().substr(0, 10);
+          document.querySelector("#today").value = today;
+
+
+          $('#stockAdjustmentDataTable').DataTable({
               "destroy": true,
               "processing": true,
               "serverSide": true,
@@ -156,11 +156,11 @@ class="active"
                   {data: 'description'},
                   {data: 'quantity'},
                   {data: 'status'},
-				  {data: 'created_at'},
+                  {data: 'created_at'},
               ]
           });
 
-           $('#formAdjustment').on('submit',function(e){
+          $('#formAdjustment').on('submit',function(e){
               e.preventDefault();
               var data = $(this).serialize();
 
@@ -178,18 +178,18 @@ class="active"
                       $("#successDiv p").remove();
                       $("#successDiv").removeClass("hidden")
                       // .addClass("alert-success")
-                             .html("<h3>Stock Adjustment successful</h3>");
+                          .html("<h3>Stock Adjustment successful</h3>");
                       $("#successDiv").css("display:block");                             
                       $("#successDiv").slideDown("slow")
                           .delay(1000)                        
                           .hide(1500);
                       $("#errorDivCreateStockAdjustment").html("");
                       document.getElementById("formAdjustment").reset(); //reset the form
-                       $("#stockAdjustmentDataTable").DataTable().ajax.reload();//reload the dataTables
+                      $("#stockAdjustmentDataTable").DataTable().ajax.reload();//reload the dataTables
 
                   },
                   error:function(data){
-                    var response = data.responseJSON;
+                      var response = data.responseJSON;
                       $("#errorDivCreateStockAdjustment").removeClass("hidden").addClass("alert-danger text-center");
                       $("#errorDivCreateStockAdjustment").html(function(){
                           var addedHtml="";
@@ -200,10 +200,10 @@ class="active"
                       });
                   }
               })
-           })
-          
+          })
 
-    })
+
+      })
 
 </script>
 
@@ -251,7 +251,7 @@ class="active"
             <div class="card">
                 <div class="header">
                     <a href = "#adjustment" data-toggle="modal">
-                        <button type="button" class="btn btn-success">Stock Adjustment</button>
+                        <button type="button" class="btn btn-success"><i class="fa fa-adjust"></i> Stock Adjustment</button>
                     </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="stockAdjustmentDataTable">
@@ -261,7 +261,7 @@ class="active"
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Quantity</th>
                                     <th class="text-left">Status</th>
-									<th class="text-left">Date</th>
+                                    <th class="text-left">Date</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -285,17 +285,17 @@ class="active"
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Stock Adjustment</h3>
+                <h3 class="modal-title"><i class="fa fa-adjust" style="margin-right: 10px"></i> Stock Adjustment</h3>
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
-                        <div id="errorDivCreateStockAdjustment" class="hidden">
+                    <div id="errorDivCreateStockAdjustment" class="hidden">
 
-                            </div>
+                    </div>
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
-                            Update Stock Adjustment
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            Information
                         </strong>
                     </div>
                     <div class="panel-body">
@@ -318,8 +318,8 @@ class="active"
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
-                            Stock Adjustment
+                            <span class="fa fa-adjust"></span>
+                            New Stock Adjustment
                         </strong>
                     </div>
                     <div class="modal-body">
@@ -357,7 +357,7 @@ class="active"
                 </div>
             </div>
             {!! Form::close() !!}
-            
+
         </div>
     </div>
 </div>

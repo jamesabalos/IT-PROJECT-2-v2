@@ -335,10 +335,18 @@ class AdminController extends Controller
             ->make(true);
     }
     public function getDamagedItems(){
-
+		$data = DB::table('damaged_items')
+            ->join('products', 'products.product_id', '=', 'damaged_items.product_id')
+            ->select('description', 'quantity', 'damaged_items.created_at');
+        return Datatables::of($data)
+            ->make(true);
     }
     public function getLostItems(){
-
+		$data = DB::table('lost_items')
+            ->join('products', 'products.product_id', '=', 'lost_items.product_id')
+            ->select('description', 'quantity', 'lost_items.created_at');
+        return Datatables::of($data)
+            ->make(true);
     }
 
 

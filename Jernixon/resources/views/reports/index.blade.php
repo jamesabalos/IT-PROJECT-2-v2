@@ -140,9 +140,9 @@ class="active"
         ],
         "ajax":  "{{ route('reports.getDamagedItems') }}",
         "columns": [
-          {data: 'or_number'},
-          {data: 'description', name: 'products.description'},
-          {data: 'customer_name'},
+          {data: 'description'},
+          {data: 'quantity'},
+          {data: 'created_at'},
         //   {data: 'quantity'},
         //   {data: 'price'},
         //   {data: 'created_at'},
@@ -174,9 +174,9 @@ class="active"
         ],
         "ajax":  "{{ route('reports.getLostItems') }}",
         "columns": [
-          {data: 'or_number'},
-          {data: 'description', name: 'products.description'},
-          {data: 'customer_name'},
+          {data: 'description'},
+          {data: 'quantity'},
+          {data: 'created_at'},
         //   {data: 'quantity'},
         //   {data: 'price'},
         //   {data: 'created_at'},
@@ -240,7 +240,7 @@ class="active"
                                 <table id="damagedItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead >
                                         <tr>
-                                          <th>Item name</th>
+                                          <th>Item Name</th>
                                           <th>Quantity</th>
                                           <th>Date</th>
                                         </tr>
@@ -257,7 +257,7 @@ class="active"
                                 <table id="lostItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead >
                                         <tr>
-                                          <th>Item name</th>
+                                          <th>Item Name</th>
                                           <th>Quantity</th>
                                           <th>Date</th>
                                         </tr>

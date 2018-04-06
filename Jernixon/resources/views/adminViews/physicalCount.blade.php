@@ -170,8 +170,8 @@ ng-app="ourAngularJsApp"
                                 <tr>
                                     {{-- <th class="text-left">Item Id</th> --}}
                                     <th class="text-left">Item Name</th>
-                                    <th class="text-left">Qty</th>
-                                    <th class="text-left">Counted Qty</th>
+                                    <th class="text-left">System Count</th>
+                                    <th class="text-left">Physical Count</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -26,7 +26,7 @@ class="active"
                 <div class="header">
                     <div class = "content">
                         <a href = "#addNewItemModal" data-toggle="modal" >
-                            <button type="button" class="btn btn-success"><i class = "ti-plus"></i>Add new Item</button>
+                            <button type="button" class="btn btn-success"><i class = "glyphicon-plus"></i> Add new Item</button>
                         </a>        
                         <!--
 <form class = "form-inline">
@@ -413,14 +413,14 @@ class="active"
         <div class = "modal-content">
             <div class = "modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Add New Item</h3>
+                <h3 class="modal-title"><i class=" fa fa-plus" style="margin-right: 5px"></i> Add New Item</h3>
             </div>
             <div class = "modal-body">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
-                            Add New Item
+                            <span class="glyphicon glyphicon-plus"></span>
+                            New Item
                         </strong>
                     </div>
                     {!! Form::open(['method'=>'post','id'=>'formAddNewItem']) !!}
@@ -473,7 +473,7 @@ class="active"
 
                 </div>
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Edit</h3>
+                <h3 class="modal-title"><i class=" fa fa-edit" style="margin-right: 10px"></i> Edit</h3>
             </div>
             {!! Form::open(['method'=>'post','id'=>'formEdit']) !!}
             {{--  <div class="form-group">
@@ -614,6 +614,13 @@ class="active"
 <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
     <div class = "modal-dialog">
         <div class = "modal-content">
+                <div class="modal-header">
+                        <div id="errorDivEditItem" class="hidden">
+        
+                        </div>
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title"><i class=" fa fa-history" style="margin-right: 8px"></i> History</h3>
+                    </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div class="panel-heading">

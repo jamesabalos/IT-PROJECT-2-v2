@@ -407,12 +407,12 @@ class AdminController extends Controller
                         <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button>
                     </a>
                     <a href = '#viewHistory' data-toggle='modal' >
-                        <button onclick='viewItemHistory(this)' class='btn btn-info'><i class='glyphicon glyphicon-th-list'></i> History</button>
+                        <button onclick='viewItemHistory(this)' class='btn btn-info'><i class='fa fa-history'></i> History</button>
                     </a>";
                 if($data->status === "available"){
-                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i>Disable</button>";
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i> Disable</button>";
                 }else{
-                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-ok'></i>Enable</button>";
+                    return $buttons."<button id='$data->product_id' onclick='formUpdateChangeStatus(this)'class='btn btn-success'><i class='glyphicon glyphicon-ok'></i> Enable</button>";
                 }
                 // return "    
                 //     <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i>$data->status</button>

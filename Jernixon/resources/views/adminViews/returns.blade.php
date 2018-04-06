@@ -395,7 +395,7 @@ ng-app="ourAngularJsApp"
             <div class="card">
                 <div class="header">
                     <a href = "#return" data-toggle="modal">
-                        <button type="button" class="btn btn-success">Return Item</button>
+                        <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
                     </a>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="returnsDataTable">
@@ -427,13 +427,13 @@ ng-app="ourAngularJsApp"
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Returns</h3>
+                <h3 class="modal-title"><i class=" fa fa-reply" style="margin-right: 10px"></i> Returns</h3>
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
+                            <span class="glyphicon glyphicon-info-sign"></span>
                              Information
                         </strong>
                     </div>
@@ -481,7 +481,7 @@ ng-app="ourAngularJsApp"
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
+                            <span class="fa fa-reply"></span>
                             Return Item
                         </strong>
                     </div>
@@ -508,7 +508,7 @@ ng-app="ourAngularJsApp"
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
+                            <span class="glyphicon glyphicon-refresh"></span>
                             In Exchange for
                         </strong>
                     </div>

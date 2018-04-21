@@ -117,29 +117,45 @@ class="active"
         $("#errorDivEditItem").html("");
 
     }
-    function formUpdateChangeStatus(button){
+    function checkItemQuantity(button){
+        var quantityLeft = button.parentNode.parentNode.childNodes[1].innerHTML;
+        if(button.childNodes[1].nodeValue === "Enable"){
+            formUpdateChangeStatus(button.childNodes[1].nodeValue,button.id);
+        }else{
+            if(quantityLeft !== "0"){
+                $('#disableConfirmation').modal('show');                   
+                document.getElementById("itemQuantityLeft").innerHTML = quantityLeft;
+                document.getElementById("statusAndId").setAttribute("data-status",button.childNodes[1].nodeValue);
+                document.getElementById("statusAndId").setAttribute("data-item",button.id);
+            }else{
+                formUpdateChangeStatus(button.childNodes[1].nodeValue,button.id);
+            }
+        }
+    }
+    function formUpdateChangeStatus(buttonValue,itemId){
         // button.preventDefault(); //prevent the page to load when submitting form
         // var fullRoute = "/admin/items/updateStatus/"+button.currentTarget.attributes[0].value; //id
-        var fullRoute = "/admin/items/updateStatus"; //id
-        var status = "";
-        if(button.childNodes[1].nodeValue === "Enable"){
-            status="unavailable";
-        }else{
-            status="available";
-        }
-        $.ajax({
-            type:'Post',
-            url: fullRoute,
-            dataType:'json',
-            data:{
-                'itemId':button.id,
-                'status': status //'status': inactive | active 
-            },
-            success:function(data){
-                $("#tableItems").DataTable().ajax.reload();//reload the dataTables                        
-
+         var fullRoute = "/admin/items/updateStatus"; //id
+            var status = "";
+            if( buttonValue === "Enable"){
+                status="unavailable";
+            }else{
+                status="available";
             }
-        });
+            $.ajax({
+                type:'Post',
+                url: fullRoute,
+                dataType:'json',
+                data:{
+                    'itemId':itemId,
+                    'status': status //'status': unavailable | available 
+                },
+                success:function(data){
+                    $('#disableConfirmation').modal('hide');                                       
+                    $("#tableItems").DataTable().ajax.reload();//reload the dataTables                        
+
+                }
+            });
 
     }
     function viewItemHistory(button){
@@ -574,43 +590,20 @@ class="active"
     </div>
 
 </div>
-<div id="removeModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+<div id="disableConfirmation" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
             <div class = "modal-body">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h4>Remove</h4>
-                <div class="alert alert-success" id="errorDivRemove" style="display:none">
-                    <h1>Success</h1>
-                </div>
-                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                {{--  <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-3">
-                        <label><i class = "ti-search"></i> Search</label>
-                    </div>
-                    <div class="col-md-5">
-                        <input type="text" onkeyup="searchItem2(this)" id="removeItem" class="form-control border-input" placeholder="Name of the returned item">
+                <p> There are still <span id="itemQuantityLeft"></span> left. Do you want to continue? </p>
+                <div class="panel-body">
+                    <div class="text-center">
+                     
+                            <button id="statusAndId" data-status="" data-item="" type="button" onclick="formUpdateChangeStatus(this.dataset.status,this.dataset.item)" class="btn btn-success">Continue</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                      
                     </div>
                 </div>
-                </div>  --}}
-                {{--  <div class="content table-responsive">
-
-                <div class="content table-responsive table-full-width table-stripped">
-                    <table id="tableItems" class="table table-striped dt-responsive nowrap" style="width:100%">
-                        <thead>
-                            <th>Id</th>
-                            <th>Description</th>
-                            <th>Qty in Stock</th>
-                            <th>Purchase Price</th>
-                            <th>Selling Price</th>
-                            <th>Action</th>
-                        </thead>
-                        <tbody id="removeItemTbody" >
-                        </tbody>
-                    </table>
-                </div>
-                </div>  --}}
             </div>    
         </div>
     </div>

@@ -22,7 +22,13 @@ ng-app="ourAngularJsApp"
 <script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
 
 <script>
-
+    function printReceipt(){
+        var restorePage = document.body.innerHTML;
+        var printContent = document.getElementById("printArea").innerHTML;
+        document.body.innerHTML = printContent;
+        window.print();
+        document.body.innerHTML = restorePage;
+    }
     function addItemToCart(button){
         $(button).hide(500).delay(1000);
         //$(button).removeClass("btn-info").addClass("btn-danger");
@@ -252,33 +258,43 @@ ng-app="ourAngularJsApp"
 <div class="row" >
     <div class="col-md-12" >
         <div class="card" >
-            <div class="header" >
+            <div class="header" id="printArea">
                 {!! Form::open(['method'=>'post','id'=>'formSales']) !!}                                
                 <h4 ng-bind="name">Customer Purchase</h4>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-0" margin>
-                            {{Form::label('Date', 'Date:')}}
-                        </div>
-                        <div class="col-md-2" margin>
-                            <input type="date" name="Date" id="today"  class="form-control"/>
-
-                        </div>
+                <div class="row">
+                    <div class="col-md-3" >                        
+                            {{Form::label('receiptNumber', 'Receipt Number:')}}
+                            {{Form::number('receiptNumber','',['class'=>'form-control'])}}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
-                        <div class="col-md-5" margin >
+                        <div class="col-md-7" margin >
                             {{Form::label('customerName', 'Customer Name:')}}
                             {{Form::text('customerName','',['class'=>'form-control'])}}
                         </div>
-                        <div class="col-md-5" margin >
-                            {{Form::label('receiptNumber', 'Receipt Number:')}}
-                            {{Form::number('receiptNumber','',['class'=>'form-control'])}}
+                        <div class="col-md-4" margin >
+                                {{Form::label('Date', 'Date:')}}
+                                <input type="date" name="Date" id="today"  class="form-control"/>    
                         </div>
+                      
                     </div>
                 </div>
-                <div class="row"> 
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-0" margin>
+                            {{Form::label('address', 'Address:')}}
+                            {{Form::text('address','',['class'=>'form-control'])}}
+                            
+                        </div>
+                        {{-- <div class="col-md-2" margin>
+                            <input type="date" name="Date" id="today"  class="form-control"/>
+
+                        </div> --}}
+                    </div>
+                </div>
+                
+                <div class="row" > 
                     <div class="col-md-12 table-responsive">
                         <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
                             <thead>
@@ -318,6 +334,7 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
                     </div> 
+                    <button type="button" onclick="printReceipt()">Print</button>
                 </div>
                 {!! Form::close() !!}
 

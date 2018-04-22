@@ -34,36 +34,65 @@ class="active"
         var dateTo = document.getElementById("to").value;
         $.ajax({
             type:'GET',
-            url: "{{route('reports.createReports')}}",
+            url: "{{route('reports.validateDateRange')}}",
             data: {
                 'dateFrom':dateFrom,
                 'dateTo':dateTo
             },
             success:function(data){
-                console.log(data)
+                var temp = data.data;
+                console.log(dateFrom)
                 $("#errorDivReport").html("");
                 // $("#transactionsTable").dataTable().fnDestroy();
-                $("#transactionsTable").DataTable().clear().destroy();
-                // $('#transactionsTable').dataTable();
-
+                // $("#transactionsTable").DataTable().clear().destroy();
+                // $('#transactionsTable').DataTable();
+                    
                     $('#transactionsTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "destroy": true,
-                        // "processing": true,
-                        // "serverSide": true,
-                        // "colReorder": true,  
-
+                        "processing": true,
+                        "serverSide": true,
+                        "colReorder": true,  
                         "pagingType": "full_numbers",
-                        "aaData": data
-                        // "ajax":  "{{ route('reports.getReports') }}",
-                        // "columns": [
-                        // {data: 'or_number'},
-                        // {data: 'description', name: 'products.description'},
-                        // {data: 'customer_name'},
-                        // {data: 'quantity'},
-                        // {data: 'price'},
-                        // {data: 'created_at'},
-                        // ]
+                        dom: 'Blfrtip',
+                        "buttons": [
+                            {
+                                extend: 'collection',
+                                text: 'EXPORT',
+                                buttons: [
+                                    {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
+                                    {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
+                                    {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
+                                    {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
+                                    {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+                                    
+                                ]
+                            }
+                        ],
+                        // "aaData": data
+                        
+                        // "ajax": {
+                        //     "url": "data.json",
+                        //     "data": {
+                        //         "user_id": 451
+                        //     }
+                        // }
+                     
+                        "ajax":  {
+                            "url": "{{ route('reports.createReports') }}",
+                            "data":{
+                                "dateFrom":dateFrom
+                            }
+                        },
+                        "columns": [
+                        {data: 'or_number'},
+                        {data: 'description', name: 'products.description'},
+                        {data: 'customer_name'},
+                        {data: 'quantity'},
+                        {data: 'price'},
+                        {data: 'created_at'},
+                        ]
+                        
                         
                     });
             },
@@ -204,17 +233,17 @@ class="active"
                         <div id="errorDivReport" class="hidden">
 
                         </div>
-                        {{-- <div class="row">
-                            <p class = "col-md-8">
-                                <label for="from">From</label>
-                                <input type="date" id="from" name="from">
-                                <label for="to">to</label>
-                                <input type="date" id="to" name="to" >
-                                <button onclick="createReport(this)">Create</button>
-                            </p>  
-                        </div> --}}
-
+                        
                         <h3>Sold Items</h3>
+                            <div class="row">
+                                <p class = "col-md-8">
+                                    <label for="from">From</label>
+                                    <input type="date" id="from" name="from">
+                                    <label for="to">to</label>
+                                    <input type="date" id="to" name="to" >
+                                    <button onclick="createReport(this)">Filter</button>
+                                </p>  
+                            </div>
 
                         <div id="transactionDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">

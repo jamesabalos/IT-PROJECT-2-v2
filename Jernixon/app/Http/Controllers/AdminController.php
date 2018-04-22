@@ -349,8 +349,7 @@ class AdminController extends Controller
             ->make(true);
     }
 
-
-    public function createReports(Request $request){
+    public function validateDateRange(Request $request){
         $this->validate($request,[
             'dateFrom' => 'required',
             'dateTo' => 'required',
@@ -358,15 +357,16 @@ class AdminController extends Controller
 
         if($request->dateFrom > $request->dateTo){
             return response()->json([
-                'errors' => ['The date must be correct.']
+                'errors' => ['The date range must be correct.']
             ],422);
         }
-        // return $request->all();
-
+    }
+    public function createReports(Request $request){
+        // return $request->dateFrom;
         $data = DB::table('sales')
             ->join('products', 'products.product_id', '=', 'sales.product_id')
             ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at')
-            ->limit(2);
+            ->where('sales.created_at','>',$request->dateFrom);
         return Datatables::of($data)
             ->make(true);
     }
@@ -401,8 +401,11 @@ class AdminController extends Controller
                     ->first();
 
                 $insertDamagedItems = DB::table('damaged_items')->insert(
-                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
-                );
+                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                    
+                    DB::table('salable_items')
+                        ->where('product_id', $request->productId[$i])
+                        ->decrement('quantity', $request->quantity[$i]);
             }else{
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
@@ -414,8 +417,10 @@ class AdminController extends Controller
                     ->first();
 
                 $insertLostItems = DB::table('lost_items')->insert(
-                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
-                );
+                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                    DB::table('salable_items')
+                        ->where('product_id', $request->productId[$i])
+                        ->decrement('quantity', $request->quantity[$i]);
             }
         }
         return $request->all();

@@ -125,6 +125,7 @@ Route::get('admin/reports/getReports', 'AdminController@getReports')->name('repo
 Route::get('admin/reports/getDamagedItems', 'AdminController@getDamagedItems')->name('reports.getDamagedItems');
 Route::get('admin/reports/getLostItems', 'AdminController@getLostItems')->name('reports.getLostItems');
 Route::get('admin/reports/createReports', 'AdminController@createReports')->name('reports.createReports');
+Route::get('admin/reports/validateDateRange', 'AdminController@validateDateRange')->name('reports.validateDateRange');
 
 
 // Route::DELETE('admin/employees/destroyEmployeeAccount/{id}', 'AdminController@destroyEmployeeAccount')->name('admin.destroyEmployeeAccount');

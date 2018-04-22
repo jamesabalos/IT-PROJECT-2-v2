@@ -362,11 +362,14 @@ class AdminController extends Controller
         }
     }
     public function createReports(Request $request){
-        // return $request->dateFrom;
+        return $request->dateFrom;
         $data = DB::table('sales')
             ->join('products', 'products.product_id', '=', 'sales.product_id')
             ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at')
-            ->where('sales.created_at','>',$request->dateFrom);
+            ->where('sales.created_at','>=',$request->dateFrom-1)
+            ->where('sales.created_at','<=',$request->dateTo+1);
+            // ->whereBetween('quantity',[$request->dateFrom, $request->dateTo]);
+            
         return Datatables::of($data)
             ->make(true);
     }

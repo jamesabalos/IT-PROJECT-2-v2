@@ -30,8 +30,10 @@ class="active"
 
 <script type="text/javascript">
     function createReport(button){
-        var dateFrom = document.getElementById("from").value;
-        var dateTo = document.getElementById("to").value;
+        var dateFrom = parseInt(document.getElementById("from").value)-1;
+        var dateTo = parseInt(document.getElementById("to").value)+1;
+                console.log(dateFrom)
+                console.log(dateTo)
         $.ajax({
             type:'GET',
             url: "{{route('reports.validateDateRange')}}",
@@ -41,7 +43,6 @@ class="active"
             },
             success:function(data){
                 var temp = data.data;
-                console.log(dateFrom)
                 $("#errorDivReport").html("");
                 // $("#transactionsTable").dataTable().fnDestroy();
                 // $("#transactionsTable").DataTable().clear().destroy();
@@ -69,19 +70,11 @@ class="active"
                                 ]
                             }
                         ],
-                        // "aaData": data
-                        
-                        // "ajax": {
-                        //     "url": "data.json",
-                        //     "data": {
-                        //         "user_id": 451
-                        //     }
-                        // }
-                     
                         "ajax":  {
                             "url": "{{ route('reports.createReports') }}",
                             "data":{
-                                "dateFrom":dateFrom
+                                "dateFrom":dateFrom,
+                                "dateTo":dateTo
                             }
                         },
                         "columns": [
@@ -92,7 +85,7 @@ class="active"
                         {data: 'price'},
                         {data: 'created_at'},
                         ]
-                        
+
                         
                     });
             },

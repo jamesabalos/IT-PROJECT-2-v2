@@ -23,14 +23,53 @@ ng-app="ourAngularJsApp"
 
 <script>
     function printReceipt(){
-        var data = $("#formSales").serialize();   
+        // var data = $("#formSales").serialize();   
         var arrayOfData = $("#formSales").serializeArray();  
-        console.log(data)
-        console.log(arrayOfData)
+        console.log( arrayOfData )
+        console.log( arrayOfData[0]['name'] )
 
         var restorePage = document.body.innerHTML;
         var printContent = document.getElementById("printArea").innerHTML;
-        document.body.innerHTML = printContent;
+        
+        var items = "";
+        var rows = $("#cartTbody tr");
+        for(var i = 0; i < rows.length; i++){
+            items += "<tr>\
+                        <td>"+rows[i].cells[2].lastChild.value+"</td>\
+                        <td></td>\
+                        <td>"+rows[i].cells[0].innerHTML+"</td>\
+                        <td>"+rows[i].cells[1].innerText+"</td>\
+                        <td>"+rows[i].cells[3].innerText+"</td>\
+                    <tr>\
+                ";
+        }
+        var totalSalesPrice = document.getElementById("totalSalesDiv").firstChild.innerText;
+        var officialReceipt = "\
+            <div style='height: 600px;width: 500px;border:2px solid red;margin-left: 120px;'>\
+            <h3>hellooo</h3>"
+            +arrayOfData[1]['value']+"<br>"
+            +arrayOfData[2]['value']+"<br>"
+            +arrayOfData[3]['value']+"<br>"
+            +arrayOfData[4]['value']+
+                "<div class='content table-responsive table-full-width table-stripped'>\
+                    <table class='table table-hover table-bordered' style='width:100%'>\
+                        <thead>\
+                            <tr>\
+                                <td>Qty</td>\
+                                <td>Unit</td>\
+                                <td>Article</td>\
+                                <td>U-Price</td>\
+                                <td>Amount</td>\
+                            </tr>\
+                        </thead>"+  
+                        items
+                    +"</table>\
+                </div>\
+                <h3>"+totalSalesPrice+"</h3>\
+            </div>\
+        ";
+   
+        document.body.innerHTML = officialReceipt;
         window.print();
         document.body.innerHTML = restorePage;
     }
@@ -48,6 +87,7 @@ ng-app="ourAngularJsApp"
         var newRow = thatTbody.insertRow(-1);
         newRow.insertCell(-1).innerHTML = button.parentNode.parentNode.firstChild.innerHTML;
         button.parentNode.parentNode.setAttribute("class","hidden");
+
         // button.parentNode.parentNode.setAttribute("name","description[]");
 
         // newRow.innerHTML = a.parentNode.parentNode.innerHTML ;
@@ -115,7 +155,7 @@ ng-app="ourAngularJsApp"
             e.preventDefault();
             var data = $(this).serialize();   
             var arrayOfData = $(this).serializeArray();           
-
+ 
             var thatTbody = $("#cartTbody tr td:first-child");
 
 
@@ -260,6 +300,7 @@ ng-app="ourAngularJsApp"
         </div>
     </div>
 </div>
+<button type="button" onclick="printReceipt()">Print</button>
 
 <div class="row" >
     <div class="col-md-12" >
@@ -340,7 +381,6 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
                     </div> 
-                    <button type="button" onclick="printReceipt()">Print</button>
                 </div>
                 {!! Form::close() !!}
 
@@ -541,7 +581,7 @@ ng-app="ourAngularJsApp"
                 var lastRow = thatTable.rows[numberOfRows-1];
                 var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
 
-                var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
+                var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='description[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);    
 
@@ -551,7 +591,7 @@ ng-app="ourAngularJsApp"
                 // angular.element( newRow.insertCell(-1) ).append(temp);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
-                var salesPrice = "<p class='form-control' style='color:green;' ng-bind='" +itemName+ "SP |number:2'></p><input type='hidden' name='salesPrices[]'>";
+                var salesPrice = "<p class='form-control' style='color:green;' ng-bind='" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
                 var temp2 = $compile(salesPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
@@ -560,6 +600,7 @@ ng-app="ourAngularJsApp"
                 var temp3 = $compile(removeButton)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp3);
 
+                
                 //store in localStorage
                 var tds  = $(lastRow.innerHTML).slice(0);     
                 var itemObject = {
@@ -630,8 +671,11 @@ ng-app="ourAngularJsApp"
                 var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
                 var sellingPrice = ngModelName+"SP";
                 $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
+                // document.getElementById("salesPriceValue").setAttribute("value",retailPrice * $scope[ngModelName]);
+          
+        
                 // $scope.totalSales =  $scope[ngModelName];
-                console.log($scope[sellingPrice])
+                // console.log($scope[sellingPrice])
 
                 // var totalSales = document.getElementById("totalSalesDiv").firstChild.innerText;
                 // console.log("totalSales: " +totalSales)

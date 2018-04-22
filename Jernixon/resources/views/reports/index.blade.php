@@ -30,10 +30,27 @@ class="active"
 
 <script type="text/javascript">
     function createReport(button){
-        var dateFrom = parseInt(document.getElementById("from").value)-1;
-        var dateTo = parseInt(document.getElementById("to").value)+1;
-                console.log(dateFrom)
-                console.log(dateTo)
+        var dateFrom = document.getElementById("from").value;
+        var dateTo = document.getElementById("to").value;
+
+        var newDateFrom = new Date(dateFrom);
+        newDateFrom.setDate(newDateFrom.getDate() - 1);
+        
+        var ddf = newDateFrom.getDate();
+        var mmf = newDateFrom.getMonth() + 1;
+        var yf = newDateFrom.getFullYear();
+
+        var newDateTo = new Date(dateTo);
+        newDateTo.setDate(newDateTo.getDate() + 1);
+
+        var ddt = newDateTo.getDate();
+        var mmt = newDateTo.getMonth() + 1;
+        var yt = newDateTo.getFullYear();
+
+        var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
+        var formattedDateTo = yt + '-' + mmt + '-' + ddt;
+        console.log(formattedDateFrom);
+        console.log(formattedDateTo);
         $.ajax({
             type:'GET',
             url: "{{route('reports.validateDateRange')}}",
@@ -73,8 +90,8 @@ class="active"
                         "ajax":  {
                             "url": "{{ route('reports.createReports') }}",
                             "data":{
-                                "dateFrom":dateFrom,
-                                "dateTo":dateTo
+                                "dateFrom":formattedDateFrom,
+                                "dateTo":formattedDateTo
                             }
                         },
                         "columns": [

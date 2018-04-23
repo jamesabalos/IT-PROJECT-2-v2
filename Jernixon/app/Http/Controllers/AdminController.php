@@ -651,6 +651,29 @@ class AdminController extends Controller
         // return redirect('/admin/employees');
         //    return redirect('/items')->with('success','Success adding item');
     }
+    public function addNewAdmin(Request $request){
+        $this->validate($request,[
+            'name' => 'required',
+            'email' => 'required',
+            // 'password' => 'required',
+        ]);
+
+        //Create new Item
+        $employee = new Admin;
+        $employee->name = $request->input('name');
+        $employee->email = $request->input('email');
+        $employee->password = $request->input('password');
+        $employee->save();
+        // return response($request->all());
+
+        $results = Admin::latest('created_at')->first();
+        return $results;
+        // return DB::table('users')->orderBy('created_at', 'desc')->first();
+
+
+        // return redirect('/admin/employees');
+        //    return redirect('/items')->with('success','Success adding item');
+    }
 
     public function updateEmployeeAccount(Request $request, $id){
         // $this->validate($request,[

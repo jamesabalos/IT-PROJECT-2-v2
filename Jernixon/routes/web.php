@@ -131,6 +131,7 @@ Route::get('admin/reports/validateDateRange', 'AdminController@validateDateRange
 // Route::DELETE('admin/employees/destroyEmployeeAccount/{id}', 'AdminController@destroyEmployeeAccount')->name('admin.destroyEmployeeAccount');
 Route::Put('admin/employees/updateEmployeeAccount/{id}', 'AdminController@updateEmployeeAccount')->name('admin.updateEmployeeAccount');
 Route::Post('admin/employees/addNewEmployee', 'AdminController@addNewEmployee')->name('admin.addNewEmployee');
+Route::Post('admin/employees/addNewAdmin', 'AdminController@addNewAdmin')->name('admin.addNewAdmin');
 Route::get('admin/employees', 'AdminController@employees')->name('admin.employees');
 Route::Post('admin/employees/resetPassword', 'AdminController@employeeResetPassword');
 

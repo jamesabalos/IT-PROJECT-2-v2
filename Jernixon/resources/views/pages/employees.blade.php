@@ -25,7 +25,14 @@
 
 
     // }
-
+    function salesAssistantRadioButton(){
+        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.setAttribute("class","form-group");
+        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.previousElementSibling.setAttribute("class","form-group");
+    }
+    function adminRadioButton(){
+        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.setAttribute("class","hidden");
+        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.previousElementSibling.setAttribute("class","hidden");
+    }
     function passEmployeeId(id){
         document.getElementById("resetPasswordEmployeeId").setAttribute("data-employee-id",id);
     }
@@ -66,26 +73,30 @@
             //key value pair of form
             // var data = $(this).serialize();
             var arrayOfData = $(this).serializeArray();
-            var password = (arrayOfData[1].value).split(" ", 1) + "@jernixon";
-
+            var password = (arrayOfData[2].value).split(" ", 1) + "@jernixon";
+            var adminParam = {
+                        'name': arrayOfData[2].value,
+                        'email': arrayOfData[3].value,
+                        'password': password,
+            };
+            var saParam = {
+                        'name': arrayOfData[2].value,
+                        'email': arrayOfData[3].value,
+                        'contactNumber': arrayOfData[4].value,
+                        'address': arrayOfData[5].value,
+                        'password': password,
+            };
             $.ajax({
                 type: 'POST',
                 // url:'admin/storeNewItem',
-                url: "{{route('admin.addNewEmployee')}}",
+                url: (arrayOfData[1]['value'] === "salesAssistantRadioButton") ?  "{{route('admin.addNewEmployee')}}" : "{{route('admin.addNewAdmin')}}",
                 dataType: 'json',
-                data: {
-                    'name': arrayOfData[1].value,
-                    'email': arrayOfData[2].value,
-                    'contactNumber': arrayOfData[3].value,
-                    'address': arrayOfData[4].value,
-                    'password': password,
-
-                },
-
+                // url: (num == 1) ? url1 : url2
+                data:  (arrayOfData[1]['value'] === "salesAssistantRadioButton") ? saParam : adminParam,
 
                 success: function(data) {
                     console.log(data)
-                    $('#addEmployee').modal('hide')
+                    $('#addEmployee').modal('hide');
                     $("#successDiv p").remove();
                     $("#successDiv").removeClass("hidden")
                         .html("<h3>Success</h3>");
@@ -291,6 +302,7 @@
                     <a href="#addEmployee" data-toggle="modal">
                         <button type="button" class="btn btn-success"><i class=" fa fa-plus"></i> Add Employee</button>
                     </a>
+
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="employeeTable">
                             <thead>
@@ -374,8 +386,9 @@
                             New Employee
                         </strong>
                     </div>
-
                     {!! Form::open(['method'=>'post','id'=>'formAddNewEmployee']) !!}
+                    <input type="radio" name="radioButton" value="salesAssistant" checked onclick="salesAssistantRadioButton()"> Sales Assistant
+                    <input type="radio" name="radioButton" value="admin" onclick="adminRadioButton()"> Admin
                     <div class="panel-body">
                         <input type="hidden" id="_token" value="{{ csrf_token() }}">
 

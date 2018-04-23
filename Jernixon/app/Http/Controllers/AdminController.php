@@ -74,7 +74,9 @@ class AdminController extends Controller
         return view('adminViews.stockAdjustment');
     }
 
-
+    public function createFastMovingItems(Request $request){
+        return $request->all();
+    }
     public function getItemsForSales(){
         $data = DB::table('salable_items')
             ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')

@@ -78,11 +78,11 @@ class="active"
                                 extend: 'collection',
                                 text: 'EXPORT',
                                 buttons: [
-                                    {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
-                                    {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
-                                    {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
-                                    {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
-                                    {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+                                    {extend: 'copy', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'excel', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'csv', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'pdf', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'print', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'}
                                     
                                 ]
                             }

@@ -82,6 +82,8 @@ class="active"
         });
         
     }
+
+
 </script>
 
 <?php 
@@ -222,7 +224,15 @@ class="active"
                 <!-- Bar Chart -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <div id="errorDivReport" class="hidden">
+                        </div>
                         <i class="fa fa-bar-chart-o fa-fw"></i> Fast Moving Items
+                        <br>
+                        <label for="from">From</label>
+                        <input type="date" id="from" name="from">
+                        <label for="to">to</label>
+                        <input type="date" id="to" name="to" >
+                        <button onclick="createFastMovingItems(this)">Filter</button>
                     </div>
                     <div class="container-fluid">
                         <div class="row">
@@ -286,7 +296,77 @@ $(document).ready(function() {
     window.barChartLeastItems.redraw();
   });
 });
+function createFastMovingItems(){
 
+        var dateFrom = document.getElementById("from").value;
+        var dateTo = document.getElementById("to").value;
+
+        var newDateFrom = new Date(dateFrom);
+        newDateFrom.setDate(newDateFrom.getDate() - 1);
+        
+        var ddf = newDateFrom.getDate();
+        var mmf = newDateFrom.getMonth() + 1;
+        var yf = newDateFrom.getFullYear();
+
+        var newDateTo = new Date(dateTo);
+        newDateTo.setDate(newDateTo.getDate() + 1);
+
+        var ddt = newDateTo.getDate();
+        var mmt = newDateTo.getMonth() + 1;
+        var yt = newDateTo.getFullYear();
+
+        var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
+        var formattedDateTo = yt + '-' + mmt + '-' + ddt;
+        $.ajax({
+            type:'GET',
+            url: "{{route('reports.validateDateRange')}}",
+            data: {
+                'dateFrom':dateFrom,
+                'dateTo':dateTo
+            },
+            success:function(data){
+                $.ajax({
+                    url: "{{ route('admin.dashboard.createFastMovingItems') }}",
+                    type: 'GET',
+                    data: {
+                        "dateFrom":formattedDateFrom,
+                        "dateTo":formattedDateTo
+                    },
+                    success: function(response)
+                    {
+                        // var resp_data = JSON.parse(response);
+                        console.log(response);
+                        $('#bar-chart-top-items').empty(); //reinitialize chart
+
+                        //  window.barChartTopItems = Morris.Bar({
+                        //     element: 'bar-chart-top-items',
+                        //     // data: [<?php echo $chart_data_top_items; ?>],
+                        //     data: resp_data,
+                        //     xkey: 'name',
+                        //     ykeys: ['quantity'],
+                        //     labels: ['Qty sold'],
+                        //     lineColors: ['#1e88e5'],
+                        //     lineWidth: '3px',
+                        //     resize: true,
+                        //     redraw: true
+                        // });
+                    }
+                });
+            },
+            error:function(data){
+                var response = data.responseJSON;
+                console.log(response);
+                $("#errorDivReport").removeClass("hidden").addClass("alert-danger text-center");
+                $("#errorDivReport").html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });
+            }
+        });
+    }
 function barChartTopItems() {
   window.barChartTopItems = Morris.Bar({
     element: 'bar-chart-top-items',

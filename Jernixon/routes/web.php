@@ -81,6 +81,7 @@ Route::get('admin/notification','AdminController@getNotification')->name('admin.
 Route::Post('admin/changePassword','AdminController@changePassword')->name('admin.changePassword');
 
 Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
+Route::get('admin/dashboard/createFastMovingItems', 'AdminController@createFastMovingItems')->name('admin.dashboard.createFastMovingItems');
 Route::get('admin/dashboard/getDataPoints', 'AdminController@getDataPoints')->name('dashboard.getDataPoints');
 Route::get('admin/logout','Auth\AdminLoginController@logout')->name('admin.logout');
 Route::get('admin/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');

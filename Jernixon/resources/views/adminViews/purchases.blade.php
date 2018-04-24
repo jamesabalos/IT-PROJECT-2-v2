@@ -235,15 +235,18 @@ ng-app="ourAngularJsApp"
 
                   },
                   error:function(data){
-                      var response = data.responseJSON;
-                      $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
-                      $("#errorDivCreatePurchase").html(function(){
+                    var response = data.responseJSON;
+                    $("#errorDivCreatePurchase").hide(500);
+                    $("#errorDivCreatePurchase").removeClass("hidden");
+                    $("#errorDivCreatePurchase").slideDown("slow", function() {
+                    $("#errorDivCreatePurchase").html(function(){
                           var addedHtml="";
                           for (var key in response.errors) {
                               addedHtml += "<p>"+response.errors[key]+"</p>";
                           }
                           return addedHtml;
                       });
+                    });
                   }
 
               });
@@ -406,7 +409,7 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
-                    <div id="errorDivCreatePurchase" class="hidden">
+                    <div id="errorDivCreatePurchase" class="hidden alert-danger text-center">
 
                     </div>
                 {{--  <button type="button" class="btn btn-info btn-fill btn-wd btn-success" onclick="addRow()">Add Row</button>  --}}

@@ -324,14 +324,17 @@ class="active"
                     $("#tableItems").DataTable().ajax.reload();
                 },
                 error:function(data){   
-                    var response = data.responseJSON;
-                    $("#errorDivAddNewItem").removeClass("hidden").addClass("alert-danger");
-                    $("#errorDivAddNewItem").html(function(){
-                        var addedHtml="";
-                        for (var key in response.errors) {
-                            addedHtml += "<p>"+response.errors[key]+"</p>";
-                        }
-                        return addedHtml;
+                    $("#errorDivAddNewItem").hide(500);
+                    $("#errorDivAddNewItem").removeClass("hidden");
+                    $("#errorDivAddNewItem").slideDown("slow", function() {                    
+                        var response = data.responseJSON;
+                        $("#errorDivAddNewItem").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
                     });
                     // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
                     //alert(Object.keys(error.errors).length)
@@ -470,7 +473,7 @@ class="active"
                         @include('inc.messages')
                     </div>
                 </div>
-                <div class="alert alert-danger hidden" id="errorDivAddNewItem">
+                <div class="alert alert-danger hidden text-center" id="errorDivAddNewItem">
                 </div>
                 <div class="row">
                     <div class="text-right">                                           

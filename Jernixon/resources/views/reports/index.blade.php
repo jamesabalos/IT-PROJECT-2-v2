@@ -109,14 +109,26 @@ class="active"
             error:function(data){
                 var response = data.responseJSON;
                 console.log(response);
-                $("#errorDivReport").removeClass("hidden").addClass("alert-danger text-center");
-                $("#errorDivReport").html(function(){
+                $("#errorDivReport").hide(500);
+                $("#errorDivReport").removeClass("hidden");
+                $("#errorDivReport").slideDown("slow", function() {
+                    $("#errorDivReport").html(function(){
                           var addedHtml="";
                           for (var key in response.errors) {
                               addedHtml += "<p>"+response.errors[key]+"</p>";
                           }
                           return addedHtml;
-                      });
+                      });                
+                });
+                
+                // $("#errorDivReport").removeClass("hidden").addClass("alert-danger text-center");
+                // $("#errorDivReport").html(function(){
+                //           var addedHtml="";
+                //           for (var key in response.errors) {
+                //               addedHtml += "<p>"+response.errors[key]+"</p>";
+                //           }
+                //           return addedHtml;
+                //       });
             }
         });
     }
@@ -240,7 +252,7 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content" >
-                        <div id="errorDivReport" class="hidden">
+                        <div id="errorDivReport" class="hidden alert-danger text-center">
 
                         </div>
                         

@@ -190,7 +190,10 @@ class="active"
                   },
                   error:function(data){
                       var response = data.responseJSON;
-                      $("#errorDivCreateStockAdjustment").removeClass("hidden").addClass("alert-danger text-center");
+
+                    $("#errorDivCreateStockAdjustment").hide(500);
+                    $("#errorDivCreateStockAdjustment").removeClass("hidden");
+                    $("#errorDivCreateStockAdjustment").slideDown("slow", function() {
                       $("#errorDivCreateStockAdjustment").html(function(){
                           var addedHtml="";
                           for (var key in response.errors) {
@@ -198,6 +201,8 @@ class="active"
                           }
                           return addedHtml;
                       });
+                        
+                    });
                   }
               })
           })
@@ -344,7 +349,7 @@ class="active"
                         </div>
                     </div>
                 </div>
-                <div id="errorDivCreateStockAdjustment" class="hidden">
+                <div id="errorDivCreateStockAdjustment" class="hidden alert-danger text-center">
                 </div>
                 <div class="row">
                     <div class="text-right">                                           

@@ -127,7 +127,9 @@
                 },
                 error: function(data) {
                     var response = data.responseJSON;
-                    $("#errorDivAddNewEmployee").removeClass("hidden").addClass("alert-danger text-center");
+                    $("#errorDivAddNewEmployee").hide(500);
+                $("#errorDivAddNewEmployee").removeClass("hidden");
+                $("#errorDivAddNewEmployee").slideDown("slow", function() {
                     $("#errorDivAddNewEmployee").html(function() {
                         var addedHtml = "";
                         for (var key in response.errors) {
@@ -135,6 +137,8 @@
                         }
                         return addedHtml;
                     });
+                });
+
                     // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
                     //alert(Object.keys(error.errors).length)
                     //console.log(error)
@@ -437,7 +441,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="errorDivAddNewEmployee" class="hidden">
+                <div id="errorDivAddNewEmployee" class="hidden alert-danger text-center">
                 </div>
                 <div class="form-group">
                     <div class="row">

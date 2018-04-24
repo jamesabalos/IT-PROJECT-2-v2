@@ -235,20 +235,20 @@ ng-app="ourAngularJsApp"
                 error:function(data){
                     var response = data.responseJSON;
                     console.log(response)
-
                     //prompt the message
-                    $("#successDiv").css("display","block");
-                    //                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
-                    //                            $("#successDiv").slideDown("slow");
-                    //                            $("#successDiv").css("display:block");
-                    $("#successDiv").removeClass("alert-success hidden").addClass("alert-danger");
-                    $("#successDiv").html(function(){
-                        var addedHtml="";
-                        for (var key in response.errors) {
-                            addedHtml += "<p>"+response.errors[key]+"</p>";
-                        }
-                        return addedHtml;
+                        $("#successDiv").removeClass("alert-success").addClass("alert-danger");
+                    $("#successDiv").hide(500);
+                    $("#successDiv").removeClass("hidden");
+                    $("#successDiv").slideDown("slow", function() {
+                        $("#successDiv").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
                     });
+                    
                 }
             });
             // .done(function(data) {
@@ -377,7 +377,7 @@ ng-app="ourAngularJsApp"
                                     </div>
                                 </div>
                             </div>
-                            <div class="alert alert-success hidden" id="successDiv">
+                            <div class="alert alert-danger text-center hidden" id="successDiv">
                             </div>
                         </div>
                     </div> 
@@ -510,6 +510,18 @@ ng-app="ourAngularJsApp"
                         var value = localStorage[key];
                         if(value.includes("item")){
                             var myItemJSON = JSON.parse(localStorage.getItem(key));            
+                            
+                        
+                             var updateTemp = $.parseHTML( myItemJSON.retailPrice );
+                            updateTemp[0].innerHTML=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price
+                            updateTemp[1].value=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price
+                             console.log(updateTemp[0].outerHTML+updateTemp[1].outerHTML)
+                            //  document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML
+                        
+
+
+
+
                             //hide row
                             document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
                             var newRow = thatTbody.insertRow(-1);
@@ -522,7 +534,7 @@ ng-app="ourAngularJsApp"
                             // angular.element( lastRow.insertCell(-1) ).append(temp2);
 
                             //newRow.insertCell(-1).innerHTML = myItemJSON.retailPrice;
-                            angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.retailPrice)($scope) );
+                            angular.element( newRow.insertCell(-1) ).append( $compile(updateTemp[0].outerHTML+updateTemp[1].outerHTML)($scope) );
 
                             //newRow.insertCell(-1).innerHTML = myItemJSON.quantityPurchase;
                             angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );

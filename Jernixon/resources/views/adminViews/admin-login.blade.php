@@ -207,9 +207,10 @@
                             Go to Sales Assistant Login
 					</a>
                         <br>
-                        {{-- <a class="txt1" href="{{ route('password.request') }}">
+                        {{-- <a class="txt1" href="{{ route('password.request') }}"> --}}
+                        <a class="txt1" href="{{ route('admin.showForgotPassword') }}">
 							Forgot Password?
-						</a> --}}
+						</a>
 					</div>
 				</form>
 			</div>

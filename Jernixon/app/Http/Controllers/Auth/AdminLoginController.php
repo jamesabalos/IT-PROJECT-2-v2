@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
+use App\Admin;
+
 use Illuminate\Support\MessageBag;
 
 class AdminLoginController extends Controller
@@ -18,7 +20,7 @@ class AdminLoginController extends Controller
             -for the pages protected by authentication, it will redirect you to the correct
             loginForm for that guard
 
-            GUEST middleware
+            GUEST middlewaren
             -guest middleware:only wants people that are not login!, so if you're logged in, you don't
             have the right to see this page! and it will redirect you to the home page for that authentication
             -if the page is protected by a guest, and you're logged in from the guard that is protecting
@@ -60,6 +62,19 @@ class AdminLoginController extends Controller
     {
         Auth::guard('adminGuard')->logout();
         return redirect('/');
+    }
+
+    public function showForgotPasswordForm(){
+        return view("adminViews.admin-forgotPassword");        
+    }
+    public function forgotPassword(Request $request){
+        $this->validate($request,[
+            'Email' => 'required',
+            'Username' => 'required'
+        ]);
+        //query
+        // return redirect('/'); 
+        return $request->all();
     }
 
 }

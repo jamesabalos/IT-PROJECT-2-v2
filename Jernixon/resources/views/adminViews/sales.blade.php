@@ -608,7 +608,7 @@ ng-app="ourAngularJsApp"
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
                 // var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";
-                var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
+                var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
                 var temp3 = $compile(removeButton)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp3);
 
@@ -623,7 +623,9 @@ ng-app="ourAngularJsApp"
                     quantityPurchase: tds[2].firstChild.outerHTML,
                     salesPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
                     removeButton: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
-                    itemId: event.currentTarget.getAttribute("id")
+                    itemId: event.currentTarget.getAttribute("id"),
+                    purchasePrice: $(event.currentTarget).closest("tr")[0]['cells'][2].innerHTML,
+                    action: $(event.currentTarget).closest("tr")[0]['cells'][4].innerHTML,
                 };
 
                 var jsonObject = JSON.stringify(itemObject);
@@ -671,6 +673,10 @@ ng-app="ourAngularJsApp"
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
+                var row = $(event.currentTarget).closest("tr");
+                $('#dashboardDatatable').dataTable().fnDeleteRow(row);
+                // console.log(row)
+
             };
 
             $scope.changing = function(event) {
@@ -692,12 +698,24 @@ ng-app="ourAngularJsApp"
                 // var totalSales = document.getElementById("totalSalesDiv").firstChild.innerText;
                 // console.log("totalSales: " +totalSales)
             }
-
             $scope.remove = function(event){
-                // $(event.currentTarget.parentNode.parentNode).hide(500,function(){
+                var data  = $(event.currentTarget.parentNode.parentNode.innerHTML).slice(0,2);
+                var temp = JSON.parse(localStorage.getItem(data[0].innerHTML));
+                var table = $('#dashboardDatatable').DataTable();
+                table.row.add( {
+                        "description":  temp['item'],
+                        "quantity":  $.parseHTML(temp['quantityPurchase'])[0]['max'],
+                        "wholesale_price": temp['purchasePrice'],
+                        "retail_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
+                        "action":   temp['action']
+                    } ).draw();
+                localStorage.removeItem(data[0].innerHTML);
+                
+
+
                 event.currentTarget.parentNode.parentNode.remove();
 
-                // })
+                
                 var thatTable = document.querySelectorAll('#cartTable > tbody > tr')
                 var numberOfRows = thatTable.length;
                 var ngBinds = "";
@@ -712,7 +730,7 @@ ng-app="ourAngularJsApp"
                     }
                 }
                 console.log(ngBinds)    
-
+                //update total sales price
                 document.getElementById("totalSalesDiv").innerHTML="";
                 var price = "<p class='form-control' style='color:green' ng-bind='" +ngBinds+ "'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
-use App\Admin;
+
 
 use Illuminate\Support\MessageBag;
 
@@ -64,17 +64,6 @@ class AdminLoginController extends Controller
         return redirect('/');
     }
 
-    public function showForgotPasswordForm(){
-        return view("adminViews.admin-forgotPassword");        
-    }
-    public function forgotPassword(Request $request){
-        $this->validate($request,[
-            'Email' => 'required',
-            'Username' => 'required'
-        ]);
-        //query
-        // return redirect('/'); 
-        return $request->all();
-    }
+
 
 }

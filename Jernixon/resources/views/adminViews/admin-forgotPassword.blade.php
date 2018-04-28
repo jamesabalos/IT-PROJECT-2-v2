@@ -48,11 +48,11 @@
             $.ajax({
                 type:'POST',
                 url: "{{route('admin.forgotPassword')}}",
-                // data: data,
-                data: {
-                    "Email":"jake",
-                    "Username":"jakejames"
-                },
+                data: data,
+                // data: {
+                //     "Email":"jake",
+                //     "Username":"jakejames"
+                // },
 
                 success:function(data){
                     console.log(data)   
@@ -102,13 +102,13 @@
                     <div class="wrap-input100" >                        
                         {{Form::input('text','username',null, ['class'=>'input100', 'placeholder'=>'Username', 'required','autofocus'])}}
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
-<!--
+{{-- <!--
                         @if ($errors->has('email'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('email') }}</strong>
                                 </span>
                         @endif
--->
+--> --}}
                     </div>
                     <div class="container-login100-form-btn">
                         {{Form::button('Submit', array( 'type'=>'submit','class'=>'login100-form-btn'))}}

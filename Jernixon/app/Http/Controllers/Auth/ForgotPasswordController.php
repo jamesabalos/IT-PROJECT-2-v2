@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use Illuminate\Http\Response;
+use Illuminate\Http\Request;
+use App\Admin;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+// use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
 {
@@ -18,7 +20,7 @@ class ForgotPasswordController extends Controller
     |
     */
 
-    use SendsPasswordResetEmails;
+    // use SendsPasswordResetEmails;
 
     /**
      * Create a new controller instance.
@@ -28,5 +30,19 @@ class ForgotPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+
+    public function showForgotPasswordForm(){
+        return view("adminViews.admin-forgotPassword");        
+    }
+    public function forgotPassword(Request $request){
+        $this->validate($request,[
+            'Email' => 'required',
+            'Username' => 'required'
+        ]);
+        //query
+        // return redirect('/'); 
+       return redirect()->back()->withErrors($errors)->withInput($request->only('email','remember'));
+        
     }
 }

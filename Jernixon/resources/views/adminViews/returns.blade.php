@@ -98,7 +98,8 @@ ng-app="ourAngularJsApp"
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control' onchange='toggleCheckbox(this)'></td>";
+                    // newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control' onchange='toggleCheckbox(this)'></td>";
+                    newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
                 } 
                 document.getElementById("Date").value = data[0].created_at;
                 document.getElementById("Customer").value = data[0].customer_name;

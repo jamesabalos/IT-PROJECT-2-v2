@@ -243,9 +243,9 @@ class AdminController extends Controller
         $data = DB::table('sales')
             ->select('or_number')
             ->distinct()
-            // ->where('or_number','LIKE','%'.$ORNumber.'%')
-            ->where('created_at','>=',DB::raw('DATE_SUB(CURDATE(), INTERVAL 7 DAYS)'))
-            ->where('created_at','<=',DB::raw('NOW()'))
+            ->where('or_number','LIKE','%'.$ORNumber.'%')
+            ->where('created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 7 DAY)'))
+            ->where('created_at','<=', DB::raw('NOW()'))
             ->limit(5)
             ->get();
         return $data;

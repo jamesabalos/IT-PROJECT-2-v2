@@ -41,9 +41,7 @@ class ForgotPasswordController extends Controller
             'email' => 'required',
             'username' => 'required'
         ]);
-        
         //query
-        
         return $request->all();
         
     }

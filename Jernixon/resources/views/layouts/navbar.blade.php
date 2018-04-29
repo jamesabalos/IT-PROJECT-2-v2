@@ -82,8 +82,21 @@
     //         .delay(500)                        
     //         .hide(1500);
     // }
-    
+    function markAsRead(e){
+
+        $.ajax({
+            method: 'get',
+            url:"{{ route('admin.notification.markAsRead') }}",
+            
+            success: function(data){
+                console.log(data)
+            }
+        });
+    }
     $(document).ready(function(){
+        // $('button.myClass').click(function() {
+        //     alert( "Handler" );
+        // });
         $.ajax({
                 method: 'get',
                 //url: 'items/' + document.getElementById("inputItem").value,
@@ -99,7 +112,7 @@
                                                     <p style='font-size: 12px'><b>Item " +data[i][2]+ " is below reorder level.</b></p>\
                                                     <p style='font-size: 12px'><b>"+data[i][3]+" item(s) left</b></p>\
                                                     <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-													// <p style='font-size: 12px; text-align: right'><b>Mark As Read</b></p>\
+													 <button type='button' onclick='markAsRead(this)'>Mark as read</button>\
                                                 </div>\
                                             </div>";
                                             // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\
@@ -120,6 +133,8 @@
 
             }
         });
+
+
 
         $('#formChangePassword').on('submit',function(e){
             e.preventDefault();

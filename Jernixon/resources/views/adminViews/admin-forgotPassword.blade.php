@@ -56,10 +56,14 @@
                 var response = data.responseJSON; 
                 console.log(response)
                 if(response.errors.hasOwnProperty('email')){
-                    document.getElementById("emailError").innerHTML = "<h5>"+response.errors.email+"</h5>";
+                    document.getElementById("emailError").innerHTML = "<h5 style='color:red'>"+response.errors.email+"</h5>";
+                }else{
+                    document.getElementById("emailError").innerHTML = "";                    
                 }
                 if(response.errors.hasOwnProperty('username')){
-                    document.getElementById("usernameError").innerHTML = "<h5>"+response.errors.username+"</h5>";
+                    document.getElementById("usernameError").innerHTML = "<h5 style='color:red'>"+response.errors.username+"</h5>";
+                }else{
+                    document.getElementById("usernameError").innerHTML = "";                    
                 }
             }
         });

@@ -517,13 +517,12 @@ ng-app="ourAngularJsApp"
                             updateTemp[1].value=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price
                              console.log(updateTemp[0].outerHTML+updateTemp[1].outerHTML)
                             //  document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML
-                        
-
-
-
-
+ 
                             //hide row
-                            document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
+                            // document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
+                            var row = $('#'+myItemJSON.itemId).closest("tr");
+                            $('#dashboardDatatable').dataTable().fnDeleteRow( row );
+
                             var newRow = thatTbody.insertRow(-1);
                             newRow.insertCell(-1).innerHTML = myItemJSON.item ;
                             // newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;
@@ -545,10 +544,6 @@ ng-app="ourAngularJsApp"
                             angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
                             // newRow.insertCell(-1).innerHTML = myItemJSON.removeButton;
                             // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
-
-                            //remove the add button after the datatables load
-                            var button = document.getElementById(myItemJSON.itemId);
-                            $(button).hide();
 
                             var temp = document.createElement('div');
                             temp.innerHTML = myItemJSON.salesPrice;  
@@ -672,7 +667,7 @@ ng-app="ourAngularJsApp"
                 var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsResult+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
-
+                //remove the row dataTable
                 var row = $(event.currentTarget).closest("tr");
                 $('#dashboardDatatable').dataTable().fnDeleteRow(row);
                 // console.log(row)

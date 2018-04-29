@@ -740,11 +740,13 @@ class AdminController extends Controller
             $sales = DB::table('salable_items')
                 ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
                 ->select('products.product_id as product_id', 'description', 'salable_items.quantity as quantity')
+                // ->where('notif_status','=','not_yet_read')
                 ->where('products.product_id' , '=' , $products[$i]->product_id)
                 ->where('salable_items.quantity', '<', $products[$i]->reorder_level)
                 ->where('salable_items.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
                 ->where('salable_items.created_at','<=', DB::raw('NOW()'))
                 ->first();
+                // ->get();
 
             // $arrayCount1 = count($sales);
             // for($i = 0;$i<$arrayCount1;$i++){
@@ -773,6 +775,9 @@ class AdminController extends Controller
         }
         array_multisort($date, SORT_DESC, $data);
         return $data;
+    }
+    public function notificationMarkAsRead(){
+        return "markedMe";
     }
 
 

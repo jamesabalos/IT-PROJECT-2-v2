@@ -79,6 +79,7 @@ Route::Post('forgotPassword','Auth\ForgotPasswordController@forgotPassword')->na
 Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('salesAssistant.logout');
 
 Route::get('admin/notification','AdminController@getNotification')->name('admin.notification');
+Route::get('admin/notification/markAsRead','AdminController@notificationMarkAsRead')->name('admin.notification.markAsRead');
 
 Route::Post('admin/changePassword','AdminController@changePassword')->name('admin.changePassword');
 

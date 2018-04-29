@@ -243,9 +243,9 @@ class AdminController extends Controller
         $data = DB::table('sales')
             ->select('or_number')
             ->distinct()
-            // ->where('or_number','LIKE','%'.$ORNumber.'%')
-            ->where('created_at','>=',DB::raw('DATE_SUB(CURDATE(), INTERVAL 7 DAYS)'))
-            ->where('created_at','<=',DB::raw('NOW()'))
+            ->where('or_number','LIKE','%'.$ORNumber.'%')
+            ->where('created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 7 DAY)'))
+            ->where('created_at','<=', DB::raw('NOW()'))
             ->limit(5)
             ->get();
         return $data;
@@ -739,7 +739,7 @@ class AdminController extends Controller
 
             $sales = DB::table('salable_items')
                 ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
-                ->select('products.product_id as product_id', 'description', 'salable_items.quantity as quantity', 'salable_items.created_at as date')
+                ->select('products.product_id as product_id', 'description', 'salable_items.quantity as quantity')
                 ->where('products.product_id' , '=' , $products[$i]->product_id)
                 ->where('salable_items.quantity', '<', $products[$i]->reorder_level)
                 ->where('salable_items.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
@@ -749,7 +749,7 @@ class AdminController extends Controller
             // $arrayCount1 = count($sales);
             // for($i = 0;$i<$arrayCount1;$i++){
             if($sales){
-                array_push($data, ["reorder", $sales->product_id, $sales->description, $sales->quantity, 'date'=>$sales->date]);
+                array_push($data, ["reorder", $sales->product_id, $sales->description, $sales->quantity, 'date'=>date('Y-m-d H:i:s')]);
             }
             // }
 

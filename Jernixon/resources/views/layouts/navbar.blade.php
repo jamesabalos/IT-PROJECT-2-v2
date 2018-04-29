@@ -99,6 +99,7 @@
                                                     <p style='font-size: 12px'><b>Item " +data[i][2]+ " is below reorder level.</b></p>\
                                                     <p style='font-size: 12px'><b>"+data[i][3]+" item(s) left</b></p>\
                                                     <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+													// <p style='font-size: 12px; text-align: right'><b>Mark As Read</b></p>\
                                                 </div>\
                                             </div>";
                                             // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\
@@ -107,7 +108,7 @@
                                             <p style='font-size: 12px'><b>Item " +data[i][2]+ " quantity adjusted.</b></p>\
                                             <p style='font-size: 12px'><b>"+data[i][3]+" item(s) deducted by " + data[i][5] +".</b></p>\
                                             <p style='font-size: 12px'><b>Reason: " +data[i][4]+ "</b></p>\
-                                            <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                                            <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b><u style='font-size: 12px; float: right'><b>Mark As Read</b></u></p>\
                                         </div>\
                                     </div>";
                                         // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\
@@ -168,6 +169,9 @@
     border-radius:50%;
     box-shadow:0 0 1px #333;
     }
+	u:hover{
+		cursor:pointer;
+	}
 </style>
 </head>
 

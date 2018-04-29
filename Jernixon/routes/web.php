@@ -74,8 +74,8 @@ Route::Post('salesAssistant/changePassword','HomeController@changePassword')->na
 // Route::get('salesAssistant/items/getItems', 'HomeController@getItemsForItems')->name('salesAssistant.getItems');
 // Route::get('salesAssistant/items', 'HomeController@items')->name('salesAssistant.items');
 
-Route::Post('admin/forgotPassword','Auth\ForgotPasswordController@forgotPassword')->name('admin.forgotPassword');
-Route::Get('admin/forgotPasswordForm','Auth\ForgotPasswordController@showForgotPasswordForm')->name('admin.showForgotPassword');
+Route::Get('forgotPasswordForm','Auth\ForgotPasswordController@showForgotPasswordForm')->name('admin.showForgotPassword');
+Route::Post('forgotPassword','Auth\ForgotPasswordController@forgotPassword')->name('admin.forgotPassword');
 Route::get('salesAssistant/logout', 'Auth\LoginController@userLogout')->name('salesAssistant.logout');
 
 Route::get('admin/notification','AdminController@getNotification')->name('admin.notification');

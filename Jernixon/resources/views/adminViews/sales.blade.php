@@ -193,10 +193,10 @@ ng-app="ourAngularJsApp"
                         document.getElementById("totalSalesDiv").firstChild.innerHTML="";
 
                         //show the plus sign button again in dataTables
-                        var itemId = $("#cartTbody tr td:nth-child(5) button");
-                        for(var i = 0; i<itemId.length; i++){
-                            document.getElementById(itemId[i].getAttribute("data-item-id")).removeAttribute("style");
-                        }
+                        // var itemId = $("#cartTbody tr td:nth-child(5) button");
+                        // for(var i = 0; i<itemId.length; i++){
+                        //     document.getElementById(itemId[i].getAttribute("data-item-id")).removeAttribute("style");
+                        // }
 
                         //remove all rows in cart
                         $("#cartTbody tr").remove();
@@ -597,7 +597,7 @@ ng-app="ourAngularJsApp"
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);    
 
-                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1'></input>";
+                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 var temp1 = $compile(inputNumber)($scope);
                 // var newRow = thatTbody.insertRow(-1);
                 // angular.element( newRow.insertCell(-1) ).append(temp);

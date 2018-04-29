@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="en">
 <head>
     
     <meta charset="UTF-8">
@@ -33,10 +33,37 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/css/util.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/css/main.css')}}">
     <!--===============================================================================================-->
-    
+    <script src="{{asset('assets/js/jquery.js')}}"></script>
     <script src="{{asset('assets/js/jquery.3.2.1.min.js')}}"></script>
     <script type="text/javascript">
-    
+    function sumbitButton(){
+        var data = $('#formForgotPassword').serialize();        
+        // var data = document.getElementById("formForgotPassword");
+        $.ajax({
+            type:'POST',
+            url: "{{route('admin.forgotPassword')}}",
+            data: data,
+            // data: {
+            //     "Email":"jake",
+            //     "Username":"jakejames"
+            // },
+
+            success:function(data){
+                console.log(data)   
+                // window.location.replace('/admin/login'); 
+            },
+            error:function(data){
+                var response = data.responseJSON; 
+                console.log(response)
+                if(response.errors.hasOwnProperty('email')){
+                    document.getElementById("emailError").innerHTML = "<h5>"+response.errors.email+"</h5>";
+                }
+                if(response.errors.hasOwnProperty('username')){
+                    document.getElementById("usernameError").innerHTML = "<h5>"+response.errors.username+"</h5>";
+                }
+            }
+        });
+    }
       $(document).ready(function(){
         $.ajaxSetup({
               headers: {
@@ -46,23 +73,29 @@
         $('#formForgotPassword').on('submit',function(e){
             var data = $(this).serialize();
             $.ajax({
-                type:'POST',
-                url: "{{route('admin.forgotPassword')}}",
-                data: data,
-                // data: {
-                //     "Email":"jake",
-                //     "Username":"jakejames"
-                // },
+            type:'POST',
+            url: "{{route('admin.forgotPassword')}}",
+            data: data,
+            // data: {
+            //     "Email":"jake",
+            //     "Username":"jakejames"
+            // },
 
-                success:function(data){
-                    console.log(data)   
-
-                },
-                error:function(data){
-                 
+            success:function(data){
+                console.log(data)   
+                // window.location.replace('/admin/login'); 
+            },
+            error:function(data){
+                var response = data.responseJSON; 
+                console.log(response)
+                if(response.errors.hasOwnProperty('email')){
+                    document.getElementById("emailError").innerHTML = "<h5>"+response.errors.email+"</h5>";
                 }
-
-            });
+                if(response.errors.hasOwnProperty('username')){
+                    document.getElementById("usernameError").innerHTML = "<h5>"+response.errors.username+"</h5>";
+                }
+            }
+        });
 
         });
 
@@ -75,46 +108,61 @@
 		<div class="container-login100" style="background-image: url('{{ asset('assets/login_v2/images/Logo3.png')}}');">
 		
 			<div class="wrap-login100">
-                {!! Form::open(['method'=>'Get','id'=>'formForgotPassword']) !!}
-                
-                        {{ csrf_field() }}
+                {{-- {!! Form::open(['method'=>'get','id'=>'formForgotPassword']) !!}
                     
 					<span class="login100-form-logo">
 						<i class="zmdi zmdi-account"></i>
 					</span>
-
 					<span class="login100-form-title p-b-34 p-t-27">
 						Admin Forgot Password
                     </span>
-  
-
-                 
                     <div class="wrap-input100" >                        
                         {{Form::input('email','email',null, ['class'=>'input100', 'id'=>'email', 'placeholder'=>'Email', 'required','autofocus'])}}
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
-                        @if ($errors->has('email'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                        @endif
+                        <span id="emailError"></span>
                     </div>
                     
                     <div class="wrap-input100" >                        
-                        {{Form::input('text','username',null, ['class'=>'input100', 'placeholder'=>'Username', 'required','autofocus'])}}
+                        {{Form::input('text','username',null, ['class'=>'input100', 'placeholder'=>'Username', 'required'])}}
+                        
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
-{{-- <!--
-                        @if ($errors->has('email'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                        @endif
---> --}}
+                        <span id="usernameError"></span>
+                     
                     </div>
                     <div class="container-login100-form-btn">
                         {{Form::button('Submit', array( 'type'=>'submit','class'=>'login100-form-btn'))}}
                     </div>
-                {!! Form::close() !!}
-                    
+                {!! Form::close() !!} --}}
+                {!! Form::open(['method'=>'get','id'=>'formForgotPassword']) !!}
+                <div class="form-group">                                
+                    <div class="row">
+                        <div class="col-md-3">
+                            {{Form::label('Email')}}
+                        </div>
+                        <div class="col-md-9">
+                            {{ Form::text('Email','',['class'=>'form-control']) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">                                
+                    <div class="row">
+                        <div class="col-md-3">
+                            {{Form::label('Username')}}
+                        </div>
+                        <div class="col-md-9">
+                            {{ Form::text('Username','',['class'=>'form-control']) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="text-right">                                           
+                            <div class="col-md-12">   
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                
+                {!! Form::close() !!} 
 
 					<div class="text-center p-t-90">
                     <a class="txt1" href="{{ route('admin.login') }}">

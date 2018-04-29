@@ -37,11 +37,11 @@ class ForgotPasswordController extends Controller
     }
     public function forgotPassword(Request $request){
 
-        // $this->validate($request,[
-        //     'email' => 'required',
-        //     'username' => 'required'
-        //     ]);
-            return $request->email;
+        $this->validate($request,[
+            'email' => 'required',
+            'username' => 'required'
+            ]);
+            return $request->all();
         //query
     //    return redirect()->back()->withErrors($errors)->withInput($request->only('email','remember'));
 
@@ -54,8 +54,5 @@ class ForgotPasswordController extends Controller
     //    return response($resetPassword);
         
     }
-    public function goToHomeView()
-{
-    return view("adminViews.admin-forgotPassword");
-}
+
 }

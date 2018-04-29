@@ -70,34 +70,34 @@
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
               }
           });
-        $('#formForgotPassword').on('submit',function(e){
-            var data = $(this).serialize();
-            $.ajax({
-            type:'POST',
-            url: "{{route('admin.forgotPassword')}}",
-            data: data,
-            // data: {
-            //     "Email":"jake",
-            //     "Username":"jakejames"
-            // },
+        // $('#formForgotPassword').on('submit',function(e){
+        //     var data = $(this).serialize();
+        //     $.ajax({
+        //     type:'POST',
+        //     url: "{{route('admin.forgotPassword')}}",
+        //     data: data,
+        //     // data: {
+        //     //     "Email":"jake",
+        //     //     "Username":"jakejames"
+        //     // },
 
-            success:function(data){
-                console.log(data)   
-                // window.location.replace('/admin/login'); 
-            },
-            error:function(data){
-                var response = data.responseJSON; 
-                console.log(response)
-                if(response.errors.hasOwnProperty('email')){
-                    document.getElementById("emailError").innerHTML = "<h5>"+response.errors.email+"</h5>";
-                }
-                if(response.errors.hasOwnProperty('username')){
-                    document.getElementById("usernameError").innerHTML = "<h5>"+response.errors.username+"</h5>";
-                }
-            }
-        });
+        //     success:function(data){
+        //         console.log(data)   
+        //         // window.location.replace('/admin/login'); 
+        //     },
+        //     error:function(data){
+        //         var response = data.responseJSON; 
+        //         console.log(response)
+        //         if(response.errors.hasOwnProperty('email')){
+        //             document.getElementById("emailError").innerHTML = "<h5>"+response.errors.email+"</h5>";
+        //         }
+        //         if(response.errors.hasOwnProperty('username')){
+        //             document.getElementById("usernameError").innerHTML = "<h5>"+response.errors.username+"</h5>";
+        //         }
+        //     }
+        // });
 
-        });
+        // });
 
       });
     </script>
@@ -108,7 +108,7 @@
 		<div class="container-login100" style="background-image: url('{{ asset('assets/login_v2/images/Logo3.png')}}');">
 		
 			<div class="wrap-login100">
-                {{-- {!! Form::open(['method'=>'get','id'=>'formForgotPassword']) !!}
+                {!! Form::open(['method'=>'get','id'=>'formForgotPassword']) !!}
                     
 					<span class="login100-form-logo">
 						<i class="zmdi zmdi-account"></i>
@@ -130,10 +130,11 @@
                      
                     </div>
                     <div class="container-login100-form-btn">
-                        {{Form::button('Submit', array( 'type'=>'submit','class'=>'login100-form-btn'))}}
+                        {{Form::button('Submit', array( 'type'=>'button','class'=>'login100-form-btn','onclick'=>'sumbitButton()'))}}
                     </div>
-                {!! Form::close() !!} --}}
-                {!! Form::open(['method'=>'get','id'=>'formForgotPassword']) !!}
+                {!! Form::close() !!}
+
+                {{-- {!! Form::open(['method'=>'get','id'=>'formForgotPassword']) !!}
                 <div class="form-group">                                
                     <div class="row">
                         <div class="col-md-3">
@@ -162,7 +163,7 @@
                         </div>
                     </div>
                 
-                {!! Form::close() !!} 
+                {!! Form::close() !!}  --}}
 
 					<div class="text-center p-t-90">
                     <a class="txt1" href="{{ route('admin.login') }}">

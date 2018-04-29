@@ -527,11 +527,11 @@ ng-app="ourAngularJsApp"
                                 </tbody>
                             </table>
                         </div>
-                        {{-- <div class="autocomplete" style="width:100%;">
+                        <div class="autocomplete" style="width:100%;">
                             <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
                             <div id="searchResultDiv" class="searchResultDiv">
                             </div>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
                 <div id="errorDivCreateReturns" class="hidden">

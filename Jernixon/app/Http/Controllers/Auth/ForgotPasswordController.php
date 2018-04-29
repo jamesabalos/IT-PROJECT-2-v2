@@ -40,18 +40,11 @@ class ForgotPasswordController extends Controller
         $this->validate($request,[
             'email' => 'required',
             'username' => 'required'
-            ]);
-            return $request->all();
+        ]);
+        
         //query
-    //    return redirect()->back()->withErrors($errors)->withInput($request->only('email','remember'));
-
-    //    $employee = User::find($request->employeeId);
-    //    // $employee->password = $request->input('password');
-    //    $pieces = explode(" ",$employee->name);
-    //    $resetPassword = $pieces[0]."@jernixon";
-    //    $employee->password = $resetPassword;
-    //    $employee->save();
-    //    return response($resetPassword);
+        
+        return $request->all();
         
     }
 

@@ -167,22 +167,20 @@
     })
 </script>
 <style>
-    .badge1 {
-   position:relative;
-    }
     .badge1[data-badge]:after {
     content:attr(data-badge);
-    position:absolute;
-    top:-10px;
-    right:-10px;
-    font-size:.7em;
-    background:green;
+    position: absolute;
+    background: green;
+    height:2rem;
+    top:-.1rem;
+    right:-.1rem;
+    width:2rem;
+    text-align: center;
+    line-height: 2rem;;
+    font-size: 1rem;
+    border-radius: 50%;
     color:white;
-    width:18px;height:18px;
-    text-align:center;
-    line-height:18px;
-    border-radius:50%;
-    box-shadow:0 0 1px #333;
+    border:1px solid white;
     }
 	u:hover{
 		cursor:pointer;
@@ -363,6 +361,13 @@
                         <ul class="list-inline">                                
                             <li>
                                 <ul class="nav navbar-right user-margin">
+
+                                    <li class="dropdown">
+                                        <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown"> </a>
+                                            <i class="fa fa-bell"></i>
+
+                                    </li>
+
                                     <li class="dropdown">
                                         
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -375,9 +380,6 @@
                                         <ul class="dropdown-menu">
                                             <li>
                                                 @if(Auth::guard('adminGuard')->check())
-                                                <a class="badge1" href="#notification" data-toggle="modal" onclick="getNotifications()">
-                                                    Notifications
-                                                </a>
                                                 <a href="#changePassword" data-toggle="modal">
                                                     Change Password
                                                 </a>

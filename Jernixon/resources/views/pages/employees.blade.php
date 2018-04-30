@@ -1,7 +1,7 @@
 @extends('layouts.navbar') @section('employees_link') class="active" @endsection @section('linkName')
 <div class="alert alert-success hidden" id="successDiv">
 </div>
-<h3><i class="fa fa-users" style="margin-right: 15px"></i> Employees</h3> @endsection @section('headScript')
+<h3><i class="fa fa-users" style="margin-right: 15px"></i> Account Management</h3> @endsection @section('headScript')
 <script type="text/javascript">
     // function showDetails(button){
     //     //alert(button.parentNode.parentNode.parentNode);
@@ -304,7 +304,7 @@
                 <div class="header">
 
                     <a href="#addEmployee" data-toggle="modal">
-                        <button type="button" class="btn btn-success"><i class=" fa fa-plus"></i> Add Employee</button>
+                        <button type="button" class="btn btn-success"><i class=" fa fa-plus"></i> Add User</button>
                     </a>
 
                     <div class="content table-responsive table-full-width">
@@ -379,7 +379,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title"><i class=" fa fa-plus" style="margin-right: 5px"></i> Add Employee</h3>
+                <h3 class="modal-title"><i class=" fa fa-plus" style="margin-right: 5px"></i> Add User</h3>
             </div>
 
             <div class="modal-body">
@@ -387,7 +387,7 @@
                     <div class="panel-heading">
                         <strong>
                             <span class="fa fa-wrench"></span>
-                            New Employee
+                            New User
                         </strong>
                     </div>
                     {!! Form::open(['method'=>'post','id'=>'formAddNewEmployee']) !!}
@@ -466,14 +466,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Edit Employee</h3>
+                <h3 class="modal-title">Edit User information</h3>
             </div>
             <div class="modal-body">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-th"></span>
-                            Update Employee Account
+                            Update User's Account
                         </strong>
                     </div>
                     <div class="panel-body">

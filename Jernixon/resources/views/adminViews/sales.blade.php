@@ -21,6 +21,26 @@ ng-app="ourAngularJsApp"
 <script src="{{asset('assets/js/angularJs.js')}}"></script>
 <script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
 
+<style type="text/css">
+    @media print{
+        @page{            
+            size: 8.5in 11in;
+            
+            
+            
+        }
+        @page:first{
+            size: 150mm 175mm;
+            page-break-inside:always;
+        }
+        
+                
+        body{
+            width: 100%:
+        }
+        
+    }
+</style>
 <script>
     function printReceipt(){
         // var data = $("#formSales").serialize();   
@@ -45,14 +65,14 @@ ng-app="ourAngularJsApp"
         }
         var totalSalesPrice = document.getElementById("totalSalesDiv").firstChild.innerText;
         var officialReceipt = "\
-            <div style='height: 600px;width: 500px;border:2px solid red;margin-left: 120px;'>\
+            <div style='border:2px solid red; width:100%;'>\
             <h3>hellooo</h3>"
             +arrayOfData[1]['value']+"<br>"
             +arrayOfData[2]['value']+"<br>"
             +arrayOfData[3]['value']+"<br>"
             +arrayOfData[4]['value']+
                 "<div class='content table-responsive table-full-width table-stripped'>\
-                    <table class='table table-hover table-bordered' style='width:100%'>\
+                    <table class='table table-hover table-bordered' >\
                         <thead>\
                             <tr>\
                                 <td>Qty</td>\

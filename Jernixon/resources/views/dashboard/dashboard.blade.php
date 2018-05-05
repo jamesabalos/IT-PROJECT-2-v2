@@ -317,6 +317,7 @@ function createFastMovingItems(){
 
         var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
         var formattedDateTo = yt + '-' + mmt + '-' + ddt;
+
         $.ajax({
             type:'GET',
             url: "{{route('reports.validateDateRange')}}",
@@ -383,6 +384,7 @@ function barChartTopItems() {
     resize: true,
     redraw: true
   });
+  console.log(<?php echo $chart_data_top_items; ?>)
 }
   
 function barChartLeastItems() {

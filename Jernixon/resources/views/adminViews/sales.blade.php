@@ -85,7 +85,7 @@ ng-app="ourAngularJsApp"
                         items
                     +"</table>\
                 </div>\
-                <h3>"+totalSalesPrice+"</h3>\
+                <br><br><br><br><br><br><h3>"+totalSalesPrice+"</h3>\
             </div>\
         ";
    
@@ -574,7 +574,7 @@ ng-app="ourAngularJsApp"
                             }else{
                                 var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");
                                 // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
-                                totalSalesNgBinds += "+ " + splitBind[0];
+                                totalSalesNgBinds += "+" + splitBind[0];
                             }
 
 
@@ -646,46 +646,42 @@ ng-app="ourAngularJsApp"
                 var jsonObject = JSON.stringify(itemObject);
                 localStorage.setItem(tds[0].innerHTML,jsonObject);
 
-                //display Total Sales with ng-bind/s
-                // var len=localStorage.length;
-                // var ngBinds = "";
-                // for(var i=0; i<len; i++) {
-                //         var key = localStorage.key(i);
-                //         var value = localStorage[key];
-                //         if(value.includes("item")){
-                //             // console.log(key + " => " + value);          
-                //             var myItemJSON = JSON.parse(localStorage.getItem(key));  
-                //             var salesPriceString = myItemJSON.salesPrice
-                //             var temp = document.createElement('div');
-                //             temp.innerHTML = salesPriceString;
-                //             console.log(temp.firstChild.getAttribute("ng-bind"))        
-                //         }
+                // var totalSalesDiv = document.getElementById("totalSalesDiv");
+                // var ngBindAttributes = totalSalesDiv.firstChild.getAttribute("ng-bind"); //get ng-bind attribute/s
+                // totalSalesDiv.innerHTML =""; 
+                // if(ngBindAttributes==""){
+                //     var newNgBinds = itemName+"SP";
+                // }else{
+                //     var newNgBinds = ngBindAttributes + "+ " + itemName+"SP";
                 // }
-
+                // var binds = newNgBinds.split(" ");
+                // var ngBindsResult = "";
+                //     for(var i = 0; i < binds.length; i++){
+                //         if(i % 2 === 0){
+                //             if(ngBindsResult === ""){
+                //                 ngBindsResult = binds[i];
+                //             }else{
+                //                 ngBindsResult += "+" +binds[i];
+                //             }
+                //         }
+                //     }
+                // console.log("TScorrect: " + ngBindsResult)
+                // var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsResult+ " |number:2'></p>";
+                // angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+              
                 var totalSalesDiv = document.getElementById("totalSalesDiv");
-                // console.log(totalSalesDiv.childNodes)
                 var ngBindAttributes = totalSalesDiv.firstChild.getAttribute("ng-bind"); //get ng-bind attribute/s
-                totalSalesDiv.innerHTML =""; //remove h4 element;
+                totalSalesDiv.innerHTML =""; 
                 if(ngBindAttributes==""){
                     var newNgBinds = itemName+"SP";
                 }else{
-                    var newNgBinds = ngBindAttributes + "+ " + itemName+"SP";
+                    var newNgBinds = ngBindAttributes.split(" ")[0] + "+" + itemName+"SP";
                 }
 
-                var binds = newNgBinds.split(" ");
-                var ngBindsResult = "";
-                    for(var i = 0; i < binds.length; i++){
-                        if(i % 2 === 0){
-                            if(ngBindsResult === ""){
-                                ngBindsResult = binds[i];
-                            }else{
-                                ngBindsResult += "+" +binds[i];
-                            }
-                        }
-                    }
-                    console.log("correct: " + ngBindsResult)
-                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsResult+ " |number:2'></p>";
+                console.log("TScorrect: " + newNgBinds)
+                var price = "<p class='form-control' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+
 
                 //remove the row dataTable
                 var row = $(event.currentTarget).closest("tr");
@@ -726,28 +722,29 @@ ng-app="ourAngularJsApp"
                     } ).draw();
                 localStorage.removeItem(data[0].innerHTML);
                 
-
-
                 event.currentTarget.parentNode.parentNode.remove();
-
                 
                 var thatTable = document.querySelectorAll('#cartTable > tbody > tr')
                 var numberOfRows = thatTable.length;
                 var ngBinds = "";
+                var ngBindsWithoutFormat="";
 
                 if(numberOfRows > 0){
                     for(var i=0; i < numberOfRows; i++){
                         if(ngBinds==""){
                             ngBinds += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
+                            ngBindsWithoutFormat += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind").split(" ")[0];
                         }else{
                             ngBinds += " + " + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
+                            ngBindsWithoutFormat += "+" + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
                 }
-                console.log(ngBinds)    
+                // console.log("ngBinds: " + ngBinds)
+                // console.log("ngBindsWithoutFormat: "+ngBindsWithoutFormat)
                 //update total sales price
                 document.getElementById("totalSalesDiv").innerHTML="";
-                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBinds+ "'></p>";
+                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
             }
 

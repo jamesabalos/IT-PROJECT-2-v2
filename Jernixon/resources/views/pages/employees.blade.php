@@ -25,13 +25,19 @@
 
 
     // }
-    function salesAssistantRadioButton(){
-        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.setAttribute("class","form-group");
-        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.previousElementSibling.setAttribute("class","form-group");
-    }
-    function adminRadioButton(){
-        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.setAttribute("class","hidden");
-        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.previousElementSibling.setAttribute("class","hidden");
+    function User(){
+        var user = document.getElementById("ll").value;
+        if(user=="salesAssistant"){
+            document.getElementById("address").setAttribute("class","visible form-group");
+        }else if(user=="admin"){
+            document.getElementById("address").setAttribute("class","hidden");
+        }
+        
+        
+        
+//        document.getElementById("address").setAttribute("class","hidden");
+//        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.setAttribute("class","hidden");
+//        document.getElementById("formAddNewEmployee").lastElementChild.lastElementChild.previousElementSibling.setAttribute("class","hidden");
     }
     function passEmployeeId(id){
         document.getElementById("resetPasswordEmployeeId").setAttribute("data-employee-id",id);
@@ -391,8 +397,7 @@
                         </strong>
                     </div>
                     {!! Form::open(['method'=>'post','id'=>'formAddNewEmployee']) !!}
-                    <input type="radio" name="radioButton" value="salesAssistant" checked onclick="salesAssistantRadioButton()"> Sales Assistant
-                    <input type="radio" name="radioButton" value="admin" onclick="adminRadioButton()"> Admin
+                    
                     <div class="panel-body">
                         <input type="hidden" id="_token" value="{{ csrf_token() }}">
 
@@ -429,7 +434,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" id="address">
                             <div class="row">
                                 <div class="col-md-3">
                                     {{Form::label('Address', 'Address:')}}
@@ -437,6 +442,16 @@
                                 <div class="col-md-9">
                                     {{Form::text('Address','',['class'=>'form-control','placeholder'=>''])}}
                                 </div>
+                            </div>
+                        </div><div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Type', 'Type of User:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::select('radioButton',['salesAssistant'=>'Sales Assistant','admin'=>'Admin'],'Sales Assistant',['class'=>'form-control ','id'=>'ll','onclick'=>'User()'])}}                                          
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

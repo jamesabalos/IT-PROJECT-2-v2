@@ -23,22 +23,31 @@ ng-app="ourAngularJsApp"
 
 <style type="text/css">
     @media print{
-        @page{            
-            size: 8.5in 11in;
-            
-            
-            
+        /* @page{            
+            size: 8.5in 11in; 
         }
         @page:first{
             size: 150mm 175mm;
             page-break-inside:always;
-        }
-        
-                
+        } */
+
+         
         body{
-            width: 100%:
+            width: 60%;
+            margin-left: 20%;
+
         }
-        
+
+        table {
+            border: 1px solid black;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td {
+            height: 20px;
+            border: 1px solid black;
+            
+        }
     }
 </style>
 <script>
@@ -52,42 +61,63 @@ ng-app="ourAngularJsApp"
         var printContent = document.getElementById("printArea").innerHTML;
         
         var items = "";
+        var pageTwo = "";
         var rows = $("#cartTbody tr");
         for(var i = 0; i < rows.length; i++){
-            items += "<tr>\
-                        <td>"+rows[i].cells[2].lastChild.value+"</td>\
-                        <td></td>\
-                        <td>"+rows[i].cells[0].innerHTML+"</td>\
-                        <td>"+rows[i].cells[1].innerText+"</td>\
-                        <td>"+rows[i].cells[3].innerText+"</td>\
-                    <tr>\
-                ";
+            if(i>7){
+                // document.getElementById("secondPage").setAttribute("style","display:block");
+
+                pageTwo += "<tr>\
+                            <td width='40px'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td width='40px'></td>\
+                            <td>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td>"+rows[i].cells[1].innerText+"</td>\
+                            <td width='40px'>"+rows[i].cells[3].innerText+"</td>\
+                            <tr>\
+                        ";
+            }else{
+                items += "<tr>\
+                            <td width='40px'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td width='40px'></td>\
+                            <td>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td>"+rows[i].cells[1].innerText+"</td>\
+                            <td width='40px'>"+rows[i].cells[3].innerText+"</td>\
+                        <tr>\
+                    ";
+            }
+           
         }
         var totalSalesPrice = document.getElementById("totalSalesDiv").firstChild.innerText;
         var officialReceipt = "\
-            <div style='border:2px solid red; width:100%;'>\
-            <h3>hellooo</h3>"
-            +arrayOfData[1]['value']+"<br>"
-            +arrayOfData[2]['value']+"<br>"
-            +arrayOfData[3]['value']+"<br>"
+            <div style='border:2px solid red; width:100%; height:500px'>\
+            <br><br><br><br>\
+            <div class='row'>\
+                <p style='text-align:left;border:1px solid green'>"+arrayOfData[2]['value']+
+                "</p><p style='text-align:right;border:1px solid blue'>"+arrayOfData[3]['value']+"</p>\
+            </div>"
             +arrayOfData[4]['value']+
-                "<div class='content table-responsive table-full-width table-stripped'>\
-                    <table class='table table-hover table-bordered' >\
-                        <thead>\
-                            <tr>\
-                                <td>Qty</td>\
-                                <td>Unit</td>\
-                                <td>Article</td>\
-                                <td>U-Price</td>\
-                                <td>Amount</td>\
-                            </tr>\
-                        </thead>"+  
+                "<div class='content table-responsive table-full-width'>\
+                    <br><table>\
+                        <tbody>"+  
                         items
-                    +"</table>\
+                    +"</tbody></table>\
+                </div>";
+
+        if(pageTwo === ""){
+            officialReceipt += "<h3 style='text-align:right'>"+totalSalesPrice+"</h3></div>";
+        }else{
+            officialReceipt += "<br><p style='text-align:left'>Page 1 of 2</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><h3 style='text-align:right'>"
+            +arrayOfData[1]['value']+"</h3>"+           
+            "<div class='content table-responsive table-full-width'>\
+                    <br><table>\
+                        <tbody>"+  
+                            pageTwo
+                    +"</tbody></table>\
                 </div>\
-                <br><br><br><br><br><br><h3>"+totalSalesPrice+"</h3>\
-            </div>\
-        ";
+                <br><p style='text-align:left'>Page 2 of 2</p>\
+                <p style='text-align:right'>TOTAL AMOUNT DUE: "+totalSalesPrice+"</p>\
+            </div>";
+        }
    
         document.body.innerHTML = officialReceipt;
         window.print();

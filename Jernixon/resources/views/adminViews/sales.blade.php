@@ -89,7 +89,7 @@ ng-app="ourAngularJsApp"
         }
         var totalSalesPrice = document.getElementById("totalSalesDiv").firstChild.innerText;
         var officialReceipt = "\
-            <div style='border:2px solid red; width:100%; height:500px'>\
+            <div style='border:2px solid black; width:100%; height:500px'>\
             <br><br><br><br>\
             <div class='row'>\
                 <p style='text-align:left;border:1px solid green'>"+arrayOfData[2]['value']+

@@ -47,8 +47,6 @@ class="active"
           var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
           localStorage.removeItem(data[0].innerHTML);
 
-          //show the plus sign button again
-          document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
       }
 
       function addRow(button){

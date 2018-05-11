@@ -84,11 +84,12 @@ Route::get('admin/notification/markAsRead','AdminController@notificationMarkAsRe
 Route::Post('admin/changePassword','AdminController@changePassword')->name('admin.changePassword');
 
 Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
-Route::get('admin/dashboard/createFastMovingItems', 'AdminController@createFastMovingItems')->name('admin.dashboard.createFastMovingItems');
 Route::get('admin/dashboard/getDataPoints', 'AdminController@getDataPoints')->name('dashboard.getDataPoints');
 Route::get('admin/logout','Auth\AdminLoginController@logout')->name('admin.logout');
 Route::get('admin/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');
 Route::post('admin/login','Auth\AdminLoginController@login')->name('admin.login.submit');
+Route::get('admin/dashboard/createFastMovingItem', 'AdminController@createFastMovingItems')->name('admin.dashboard.createFastMovingItem');
+Route::get('admin/dashboard/createSlowMovingItem', 'AdminController@createSlowMovingItems')->name('admin.dashboard.createSlowMovingItem');
 
 Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('dashboard.getItems');
 Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');

@@ -47,8 +47,6 @@ class="active"
           var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
           localStorage.removeItem(data[0].innerHTML);
 
-          //show the plus sign button again
-          document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
       }
 
       function addRow(button){
@@ -65,6 +63,7 @@ class="active"
               // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
               newRow.insertCell(-1).innerHTML = "<td>"+button.firstChild.innerHTML+ "</td>";
               newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' class='form-control' ></td>";
+            //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
               newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
               newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+button.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+button.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
@@ -96,6 +95,7 @@ class="active"
                   for (var i = 0;  i< data.length; i++) {
                       var node = document.createElement("DIV");
                       node.setAttribute("id",data[i].product_id)
+                    //   node.setAttribute("data-quantity",data[i].)
                       node.setAttribute("onclick","addRow(this)")
                       var pElement = document.createElement("P");
                       var textNode = document.createTextNode(data[i].description);

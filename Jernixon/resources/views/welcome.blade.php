@@ -15,7 +15,7 @@
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/vendor/bootstrap/css/bootstrap.min.css')}}">
 <!--===============================================================================================-->
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/fonts/font-awesome-4.7.0/css/font-awesome.min.cs')}}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
 <!--===============================================================================================-->
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/login_v2/fonts/iconic/css/material-design-iconic-font.min.css')}}">
 <!--===============================================================================================-->

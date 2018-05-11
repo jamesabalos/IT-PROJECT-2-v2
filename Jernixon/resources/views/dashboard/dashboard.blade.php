@@ -224,15 +224,15 @@ class="active"
                 <!-- Bar Chart -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <div id="errorDivReport" class="hidden alert-danger text-center">
+                        <div class="hidden alert-danger text-center">
                         </div>
                         <i class="fa fa-bar-chart-o fa-fw"></i> Fast Moving Items
                         <br>
                         <label for="from">From</label>
-                        <input type="date" id="from" name="from">
+                        <input type="date">
                         <label for="to">to</label>
-                        <input type="date" id="to" name="to" >
-                        <button onclick="createFastMovingItems(this)">Filter</button>
+                        <input type="date">
+                        <button id="FMI" onclick="createSlowFastMovingItem(this)">Filter</button>
                     </div>
                     <div class="container-fluid">
                         <div class="row">
@@ -245,7 +245,15 @@ class="active"
 
                   <div class="panel panel-default">
                     <div class="panel-heading">
+                        <div class="hidden alert-danger text-center">
+                        </div>
                         <i class="fa fa-bar-chart-o fa-fw"></i> Slow Moving Items
+                        <br>
+                        <label for="from">From</label>
+                        <input type="date">
+                        <label for="to">to</label>
+                        <input type="date">
+                        <button id="SMI" onclick="createSlowFastMovingItem(this)">Filter</button>
                     </div>
                     <div class="container-fluid">
                         <div class="row">
@@ -296,10 +304,12 @@ $(document).ready(function() {
     window.barChartLeastItems.redraw();
   });
 });
-function createFastMovingItems(){
-
-        var dateFrom = document.getElementById("from").value;
-        var dateTo = document.getElementById("to").value;
+function createSlowFastMovingItem(button){
+        var smiORfmi = button.id;
+        // var dateFrom = document.getElementById("from").value;
+        // var dateTo = document.getElementById("to").value;
+        var dateFrom = button.parentNode.children[4].value;
+        var dateTo = button.parentNode.children[6].value;
 
         var newDateFrom = new Date(dateFrom);
         newDateFrom.setDate(newDateFrom.getDate() - 1);
@@ -318,20 +328,24 @@ function createFastMovingItems(){
         var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
         var formattedDateTo = yt + '-' + mmt + '-' + ddt;
 
-        $.ajax({
+         $.ajax({
             type:'GET',
             url: "{{route('reports.validateDateRange')}}",
             data: {
                 'dateFrom':dateFrom,
-                'dateTo':dateTo
+                'dateTo':dateTo,
             },
             success:function(data){
+                var url1 = "{{ route('admin.dashboard.createFastMovingItem') }}";
+                var url2 = "{{ route('admin.dashboard.createSlowMovingItem') }}";
+                
                 $.ajax({
-                    url: "{{ route('admin.dashboard.createFastMovingItems') }}",
                     type: 'GET',
+                    url: ( smiORfmi === "FMI" ? url1 : url2),
                     data: {
                         "dateFrom":formattedDateFrom,
                         "dateTo":formattedDateTo
+                        
                     },
                     success: function(response)
                     {
@@ -351,16 +365,19 @@ function createFastMovingItems(){
                         //     resize: true,
                         //     redraw: true
                         // });
+                    },
+                    error: function(response){
+                        console.log("errorr!");
                     }
                 });
             },
             error:function(data){
                 var response = data.responseJSON;
                 console.log(response);
-                $("#errorDivReport").hide(500);
-                $("#errorDivReport").removeClass("hidden");
-                $("#errorDivReport").slideDown("slow", function() {
-                    $("#errorDivReport").html(function(){
+                $(button.parentNode.firstElementChild).hide(500);
+                $(button.parentNode.firstElementChild).removeClass("hidden");
+                $(button.parentNode.firstElementChild).slideDown("slow", function() {
+                    $(button.parentNode.firstElementChild).html(function(){
                         var addedHtml="";
                         for (var key in response.errors) {
                             addedHtml += "<p>"+response.errors[key]+"</p>";
@@ -370,8 +387,9 @@ function createFastMovingItems(){
 
                 });
             }
-        });
-    }
+         });
+}
+
 function barChartTopItems() {
   window.barChartTopItems = Morris.Bar({
     element: 'bar-chart-top-items',

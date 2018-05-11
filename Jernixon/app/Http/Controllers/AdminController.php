@@ -75,25 +75,11 @@ class AdminController extends Controller
     }
 
     public function createFastMovingItems(Request $request){
-        // $data = DB::table('sales')
-        // ->join('products', 'products.product_id', '=', 'sales.product_id')
-        // ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at')
-        // ->where('sales.created_at','>',$request->dateFrom)
-        // ->where('sales.created_at','<',$request->dateTo);
-        // $queryTopItems = "SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id)
-        //  group by product_id order by quantity desc limit 10";
-        $data = DB::table('products')
-        ->join('sales', 'sales.product_id' , '=' , 'products.product_id')        
-        //  ->join('sales')
-         ->select(DB::raw('description','sum(quantity) as quantity'))
-        //  ->select('description','quantity')
-        //  ->sum('quantity')
-         ->groupBy('sales.product_id')
-         ->orderBy('quantity','desc')
-         ->limit(10)
-         ->get();
-    
-        return $data;
+       return $request->all();
+    }
+    public function createSlowMovingItems(Request $request){
+        return $request->all();
+       
     }
     public function getItemsForSales(){
         $data = DB::table('salable_items')
@@ -382,6 +368,9 @@ class AdminController extends Controller
                 'errors' => ['The date range must be correct.']
             ],422);
         }
+
+        return $request->all();
+
     }
     public function createReports(Request $request){
   

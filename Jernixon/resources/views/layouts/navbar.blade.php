@@ -93,6 +93,9 @@
             }
         });
     }
+    function logoutRemoveCart(){
+        localStorage.clear();
+    }
     $(document).ready(function(){
         // $('button.myClass').click(function() {
         //     alert( "Handler" );
@@ -131,6 +134,9 @@
                 document.getElementById("listOfNotif").innerHTML = result;
                 $("a[class='badge1']").attr("data-badge", data.length);
 
+            },
+            error: function(data){
+                console.log("no notif")
             }
         });
 
@@ -314,7 +320,7 @@
                                             Change Password
                                         </a>
                                         
-                                        <a href="{{ route('admin.logout') }}">
+                                        <a href="{{ route('admin.logout') }}" onclick="logoutRemoveCart()">
                                             {{--  onclick="event.preventDefault();  --}}
                                             {{--  document.getElementById('logout-form').submit();">  --}}
                                             Logout
@@ -328,7 +334,7 @@
                                         <a href="#changePassword" data-toggle="modal">
                                             Change Password
                                         </a>
-                                        <a href="{{ route('salesAssistant.logout') }}">
+                                        <a href="{{ route('salesAssistant.logout') }}" onclick="logoutRemoveCart()">
                                             {{--  onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">  --}}
                                             Logout
@@ -383,7 +389,7 @@
                                                 <a href="#changePassword" data-toggle="modal">
                                                     Change Password
                                                 </a>
-                                                <a href="{{ route('admin.logout') }}">
+                                                <a href="{{ route('admin.logout') }}" onclick="logoutRemoveCart()">
                                                     {{--  onclick="event.preventDefault();  --}}
                                                     {{--  document.getElementById('logout-form').submit();">  --}}
                                                     Logout
@@ -393,7 +399,7 @@
                                                     {{ csrf_field() }}
                                                 </form>  --}}
                                                 @elseif(Auth::guard('web')->check())
-                                                <a href="{{ route('salesAssistant.logout') }}">
+                                                <a href="{{ route('salesAssistant.logout') }}" onclick="logoutRemoveCart()">
                                                     {{--  onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">  --}}
                                                     Logout

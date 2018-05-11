@@ -30,9 +30,11 @@ class="active"
 
 <script type="text/javascript">
     function createReport(button){
-        var dateFrom = document.getElementById("from").value;
-        var dateTo = document.getElementById("to").value;
-
+        // var dateFrom = document.getElementById("from").value;
+        // var dateTo = document.getElementById("to").value;
+        var siOrDiOrLi = button.id;
+        var dateFrom = button.parentNode.children[1].value;
+        var dateTo = button.parentNode.children[3].value;
         var newDateFrom = new Date(dateFrom);
         newDateFrom.setDate(newDateFrom.getDate() - 1);
         
@@ -59,12 +61,8 @@ class="active"
                 'dateTo':dateTo
             },
             success:function(data){
-                var temp = data.data;
-                $("#errorDivReport").html("");
-                // $("#transactionsTable").dataTable().fnDestroy();
-                // $("#transactionsTable").DataTable().clear().destroy();
-                // $('#transactionsTable').DataTable();
-                    
+                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).html("");     
+                if(siOrDiOrLi === "si"){
                     $('#transactionsTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "destroy": true,
@@ -103,16 +101,21 @@ class="active"
                         {data: 'created_at'},
                         ]
 
-                        
+                    
                     });
+                }else if(siOrDiOrLi === "di"){
+
+                }else{
+
+                }         
+
             },
             error:function(data){
                 var response = data.responseJSON;
-                console.log(response);
-                $("#errorDivReport").hide(500);
-                $("#errorDivReport").removeClass("hidden");
-                $("#errorDivReport").slideDown("slow", function() {
-                    $("#errorDivReport").html(function(){
+                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).hide(500);
+                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).removeClass("hidden");
+                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).slideDown("slow", function() {
+                    $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).html(function(){
                           var addedHtml="";
                           for (var key in response.errors) {
                               addedHtml += "<p>"+response.errors[key]+"</p>";
@@ -141,21 +144,21 @@ class="active"
         "serverSide": true,
         "colReorder": true,  
         "pagingType": "full_numbers",
-        dom: 'Blfrtip',
-        "buttons": [
-            {
-                extend: 'collection',
-                text: 'EXPORT',
-                buttons: [
-                    {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+        // dom: 'Blfrtip',
+        // "buttons": [
+        //     {
+        //         extend: 'collection',
+        //         text: 'EXPORT',
+        //         buttons: [
+        //             {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'print', title: 'Jernixon Motorparts - Reports'}
                     
-                ]
-            }
-        ],
+        //         ]
+        //     }
+        // ],
         "ajax":  "{{ route('reports.getReports') }}",
         "columns": [
           {data: 'or_number'},
@@ -174,21 +177,21 @@ class="active"
         "serverSide": true,
         "colReorder": true,  
         "pagingType": "full_numbers",
-        dom: 'Blfrtip',
-        "buttons": [
-            {
-                extend: 'collection',
-                text: 'EXPORT',
-                buttons: [
-                    {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+        // dom: 'Blfrtip',
+        // "buttons": [
+        //     {
+        //         extend: 'collection',
+        //         text: 'EXPORT',
+        //         buttons: [
+        //             {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'print', title: 'Jernixon Motorparts - Reports'}
                     
-                ]
-            }
-        ],
+        //         ]
+        //     }
+        // ],
         "ajax":  "{{ route('reports.getDamagedItems') }}",
         "columns": [
           {data: 'description'},
@@ -208,21 +211,21 @@ class="active"
         "serverSide": true,
         "colReorder": true,  
         "pagingType": "full_numbers",
-        dom: 'Blfrtip',
-        "buttons": [
-            {
-                extend: 'collection',
-                text: 'EXPORT',
-                buttons: [
-                    {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
-                    {extend: 'print', title: 'Jernixon Motorparts - Reports'}
+        // dom: 'Blfrtip',
+        // "buttons": [
+        //     {
+        //         extend: 'collection',
+        //         text: 'EXPORT',
+        //         buttons: [
+        //             {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
+        //             {extend: 'print', title: 'Jernixon Motorparts - Reports'}
                     
-                ]
-            }
-        ],
+        //         ]
+        //     }
+        // ],
         "ajax":  "{{ route('reports.getLostItems') }}",
         "columns": [
           {data: 'description'},
@@ -252,21 +255,18 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content" >
-                        <div id="errorDivReport" class="hidden alert-danger text-center">
-
+                        <div class="hidden alert-danger text-center">
                         </div>
-                        
                         <h3>Sold Items</h3>
                             <div class="row">
                                 <p class = "col-md-8">
                                     <label for="from">From</label>
-                                    <input type="date" id="from" name="from">
+                                    <input type="date">
                                     <label for="to">to</label>
-                                    <input type="date" id="to" name="to" >
-                                    <button onclick="createReport(this)">Filter</button>
+                                    <input type="date">
+                                    <button id="si" onclick="createReport(this)">Filter</button>
                                 </p>  
                             </div>
-
                         <div id="transactionDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
                                 <table id="transactionsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
@@ -297,9 +297,6 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content" >
-                        <div id="errorDivReport" class="hidden">
-
-                        </div>
                         {{-- <div class="row">
                             <p class = "col-md-8">
                                 <label for="from">From</label>
@@ -309,8 +306,18 @@ class="active"
                                 <button onclick="createReport(this)">Create</button>
                             </p>  
                         </div> --}}
-
+                        <div class="hidden alert-danger text-center">
+                        </div>
                         <h3>Damaged Items</h3>
+                        <div class="row">
+                            <p class = "col-md-8">
+                                <label for="from">From</label>
+                                <input type="date">
+                                <label for="to">to</label>
+                                <input type="date">
+                                <button id="di" onclick="createReport(this)">Filter</button>
+                            </p>  
+                        </div>
                         <div id="damagedItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
                                 <table id="damagedItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
@@ -338,9 +345,6 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content" >
-                        <div id="errorDivReport" class="hidden">
-
-                        </div>
                         {{-- <div class="row">
                             <p class = "col-md-8">
                                 <label for="from">From</label>
@@ -350,9 +354,18 @@ class="active"
                                 <button onclick="createReport(this)">Create</button>
                             </p>  
                         </div> --}}
-
+                        <div class="hidden alert-danger text-center">
+                        </div>
                         <h3>Lost Items</h3>
-                        
+                        <div class="row">
+                            <p class = "col-md-8">
+                                <label for="from">From</label>
+                                <input type="date">
+                                <label for="to">to</label>
+                                <input type="date">
+                                <button id="li" onclick="createReport(this)">Filter</button>
+                            </p>  
+                        </div>
                         <div id="lostItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
                                 <table id="lostItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">

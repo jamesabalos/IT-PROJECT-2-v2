@@ -81,24 +81,24 @@
             var arrayOfData = $(this).serializeArray();
             var password = (arrayOfData[2].value).split(" ", 1) + "@jernixon";
             var adminParam = {
-                        'name': arrayOfData[2].value,
-                        'email': arrayOfData[3].value,
+                        'name': arrayOfData[1].value,
+                        'email': arrayOfData[2].value,
                         'password': password,
             };
             var saParam = {
-                        'name': arrayOfData[2].value,
-                        'email': arrayOfData[3].value,
-                        'contactNumber': arrayOfData[4].value,
-                        'address': arrayOfData[5].value,
+                        'name': arrayOfData[1].value,
+                        'email': arrayOfData[2].value,
+                        'contactNumber': arrayOfData[3].value,
+                        'address': arrayOfData[4].value,
                         'password': password,
             };
             $.ajax({
                 type: 'POST',
                 // url:'admin/storeNewItem',
-                url: (arrayOfData[1]['value'] === "salesAssistantRadioButton") ?  "{{route('admin.addNewEmployee')}}" : "{{route('admin.addNewAdmin')}}",
-                dataType: 'json',
+                url: (arrayOfData[5]['value'] === "salesAssistant") ?  "{{route('admin.addNewEmployee')}}" : "{{route('admin.addNewAdmin')}}",
+                // dataType: 'json',
                 // url: (num == 1) ? url1 : url2
-                data:  (arrayOfData[1]['value'] === "salesAssistantRadioButton") ? saParam : adminParam,
+                data:  (arrayOfData[5]['value'] === "salesAssistant") ? saParam : adminParam,
 
                 success: function(data) {
                     console.log(data)

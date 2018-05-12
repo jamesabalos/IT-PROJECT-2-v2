@@ -521,7 +521,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Price</th>
-                                        {{-- <th class="text-left">Action</th> --}}
+                                        <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="inExchangeTbody">

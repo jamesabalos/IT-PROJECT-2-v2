@@ -764,11 +764,10 @@ class AdminController extends Controller
             $sales = DB::table('salable_items')
                 ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
                 ->select('products.product_id as product_id', 'description', 'salable_items.quantity as quantity')
-                // ->where('notif_status','=','not_yet_read')
                 ->where('products.product_id' , '=' , $products[$i]->product_id)
                 ->where('salable_items.quantity', '<', $products[$i]->reorder_level)
-                ->where('salable_items.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-                ->where('salable_items.created_at','<=', DB::raw('NOW()'))
+                // ->where('salable_items.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
+                // ->where('salable_items.created_at','<=', DB::raw('NOW()'))
                 ->first();
                 // ->get();
 
@@ -782,14 +781,15 @@ class AdminController extends Controller
         }
         $stockAdjustment = DB::table('stock_adjustments')
             ->join('products', 'products.product_id' , '=' , 'stock_adjustments.product_id')
-            ->select('products.product_id as product_id', 'description', 'stock_adjustments.quantity as quantity', 'stock_adjustments.created_at as date', 'stock_adjustments.status as status', 'stock_adjustments.employee_name as name')
+            ->select('products.product_id as product_id', 'description', 'stock_adjustments.quantity as quantity', 'stock_adjustments.created_at as date', 'stock_adjustments.status as status', 'stock_adjustments.employee_name as name','notif_status')
+			->where('notif_status','=','not_yet_read')
             ->where('stock_adjustments.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
             ->where('stock_adjustments.created_at','<=', DB::raw('NOW()'))
             ->get();
 
         $arrayCount2 = count($stockAdjustment);
         for($i = 0;$i<$arrayCount2;$i++){
-            array_push($data, ["stock_adjustment", $stockAdjustment[$i]->product_id, $stockAdjustment[$i]->description, $stockAdjustment[$i]->quantity, 'date'=>$stockAdjustment[$i]->date,  $stockAdjustment[$i]->status, $stockAdjustment[$i]->name]);
+            array_push($data, ["stock_adjustment", $stockAdjustment[$i]->product_id, $stockAdjustment[$i]->description, $stockAdjustment[$i]->quantity, 'date'=>$stockAdjustment[$i]->date,  $stockAdjustment[$i]->status, $stockAdjustment[$i]->name, $stockAdjustment[$i]->notif_status]);
         }
 
 
@@ -801,7 +801,7 @@ class AdminController extends Controller
         return $data;
     }
     public function notificationMarkAsRead(){
-        return "markedMe";
+        return "success";
     }
 
 

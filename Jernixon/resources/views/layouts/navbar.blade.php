@@ -115,7 +115,6 @@
                                                     <p style='font-size: 12px'><b>Item " +data[i][2]+ " is below reorder level.</b></p>\
                                                     <p style='font-size: 12px'><b>"+data[i][3]+" item(s) left</b></p>\
                                                     <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-													 <button type='button' onclick='markAsRead(this)'>Mark as read</button>\
                                                 </div>\
                                             </div>";
                                             // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\
@@ -124,7 +123,7 @@
                                             <p style='font-size: 12px'><b>Item " +data[i][2]+ " quantity adjusted.</b></p>\
                                             <p style='font-size: 12px'><b>"+data[i][3]+" item(s) deducted by " + data[i][5] +".</b></p>\
                                             <p style='font-size: 12px'><b>Reason: " +data[i][4]+ "</b></p>\
-                                            <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b><u style='font-size: 12px; float: right'><b>Mark As Read</b></u></p>\
+                                            <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b><u style='font-size: 12px; float: right' onclick='markAsRead(this)'><b>Mark As Read</b></u></p>\
                                         </div>\
                                     </div>";
                                         // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\

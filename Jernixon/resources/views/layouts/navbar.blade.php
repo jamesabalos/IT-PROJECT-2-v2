@@ -40,6 +40,7 @@
     
     @yield('headScript')
     <script type="text/javascript">
+    var notifications = "";
     //     function getNotifications(){
     //         $.ajax({
     //             method: 'get',
@@ -87,7 +88,10 @@
         $.ajax({
             method: 'get',
             url:"{{ route('admin.notification.markAsRead') }}",
-            
+            data: {
+                "notifications":window.notifications
+            },
+
             success: function(data){
                 console.log(data)
             }
@@ -106,6 +110,7 @@
                 url:"{{ route('admin.notification') }}",
                 
                 success: function(data){
+                    notifications = data;
                     console.log(data)
                     var result = "";
                     for (var i = 0; i < data.length; i++) {

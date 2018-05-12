@@ -800,8 +800,9 @@ class AdminController extends Controller
         array_multisort($date, SORT_DESC, $data);
         return $data;
     }
-    public function notificationMarkAsRead(){
-        return "success";
+    public function notificationMarkAsRead(Request $request){
+        // return $request->all();
+        // return $request->notifications;
     }
 
 

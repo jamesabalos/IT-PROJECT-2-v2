@@ -258,7 +258,7 @@ class="active"
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
-                                <div id="bar-chart"></div>
+                                <div id="bar-chart-least-items"></div>
                             </div>
                         </div>
                     </div>
@@ -349,22 +349,45 @@ function createSlowFastMovingItem(button){
                     },
                     success: function(response)
                     {
-                        // var resp_data = JSON.parse(response);
-                        console.log(response);
-                        $('#bar-chart-top-items').empty(); //reinitialize chart
+                        if(response.length == 0){
+                            $(button.parentNode.firstElementChild).hide(500);
+                            $(button.parentNode.firstElementChild).removeClass("hidden");
+                            $(button.parentNode.firstElementChild).slideDown("slow", function() {
+                            $(button.parentNode.firstElementChild).html(function(){
+                                return "no result";
+                            });
 
-                        //  window.barChartTopItems = Morris.Bar({
-                        //     element: 'bar-chart-top-items',
-                        //     // data: [<?php echo $chart_data_top_items; ?>],
-                        //     data: resp_data,
-                        //     xkey: 'name',
-                        //     ykeys: ['quantity'],
-                        //     labels: ['Qty sold'],
-                        //     lineColors: ['#1e88e5'],
-                        //     lineWidth: '3px',
-                        //     resize: true,
-                        //     redraw: true
-                        // });
+                            });
+                        }else{
+                            $(button.parentNode.firstElementChild).hide(1000);
+                            if(smiORfmi === "FMI"){
+                                $('#bar-chart-top-items').empty(); //reinitialize chart
+                                    window.barChartTopItems = Morris.Bar({
+                                    element: 'bar-chart-top-items',
+                                    data: response,
+                                    xkey: 'name',
+                                    ykeys: ['quantity'],
+                                    labels: ['Qty sold'],
+                                    lineColors: ['#1e88e5'],
+                                    lineWidth: '3px',
+                                    resize: true,
+                                    redraw: true
+                                });
+                            }else{
+                                $('#bar-chart-least-items').empty(); //reinitialize chart
+                                    window.barChartLeastItems = Morris.Bar({
+                                    element: 'bar-chart-least-items',
+                                    data: response,
+                                    xkey: 'name',
+                                    ykeys: ['quantity'],
+                                    labels: ['Qty sold'],
+                                    lineColors: ['#1e88e5'],
+                                    lineWidth: '3px',
+                                    resize: true,
+                                    redraw: true
+                                });
+                            }  
+                        }
                     },
                     error: function(response){
                         console.log("errorr!");
@@ -407,7 +430,7 @@ function barChartTopItems() {
   
 function barChartLeastItems() {
   window.barChartLeastItems = Morris.Bar({
-    element: 'bar-chart',
+    element: 'bar-chart-least-items',
     data: [<?php echo $chart_data_least_items; ?>],
     xkey: 'name',
     ykeys: ['quantity'],

@@ -350,7 +350,6 @@ ng-app="ourAngularJsApp"
         </div>
     </div>
 </div>
-<button type="button" onclick="printReceipt()">Print</button>
 
 <div class="row" >
     <div class="col-md-12" >
@@ -424,6 +423,7 @@ ng-app="ourAngularJsApp"
                                 <div class="text-right">                                           
                                     <div class="col-md-12">   
                                         <button class="btn btn-primary" type="submit">Submit</button>
+                                        <button class="btn btn-success glyphicon glyphicon-print" type="button" onclick="printReceipt()"> Print</button>
                                     </div>
                                 </div>
                             </div>

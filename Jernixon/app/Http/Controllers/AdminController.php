@@ -75,10 +75,27 @@ class AdminController extends Controller
     }
 
     public function createFastMovingItems(Request $request){
-       return $request->all();
+		
+		// $data = DB::table('sales')
+            // ->join('products', 'products.product_id', '=', 'sales.product_id')
+            // ->selectRaw('description, SUM(quantity)')
+            // ->where('sales.created_at','>',$request->dateFrom)
+            // ->where('sales.created_at','<',$request->dateTo)
+			// ->groupBy('sales.product_id')
+			// ->orderBy('sales.quantity','desc')
+			// ->limit(10)
+			// ->get();
+			
+		$data = DB::select( DB::raw("SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) WHERE sales.created_at > '$request->dateFrom' AND sales.created_at < '$request->dateTo' group by product_id order by quantity desc limit 10"));
+		
+         return $data;   
+         // return Datatables::of($data)
+            // ->make(true);
     }
     public function createSlowMovingItems(Request $request){
-        return $request->all();
+        $data = DB::select( DB::raw("SELECT description as name, sum(quantity) as quantity FROM products inner join sales using(product_id) WHERE sales.created_at > '$request->dateFrom' AND sales.created_at < '$request->dateTo' group by product_id order by quantity asc limit 10"));
+		
+        return $data;
        
     }
     public function getItemsForSales(){

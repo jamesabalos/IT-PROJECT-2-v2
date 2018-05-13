@@ -31,14 +31,55 @@ ng-app="ourAngularJsApp"
             page-break-inside:always;
         } */
 
-         
-        body{
-            width: 60%;
-            margin-left: 20%;
+         @page{
+            size: 150mm 175mm;
+        } 
+        .des{
+            width: 100%;
+
+            
+        }
+        .blank{
+            
+            float: left;
 
         }
-
+        #custname{
+            padding-left: 60px;
+            width:40%;
+            float: left;
+        }
+        #rdate{
+            padding-left: 60px;
+            width: 30%;
+            float: left;
+        }
+        #address{
+            padding-left: 60px;
+            width: 85%;
+            float: left;
+        }
+        .clear{
+            clear: left;
+            padding-top:20px;
+        }
+        .top{
+            border:2px solid black; 
+            padding-top:100px;
+        }
+        .quantity, .unit{
+            width: 30px;
+            text-align: center;
+        }
+        .desc{
+            
+        }
+        .unitp,.amount{
+            width: 70px;
+            text-align: center;
+        }
         table {
+            clear: left;
             border: 1px solid black;
             border-collapse: collapse;
             width: 100%;
@@ -47,6 +88,15 @@ ng-app="ourAngularJsApp"
             height: 20px;
             border: 1px solid black;
             
+        }
+        body{
+            counter-increment: pages;
+        }
+        .pagebreak{
+            page-break-after: always;
+        }
+        .pag{
+            text-align: center;
         }
     }
 </style>
@@ -63,65 +113,80 @@ ng-app="ourAngularJsApp"
         var items = "";
         var pageTwo = "";
         var rows = $("#cartTbody tr");
-        for(var i = 0; i < rows.length; i++){
-            if(i>7){
-                // document.getElementById("secondPage").setAttribute("style","display:block");
-
-                pageTwo += "<tr>\
-                            <td width='40px'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td width='40px'></td>\
-                            <td>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td>"+rows[i].cells[1].innerText+"</td>\
-                            <td width='40px'>"+rows[i].cells[3].innerText+"</td>\
+        
+        
+        var page=1;
+        var m=0;
+        var itemw=new Array();
+        for(var i = 0; i < rows.length; i++){  
+            if(m<7){
+                items += "<tr>\
+                            <td class='quantity'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td class='unit'></td>\
+                            <td class='desc'>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td class='unitp'>"+rows[i].cells[1].innerText+"</td>\
+                            <td class='amount'>"+rows[i].cells[3].innerText+"</td>\
                             <tr>\
                         ";
+                m++;
+                
             }else{
                 items += "<tr>\
-                            <td width='40px'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td width='40px'></td>\
-                            <td>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td>"+rows[i].cells[1].innerText+"</td>\
-                            <td width='40px'>"+rows[i].cells[3].innerText+"</td>\
-                        <tr>\
-                    ";
+                            <td class='quantity'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td class='unit'></td>\
+                            <td class='desc'>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td class='unitp'>"+rows[i].cells[1].innerText+"</td>\
+                            <td class='amount'>"+rows[i].cells[3].innerText+"</td>\
+                            <tr>\
+                        ";
+                m=0;
+                page=page+1;
+                itemw.push(items);
+                items = "";
             }
-           
-        }
-        var totalSalesPrice = document.getElementById("totalSalesDiv").firstChild.innerText;
-        var officialReceipt = "\
-            <div style='border:2px solid black; width:100%; height:500px'>\
-            <br><br><br><br>\
-            <div class='row'>\
-                <p style='text-align:left;border:1px solid green'>"+arrayOfData[2]['value']+
-                "</p><p style='text-align:right;border:1px solid blue'>"+arrayOfData[3]['value']+"</p>\
-            </div>"
-            +arrayOfData[4]['value']+
-                "<div class='content table-responsive table-full-width'>\
-                    <br><table>\
-                        <tbody>"+  
-                        items
-                    +"</tbody></table>\
-                </div>";
+            if(i==rows.length-1){
+                itemw.push(items);
+            }
 
-        if(pageTwo === ""){
-            officialReceipt += "<h3 style='text-align:right'>"+totalSalesPrice+"</h3></div>";
-        }else{
-            officialReceipt += "<br><p style='text-align:left'>Page 1 of 2</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><h3 style='text-align:right'>"
-            +arrayOfData[1]['value']+"</h3>"+           
-            "<div class='content table-responsive table-full-width'>\
-                    <br><table>\
-                        <tbody>"+  
-                            pageTwo
-                    +"</tbody></table>\
-                </div>\
-                <br><p style='text-align:left'>Page 2 of 2</p>\
-                <p style='text-align:right'>TOTAL AMOUNT DUE: "+totalSalesPrice+"</p>\
-            </div>";
+          
         }
-   
+        // console.log(itemw);  
+        // console.log(rows.length);  
+
+        var totalSalesPrice = document.getElementById("totalSalesDiv").firstChild.innerText;
+        var officialReceipt = "";
+        
+            for(var m=0; m<page;m++){
+                officialReceipt += "\
+                    <div class='top'>\           \
+                    <div class='des'>\
+                        <div class='blank'></div>\
+                        <div id='custname'>"+arrayOfData[2]['value']+"</div>\
+                        <div class='blank'></div>\
+                        <div id='rdate'>"+arrayOfData[3]['value']+"</div>\
+                    </div>\
+                    <div class='des'>\
+                        <div class='blank'></div>\
+                        <div id='address'>"+arrayOfData[4]['value']+"</div>\
+                    </div>\
+                        <div class='content table-responsive table-full-width clear'>\
+                            <table>\
+                                <tbody>"+  
+                                itemw[m]
+                            +"</tbody></table>\
+                        </div>\
+                        <p class='pag'>Page "+(m+1)+" of "+page+" </p>\
+                        <p style='text-align:right' class='pagebreak'>TOTAL AMOUNT DUE: "+totalSalesPrice+"</p>\
+                        </div>";
+                    // console.log("\n Receipt "+ itemw[m]+ " page "+page);
+            }
+                        
+            officialReceipt+="";
+
         document.body.innerHTML = officialReceipt;
         window.print();
         document.body.innerHTML = restorePage;
+        
     }
     function addItemToCart(button){
         $(button).hide(500).delay(1000);

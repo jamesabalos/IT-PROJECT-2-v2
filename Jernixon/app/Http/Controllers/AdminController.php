@@ -737,13 +737,28 @@ class AdminController extends Controller
             'Confirm_Password' => 'required',
         ]);
         $employee = Admin::find($request->adminId);
-        $password = Hash::make($request->New_Password);
-        if($request->Email===$employee->email && $request->New_Password===$request->Confirm_Password && Hash::check($request->Current_Password, $employee->password)){
-            $employee->password = $password;
-            $employee->save();
-            return "successful";
+        // $password = Hash::make($request->New_Password);
+        if($request->Email===$employee->email ){
+            if($request->New_Password===$request->Confirm_Password ){
+                if( Hash::check($request->Current_Password, $employee->password) ){
+                    $employee->password = $request->New_Password;
+                    $employee->save();
+                    return "successful";
+                }else{
+                    return response()->json([
+                        'errors' => ['Current password does not match.']
+                    ],422);
+                }
+            }else{
+                return response()->json([
+                    'errors' => ['New password and confirm password does not match.']
+                ],422);
+            }
         }else{
-            return "unsuccessful";
+            return response()->json([
+                'errors' => ['Email does not match.']
+            ],422);
+         
         }
         return $request->all();
 

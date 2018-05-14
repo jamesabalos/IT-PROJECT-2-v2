@@ -154,14 +154,15 @@
             $.ajax({
                 type:'POST',
                 
-                @if(Auth::guard('adminGuard')->check())
+                @if(str_contains(request()->path(),'admin') == 1)
                 url: "{{route('admin.changePassword')}}",
-                @elseif(Auth::guard('web')->check())
+                @elseif(str_contains(request()->path(),'salesAssistant') == 1)
                 url: "{{route('salesAssistant.changePassword')}}",
                 @endif
                 data: data,
                 
                 success:function(data){
+                    console.log(data)
                     $('#changePassword').modal('hide');
                     $("#successDiv p").remove();
                     $("#successDiv").removeClass("hidden")
@@ -172,6 +173,20 @@
                     .delay(1000)                        
                     .hide(1500);
                     
+                },
+                error: function(data){
+                    var response = data.responseJSON;
+                    $("#errorDivChangePassword").hide(500);
+                    $("#errorDivChangePassword").removeClass("hidden");
+                    $("#errorDivChangePassword").slideDown("slow", function() {
+                    $("#errorDivChangePassword").html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });
+                    });
                 }
             })
         })
@@ -302,9 +317,9 @@
                 <div class="container-fluid">
                     <div class="navbar-header">
                         @yield('linkName')
-                        {{-- <div class="alert alert-success hidden" id="successDiv">
+                        <div class="alert alert-success hidden" id="successDiv">
                             
-                        </div> --}}
+                        </div>
                     </div>
                     
                     <div>
@@ -321,7 +336,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        @if(Auth::guard('adminGuard')->check())
+                                        @if(str_contains(request()->path(),'admin') == 1)
                                         
                                         <a href="#changePassword" data-toggle="modal">
                                             Change Password
@@ -337,7 +352,7 @@
                                             {{ csrf_field() }}
                                         </form>  --}}
                                         
-                                        @elseif(Auth::guard('web')->check())
+                                        @elseif(str_contains(request()->path(),'salesAssistant') == 1)
                                         <a href="#changePassword" data-toggle="modal">
                                             Change Password
                                         </a>
@@ -377,7 +392,7 @@
 
                                     <li class="dropdown">
                                         <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown"> </a>
-                                            <i class="fa fa-bell"></i>
+                                        <i class="fa fa-bell"></i>
 
                                     </li>
 
@@ -392,7 +407,7 @@
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                @if(Auth::guard('adminGuard')->check())
+                                                @if(str_contains(request()->path(),'admin') == 1)
                                                 <a href="#changePassword" data-toggle="modal">
                                                     Change Password
                                                 </a>
@@ -405,7 +420,7 @@
                                                 {{--  <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                                                     {{ csrf_field() }}
                                                 </form>  --}}
-                                                @elseif(Auth::guard('web')->check())
+                                                @elseif(str_contains(request()->path(),'salesAssistant') == 1)
                                                 <a href="{{ route('salesAssistant.logout') }}" onclick="logoutRemoveCart()">
                                                     {{--  onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">  --}}
@@ -428,7 +443,7 @@
                 <div class="navbar-collapse collapse">
                     
                     <ul class="nav navbar-nav navbar-right">
-                        @if(Auth::guard('adminGuard')->check())
+                        @if(str_contains(request()->path(),'admin') == 1)
                         <li @yield('dashboard_link')>
                             <a href={{route('admin.dashboard')}}> <i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
                         </li>     
@@ -467,7 +482,7 @@
                         
                         {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
                         
-                        @elseif(Auth::guard('web')->check())
+                        @elseif(str_contains(request()->path(),'salesAssistant') == 1)
                         @if($physicalCount[0]["status"] === "inactive" )
                         <li   @yield('sales_link')>
                             <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
@@ -507,8 +522,6 @@
             <div class = "modal-dialog modal-md">
                 <div class = "modal-content">
                     
-                    {!! Form::open(['method'=>'post','id'=>'formChangePassword']) !!}
-                    
                     <div class="modal-header">
                         <button class="close" data-dismiss="modal">&times;</button>
                         <h3 class="modal-title"><i class="fa fa-wrench" style="margin-right: 15px;"></i>Change Password</h3>
@@ -524,6 +537,9 @@
                                 </strong>
                             </div>
                             
+                            <div id="errorDivChangePassword" class="hidden alert-danger text-center">
+                            </div>
+                {!! Form::open(['method'=>'post','id'=>'formChangePassword']) !!}
                             <div class="panel-body">
                                 <input type="hidden" value="{{ csrf_token() }}">
                                 <input type="hidden" name="authName" value=" {{ Auth::user()->name }}">

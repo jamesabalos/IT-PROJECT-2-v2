@@ -50,21 +50,46 @@
 
             success:function(data){
                 console.log(data)   
+                // $("#errorDivForgotPassword p").remove();
+                    $("#errorDivForgotPassword").removeClass("hidden")
+                    // .addClass("alert-success")
+                    .html("<h4>Success</h4>");
+                    $("#errorDivForgotPassword").css("background-color","green");                             
+                    $("#errorDivForgotPassword").slideDown("slow")
+                    .delay(1000)                        
+                    .hide(1500);
+
+                    document.getElementById("formForgotPassword").reset();
                 // window.location.replace('/admin/login'); 
             },
             error:function(data){
+                // document.getElementById("emailError").innerHTML = "";   
+                // document.getElementById("usernameError").innerHTML = "";                                                     
+                
                 var response = data.responseJSON; 
-                console.log(response)
-                if(response.errors.hasOwnProperty('email')){
-                    document.getElementById("emailError").innerHTML = "<h5 style='color:red'>"+response.errors.email+"</h5>";
-                }else{
-                    document.getElementById("emailError").innerHTML = "";                    
-                }
-                if(response.errors.hasOwnProperty('username')){
-                    document.getElementById("usernameError").innerHTML = "<h5 style='color:red'>"+response.errors.username+"</h5>";
-                }else{
-                    document.getElementById("usernameError").innerHTML = "";                    
-                }
+                // console.log(response)
+                // if(response.errors.hasOwnProperty('email')){
+                //     document.getElementById("emailError").innerHTML = "<h5 style='color:red'>"+response.errors.email+"</h5>";
+                // }else{
+                //     document.getElementById("emailError").innerHTML = "";                    
+                // }
+                // if(response.errors.hasOwnProperty('username')){
+                //     document.getElementById("usernameError").innerHTML = "<h5 style='color:red'>"+response.errors.username+"</h5>";
+                // }else{
+                //     document.getElementById("usernameError").innerHTML = "";                    
+                // }
+                    $("#errorDivForgotPassword").css("background-color","#721c24");                             
+                    $("#errorDivForgotPassword").hide(500);
+                    $("#errorDivForgotPassword").removeClass("hidden");
+                    $("#errorDivForgotPassword").slideDown("slow", function() {
+                    $("#errorDivForgotPassword").html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });
+                    });
             }
         });
     }
@@ -113,15 +138,18 @@
 		
 			<div class="wrap-login100">
                 {!! Form::open(['method'=>'get','id'=>'formForgotPassword']) !!}
-                    
-					<span class="login100-form-logo">
-						<i class="zmdi zmdi-account"></i>
-					</span>
-					<span class="login100-form-title p-b-34 p-t-27">
-						Admin Forgot Password
-                    </span>
+                {{-- <input type="hidden" name="adminId" value=" {{ Auth::user()->id }}"> --}}
+                <span class="login100-form-logo">
+                    <i class="zmdi zmdi-account"></i>
+                </span>
+                <span class="login100-form-title p-b-34 p-t-27">
+                    Admin Forgot Password
+                </span>
+                
+                <div id="errorDivForgotPassword" style="background-color:#721c24" class="hidden alert-danger text-center">
+                    </div>
                     <div class="wrap-input100" >                        
-                        {{Form::input('email','email',null, ['class'=>'input100', 'id'=>'email', 'placeholder'=>'Email', 'required','autofocus'])}}
+                        {{Form::input('email','email',null, ['class'=>'input100', 'id'=>'email', 'placeholder'=>'Email', 'required'])}}
                         <span class="focus-input100" data-placeholder="&#xf207;"></span>
                         <span id="emailError"></span>
                     </div>

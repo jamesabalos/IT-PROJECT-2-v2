@@ -36,6 +36,8 @@ ng-app="ourAngularJsApp"
         } 
         .des{
             width: 100%;
+            clear: all;
+            /*border: 2px solid;*/
 
             
         }
@@ -46,13 +48,13 @@ ng-app="ourAngularJsApp"
         }
         #custname{
             padding-left: 60px;
-            width:40%;
+            width:70%;
             float: left;
         }
         #rdate{
-            padding-left: 60px;
             width: 30%;
             float: left;
+            /*border:2px solid;*/
         }
         #address{
             padding-left: 60px;

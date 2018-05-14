@@ -64,18 +64,18 @@ class="active"
 
                         </div>      
                         </div>  --}}
-                        <div class="content table-responsive table-full-width table-stripped">
-                            <table id="tableItems" class="table table-bordered table-striped dt-responsive nowrap" style="width:100%">
+                        <div class="content table-responsive table-full-width">
+                            <table id="tableItems" class="table table-bordered table-striped" >
                                 <thead>
                                     <tr>
-                                        <th>Description</th>
-                                        <th>Qty</th>
-                                        <th>Purchase Price</th>
-                                        <th>Selling Price</th>
-                                        <th>Reorder Level</th>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Qty</th>
+                                        <th class="text-left">Purchase Price</th>
+                                        <th class="text-left">Selling Price</th>
+                                        <th class="text-left">Reorder Level</th>
                                         <!--th>Created At</th>
-<th>Updated At</th-->
-                                        <th>Action</th>
+                                        <th>Updated At</th-->
+                                        <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -594,11 +594,11 @@ class="active"
 
 </div>
 <div id="disableConfirmation" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog modal-md">
         <div class = "modal-content">
             <div class = "modal-body">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <p> There are still <span id="itemQuantityLeft"></span> left. Do you want to continue? </p>
+                <p class="text-center"> There are still <span id="itemQuantityLeft"></span> left. Do you want to continue? </p>
                 <div class="panel-body">
                     <div class="text-center">
                      

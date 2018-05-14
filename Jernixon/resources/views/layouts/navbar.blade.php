@@ -377,7 +377,7 @@
 
                                     <li class="dropdown">
                                         <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown"> </a>
-                                            <i class="fa fa-bell"></i>
+                                         <i class="fa fa-bell"></i>
 
                                     </li>
 

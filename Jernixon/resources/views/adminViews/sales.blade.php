@@ -169,7 +169,7 @@ ng-app="ourAngularJsApp"
                         <div class='blank'></div>\
                         <div id='address'>"+arrayOfData[4]['value']+"</div>\
                     </div>\
-                        <div class='content table-responsive table-full-width clear'>\
+                        <div class='content table-responsive table-striped table-full-width clear'>\
                             <table>\
                                 <tbody>"+  
                                 itemw[m]

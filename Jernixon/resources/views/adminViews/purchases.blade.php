@@ -25,22 +25,21 @@ ng-app="ourAngularJsApp"
 {{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/ comment>  --}}
 
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
+<script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
 
 {{--  <script src="{{asset('assets/js/DataTables/dataTables.js')}}"></script comment>  --}}
-    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
-        {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
-         <script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
-         {{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/jszip.min.js')}}"></script>
-         {{--  pdf    --}}
-             <script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
-    {{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
-      <script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
-      <script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
-      <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
+<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+{{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
 
-
+{{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
+<script src="{{asset('assets/js/jszip.min.js')}}"></script>
+{{--  pdf    --}}
+<script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
+{{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
 
       <script type="text/javascript">
         function addRow(div){

@@ -104,6 +104,7 @@
         // $('button.myClass').click(function() {
         //     alert( "Handler" );
         // });
+        console.log( '<?php echo str_contains(request()->path(),'admin') ?>' )
         $.ajax({
                 method: 'get',
                 //url: 'items/' + document.getElementById("inputItem").value,
@@ -224,68 +225,70 @@
                 
                 <ul class="nav" id="navs">
                     
-                    @if(Auth::guard('adminGuard')->check())
-                    <li  @yield('dashboard_link')>
+                    {{-- @if(Auth::guard('adminGuard')->check() == 1 && Auth::guard('web')->check() == 0) --}}
+                    @if(str_contains(request()->path(),'admin') == 1)
+                        <li  @yield('dashboard_link')>
+                            
+                            <a href={{route('admin.dashboard')}}><i class="fa fa-fw fa-dashboard"></i><p>Dashboard</p></a>
+                        </li>       
                         
-                        <a href={{route('admin.dashboard')}}><i class="fa fa-fw fa-dashboard"></i><p>Dashboard</p></a>
-                    </li>       
+                        <li @yield('sales_link')>
+                            <a href={{route('admin.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
+                        </li>  
+                        
+                        <li @yield('purchases_link')>
+                            <a href={{route('admin.purchases')}}><i class="fa fa-cube"></i><p>Purchases</p></a>
+                        </li>  
+                        
+                        <li @yield('returns_link')>
+                            <a href={{route('admin.returns')}}><i class="fa fa-mail-reply"></i><p>Returns</p></a>
+                        </li> 
+                        
+                        <li @yield('physicalCount_link')>
+                            <a href={{route('admin.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                        </li>  
+                        
+                        <li  @yield('reports_link') >
+                            <a href={{route('admin.reports')}}><i class="fa fa-line-chart"></i><p>Reports</p></a>
+                        </li>
+                        
+                        <li  @yield('items_link') >
+                            <a href={{route('admin.items')}}><i class=" fa fa-bars"></i><p>Items</p></a>
+                        </li>
+                        
+                        <li @yield('employees_link')>
+                            <a href={{route('admin.employees')}}><i class="fa fa-users"></i><p>Account Management</p></a>
+                        </li>
+                        
+                        <li @yield('stockAdjustment_link')>
+                            <a href={{route('admin.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
+                        </li>
                     
-                    <li @yield('sales_link')>
-                        <a href={{route('admin.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
-                    </li>  
-                    
-                    <li @yield('purchases_link')>
-                        <a href={{route('admin.purchases')}}><i class="fa fa-cube"></i><p>Purchases</p></a>
-                    </li>  
-                    
-                    <li @yield('returns_link')>
-                        <a href={{route('admin.returns')}}><i class="fa fa-mail-reply"></i><p>Returns</p></a>
-                    </li> 
-                    
-                    <li @yield('physicalCount_link')>
-                        <a href={{route('admin.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
-                    </li>  
-                    
-                    <li  @yield('reports_link') >
-                        <a href={{route('admin.reports')}}><i class="fa fa-line-chart"></i><p>Reports</p></a>
-                    </li>
-                    
-                    <li  @yield('items_link') >
-                        <a href={{route('admin.items')}}><i class=" fa fa-bars"></i><p>Items</p></a>
-                    </li>
-                    
-                    <li @yield('employees_link')>
-                        <a href={{route('admin.employees')}}><i class="fa fa-users"></i><p>Account Management</p></a>
-                    </li>
-                    
-                    <li @yield('stockAdjustment_link')>
-                        <a href={{route('admin.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
-                    </li>
-                    
-                    <!-- Sales Assistant -->
-                    
-                    {{--  Hello {{Auth::guard('admin')->user()->name}}  --}}
-                    @elseif(Auth::guard('web')->check())
-                    @if($physicalCount[0]["status"] === "inactive" )
-                    <li @yield('sales_link')>
-                        <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
-                    </li>
-                    
-                    <li   @yield('return_link')>
-                        <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Returns</p></a>
-                    </li>
-                    
-                    <li   @yield('stockAdjustment_link')>
-                        <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
-                    </li>
-                    {{-- <li @yield('physicalCount_link')>
-                        <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
-                    </li> --}}
-                    @else
-                    <li @yield('physicalCount_link')>
-                        <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
-                    </li>
-                    @endif
+                        @endif
+                        
+                        <!-- Sales Assistant -->
+                    {{-- @if(Auth::guard('web')->check() == 1 && Auth::guard('adminGuard')->check() == 0) --}}
+                    @if(str_contains(request()->path(),'salesAssistant') == 1)
+                        @if($physicalCount[0]["status"] === "inactive" )
+                        <li @yield('sales_link')>
+                            <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
+                        </li>
+                        
+                        <li   @yield('return_link')>
+                            <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Returns</p></a>
+                        </li>
+                        
+                        <li   @yield('stockAdjustment_link')>
+                            <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
+                        </li>
+                        {{-- <li @yield('physicalCount_link')>
+                            <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                        </li> --}}
+                        @else
+                        <li @yield('physicalCount_link')>
+                            <a href={{route('salesAssistant.physicalCount')}}><i class="fa fa-check-square-o"></i><p>Physical count</p></a>
+                        </li>
+                        @endif
                     
                     @endif
                     

@@ -37,5 +37,8 @@ class PagesController extends Controller
     public function employees(){
         return view('pages.employees');
     }
+    public function showAboutPage(){
+        return view('pages.about');
+    }
 
 }

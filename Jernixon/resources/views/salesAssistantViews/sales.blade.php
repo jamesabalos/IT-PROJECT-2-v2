@@ -20,9 +20,179 @@ ng-app="ourAngularJsApp"
 
 <script src="{{asset('assets/js/angularJs.js')}}"></script>
 <script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
+<style type="text/css">
+    @media print{
+        /* @page{            
+            size: 8.5in 11in; 
+        }
+        @page:first{
+            size: 150mm 175mm;
+            page-break-inside:always;
+        } */
 
+         @page{
+            size: 150mm 175mm;
+        } 
+        .des{
+            width: 100%;
+            clear: all;
+            /*border: 2px solid;*/
+
+            
+        }
+        .blank{
+            
+            float: left;
+
+        }
+        #custname{
+            padding-left: 60px;
+            width:70%;
+            float: left;
+        }
+        #rdate{
+            width: 30%;
+            float: left;
+            /*border:2px solid;*/
+        }
+        #address{
+            padding-left: 60px;
+            width: 85%;
+            float: left;
+        }
+        .clear{
+            clear: left;
+            padding-top:20px;
+        }
+        .top{
+            border:2px solid black; 
+            padding-top:100px;
+        }
+        .quantity, .unit{
+            width: 30px;
+            text-align: center;
+        }
+        .desc{
+            
+        }
+        .unitp,.amount{
+            width: 70px;
+            text-align: center;
+        }
+        table {
+            clear: left;
+            border: 1px solid black;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td {
+            height: 20px;
+            border: 1px solid black;
+            
+        }
+        body{
+            counter-increment: pages;
+        }
+        .pagebreak{
+            page-break-after: always;
+        }
+        .pag{
+            text-align: center;
+        }
+    }
+
+
+</style>
 <script>
-    
+        function printReceipt(){
+        // var data = $("#formSales").serialize();   
+        var arrayOfData = $("#formSales").serializeArray();  
+        console.log( arrayOfData )
+        console.log( arrayOfData[0]['name'] )
+
+        var restorePage = document.body.innerHTML;
+        var printContent = document.getElementById("printArea").innerHTML;
+        
+        var items = "";
+        var pageTwo = "";
+        var rows = $("#cartTbody tr");
+        
+        
+        var page=1;
+        var m=0;
+        var itemw=new Array();
+        for(var i = 0; i < rows.length; i++){  
+            if(m<7){
+                items += "<tr>\
+                            <td class='quantity'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td class='unit'></td>\
+                            <td class='desc'>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td class='unitp'>"+rows[i].cells[1].innerText+"</td>\
+                            <td class='amount'>"+rows[i].cells[3].innerText+"</td>\
+                            <tr>\
+                        ";
+                m++;
+                
+            }else{
+                items += "<tr>\
+                            <td class='quantity'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td class='unit'></td>\
+                            <td class='desc'>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td class='unitp'>"+rows[i].cells[1].innerText+"</td>\
+                            <td class='amount'>"+rows[i].cells[3].innerText+"</td>\
+                            <tr>\
+                        ";
+                m=0;
+                page=page+1;
+                itemw.push(items);
+                items = "";
+            }
+            if(i==rows.length-1){
+                itemw.push(items);
+            }
+
+          
+        }
+        // console.log(itemw);  
+        // console.log(rows.length);  
+
+        var totalSalesPrice = document.getElementById("totalSalesDiv").firstChild.innerText;
+        var officialReceipt = "";
+        
+            for(var m=0; m<page;m++){
+                officialReceipt += "\
+                    <div class='top'>\           \
+                    <div class='des'>\
+                        <div class='blank'></div>\
+                        <div id='custname'>"+arrayOfData[2]['value']+"</div>\
+                        <div class='blank'></div>\
+                        <div id='rdate'>"+arrayOfData[3]['value']+"</div>\
+                    </div>\
+                    <div class='des'>\
+                        <div class='blank'></div>\
+                        <div id='address'>"+arrayOfData[4]['value']+"</div>\
+                    </div>\
+                        <div class='content table-responsive table-striped table-full-width clear'>\
+                            <table>\
+                                <tbody>"+  
+                                itemw[m]
+                            +"</tbody></table>\
+                        </div>\
+                        <p class='pag'>Page "+(m+1)+" of "+page+" </p>\
+                        <p style='text-align:right' class='pagebreak'>TOTAL AMOUNT DUE: "+totalSalesPrice+"</p>\
+                        </div>";
+                    // console.log("\n Receipt "+ itemw[m]+ " page "+page);
+            }
+                        
+            officialReceipt+="";
+
+        document.body.innerHTML = officialReceipt;
+        window.print();
+        document.body.innerHTML = restorePage;
+        location.reload();
+        // document.body.appendChild(restorePage);
+        
+    }
     function addItemToCart(button){
         $(button).hide(500).delay(1000);
         //$(button).removeClass("btn-info").addClass("btn-danger");
@@ -248,34 +418,41 @@ ng-app="ourAngularJsApp"
             <div class="row" >
                 <div class="col-md-12" >
                     <div class="card" >
-                        <div class="header" >
-                            <div class="alert alert-success hidden" id="successDiv">
-                            </div>
+                        <div class="header"  id="printArea">
                             {!! Form::open(['method'=>'post','id'=>'formSales']) !!}                                
                             <h4 ng-bind="name">Customer Purchase</h4>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-0" margin>
-                            {{Form::label('Date', 'Date:')}}
-                        </div>
-                        <div class="col-md-2" margin>
-                            <input type="date" name="Date" id="today"  class="form-control"/>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-5" margin >
-                            {{Form::label('customerName', 'Customer Name:')}}
-                            {{Form::text('customerName','',['class'=>'form-control'])}}
-                        </div>
-                        <div class="col-md-5" margin >
-                            {{Form::label('receiptNumber', 'Receipt Number:')}}
-                            {{Form::number('receiptNumber','',['class'=>'form-control'])}}
-                        </div>
-                    </div>
-                </div>
+                            <div class="row">
+                                <div class="col-md-3" >                        
+                                        {{Form::label('receiptNumber', 'Receipt Number:')}}
+                                        {{Form::number('receiptNumber','',['class'=>'form-control'])}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-7" margin >
+                                        {{Form::label('customerName', 'Customer Name:')}}
+                                        {{Form::text('customerName','',['class'=>'form-control'])}}
+                                    </div>
+                                    <div class="col-md-4" margin >
+                                            {{Form::label('Date', 'Date:')}}
+                                            <input type="date" name="Date" id="today"  class="form-control"/>    
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-0" margin>
+                                        {{Form::label('address', 'Address:')}}
+                                        {{Form::text('address','',['class'=>'form-control'])}}
+                                        
+                                    </div>
+                                    {{-- <div class="col-md-2" margin>
+                                        <input type="date" name="Date" id="today"  class="form-control"/>
+            
+                                    </div> --}}
+                                </div>
+                            </div>
                             
                             <div class="row"> 
                                 <div class="col-md-12 table-responsive">
@@ -312,12 +489,16 @@ ng-app="ourAngularJsApp"
                                             <div class="text-right">                                           
                                                 <div class="col-md-12">   
                                                     <button class="btn btn-primary" type="submit">Submit</button>
+                                                    <button class="btn btn-success glyphicon glyphicon-print" type="button" onclick="printReceipt()"> Print</button>
                                                 </div>
                                             </div> 
+                                            <div class="alert alert-success hidden" id="successDiv">
+                                            </div>
                                         </div>
                                     </div>
                                 </div> 
                             </div>
+ 
                             {!! Form::close() !!}
                             
                         </div>
@@ -446,8 +627,23 @@ $('#dashboardDatatable').DataTable({
                         var value = localStorage[key];
                         if(value.includes("item")){
                             var myItemJSON = JSON.parse(localStorage.getItem(key));            
+                            
+                        
+                        ////////////////////
+                        $('#dashboardDatatable').DataTable().search(key).draw();
+                        //////////////////////
+                            var updateTemp = $.parseHTML( myItemJSON.retailPrice );
+                            console.log(document.getElementById(myItemJSON.itemId))
+                            updateTemp[0].innerHTML=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price if ever the selling price of ITEM changes!
+                            updateTemp[1].value=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price if ever the selling price of ITEM changes!
+                             console.log(updateTemp[0].outerHTML+updateTemp[1].outerHTML)
+                            //  document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML
+ 
                             //hide row
-                            document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
+                            // document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
+                            var row = $('#'+myItemJSON.itemId).closest("tr");
+                            $('#dashboardDatatable').dataTable().fnDeleteRow( row );
+
                             var newRow = thatTbody.insertRow(-1);
                             newRow.insertCell(-1).innerHTML = myItemJSON.item ;
                             // newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;
@@ -458,7 +654,7 @@ $('#dashboardDatatable').DataTable({
                             // angular.element( lastRow.insertCell(-1) ).append(temp2);
 
                             //newRow.insertCell(-1).innerHTML = myItemJSON.retailPrice;
-                            angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.retailPrice)($scope) );
+                            angular.element( newRow.insertCell(-1) ).append( $compile(updateTemp[0].outerHTML+updateTemp[1].outerHTML)($scope) );
 
                             //newRow.insertCell(-1).innerHTML = myItemJSON.quantityPurchase;
                             angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );
@@ -470,10 +666,6 @@ $('#dashboardDatatable').DataTable({
                             // newRow.insertCell(-1).innerHTML = myItemJSON.removeButton;
                             // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
 
-                            //remove the add button after the datatables load
-                            var button = document.getElementById(myItemJSON.itemId);
-                            $(button).hide();
-
                             var temp = document.createElement('div');
                             temp.innerHTML = myItemJSON.salesPrice;  
                             if(totalSalesNgBinds==""){
@@ -483,12 +675,15 @@ $('#dashboardDatatable').DataTable({
                             }else{
                                 var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");
                                 // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
-                                totalSalesNgBinds += "+ " + splitBind[0];
+                                totalSalesNgBinds += "+" + splitBind[0];
                             }
 
 
                         }
                     }
+                        ////////////////////
+                        $('#dashboardDatatable').DataTable().search("").draw();
+                        //////////////////////
 
                     //initialize totalSales
                     document.getElementById("totalSalesDiv").innerHTML="";
@@ -515,13 +710,13 @@ $('#dashboardDatatable').DataTable({
                 var thatTable = document.getElementById("cartTable");
                 var numberOfRows = thatTable.rows.length;
                 var lastRow = thatTable.rows[numberOfRows-1];
-                var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'');
+                var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
 
                 var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> ";
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);    
 
-                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1'></input>";
+                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' value='1' required></input>";
                 var temp1 = $compile(inputNumber)($scope);
                 // var newRow = thatTbody.insertRow(-1);
                 // angular.element( newRow.insertCell(-1) ).append(temp);
@@ -532,7 +727,7 @@ $('#dashboardDatatable').DataTable({
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
                 // var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";
-                var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
+                var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' >Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
                 var temp3 = $compile(removeButton)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp3);
 
@@ -546,53 +741,32 @@ $('#dashboardDatatable').DataTable({
                     quantityPurchase: tds[2].firstChild.outerHTML,
                     salesPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
                     removeButton: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
-                    itemId: event.currentTarget.getAttribute("id")
+                    itemId: event.currentTarget.getAttribute("id"),
+                    action: $(event.currentTarget).closest("tr")[0]['cells'][3].innerHTML,
                 };
 
                 var jsonObject = JSON.stringify(itemObject);
                 localStorage.setItem(tds[0].innerHTML,jsonObject);
 
-                //display Total Sales with ng-bind/s
-                // var len=localStorage.length;
-                // var ngBinds = "";
-                // for(var i=0; i<len; i++) {
-                //         var key = localStorage.key(i);
-                //         var value = localStorage[key];
-                //         if(value.includes("item")){
-                //             // console.log(key + " => " + value);          
-                //             var myItemJSON = JSON.parse(localStorage.getItem(key));  
-                //             var salesPriceString = myItemJSON.salesPrice
-                //             var temp = document.createElement('div');
-                //             temp.innerHTML = salesPriceString;
-                //             console.log(temp.firstChild.getAttribute("ng-bind"))        
-                //         }
-                // }
 
-                var totalSalesDiv = document.getElementById("totalSalesDiv");
-                // console.log(totalSalesDiv.childNodes)
+               var totalSalesDiv = document.getElementById("totalSalesDiv");
                 var ngBindAttributes = totalSalesDiv.firstChild.getAttribute("ng-bind"); //get ng-bind attribute/s
-                totalSalesDiv.innerHTML =""; //remove h4 element;
+                totalSalesDiv.innerHTML =""; 
                 if(ngBindAttributes==""){
                     var newNgBinds = itemName+"SP";
                 }else{
-                    var newNgBinds = ngBindAttributes + "+ " + itemName+"SP";
+                    var newNgBinds = ngBindAttributes.split(" ")[0] + "+" + itemName+"SP";
                 }
 
-                var binds = newNgBinds.split(" ");
-                var ngBindsResult = "";
-                    for(var i = 0; i < binds.length; i++){
-                        if(i % 2 === 0){
-                            if(ngBindsResult === ""){
-                                ngBindsResult = binds[i];
-                            }else{
-                                ngBindsResult += "+" +binds[i];
-                            }
-                        }
-                    }
-                    console.log("correct: " + ngBindsResult)
-                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsResult+ " |number:2'></p>";
+                console.log("TScorrect: " + newNgBinds)
+                var price = "<p class='form-control' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
+
+                //remove the row dataTable
+                var row = $(event.currentTarget).closest("tr");
+                $('#dashboardDatatable').dataTable().fnDeleteRow(row);
+                // console.log(row)
 
             };
 
@@ -614,27 +788,42 @@ $('#dashboardDatatable').DataTable({
             }
 
             $scope.remove = function(event){
-                // $(event.currentTarget.parentNode.parentNode).hide(500,function(){
+                var data  = $(event.currentTarget.parentNode.parentNode.innerHTML).slice(0,2);
+                var temp = JSON.parse(localStorage.getItem(data[0].innerHTML));
+                var table = $('#dashboardDatatable').DataTable();
+                table.row.add( {
+                        "description":  temp['item'],
+                        "quantity":  $.parseHTML(temp['quantityPurchase'])[0]['max'],
+                        "retail_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
+                        "action":   temp['action']
+                    } ).draw();
+                localStorage.removeItem(data[0].innerHTML);
+                
                 event.currentTarget.parentNode.parentNode.remove();
-
-                // })
+                
                 var thatTable = document.querySelectorAll('#cartTable > tbody > tr')
                 var numberOfRows = thatTable.length;
                 var ngBinds = "";
+                var ngBindsWithoutFormat="";
 
                 if(numberOfRows > 0){
                     for(var i=0; i < numberOfRows; i++){
                         if(ngBinds==""){
                             ngBinds += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
+                            ngBindsWithoutFormat += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind").split(" ")[0];
                         }else{
                             ngBinds += " + " + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
+                            ngBindsWithoutFormat += "+" + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
+                    var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
+                }else{
+                    var price = "<p class='form-control' style='color:green' ng-bind></p>";
                 }
-                console.log(ngBinds)    
-
+                // console.log("ngBinds: " + ngBinds)
+                // console.log("ngBindsWithoutFormat: "+ngBindsWithoutFormat)
+                //update total sales price
                 document.getElementById("totalSalesDiv").innerHTML="";
-                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBinds+ "'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
             }
 

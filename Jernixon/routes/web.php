@@ -38,6 +38,7 @@ Route::get('/', function(){
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/about', 'PagesController@showAboutPage')->name('home');
 // Route::get('salesAssistant', 'SalesAssistantController@dashboard')->name('SA.dashboard');
 // Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('salesAssistant.getItems');
 

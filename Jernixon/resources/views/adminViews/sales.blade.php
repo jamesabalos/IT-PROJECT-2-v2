@@ -101,6 +101,8 @@ ng-app="ourAngularJsApp"
             text-align: center;
         }
     }
+
+
 </style>
 <script>
     function printReceipt(){
@@ -188,6 +190,8 @@ ng-app="ourAngularJsApp"
         document.body.innerHTML = officialReceipt;
         window.print();
         document.body.innerHTML = restorePage;
+        location.reload();
+        // document.body.appendChild(restorePage);
         
     }
     function addItemToCart(button){
@@ -628,7 +632,9 @@ ng-app="ourAngularJsApp"
                         if(value.includes("item")){
                             var myItemJSON = JSON.parse(localStorage.getItem(key));            
                             
-                        
+                            ////////////////////
+                            $('#dashboardDatatable').DataTable().search(key).draw();
+                        //////////////////////
                              var updateTemp = $.parseHTML( myItemJSON.retailPrice );
                             updateTemp[0].innerHTML=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price
                             updateTemp[1].value=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price
@@ -677,7 +683,9 @@ ng-app="ourAngularJsApp"
 
                         }
                     }
-
+                        ////////////////////
+                        $('#dashboardDatatable').DataTable().search("").draw();
+                        //////////////////////
                     //initialize totalSales
                     document.getElementById("totalSalesDiv").innerHTML="";
                     if(totalSalesNgBinds === ""){
@@ -709,7 +717,7 @@ ng-app="ourAngularJsApp"
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);    
 
-                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)'' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 var temp1 = $compile(inputNumber)($scope);
                 // var newRow = thatTbody.insertRow(-1);
                 // angular.element( newRow.insertCell(-1) ).append(temp);
@@ -791,7 +799,30 @@ ng-app="ourAngularJsApp"
                 // alert("changing!!!");
                 // console.log( angular.element(event).attr('class') );
                 // console.log( event.currentTarget.getAttribute("class") );
-                console.log( event.currentTarget.attributes["ng-model"].value );
+
+                var item = JSON.parse(localStorage.getItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML));
+                console.log( ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model") )
+                var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",event.currentTarget.value);
+               //remove
+               localStorage.removeItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML);
+               //add again
+               var itemObject = {
+                    item: item['item'],
+                    retailPrice: item['retailPrice'],
+                    quantityPurchase: newQuantityPurchase[0].outerHTML,
+                    salesPrice: item['salesPrice'],
+                    removeButton: item['removeButton'],
+                    itemId: item['itemId'],
+                    purchasePrice: item['purchasePrice'],
+                    action: item['action'],
+                };
+
+                var jsonObject = JSON.stringify(itemObject);
+                localStorage.setItem(item['item'],jsonObject);
+    
+
+
+
                 var ngModelName = event.currentTarget.attributes["ng-model"].value;
                 // var oldTs = parseInt(document.getElementById("totalSales").innerText);
                 var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
@@ -836,12 +867,14 @@ ng-app="ourAngularJsApp"
                             ngBindsWithoutFormat += "+" + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
+                    var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
+                }else{
+                    var price = "<p class='form-control' style='color:green' ng-bind></p>";
                 }
                 // console.log("ngBinds: " + ngBinds)
                 // console.log("ngBindsWithoutFormat: "+ngBindsWithoutFormat)
                 //update total sales price
                 document.getElementById("totalSalesDiv").innerHTML="";
-                var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
             }
 

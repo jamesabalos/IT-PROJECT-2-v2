@@ -398,7 +398,7 @@ class AdminController extends Controller
         return $request->all();
 
     }
-    public function createReports(Request $request){
+    public function createReportSoldItems(Request $request){
   
         $data = DB::table('sales')
             ->join('products', 'products.product_id', '=', 'sales.product_id')
@@ -409,6 +409,12 @@ class AdminController extends Controller
             
         return Datatables::of($data)
             ->make(true);
+    }
+    public function createReportDamagedItems(Request $request){
+        //query
+    }
+    public function createReportLostItems(Request $request){
+        //query
     }
 
     public function getStockAdjustment(){

@@ -130,7 +130,9 @@ Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');
 Route::get('admin/reports/getReports', 'AdminController@getReports')->name('reports.getReports');
 Route::get('admin/reports/getDamagedItems', 'AdminController@getDamagedItems')->name('reports.getDamagedItems');
 Route::get('admin/reports/getLostItems', 'AdminController@getLostItems')->name('reports.getLostItems');
-Route::get('admin/reports/createReports', 'AdminController@createReports')->name('reports.createReports');
+Route::get('admin/reports/createReportSoldItems', 'AdminController@createReportSoldItems')->name('reports.createReportSoldItems');
+Route::get('admin/reports/createReportDamagedItems', 'AdminController@createReportDamagedItems')->name('reports.createReportDamagedItems');
+Route::get('admin/reports/createReportLostItems', 'AdminController@createReportLostItems')->name('reports.createReportLostItems');
 Route::get('admin/reports/validateDateRange', 'AdminController@validateDateRange')->name('reports.validateDateRange');
 
 

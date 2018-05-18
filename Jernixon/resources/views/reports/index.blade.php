@@ -86,7 +86,7 @@ class="active"
                             }
                         ],
                         "ajax":  {
-                            "url": "{{ route('reports.createReports') }}",
+                            "url": "{{ route('reports.createReportSoldItems') }}",
                             "data":{
                                 "dateFrom":formattedDateFrom,
                                 "dateTo":formattedDateTo
@@ -104,9 +104,80 @@ class="active"
                     
                     });
                 }else if(siOrDiOrLi === "di"){
-
+                    $('#damagedItemsTable').DataTable({
+                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        "destroy": true,
+                        "processing": true,
+                        "serverSide": true,
+                        "colReorder": true,  
+                        "pagingType": "full_numbers",
+                        dom: 'Blfrtip',
+                        "buttons": [
+                            {
+                                extend: 'collection',
+                                text: 'EXPORT',
+                                buttons: [
+                                    {extend: 'copy', title: 'Jernixon Motorparts - Damaged items Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'excel', title: 'Jernixon Motorparts - Damaged items Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'csv', title: 'Jernixon Motorparts - Damaged items Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'pdf', title: 'Jernixon Motorparts - Damaged items Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'print', title: 'Jernixon Motorparts - Damaged items Reports (From '+dateFrom+' to '+dateTo+')'}
+                                    
+                                    
+                                ]
+                            }
+                        ],
+                        "ajax":  {
+                            "url": "{{ route('reports.createReportDamagedItems') }}",
+                            "data":{
+                                "dateFrom":formattedDateFrom,
+                                "dateTo":formattedDateTo
+                            }
+                        },
+                        "columns": [
+                        {data: 'description'},
+                        {data: 'quantity'},
+                        {data: 'created_at'},
+                        ]
+                        
+                    });
                 }else{
-
+                    // $('#lostItemsTable').DataTable({
+                    //     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    //     "destroy": true,
+                    //     "processing": true,
+                    //     "serverSide": true,
+                    //     "colReorder": true,  
+                    //     "pagingType": "full_numbers",
+                    //     dom: 'Blfrtip',
+                    //     "buttons": [
+                    //         {
+                    //             extend: 'collection',
+                    //             text: 'EXPORT',
+                    //             buttons: [
+                    //                 {extend: 'copy', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
+                    //                 {extend: 'excel', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
+                    //                 {extend: 'csv', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
+                    //                 {extend: 'pdf', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
+                    //                 {extend: 'print', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'}
+                                    
+                    //             ]
+                    //         }
+                    //     ],
+                    // "ajax":  {
+                    //         "url": "{{ route('reports.createReportLostItems') }}",
+                    //         "data":{
+                    //             "dateFrom":formattedDateFrom,
+                    //             "dateTo":formattedDateTo
+                    //         }
+                    //     },
+                    //     "columns": [
+                    //     {data: 'description'},
+                    //     {data: 'quantity'},
+                    //     {data: 'created_at'},
+                    //     ]
+                        
+                    // });
                 }         
 
             },

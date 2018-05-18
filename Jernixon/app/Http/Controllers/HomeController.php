@@ -55,11 +55,19 @@ class HomeController extends Controller
     }
 
     public function searchItem($itemName){
-        $item = Product::where([['description','LIKE','%'.$itemName.'%'],['status', '=', 'available'],])
-            ->orderBy('description','asc')
-            ->limit(5)
-            ->get();
-        return $item;
+        // $item = Product::where([['description','LIKE','%'.$itemName.'%'],['status', '=', 'available'],])
+        //     ->orderBy('description','asc')
+        //     ->limit(5)
+        //     ->get();
+        // return $item;
+        $items = DB::table('products')
+        ->join('salable_items', 'products.product_id' , '=' , 'salable_items.product_id')        
+        ->select('salable_items.created_at', 'products.description', 'products.product_id', 'reorder_level', 'status','salable_items.quantity','salable_items.retail_price')
+        ->where([['description','LIKE','%'.$itemName.'%'],['status', '=', 'available'],])
+        ->orderBy('description','asc')  
+        ->limit(5)              
+        ->get();
+        return $items; 
     }
     public function getORNumber($ORNumber){
         $data = DB::table('sales')

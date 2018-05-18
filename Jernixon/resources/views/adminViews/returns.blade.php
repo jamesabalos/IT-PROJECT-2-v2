@@ -55,7 +55,7 @@ ng-app="ourAngularJsApp"
 
     }
 
-    function addRow(itemName){
+    function addRow(divElement){
         var items =[];
         var thatTbody = $("#inExchangeTbody tr td:first-child");
 
@@ -65,12 +65,12 @@ ng-app="ourAngularJsApp"
             // console.log(thatTbody[i].childNodes[0].value)
             // items[i] = thatTbody[i].childNodes[0].value;
         }     
-        if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
+        if( items.indexOf(divElement.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
             var thatTable = document.getElementById("inExchangeTbody");
             var newRow = thatTable.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = "<td><p>"+itemName+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +itemName+ "'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]' min='1' class='form-control' disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><p>"+divElement.firstChild.innerHTML+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +divElement.firstChild.innerHTML+ "'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' max='" +divElement.dataset.quantity+ "'class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]' min='1' value='" +divElement.dataset.price+ "'class='form-control' disabled></td>";
             newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
@@ -101,7 +101,7 @@ ng-app="ourAngularJsApp"
                     // newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control' onchange='toggleCheckbox(this)'></td>";
                     newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
                 } 
-                document.getElementById("Date").value = data[0].created_at;
+                // document.getElementById("Date").value = data[0].created_at;
                 document.getElementById("Customer").value = data[0].customer_name;
                 document.getElementById("returnCustomerName").value = data[0].customer_name;
               
@@ -149,7 +149,6 @@ ng-app="ourAngularJsApp"
                 url: 'searchItem/' + a.value,
                 dataType: "json",
                 success: function(data){
-                    //    console.log(data)
                     // <div>
                     //     <strong>Phi</strong>lippines
                     //     <input type="hidden" value="Philippines">
@@ -159,7 +158,10 @@ ng-app="ourAngularJsApp"
                     resultDiv.innerHTML = "";
                     for (var i = 0;  i< data.length; i++) {
                         var node = document.createElement("DIV");
-                        node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                        // node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                        node.setAttribute("onclick","addRow(this)")
+                        node.setAttribute("data-quantity",data[i].quantity)
+                        node.setAttribute("data-price",data[i].retail_price)
                         var pElement = document.createElement("P");
                         //add the price
                         //pElement.setAttribute("data-price" , data[i].) 

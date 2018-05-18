@@ -56,7 +56,7 @@ ng-app="ourAngularJsApp"
 
       }
 
-      function addRow(itemName){
+      function addRow(divElement){
           var items =[];
           var thatTbody = $("#inExchangeTbody tr td:first-child");
 
@@ -66,12 +66,12 @@ ng-app="ourAngularJsApp"
               // console.log(thatTbody[i].childNodes[0].value)
               // items[i] = thatTbody[i].childNodes[0].value;
           }     
-          if( items.indexOf(itemName) == -1 ){ //if there is not yet in the table
+          if( items.indexOf(divElement.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
               var thatTable = document.getElementById("inExchangeTbody");
               var newRow = thatTable.insertRow(-1);
-              newRow.insertCell(-1).innerHTML = "<td><p>"+itemName+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +itemName+ "'></td>";
-              newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' class='form-control'></td>";
-              newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]' min='1' class='form-control' disabled></td>";
+              newRow.insertCell(-1).innerHTML = "<td><p>"+divElement.firstChild.innerHTML+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +divElement.firstChild.innerHTML+ "'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' max='" +divElement.dataset.quantity+ "'class='form-control'></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]' min='1' value='" +divElement.dataset.price+ "'class='form-control' disabled></td>";
               newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
           }
@@ -100,9 +100,9 @@ ng-app="ourAngularJsApp"
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                       newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled></td>";
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                      newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control' onchange='toggleCheckbox(this)'></td>";
+                      newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
                   } 
-                  document.getElementById("Date").value = data[0].created_at;
+                //   document.getElementById("Date").value = data[0].created_at;
                   document.getElementById("Customer").value = data[0].customer_name;
                   document.getElementById("returnCustomerName").value = data[0].customer_name;
 
@@ -160,7 +160,9 @@ ng-app="ourAngularJsApp"
                       resultDiv.innerHTML = "";
                       for (var i = 0;  i< data.length; i++) {
                           var node = document.createElement("DIV");
-                          node.setAttribute("onclick","addRow(this.firstChild.innerHTML)")
+                          node.setAttribute("onclick","addRow(this)")
+                            node.setAttribute("data-quantity",data[i].quantity)
+                            node.setAttribute("data-price",data[i].retail_price)
                           var pElement = document.createElement("P");
                           //add the price
                           //pElement.setAttribute("data-price" , data[i].) 
@@ -244,6 +246,9 @@ ng-app="ourAngularJsApp"
       });
 
       $(document).ready(function(){
+        let today = new Date().toISOString().substr(0, 10);
+        document.querySelector("#today").value = today;
+
           $.ajaxSetup({
               headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -441,7 +446,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}
+                                    {{Form::date('Date','',['class'=>'form-control','value'=>'','id' =>'today'])}}
                                 </div>
                             </div>
                         </div>
@@ -515,18 +520,18 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Price</th>
-                                        {{-- <th class="text-left">Action</th> --}}
+                                        <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="inExchangeTbody">
                                 </tbody>
                             </table>
                         </div>
-                        {{-- <div class="autocomplete" style="width:100%;">
-                        <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
-                        <div id="searchResultDiv" class="searchResultDiv">
+                        <div class="autocomplete" style="width:100%;">
+                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
+                            <div id="searchResultDiv" class="searchResultDiv">
+                            </div>
                         </div>
-                        </div> --}}
                     </div>
                 </div>
                 <div class="row">

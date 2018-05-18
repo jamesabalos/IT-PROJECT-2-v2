@@ -83,6 +83,9 @@
     //         .delay(500)                        
     //         .hide(1500);
     // }
+    function hideNumberOfNotif(link){
+        link.removeAttribute("data-badge");
+    }
     function markAsRead(e){
 
         $.ajax({
@@ -141,7 +144,7 @@
 
             },
             error: function(data){
-                console.log("no notif")
+                console.log(data)
             }
         });
 
@@ -325,7 +328,7 @@
                     <div>
                         <ul class="nav navbar-nav navbar-right ">
                             <li class="dropdown">
-                                <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown">
+                                <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown" onclick="hideNumberOfNotif(this)">
                                     <i class="fa fa-bell"></i>
                                 </a>
                             </li>

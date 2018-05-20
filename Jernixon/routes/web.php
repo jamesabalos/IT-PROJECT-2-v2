@@ -56,6 +56,8 @@ Route::Post('salesAssistant/returns/createReturnItem', 'HomeController@createRet
 Route::get('salesAssistant/returns/getORNumber/{ORNumber}', 'HomeController@getORNumber');
 Route::get('salesAssistant/returns/getORNumberItems', 'HomeController@getORNumberItems')->name('salesAssistant.getORNumberItems');
 Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@gerReturnedItems');
+Route::Post('salesAssistant/returns/createReturnsFilter', 'HomeController@createReturnsFilter')->name('salesAssistant.createReturnsFilter');
+
 
 Route::get('salesAssistant/stockAdjustment', 'HomeController@stockAdjustment')->name('salesAssistant.stockAdjustment');
 Route::get('salesAssistant/stockAjustment/getStockAdjustment', 'HomeController@getStockAdjustment')->name('salesAssistant.getStockAdjustment');
@@ -114,6 +116,7 @@ Route::Post('admin/returns/createReturnItem', 'AdminController@createReturnItem'
 Route::get('admin/returns/getORNumber/{ORNumber}', 'AdminController@getORNumber');
 Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')->name('admin.getORNumberItems');
 Route::get('admin/returns/getReturnedItems', 'AdminController@gerReturnedItems')->name('admin.getReturnedItems');
+Route::Post('admin/returns/createReturnsFilter', 'AdminController@createReturnsFilter')->name('returns.createReturnsFilter');
 
 Route::get('admin/physicalCount', 'AdminController@physicalCount')->name('admin.physicalCount');
 Route::get('admin/physicalCount/getPhysicalCount', 'AdminController@getPhysicalCount')->name('admin.getPhysicalCount');

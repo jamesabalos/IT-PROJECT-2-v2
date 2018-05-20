@@ -127,6 +127,26 @@ class HomeController extends Controller
         return $request->all();
 
     }
+    public function createReturnsFilter(Request $request){
+        $data = DB::table('returns')
+        ->select('or_number', 'created_at')
+        ->where('returns.created_at','>',$request->dateFrom)
+        ->where('returns.created_at','<',$request->dateTo)
+        ->orderBy('created_at', 'desc')
+        ->distinct();
+    return Datatables::of($data)
+        ->addColumn('action',function($data){
+            return "
+            <a href = '#viewReturn' data-toggle='modal' >
+                <button onclick='getItems(this)' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
+            </a>
+
+            ";
+
+
+        })
+        ->make(true);
+    }
     public function getReturns(){
         $data = DB::table('returns')
             ->select('or_number', 'created_at')

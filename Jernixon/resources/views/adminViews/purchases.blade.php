@@ -380,9 +380,9 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <a href = "#purchase" data-toggle="modal">
+                    <h3 href = "#purchase" data-toggle="modal">
                         <button type="button" class="btn btn-success"><i class=" fa fa-plus"></i> Add Purchase Order</button>
-                    </a>
+                    </h3>
                     <div class="hidden alert-danger text-center">
                     </div>
                     <div class="row">

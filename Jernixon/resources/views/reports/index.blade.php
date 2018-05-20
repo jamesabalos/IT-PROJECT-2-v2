@@ -135,7 +135,7 @@ class="active"
                             }
                         },
                         "columns": [
-                        {data: 'description'},
+                        {data: 'description',name: 'products.description'},
                         {data: 'quantity'},
                         {data: 'created_at'},
                         ]
@@ -172,7 +172,7 @@ class="active"
                             }
                         },
                         "columns": [
-                        {data: 'description'},
+                        {data: 'description',name: 'products.description'},
                         {data: 'quantity'},
                         {data: 'created_at'},
                         ]
@@ -215,21 +215,6 @@ class="active"
         "serverSide": true,
         "colReorder": true,  
         "pagingType": "full_numbers",
-        // dom: 'Blfrtip',
-        // "buttons": [
-        //     {
-        //         extend: 'collection',
-        //         text: 'EXPORT',
-        //         buttons: [
-        //             {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'print', title: 'Jernixon Motorparts - Reports'}
-                    
-        //         ]
-        //     }
-        // ],
         "ajax":  "{{ route('reports.getReports') }}",
         "columns": [
           {data: 'or_number'},
@@ -248,29 +233,11 @@ class="active"
         "serverSide": true,
         "colReorder": true,  
         "pagingType": "full_numbers",
-        // dom: 'Blfrtip',
-        // "buttons": [
-        //     {
-        //         extend: 'collection',
-        //         text: 'EXPORT',
-        //         buttons: [
-        //             {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'print', title: 'Jernixon Motorparts - Reports'}
-                    
-        //         ]
-        //     }
-        // ],
         "ajax":  "{{ route('reports.getDamagedItems') }}",
         "columns": [
-          {data: 'description'},
+          {data: 'description',name: 'products.description'},
           {data: 'quantity'},
           {data: 'created_at'},
-        //   {data: 'quantity'},
-        //   {data: 'price'},
-        //   {data: 'created_at'},
         ]
         
     });
@@ -282,29 +249,11 @@ class="active"
         "serverSide": true,
         "colReorder": true,  
         "pagingType": "full_numbers",
-        // dom: 'Blfrtip',
-        // "buttons": [
-        //     {
-        //         extend: 'collection',
-        //         text: 'EXPORT',
-        //         buttons: [
-        //             {extend: 'copy', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'excel', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'csv', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'pdf', title: 'Jernixon Motorparts - Reports'},
-        //             {extend: 'print', title: 'Jernixon Motorparts - Reports'}
-                    
-        //         ]
-        //     }
-        // ],
         "ajax":  "{{ route('reports.getLostItems') }}",
         "columns": [
-          {data: 'description'},
+          {data: 'description',name: 'products.description'},
           {data: 'quantity'},
           {data: 'created_at'},
-        //   {data: 'quantity'},
-        //   {data: 'price'},
-        //   {data: 'created_at'},
         ]
         
     });

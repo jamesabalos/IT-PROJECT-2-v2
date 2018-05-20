@@ -152,6 +152,15 @@ class HomeController extends Controller
         return Datatables::of($data)
             ->make(true);
     }
+    public function createStockAdjustmentFilter(Request $request){
+        $data = DB::table('stock_adjustments')
+        ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
+        ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at')
+        ->where('stock_adjustments.created_at','>',$request->dateFrom)
+        ->where('stock_adjustments.created_at','<',$request->dateTo);
+    return Datatables::of($data)
+        ->make(true);
+    }
     public function createStockAdjustment(Request $request){
         $this->validate($request,[
             // 'productId' => 'required',
@@ -376,6 +385,21 @@ class HomeController extends Controller
             return "unsuccessful";
         }
 
+
+    }
+    public function validateDateRange(Request $request){
+        $this->validate($request,[
+            'dateFrom' => 'required',
+            'dateTo' => 'required',
+        ]);
+
+        if($request->dateFrom > $request->dateTo){
+            return response()->json([
+                'errors' => ['The date range must be correct.']
+            ],422);
+        }
+
+        return $request->all();
 
     }
 

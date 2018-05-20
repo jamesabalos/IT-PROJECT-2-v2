@@ -106,6 +106,105 @@ class="active"
           });
 
       }
+      function createReport(button){
+        // var dateFrom = document.getElementById("from").value;
+        // var dateTo = document.getElementById("to").value;
+        var dateFrom = button.parentNode.children[1].value;
+        var dateTo = button.parentNode.children[3].value;
+        var newDateFrom = new Date(dateFrom);
+        newDateFrom.setDate(newDateFrom.getDate() - 1);
+        
+        var ddf = newDateFrom.getDate();
+        var mmf = newDateFrom.getMonth() + 1;
+        var yf = newDateFrom.getFullYear();
+
+        var newDateTo = new Date(dateTo);
+        newDateTo.setDate(newDateTo.getDate() + 1);
+
+        var ddt = newDateTo.getDate();
+        var mmt = newDateTo.getMonth() + 1;
+        var yt = newDateTo.getFullYear();
+
+        var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
+        var formattedDateTo = yt + '-' + mmt + '-' + ddt;
+        console.log(formattedDateFrom);
+        console.log(formattedDateTo);
+        $.ajax({
+            type:'GET',
+            url: "{{route('salesAssistant.validateDateRange')}}",
+            data: {
+                'dateFrom':dateFrom,
+                'dateTo':dateTo
+            },
+            success:function(data){
+                $(button.parentNode.parentNode.previousElementSibling).html("");    
+
+          $('#stockAdjustmentDataTable').DataTable({
+              "destroy": true,
+              "processing": true,
+              "serverSide": true,
+              "colReorder": true,  
+              "pagingType": "full_numbers",
+              "ajax":  {
+                        "url": "{{ route('salesAssistant.createStockAdjustmentFilter') }}",
+                        "data":{
+                            "dateFrom":formattedDateFrom,
+                            "dateTo":formattedDateTo
+                        }
+                    },
+              dom: 'Bfrtip',
+              "buttons": [
+                            {
+                                extend: 'collection',
+                                text: 'EXPORT',
+                                buttons: [
+                                    {extend: 'copy', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'excel', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'csv', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'pdf', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'print', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'}
+                                    
+                                ]
+                            }
+                        ],
+
+              "columns": [
+                  {data: 'employee_name'},
+                  {data: 'description', name: 'products.description'},
+                  {data: 'quantity'},
+                  {data: 'status'},
+                  {data: 'created_at'},
+              ]
+          });
+                    
+
+            },
+            error:function(data){
+                var response = data.responseJSON;
+                console.log(button.parentNode.parentNode.previousElementSibling);
+                $(button.parentNode.parentNode.previousElementSibling).hide(500);
+                $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
+                $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
+                    $(button.parentNode.parentNode.previousElementSibling).html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });                
+                });
+                
+                // $("#errorDivReport").removeClass("hidden").addClass("alert-danger text-center");
+                // $("#errorDivReport").html(function(){
+                //           var addedHtml="";
+                //           for (var key in response.errors) {
+                //               addedHtml += "<p>"+response.errors[key]+"</p>";
+                //           }
+                //           return addedHtml;
+                //       });
+            }
+        });
+    }
 
       $(document).ready(function(){
           let today = new Date().toISOString().substr(0, 10);
@@ -120,35 +219,6 @@ class="active"
               //"autoWidth": true,
               "pagingType": "full_numbers",
               "ajax":  "{{ route('salesAssistant.getStockAdjustment') }}",
-              dom: 'Bfrtip',
-              // buttons: ['excel', 'pdf','print'], 
-
-              // buttons:[{
-              //             extend: 'excel',
-              //             text: 'excel',
-              //             action: function (e, dt, node, config) {
-              //                     exportExtension = 'Excel';
-
-              //                     // $.fn.DataTable.ext.buttons.excelHtml5.action(e, dt, node, config);
-              //                     $.fn.DataTable.ext.buttons.excelHtml5.action.call( e, dt, node, config);
-              //                 }
-
-              //             },'print'],
-
-              "buttons": [
-                  {
-                      extend: 'collection',
-                      text: 'EXPORT',
-                      buttons: [
-                          'copy',
-                          'excel',
-                          'csv',
-                          'pdf',
-                          'print'
-                      ]
-                  }
-              ],
-
               "columns": [
                   {data: 'employee_name'},
                   {data: 'description'},
@@ -251,6 +321,17 @@ class="active"
                     <a href = "#adjustment" data-toggle="modal">
                         <button type="button" class="btn btn-success"><i class="fa fa-adjust"></i> Stock Adjustment</button>
                     </a>
+                    <div class="hidden alert-danger text-center">
+                    </div>
+                    <div class="row">
+                        <p class = "col-md-8">
+                            <label for="from">From</label>
+                            <input type="date">
+                            <label for="to">to</label>
+                            <input type="date">
+                            <button onclick="createReport(this)">Filter</button>
+                        </p>  
+                    </div>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="stockAdjustmentDataTable">
                             <thead>

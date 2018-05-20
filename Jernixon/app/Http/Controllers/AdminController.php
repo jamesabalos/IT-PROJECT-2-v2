@@ -221,7 +221,26 @@ class AdminController extends Controller
             return "unsuccessful";
         }
     }
+public function createPurchasesFilter(Request $request){
+    $data = DB::table('purchases')
+            ->select('po_id', 'created_at')
+            ->where('created_at','>',$request->dateFrom)
+            ->where('created_at','<',$request->dateTo)
+            ->orderBy('created_at', 'desc')
+            ->distinct();
+        return Datatables::of($data)
+            ->addColumn('action',function($data){
+                return "
+                <a href = '#purchasesModal' data-toggle='modal' >
+                    <button onclick='getItems(this)'class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
+                </a>
 
+                ";
+
+
+            })
+            ->make(true);
+}
 
     public function getPurchases(){
         $data = DB::table('purchases')
@@ -411,10 +430,22 @@ class AdminController extends Controller
             ->make(true);
     }
     public function createReportDamagedItems(Request $request){
-        //query
+        $data = DB::table('damaged_items')
+        ->join('products', 'products.product_id', '=', 'damaged_items.product_id')
+        ->select('description', 'quantity', 'damaged_items.created_at')
+        ->where('damaged_items.created_at','>',$request->dateFrom)
+        ->where('damaged_items.created_at','<',$request->dateTo);
+    return Datatables::of($data)
+        ->make(true);
     }
     public function createReportLostItems(Request $request){
-        //query
+        $data = DB::table('lost_items')
+        ->join('products', 'products.product_id', '=', 'lost_items.product_id')
+        ->select('description', 'quantity', 'lost_items.created_at')
+        ->where('lost_items.created_at','>',$request->dateFrom)
+        ->where('lost_items.created_at','<',$request->dateTo);
+    return Datatables::of($data)
+        ->make(true);
     }
 
     public function getStockAdjustment(){
@@ -424,6 +455,15 @@ class AdminController extends Controller
             ->latest();
         return Datatables::of($data)
             ->make(true);
+    }
+    public function createStockAdjustmentFilter(Request $request){
+        $data = DB::table('stock_adjustments')
+        ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
+        ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at')
+        ->where('stock_adjustments.created_at','>',$request->dateFrom)
+        ->where('stock_adjustments.created_at','<',$request->dateTo);
+    return Datatables::of($data)
+        ->make(true);
     }
 
     public function createStockAdjustment(Request $request){

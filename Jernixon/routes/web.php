@@ -57,6 +57,7 @@ Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController
 
 Route::get('salesAssistant/stockAdjustment', 'HomeController@stockAdjustment')->name('salesAssistant.stockAdjustment');
 Route::get('salesAssistant/stockAjustment/getStockAdjustment', 'HomeController@getStockAdjustment')->name('salesAssistant.getStockAdjustment');
+Route::get('salesAssistant/stockAjustment/createStockAdjustmentFilter', 'HomeController@createStockAdjustmentFilter')->name('salesAssistant.createStockAdjustmentFilter');
 Route::Post('salesAssistant/stockAjustment/createStockAdjustment', 'HomeController@createStockAdjustment')->name('salesAssistant.createStockAdjustment');
 
 Route::get('salesAssistant/searchItem/{itemName}', 'HomeController@searchItem');
@@ -69,6 +70,7 @@ Route::Post('salesAssistant/physicalCount/submitPhysicalCount', 'HomeController@
 
 Route::Post('salesAssistant/changePassword','HomeController@changePassword')->name('salesAssistant.changePassword');
 
+Route::get('salesAssistant/validateDateRange', 'HomeController@validateDateRange')->name('salesAssistant.validateDateRange');
 // Route::get('salesAssistant/physicalCount/getInputValue', 'PhysicalCountController@getPhysicalCount')->name('admin.getPhysicalCount');
 // Route::get('physicalCount/getInputValue', 'PhysicalCountController@getPhysicalCount')->name('admin.getPhysicalCount');
 
@@ -99,6 +101,7 @@ Route::Post('admin/sales/createSales', 'AdminController@createSales')->name('adm
 Route::get('admin/purchases', 'AdminController@purchases')->name('admin.purchases');
 Route::get('admin/purchases/getPurchases', 'AdminController@getPurchases')->name('purchases.getPurchases');
 Route::Post('admin/purchaes/createPurchase', 'AdminController@createPurchases')->name('admin.createPurchases');
+Route::get('admin/purchaes/createPurchasesFilter', 'AdminController@createPurchasesFilter')->name('purchases.createPurchasesFilter');
 Route::Get('admin/purchases/getPurchaseOrder/{poid}', 'AdminController@getPurchaseOrder');
 
 Route::get('admin/searchItem/{itemName}', 'AdminController@searchItem');
@@ -147,3 +150,4 @@ Route::Post('admin/employees/resetPassword', 'AdminController@employeeResetPassw
 Route::get('admin/stockAjustment', 'AdminController@stockAdjustment')->name('admin.stockAdjustment');
 Route::get('admin/stockAjustment/getStockAdjustment', 'AdminController@getStockAdjustment')->name('stockAdjustment.getStockAdjustment');
 Route::Post('admin/stockAjustment/createStockAdjustment', 'AdminController@createStockAdjustment')->name('admin.createStockAdjustment');
+Route::get('admin/stockAjustment/createStockAdjustmentFilter', 'AdminController@createStockAdjustmentFilter')->name('stockAdjustment.createStockAdjustmentFilter');

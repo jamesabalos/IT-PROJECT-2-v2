@@ -326,19 +326,25 @@ class="active"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <h3 href = "#adjustment" data-toggle="modal">
+
+                  <p>
+                    <a href = "#adjustment" data-toggle="modal">
                         <button type="button" class="btn btn-success"><i class="fa fa-adjust"></i> Stock Adjustment</button>
-                    </h3>
+                    </a>
+
+                  </p>
+
                     <div class="hidden alert-danger text-center">
                     </div>
+
                     <div class="row">
-                        <p class = "col-md-8">
+                        <div class = "col-md-8">
                             <label for="from">From</label>
                             <input type="date">
                             <label for="to">to</label>
                             <input type="date">
                             <button onclick="createReport(this)">Filter</button>
-                        </p>  
+                        </div>  
                     </div>
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="stockAdjustmentDataTable">

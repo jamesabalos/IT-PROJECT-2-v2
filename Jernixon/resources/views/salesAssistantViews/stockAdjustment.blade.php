@@ -49,7 +49,7 @@ class="active"
 
       }
 
-      function addRow(button){
+      function addRow(divElement){
           var items =[];
           var thatTbody = $("#stockTable tr td:first-child");
 
@@ -57,14 +57,14 @@ class="active"
               items[i] = thatTbody[i].innerHTML;
           }        
 
-          if( items.indexOf(button.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
+          if( items.indexOf(divElement.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
               var thatTable = document.getElementById("stockTable");
               var newRow = thatTable.insertRow(-1);
               // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
-              newRow.insertCell(-1).innerHTML = "<td>"+button.firstChild.innerHTML+ "</td>";
-              newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' class='form-control' ></td>";
+              newRow.insertCell(-1).innerHTML = "<td>"+divElement.firstChild.innerHTML+ "</td>";
+              newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
               newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
-              newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+button.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+button.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+              newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
           }
 
@@ -95,6 +95,7 @@ class="active"
                       var node = document.createElement("DIV");
                       node.setAttribute("id",data[i].product_id)
                       node.setAttribute("onclick","addRow(this)")
+                      node.setAttribute("data-quantity",data[i].quantity)
                       var pElement = document.createElement("P");
                       var textNode = document.createTextNode(data[i].description);
                       pElement.appendChild(textNode);

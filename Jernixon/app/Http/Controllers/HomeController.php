@@ -402,6 +402,56 @@ class HomeController extends Controller
         return $request->all();
 
     }
+    public function getNotification(){
+        $data = [];
+        $products = DB::table('products')
+            ->select('product_id','reorder_level')
+            ->where('status', '=', 'available')
+            ->get();
+
+        $arrayCount = count($products);
+
+        for($i = 0;$i<$arrayCount;$i++){
+
+            $sales = DB::table('salable_items')
+                ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
+                ->select('products.product_id as product_id', 'description', 'salable_items.quantity as quantity')
+                ->where('products.product_id' , '=' , $products[$i]->product_id)
+                ->where('salable_items.quantity', '<', $products[$i]->reorder_level)
+                // ->where('salable_items.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
+                // ->where('salable_items.created_at','<=', DB::raw('NOW()'))
+                ->first();
+                // ->get();
+
+            // $arrayCount1 = count($sales);
+            // for($i = 0;$i<$arrayCount1;$i++){
+            if($sales){
+                array_push($data, ["reorder", $sales->product_id, $sales->description, $sales->quantity, 'date'=>date('Y-m-d H:i:s')]);
+            }
+            // }
+
+        }
+        $stockAdjustment = DB::table('stock_adjustments')
+            ->join('products', 'products.product_id' , '=' , 'stock_adjustments.product_id')
+            ->select('products.product_id as product_id', 'description', 'stock_adjustments.quantity as quantity', 'stock_adjustments.created_at as date', 'stock_adjustments.status as status', 'stock_adjustments.employee_name as name','notif_status')
+			->where('notif_status','=','not_yet_read')
+            ->where('stock_adjustments.created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
+            ->where('stock_adjustments.created_at','<=', DB::raw('NOW()'))
+            ->get();
+
+        $arrayCount2 = count($stockAdjustment);
+        for($i = 0;$i<$arrayCount2;$i++){
+            array_push($data, ["stock_adjustment", $stockAdjustment[$i]->product_id, $stockAdjustment[$i]->description, $stockAdjustment[$i]->quantity, 'date'=>$stockAdjustment[$i]->date,  $stockAdjustment[$i]->status, $stockAdjustment[$i]->name, $stockAdjustment[$i]->notif_status]);
+        }
+
+
+        foreach ($data as $key => $row){
+            $date[$key] = $row['date'];
+            // $edition[$key] = $row['edition'];
+        }
+        array_multisort($date, SORT_DESC, $data);
+        return $data;
+    }
 
 
 }

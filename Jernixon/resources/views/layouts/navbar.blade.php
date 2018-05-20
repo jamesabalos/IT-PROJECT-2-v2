@@ -111,7 +111,7 @@
         $.ajax({
                 method: 'get',
                 //url: 'items/' + document.getElementById("inputItem").value,
-                url:"{{ route('admin.notification') }}",
+                url: ( '<?php echo str_contains(request()->path(),'admin') ?>' === 1) ? "{{ route('admin.notification') }}" : "{{ route('salesAssistant.notification') }}",
                 
                 success: function(data){
                     notifications = data;

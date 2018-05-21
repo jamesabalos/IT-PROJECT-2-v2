@@ -6,8 +6,8 @@ class="active"
 @endsection
 
 @section('headScript')
-<link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
-<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
 @endsection
 
 @extends('inc.headScripts')

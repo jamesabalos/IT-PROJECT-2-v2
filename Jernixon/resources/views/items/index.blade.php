@@ -8,12 +8,6 @@ class="active"
 @section('headScript')
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
-<!--AngularJs-->
-{{--  <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>  --}}
-
-<script src="{{asset('assets/js/angularJs.js')}}"></script>
-<script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
-
 @endsection
 
 @extends('inc.headScripts')
@@ -71,7 +65,7 @@ class="active"
                         </div>      
                         </div>  --}}
                         <div class="content table-responsive table-full-width">
-                            <table id="tableItems" class="table table-bordered table-striped" >
+                            <table id="tableItems" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
@@ -81,7 +75,7 @@ class="active"
                                         <th class="text-left">Reorder Level</th>
                                         <!--th>Created At</th>
                                         <th>Updated At</th-->
-                                        <th class="text-left">Action</th>
+                                        <th class="text-left" style="width: 150px">Action</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -285,16 +279,20 @@ class="active"
 
             "columns": [
             // {data: 'product_id'},
-            {data: 'description', name: 'products.description'},
-                                   {data: 'quantity', name: 'salable_items.quantity'},
-                                   {data: 'wholesale_price', name: 'salable_items.wholesale_price'},
-                                   {data: 'retail_price', name: 'salable_items.retail_price'},
-                                   {data: 'reorder_level'},
-                                   // {data: 'created_at'},
-                                   // {data: 'updated_at'},
-                                   {data: 'action'},
-                                   ]
-                                   });
+            {data: 'description', 
+            name: 'products.description'},
+            {data: 'quantity', 
+            name: 'salable_items.quantity'},
+            {data: 'wholesale_price', 
+            name: 'salable_items.wholesale_price'},
+            {data: 'retail_price', 
+            name: 'salable_items.retail_price'},
+            {data: 'reorder_level'},
+            // {data: 'created_at'},
+            // {data: 'updated_at'},
+            {data: 'action'},
+                        ]
+                        });
 
 
         $('#formAddNewItem').on('submit',function(e){

@@ -1194,6 +1194,7 @@ fieldset[disabled] .btn-neutral.active {
 .table > tfoot > tr > td {
     padding: 12px 8px;
     vertical-align: middle;
+    font-size: 14px;
 }
 
 .table > thead > tr > th {

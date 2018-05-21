@@ -7,7 +7,12 @@ class="active"
 
 @section('headScript')
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+<!--AngularJs-->
+{{--  <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>  --}}
 
+<script src="{{asset('assets/js/angularJs.js')}}"></script>
+<script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
 @endsection
 
 @extends('inc.headScripts')
@@ -676,11 +681,7 @@ class="active"
 
 
 {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>  --}}
-<script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-
-
-
-
+<script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>
 @endsection

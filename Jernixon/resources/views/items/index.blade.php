@@ -65,17 +65,17 @@ class="active"
                         </div>      
                         </div>  --}}
                         <div class="content table-responsive table-full-width">
-                            <table id="tableItems" class="table table-bordered table-striped">
+                            <table id="tableItems" class="table table-bordered table-striped" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
-                                        <th class="text-left">Purchase Price</th>
-                                        <th class="text-left">Selling Price</th>
-                                        <th class="text-left">Reorder Level</th>
+                                        <th class="text-left" style="width: 5%">Purchase Price</th>
+                                        <th class="text-left" style="width: 5%">Selling Price</th>
+                                        <th class="text-left" style="width: 5%">Reorder Level</th>
                                         <!--th>Created At</th>
                                         <th>Updated At</th-->
-                                        <th class="text-left" style="width: 150px">Action</th>
+                                        <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
                             </table>

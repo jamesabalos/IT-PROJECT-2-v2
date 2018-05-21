@@ -13,6 +13,7 @@ class="active"
 
 <script src="{{asset('assets/js/angularJs.js')}}"></script>
 <script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
+
 @endsection
 
 @extends('inc.headScripts')

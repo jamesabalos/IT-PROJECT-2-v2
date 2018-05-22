@@ -451,9 +451,11 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
+                  <p>
                     <a href = "#return" data-toggle="modal">
                         <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
                     </a>
+                  </p>
                     <div class="hidden alert-danger text-center">
                     </div>
                     <div class="row">

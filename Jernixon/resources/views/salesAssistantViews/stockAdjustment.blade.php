@@ -61,7 +61,7 @@ class="active"
               var thatTable = document.getElementById("stockTable");
               var newRow = thatTable.insertRow(-1);
               // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
-              newRow.insertCell(-1).innerHTML = "<td>"+divElement.firstChild.innerHTML+ "</td>";
+              newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='itemName[]' value='" +divElement.firstChild.innerHTML+ "'>"+divElement.firstChild.innerHTML+ "</td>";
               newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
               newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
               newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
@@ -319,9 +319,11 @@ class="active"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
+                  <p>
                     <a href = "#adjustment" data-toggle="modal">
                         <button type="button" class="btn btn-success"><i class="fa fa-adjust"></i> Stock Adjustment</button>
                     </a>
+                  </p>
                     <div class="hidden alert-danger text-center">
                     </div>
                     <div class="row">

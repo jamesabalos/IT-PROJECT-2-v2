@@ -617,7 +617,7 @@ class="active"
 </div>
 
 <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-    <div class = "modal-dialog">
+    <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
                 <div class="modal-header">
                         <div id="errorDivEditItem" class="hidden">

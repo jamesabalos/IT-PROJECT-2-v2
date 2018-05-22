@@ -12,6 +12,7 @@ use App\Physical_count;
 use Datatables;
 use DB;
 use Hash;
+use App\Notifications\ReorderNotification;
 class AdminController extends Controller
 {
     /**
@@ -137,6 +138,20 @@ class AdminController extends Controller
                 DB::table('salable_items')
                     ->where('product_id', $request->productIds[$i])
                     ->decrement('quantity', $request->quantity[$i]);
+                $da= DB::table('products')->join('salable_items','products.product_id','=','salable_items.product_id')->select('description','quantity')->where([['status','=','available'],['products.product_id','=', $request->productIds[$i]],])->whereColumn('quantity','<=','reorder_level')->first();
+                
+                if(!empty($da)){
+                    $admin = Admin::all();
+                    foreach($admin as $admins){
+                        $admins->notify(new ReorderNotification($da));
+                    };   
+
+                    $sales = User::all();
+                    foreach($sales as $salesassistant){
+                        $salesassistant->notify(new ReorderNotification($da));
+                    };  
+
+                }
             }
             return "successful";
         }else{

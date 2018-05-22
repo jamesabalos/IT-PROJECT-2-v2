@@ -39,6 +39,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/about', 'PagesController@showAboutPage')->name('home');
+Route::get('markAsRead/{id}','NotificationController@MarkAsRead')->name('markAsRead');
 // Route::get('salesAssistant', 'SalesAssistantController@dashboard')->name('SA.dashboard');
 // Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('salesAssistant.getItems');
 Route::get('salesAssistant/notification','HomeController@getNotification')->name('salesAssistant.notification');

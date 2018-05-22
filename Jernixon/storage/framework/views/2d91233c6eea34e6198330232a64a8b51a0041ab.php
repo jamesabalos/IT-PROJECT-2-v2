@@ -1,37 +1,36 @@
-@extends('layouts.navbar')
-@section('stockAdjustment_link')
+<?php $__env->startSection('stockAdjustment_link'); ?>
 class="active"
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('linkName')
+<?php $__env->startSection('linkName'); ?>
 <div class="alert alert-success hidden" id="successDiv">
 </div>
 <h3><i class="fa fa-adjust" style="margin-right: 10px"></i> Stock Adjustment</h3>
-@endsection
+<?php $__env->stopSection(); ?>
 
 
-@section('headScript')
+<?php $__env->startSection('headScript'); ?>
 <!--jquery-->
-<script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
-{{--  plugin DataTable  --}}
-<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-{{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/ comment>  --}}
+<script src="<?php echo e(asset('assets/js/jquery-1.12.4.js')); ?>" type="text/javascript"></script>
 
-<link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<script src="<?php echo e(asset('assets/js/jquery.dataTables.min.js')); ?>"></script>
 
-{{--  <script src="{{asset('assets/js/DataTables/dataTables.js')}}"></script comment>  --}}
-    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
-        {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
-         <script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
-         {{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/jszip.min.js')}}"></script>
-         {{--  pdf    --}}
-             <script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
-    {{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
-      <script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
-      <script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
-      <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
+
+<link href="<?php echo e(asset('assets/css/datatables.min.css')); ?>" rel="stylesheet"/>
+
+
+    <link href="<?php echo e(asset('assets/css/buttons.dataTables.min.css')); ?>" rel="stylesheet"/>
+        
+         <script src="<?php echo e(asset('assets/js/bbccc/dataTables.buttons.min.js')); ?>"></script>
+         <script src="<?php echo e(asset('assets/js/buttons.html5.min.js')); ?>"></script>
+         
+         <script src="<?php echo e(asset('assets/js/jszip.min.js')); ?>"></script>
+         
+             <script src="<?php echo e(asset('assets/js/pdfmake.min.js')); ?>"></script>
+    
+      <script src="<?php echo e(asset('assets/js/buttons.print.min.js')); ?>"></script>
+      <script src="<?php echo e(asset('assets/js/vfs_fonts.js')); ?>"></script>
+      <script src="<?php echo e(asset('assets/js/buttons.flash.min.js')); ?>"></script>
 
 
       <script>
@@ -134,7 +133,7 @@ class="active"
         console.log(formattedDateTo);
         $.ajax({
             type:'GET',
-            url: "{{route('reports.validateDateRange')}}",
+            url: "<?php echo e(route('reports.validateDateRange')); ?>",
             data: {
                 'dateFrom':dateFrom,
                 'dateTo':dateTo
@@ -149,7 +148,7 @@ class="active"
               "colReorder": true,  
               "pagingType": "full_numbers",
               "ajax":  {
-                        "url": "{{ route('stockAdjustment.createStockAdjustmentFilter') }}",
+                        "url": "<?php echo e(route('stockAdjustment.createStockAdjustmentFilter')); ?>",
                         "data":{
                             "dateFrom":formattedDateFrom,
                             "dateTo":formattedDateTo
@@ -221,7 +220,7 @@ class="active"
               "colReorder": true,  
               //"autoWidth": true,
               "pagingType": "full_numbers",
-              "ajax":  "{{ route('stockAdjustment.getStockAdjustment') }}",
+              "ajax":  "<?php echo e(route('stockAdjustment.getStockAdjustment')); ?>",
               "columns": [
                   {data: 'employee_name'},
                   {data: 'description', name: 'products.description'},
@@ -237,7 +236,7 @@ class="active"
 
               $.ajax({
                   type:'POST',
-                  url: "{{route('admin.createStockAdjustment')}}",
+                  url: "<?php echo e(route('admin.createStockAdjustment')); ?>",
                   data: data,
 
                   success:function(data){
@@ -317,10 +316,10 @@ class="active"
     }
 </style>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
 
-@section('right')
+<?php $__env->startSection('right'); ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -367,14 +366,15 @@ class="active"
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('modals')
+<?php $__env->startSection('modals'); ?>
 <div id="adjustment" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
 
-            {!! Form::open(['method'=>'post','id'=>'formAdjustment']) !!}
+            <?php echo Form::open(['method'=>'post','id'=>'formAdjustment']); ?>
+
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -389,17 +389,19 @@ class="active"
                         </strong>
                     </div>
                     <div class="panel-body">
-                        <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" id="_token" value="<?php echo e(csrf_token()); ?>">
 
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{Form::label('Date', 'Date:')}}
+                                    <?php echo e(Form::label('Date', 'Date:')); ?>
+
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::date('Date','',['id'=>'today', 'class'=>'form-control','value'=>''])}}
+                                    <?php echo e(Form::date('Date','',['id'=>'today', 'class'=>'form-control','value'=>''])); ?>
+
                                 </div>
-                                <input type="hidden" name="authName" value="{{ Auth::user()->name }}">
+                                <input type="hidden" name="authName" value="<?php echo e(Auth::user()->name); ?>">
                             </div>
                         </div>
                     </div>
@@ -448,17 +450,19 @@ class="active"
                     </div>
                 </div>
             </div>
-            {!! Form::close() !!}
+            <?php echo Form::close(); ?>
+
 
         </div>
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('js_link')
+<?php $__env->startSection('js_link'); ?>
 
-<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/bootstrap.min.js')); ?>"></script>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.navbar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

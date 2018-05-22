@@ -10,7 +10,13 @@ use Auth;
 class NotificationController extends Controller
 {
     public function MarkAsRead($id){
-		$user = Auth::guard('adminGuard')->user();
+    	if(Auth::guard('adminGuard')->check()){
+    		$user = Auth::guard('adminGuard')->user();
+    	}
+    	elseif(Auth::guard('web')->check()){
+    		$user = Auth::user();
+    	}
+		
 		$user->unreadNotifications->where('id','=',$id)->markAsRead();
 		return back();      
      

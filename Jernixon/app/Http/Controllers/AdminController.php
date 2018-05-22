@@ -13,6 +13,7 @@ use Datatables;
 use DB;
 use Hash;
 use App\Notifications\ReorderNotification;
+use App\Notifications\StockAdjustmentNotification;
 class AdminController extends Controller
 {
     /**
@@ -138,6 +139,7 @@ class AdminController extends Controller
                 DB::table('salable_items')
                     ->where('product_id', $request->productIds[$i])
                     ->decrement('quantity', $request->quantity[$i]);
+
                 $da= DB::table('products')->join('salable_items','products.product_id','=','salable_items.product_id')->select('description','quantity')->where([['status','=','available'],['products.product_id','=', $request->productIds[$i]],])->whereColumn('quantity','<=','reorder_level')->first();
                 
                 if(!empty($da)){
@@ -497,8 +499,8 @@ public function createPurchasesFilter(Request $request){
         ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at')
         ->where('stock_adjustments.created_at','>',$request->dateFrom)
         ->where('stock_adjustments.created_at','<',$request->dateTo);
-    return Datatables::of($data)
-        ->make(true);
+        return Datatables::of($data)
+            ->make(true);
     }
 
     public function createStockAdjustment(Request $request){
@@ -543,7 +545,14 @@ public function createPurchasesFilter(Request $request){
                         ->where('product_id', $request->productId[$i])
                         ->decrement('quantity', $request->quantity[$i]);
             }
+
+            
+            $admin = Admin::all();
+                foreach($admin as $admins){
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->quantity[$i],$request->status[$i],$request->authName));
+                }
         }
+        
         return $request->all();
     }
 

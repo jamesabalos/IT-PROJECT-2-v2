@@ -320,7 +320,7 @@
                             <li class="dropdown">
                                 <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown" > <i class="fa fa-bell"></i>
                                 <?php if(auth()->user()->unreadnotifications->count()): ?>
-                                    <span class="badge badge-light"><?php echo e(auth()->user()->unreadnotifications->count()); ?></span>
+                                    <span class="badge badge-danger"><?php echo e(auth()->user()->unreadnotifications->count()); ?></span>
                                 <?php endif; ?>
                                 </a>
                             </li>
@@ -632,26 +632,9 @@
                                 </div>
                                 <div id="listOfNotif">
                                     <ul class="list-group">
-                                        <?php $__currentLoopData = Auth::user()->Notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <?php if(!empty($notification->read_at) ): ?>
-                                                <li class='list-group-item list-group-item-success'>
-                                                    <p><b>Reorder Item:</b>  <?php echo e($notification->data['description']); ?></p>
-                                                    
-                                                    <p><b>Remaining Quantity:</b> <?php echo e($notification->data['quantity']); ?>
-
-                                                    </p>         
-                                                </li>
-                                            <?php else: ?>       
-                                                <li class='list-group-item list-group-item-danger'>
-                                                    <p><b>Reorder Item:</b>  <?php echo e($notification->data['description']); ?></p>
-                                                    
-                                                    <p><b>Remaining Quantity:</b> <?php echo e($notification->data['quantity']); ?>
-
-                                                    </p>                              
-                                                    <a href="/markAsRead/<?php echo e($notification->id); ?>" style="color:black;"><button >Mark As Read</button></a>
-                                                </li>
-                                            <?php endif; ?>
-                                        
+                                        <?php $__currentLoopData = Auth::user()->unreadNotifications->take(10); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notification): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <?php echo $__env->make('notifications.'.snake_case(class_basename($notification->type)), array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                                            
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </ul>
                                 </div>

@@ -1,23 +1,21 @@
-{{--  @extends('layouts.app')  --}}
-@extends('layouts.navbar')
-@section('dashboard_link')
+<?php $__env->startSection('dashboard_link'); ?>
 class="active"
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('headScript')
+<?php $__env->startSection('headScript'); ?>
 
     <!-- DataTables -->
 
-    <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+    <link href="<?php echo e(asset('assets/css/datatables.min.css')); ?>" rel="stylesheet"/>
+    <link href="<?php echo e(asset('assets/css/buttons.dataTables.min.css')); ?>" rel="stylesheet"/>
 
     <!-- Chart -->
-    <link href="{{asset('assets/css/morris.css')}}" rel="stylesheet"/>
+    <link href="<?php echo e(asset('assets/css/morris.css')); ?>" rel="stylesheet"/>
 
     <!-- Chart JS -->
-    <script src="{{asset('assets/js/raphael2.1.0.js')}}"></script>
-    <script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
-    <script src="{{asset('assets/js/morrisv05.js')}}"></script>
+    <script src="<?php echo e(asset('assets/js/raphael2.1.0.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/jqueryv1.8.2.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/js/morrisv05.js')); ?>"></script>
 
 <script>
     function searchItem(a){
@@ -117,13 +115,13 @@ class="active"
 
     $chart_data_least_items = substr($chart_data_least_items, 0, -2);
 ?>
-@endsection
+<?php $__env->stopSection(); ?>
         
-@section('linkName')
+<?php $__env->startSection('linkName'); ?>
     <h3><i class="fa fa-fw fa-dashboard"></i> Dashboard</h3>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('right')
+<?php $__env->startSection('right'); ?>
 <div class="row">
     <div class="col-md-12" >
         <div class="card" >
@@ -282,17 +280,17 @@ class="active"
 -->
 
 
-@endsection     
+<?php $__env->stopSection(); ?>     
 
 
 
-@section('js_link')
+<?php $__env->startSection('js_link'); ?>
 <!--   Core JS Files   -->
-<script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>
-<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/jquery-1.12.4.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/bootstrap.min.js')); ?>"></script>
 <!-- Chart -->
-<script src="{{asset('assets/js/morris.min.js')}}"></script>
-<script src="{{asset('assets/js/morris.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/morris.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/morris.js')); ?>"></script>
 
 
 <script type="text/javascript">
@@ -330,14 +328,14 @@ function createSlowFastMovingItem(button){
 
          $.ajax({
             type:'GET',
-            url: "{{route('reports.validateDateRange')}}",
+            url: "<?php echo e(route('reports.validateDateRange')); ?>",
             data: {
                 'dateFrom':dateFrom,
                 'dateTo':dateTo,
             },
             success:function(data){
-                var url1 = "{{ route('admin.dashboard.createFastMovingItem') }}";
-                var url2 = "{{ route('admin.dashboard.createSlowMovingItem') }}";
+                var url1 = "<?php echo e(route('admin.dashboard.createFastMovingItem')); ?>";
+                var url2 = "<?php echo e(route('admin.dashboard.createSlowMovingItem')); ?>";
                 
                 $.ajax({
                     type: 'GET',
@@ -445,4 +443,5 @@ function barChartLeastItems() {
 </script>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.navbar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

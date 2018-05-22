@@ -330,7 +330,7 @@
                             <li class="dropdown">
                                 <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown" > <i class="fa fa-bell"></i>
                                 @if(auth()->user()->unreadnotifications->count())
-                                    <span class="badge badge-light">{{auth()->user()->unreadnotifications->count()}}</span>
+                                    <span class="badge badge-danger">{{auth()->user()->unreadnotifications->count()}}</span>
                                 @endif
                                 </a>
                             </li>
@@ -642,24 +642,9 @@
                                 </div>
                                 <div id="listOfNotif">
                                     <ul class="list-group">
-                                        @foreach (Auth::user()->Notifications as $notification)
-                                            @if(!empty($notification->read_at) )
-                                                <li class='list-group-item list-group-item-success'>
-                                                    <p><b>Reorder Item:</b>  {{$notification->data['description']}}</p>
-                                                    
-                                                    <p><b>Remaining Quantity:</b> {{$notification->data['quantity']}}
-                                                    </p>         
-                                                </li>
-                                            @else       
-                                                <li class='list-group-item list-group-item-danger'>
-                                                    <p><b>Reorder Item:</b>  {{$notification->data['description']}}</p>
-                                                    
-                                                    <p><b>Remaining Quantity:</b> {{$notification->data['quantity']}}
-                                                    </p>                              
-                                                    <a href="/markAsRead/{{$notification->id}}" style="color:black;"><button >Mark As Read</button></a>
-                                                </li>
-                                            @endif
-                                        
+                                        @foreach (Auth::user()->unreadNotifications->take(10) as $notification)
+                                            @include('notifications.'.snake_case(class_basename($notification->type)))
+                                            
                                         @endforeach
                                     </ul>
                                 </div>

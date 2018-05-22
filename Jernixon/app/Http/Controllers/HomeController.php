@@ -11,6 +11,9 @@ use App\Physical_count;
 use Datatables;
 use DB;
 use Hash;
+use App\Notifications\ReorderNotification;
+use App\Notifications\StockAdjustmentNotification;
+use App\Admin;
 
 
 //class SalesAssistantController extends Controller
@@ -191,18 +194,41 @@ class HomeController extends Controller
 
         $arrayCount = count($request->productId);
         for($i = 0;$i<$arrayCount;$i++){
-            $insertReturns = DB::table('stock_adjustments')->insert(
-                ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => $request->status[$i], 'created_at' => $request->Date]
-            );
+           if($request->status[$i] == "damaged"){
+                $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
+                );
 
-            if($request->status == "damaged"){
+                $data = DB::table('stock_adjustments')
+                    ->select('stock_adjustments_id')
+                    ->latest()
+                    ->first();
+
                 $insertDamagedItems = DB::table('damaged_items')->insert(
-                    ['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
-                );
+                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                    
+                    DB::table('salable_items')
+                        ->where('product_id', $request->productId[$i])
+                        ->decrement('quantity', $request->quantity[$i]);
             }else{
-                $insertDamagedItems = DB::table('lost_items')->insert(
-                    ['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]
+                $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
                 );
+
+                $data = DB::table('stock_adjustments')
+                    ->select('stock_adjustments_id')
+                    ->latest()
+                    ->first();
+
+                $insertLostItems = DB::table('lost_items')->insert(
+                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                    DB::table('salable_items')
+                        ->where('product_id', $request->productId[$i])
+                        ->decrement('quantity', $request->quantity[$i]);
+            }
+            $admin = Admin::all();
+            foreach($admin as $admins){
+                $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->quantity[$i],$request->status[$i],$request->authName));
             }
         }
         return $request->all();
@@ -381,7 +407,23 @@ class HomeController extends Controller
                 DB::table('salable_items')
                     ->where('product_id', $request->productIds[$i])
                     ->decrement('quantity', $request->quantity[$i]);
+
+                $da= DB::table('products')->join('salable_items','products.product_id','=','salable_items.product_id')->select('description','quantity')->where([['status','=','available'],['products.product_id','=', $request->productIds[$i]],])->whereColumn('quantity','<=','reorder_level')->first();
+                
+                if(!empty($da)){
+                    $admin = Admin::all();
+                    foreach($admin as $admins){
+                        $admins->notify(new ReorderNotification($da));
+                    };   
+
+                    $sales = User::all();
+                    foreach($sales as $salesassistant){
+                        $salesassistant->notify(new ReorderNotification($da));
+                    };  
+
+                }
             }
+                
             return "successful";
         }else{
             return "unsuccessful";

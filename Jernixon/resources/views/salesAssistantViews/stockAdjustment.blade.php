@@ -319,9 +319,11 @@ class="active"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
+                  <p>
                     <a href = "#adjustment" data-toggle="modal">
                         <button type="button" class="btn btn-success"><i class="fa fa-adjust"></i> Stock Adjustment</button>
                     </a>
+                  </p>
                     <div class="hidden alert-danger text-center">
                     </div>
                     <div class="row">

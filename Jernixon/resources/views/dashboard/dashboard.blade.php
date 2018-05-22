@@ -226,13 +226,21 @@ class="active"
                     <div class="panel-heading">
                         <div class="hidden alert-danger text-center">
                         </div>
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Fast Moving Items
+                        <div class="row">
+                            <div class="col-md-4 ">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Fast Moving Items
+                            </div>
+                            
+                            <div class="text-right col-md-8 ">
+                                <label for="from">From</label>
+                                <input type="date">
+                                <label for="to">to</label>
+                                <input type="date">
+                                <button id="FMI" onclick="createSlowFastMovingItem(this)">Filter</button>
+                            </div>
+                        </div>
                         <br>
-                        <label for="from">From</label>
-                        <input type="date">
-                        <label for="to">to</label>
-                        <input type="date">
-                        <button id="FMI" onclick="createSlowFastMovingItem(this)">Filter</button>
+                        
                     </div>
                     <div class="container-fluid">
                         <div class="row">
@@ -241,28 +249,39 @@ class="active"
                             </div>
                         </div>
                     </div>
-                  </div>
+                </div>
+
 
                   <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="hidden alert-danger text-center">
                         </div>
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Slow Moving Items
+                        <div class="row">
+                            <div class="col-md-4 ">
+                                <i class="fa fa-bar-chart-o fa-fw"></i> Slow Moving Items
+                            </div>
+                            <div class="text-right col-md-8 ">
+                                    <label for="from">From</label>
+                                    <input type="date">
+                                    <label for="to">to</label>
+                                    <input type="date">
+                                    <button id="SMI" onclick="createSlowFastMovingItem(this)">Filter</button>
+                            </div>
+
+                        </div>
                         <br>
-                        <label for="from">From</label>
-                        <input type="date">
-                        <label for="to">to</label>
-                        <input type="date">
-                        <button id="SMI" onclick="createSlowFastMovingItem(this)">Filter</button>
+                       
                     </div>
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
                                 <div id="bar-chart-least-items"></div>
                             </div>
+
                         </div>
                     </div>
-                  </div>
+                </div>
+                
                   <!-- end of chart -->              
             </div>
         </div>

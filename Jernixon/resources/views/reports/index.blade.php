@@ -277,16 +277,19 @@ class="active"
                     <div class = "content" >
                         <div class="hidden alert-danger text-center">
                         </div>
-                        <h3>Sold Items</h3>
-                            <div class="row">
-                                <p class = "col-md-8">
-                                    <label for="from">From</label>
-                                    <input type="date">
-                                    <label for="to">to</label>
-                                    <input type="date">
-                                    <button id="si" onclick="createReport(this)">Filter</button>
-                                </p>  
+                        <div class="row">
+                            <div class="col-md-4 ">
+                                <h3>Sold Items</h3>
                             </div>
+                            <div class="text-right col-md-8" style="margin-top: 25px">
+                                <label for="from">From</label>
+                                <input type="date">
+                                <label for="to">to</label>
+                                <input type="date">
+                                <button id="si" onclick="createReport(this)">Filter</button>
+                            </div>
+                        </div>
+
                         <div id="transactionDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
                                 <table id="transactionsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
@@ -328,15 +331,17 @@ class="active"
                         </div> --}}
                         <div class="hidden alert-danger text-center">
                         </div>
-                        <h3>Damaged Items</h3>
                         <div class="row">
-                            <p class = "col-md-8">
+                            <div class="col-md-4 ">
+                                <h3>Damaged Items</h3>
+                            </div>
+                            <div class="text-right col-md-8" style="margin-top: 25px">                            
                                 <label for="from">From</label>
                                 <input type="date">
                                 <label for="to">to</label>
                                 <input type="date">
-                                <button id="di" onclick="createReport(this)">Filter</button>
-                            </p>  
+                                <button id="di" onclick="createReport(this)">Filter</button>  
+                            </div>
                         </div>
                         <div id="damagedItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
@@ -376,15 +381,17 @@ class="active"
                         </div> --}}
                         <div class="hidden alert-danger text-center">
                         </div>
-                        <h3>Lost Items</h3>
                         <div class="row">
-                            <p class = "col-md-8">
+                            <div class="col-md-4 ">
+                                <h3>Lost Items</h3>
+                            </div>
+                            <div class="text-right col-md-8" style="margin-top: 25px">
                                 <label for="from">From</label>
                                 <input type="date">
                                 <label for="to">to</label>
                                 <input type="date">
                                 <button id="li" onclick="createReport(this)">Filter</button>
-                            </p>  
+                            </div>  
                         </div>
                         <div id="lostItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">

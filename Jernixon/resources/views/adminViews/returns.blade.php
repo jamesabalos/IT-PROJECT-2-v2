@@ -521,18 +521,21 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                <p>
-                    <a href = "#return" data-toggle="modal">
-                        <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
-                    </a>
-                    <a href = "#refund" data-toggle="modal">
-                        <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Refund</button>
-                    </a>
-                </p>
-                    <div class="hidden alert-danger text-center">
-                    </div>
                     <div class="row">
-                        <div class = "col-md-12">
+                        <div class="col-md-4 ">
+                            <p>
+                                <a href = "#return" data-toggle="modal">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
+                                </a>
+                                <a href = "#refund" data-toggle="modal">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Refund</button>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="hidden alert-danger text-center">
+                        </div>
+
+                        <div class="text-right col-md-8" style="margin-top: 10px">
                             <label for="from">From</label>
                             <input type="date">
                             <label for="to">to</label>

@@ -380,24 +380,28 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-
-                  <p>
-                      <a href = "#purchase" data-toggle="modal">
-                          <button type="button" class="btn btn-success"><i class=" fa fa-plus"></i> Add Purchase Order</button>
-                      </a>
-                  </p>
-
-                    <div class="hidden alert-danger text-center">
-                    </div>
                     <div class="row">
-                        <div class = "col-md-8">
+                        <div class="col-md-4 ">
+                            <p>
+                                <a href = "#purchase" data-toggle="modal">
+                                    <button type="button" class="btn btn-success"><i class=" fa fa-plus"></i> Add Purchase Order</button>
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="hidden alert-danger text-center">
+                        </div>
+
+                        <div class="text-right col-md-8" style="margin-top: 10px">
                             <label for="from">From</label>
                             <input type="date">
                             <label for="to">to</label>
                             <input type="date">
                             <button onclick="createReport(this)">Filter</button>
                         </div>  
+
                     </div>
+
                     <div class="content table-responsive table-full-width">
                         <table class="table table-bordered table-striped" id="purchasesDataTable">
                             <thead>

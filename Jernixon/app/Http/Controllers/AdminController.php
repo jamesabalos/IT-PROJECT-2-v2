@@ -369,6 +369,9 @@ public function createPurchasesFilter(Request $request){
         return $request->all();
 
     }
+    public function createRefund(){
+        //query
+    }
 
     public function createReturnsFilter(Request $request){
         $data = DB::table('returns')

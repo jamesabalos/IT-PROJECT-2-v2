@@ -2241,7 +2241,7 @@ border-top-color: #fff;
 .card label {
     font-size: 15px;
     margin-bottom: 5px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 
 .card .title {

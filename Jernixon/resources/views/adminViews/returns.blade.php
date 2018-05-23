@@ -79,7 +79,7 @@ ng-app="ourAngularJsApp"
         document.getElementById("searchResultDiv").innerHTML = "";
 
     }
-    function addReturnItem(ORNumber){
+    function addReturnItem(div){
         var items =[];
         var thatTbody = $("#returnItemTbody tr td:first-child");
         
@@ -87,32 +87,45 @@ ng-app="ourAngularJsApp"
             method: 'get',
             url: "{{route('admin.getORNumberItems')}}",
             data:{
-                 'ORNumber': ORNumber,
+                 'ORNumber': div.firstChild.innerHTML,
             },        
             success: function(data){
                 $("#returnItemTbody tr").remove();
-     
+                $("#refundTbody tr").remove();
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
+                var modalRefundTbody = document.getElementById("refundTbody");
                 for(var i = 0; i < data.length; i++){
-                    var newRow = modalReturnItemTbody.insertRow(-1);
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                    // newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control' onchange='toggleCheckbox(this)'></td>";
-                    newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
-                } 
-                // document.getElementById("Date").value = data[0].created_at;
+                    if(div.dataset.modal === "searchORNumberInput"){
+                        var newRow = modalReturnItemTbody.insertRow(-1);
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
+                    }else{
+                        var newRow = modalRefundTbody.insertRow(-1);
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    }
+                }
+
                 document.getElementById("Customer").value = data[0].customer_name;
                 document.getElementById("returnCustomerName").value = data[0].customer_name;
+                document.getElementById("refundCustomer").value = data[0].customer_name;
+                document.getElementById("refundCustomerName").value = data[0].customer_name;
               
 
                 
             }
             });
 
-
-        document.getElementById("searchORNumberInput").value = ORNumber ;
-        document.getElementById("resultORNumberDiv").innerHTML = "";
+        if(div.dataset.modal === "searchORNumberInput"){
+            document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
+            document.getElementById("resultORNumberDiv").innerHTML = "";
+        }else{
+            document.getElementById("refundSearchORNumberInput").value = div.firstChild.innerHTML ;
+            document.getElementById("refundORNumberDiv").innerHTML = "";
+        }
 
     }
     function toggleCheckbox(button){
@@ -186,28 +199,36 @@ ng-app="ourAngularJsApp"
             document.getElementById("resultORNumberDiv").innerHTML ="";   
         }else{
             $.ajax({
-            method: 'get',
-            //url: 'items/' + document.getElementById("inputItem").value,
-            url: fullRoute,
-            
-            success: function(data){
-                var resultORNumberDiv = document.getElementById("resultORNumberDiv");
-                resultORNumberDiv.innerHTML = "";
-                for (var i = 0;  i< data.length; i++) {
-                    var node = document.createElement("DIV");
-                    node.setAttribute("onclick","addReturnItem(this.firstChild.innerHTML)")
-                    var pElement = document.createElement("P");
-                    //add the price
-                    //pElement.setAttribute("data-price" , data[i].) 
-                    var textNode = document.createTextNode(data[i].or_number);
-                    pElement.appendChild(textNode);
-                    node.appendChild(pElement);          
-                    resultORNumberDiv.appendChild(node);  
-                }
-                console.log(data)
+                method: 'get',
+                //url: 'items/' + document.getElementById("inputItem").value,
+                url: fullRoute,
                 
-            }
+                success: function(data){
+                    var resultORNumberDiv = document.getElementById("resultORNumberDiv");
+                    resultORNumberDiv.innerHTML = "";
+                    var refundORNumberDiv = document.getElementById("refundORNumberDiv");
+                    refundORNumberDiv.innerHTML = "";
+
+                    for (var i = 0;  i< data.length; i++) {
+                        var node = document.createElement("DIV");
+                        node.setAttribute("onclick","addReturnItem(this)")
+                        node.setAttribute("data-modal",a.id)
+                        var pElement = document.createElement("P");
+                        //add the price
+                        //pElement.setAttribute("data-price" , data[i].) 
+                        var textNode = document.createTextNode(data[i].or_number);
+                        pElement.appendChild(textNode);
+                        node.appendChild(pElement);    
+                        if(a.id === "searchORNumberInput"){
+                            resultORNumberDiv.appendChild(node);  
+                        }else{
+                            refundORNumberDiv.appendChild(node);  
+                        }
+                    }
+                    console.log(data)  
+                }
             });
+
         }
         
     }
@@ -388,7 +409,39 @@ ng-app="ourAngularJsApp"
                 }
             });
 
-        })
+        });
+        $('#formRefund').on('submit',function(e){
+            e.preventDefault();
+            var data = $(this).serialize();           
+            
+            $.ajax({
+                type:'POST',
+                // url:'admin/storeNewItem',
+                url: "{{route('admin.createRefund')}}",
+                // data:{
+                //     'name': arrayOfData[1].value,
+                // },
+
+                // data:{data},
+                data:data,
+                //_token:$("#_token"),
+                success:function(data){
+                    //close modal
+                    $('#refund').modal('hide')                    
+                    //prompt the message
+                    $("#successDiv p").remove();
+                    $("#successDiv").removeClass("hidden")
+                            .html("<h3>Refund successful</h3>");
+                    $("#successDiv").css("display:block");                             
+                    $("#successDiv").slideDown("slow")
+                        .delay(1000)                        
+                        .hide(1500);
+                    $("#errorDivCreateReturns").html("");
+                    $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
+                }
+            });
+
+        });
 
          $('#returnsDataTable').DataTable({
               "destroy": true,
@@ -468,15 +521,21 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                <p>
-                    <a href = "#return" data-toggle="modal">
-                        <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
-                    </a>
-                </p>
-                    <div class="hidden alert-danger text-center">
-                    </div>
                     <div class="row">
-                        <div class = "col-md-12">
+                        <div class="col-md-4 ">
+                            <p>
+                                <a href = "#return" data-toggle="modal">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
+                                </a>
+                                <a href = "#refund" data-toggle="modal">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Refund</button>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="hidden alert-danger text-center">
+                        </div>
+
+                        <div class="text-right col-md-8" style="margin-top: 10px">
                             <label for="from">From</label>
                             <input type="date">
                             <label for="to">to</label>
@@ -627,7 +686,109 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
+<div id="refund" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+
+            {!! Form::open(['method'=>'post','id'=>'formRefund']) !!}
+
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"><i class=" fa fa-reply" style="margin-right: 10px"></i> Refund</h3>
+            </div>
+            <div class = "modal-body">  
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                             Information
+                        </strong>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Official Receipt No:')}}
+                                </div>
+                                <div class="col-md-9">
+                                  {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
+                        <input autocomplete="off" id="refundSearchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
+                                     <div id="refundORNumberDiv" class="searchResultDiv">
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+						
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date', 'Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::date('Date','',['class'=>'form-control','id' =>'refundToday','value'=>''])}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('refundCustomer', 'Customer:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('refundCustomer','',['class'=>'form-control','value'=>'','disabled'])}}
+                        <input id="refundCustomerName" type="hidden" name="customerName" class="form-control border-input" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="fa fa-reply"></span>
+                            Return Item
+                        </strong>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Qty</th>
+                                        <th class="text-left">Purchase Price</th>
+                                        {{-- <th class="text-left">Action</th> --}}
+                                    </tr>
+                                </thead>
+
+                                <tbody id="refundTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+ 
+                <div id="errorDivCreateRefund" class="hidden">
+
+                        </div>
+                <div class="row">
+                    <div class="text-right">                                           
+                        <div class="col-md-12">   
+                            <button type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>

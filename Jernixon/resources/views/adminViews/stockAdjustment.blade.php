@@ -326,19 +326,19 @@ class="active"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-
-                  <p>
-                    <a href = "#adjustment" data-toggle="modal">
-                        <button type="button" class="btn btn-success"><i class="fa fa-adjust"></i> Stock Adjustment</button>
-                    </a>
-
-                  </p>
-
-                    <div class="hidden alert-danger text-center">
-                    </div>
-
                     <div class="row">
-                        <div class = "col-md-8">
+                        <div class="col-md-4 ">
+                            <p>
+                                <a href = "#adjustment" data-toggle="modal">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-adjust"></i> Stock Adjustment</button>
+                                </a>
+
+                            </p>
+                        </div>
+                        <div class="hidden alert-danger text-center">
+                        </div>
+
+                        <div class="text-right col-md-8" style="margin-top: 15px">
                             <label for="from">From</label>
                             <input type="date">
                             <label for="to">to</label>

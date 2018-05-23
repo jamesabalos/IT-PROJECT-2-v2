@@ -4193,7 +4193,8 @@ a.label:focus,a.label:hover{
     text-align:center;
     white-space:nowrap;
     vertical-align:middle;
-    background-color:#777;
+    /*background-color:#777;*/
+    background-color: #EE2D20;
     border-radius:10px
 }
 .badge:empty{

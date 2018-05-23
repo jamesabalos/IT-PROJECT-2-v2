@@ -41,14 +41,11 @@ class="active"
         var ddf = newDateFrom.getDate();
         var mmf = newDateFrom.getMonth() + 1;
         var yf = newDateFrom.getFullYear();
-
         var newDateTo = new Date(dateTo);
         newDateTo.setDate(newDateTo.getDate() + 1);
-
         var ddt = newDateTo.getDate();
         var mmt = newDateTo.getMonth() + 1;
         var yt = newDateTo.getFullYear();
-
         var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
         var formattedDateTo = yt + '-' + mmt + '-' + ddt;
         console.log(formattedDateFrom);
@@ -100,7 +97,6 @@ class="active"
                         {data: 'price'},
                         {data: 'created_at'},
                         ]
-
                     
                     });
                 }else if(siOrDiOrLi === "di"){
@@ -179,7 +175,6 @@ class="active"
                         
                     });
                 }         
-
             },
             error:function(data){
                 var response = data.responseJSON;
@@ -206,7 +201,6 @@ class="active"
             }
         });
     }
-
   $(document).ready(function() {
     $('#transactionsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -225,7 +219,6 @@ class="active"
           {data: 'created_at'},
         ] 
     });
-
     $('#damagedItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -241,7 +234,6 @@ class="active"
         ]
         
     });
-
     $('#lostItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -257,10 +249,7 @@ class="active"
         ]
         
     });
-
-
   });
-
 </script>
 @endsection
 

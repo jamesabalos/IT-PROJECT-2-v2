@@ -4,6 +4,10 @@
 class="active"
 @endsection
 
+@section('ng-app')
+ng-app="ourAngularJsApp"
+@endsection
+
 @section('headScript')
 
     <!-- DataTables -->
@@ -19,7 +23,9 @@ class="active"
     <script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
     <script src="{{asset('assets/js/morrisv05.js')}}"></script>
 
+
 <script>
+
     function searchItem(a){
         $.ajax({
             method: 'get',
@@ -82,7 +88,9 @@ class="active"
         });
         
     }
-
+    $(document).ready(function(){
+        $('#some').DataTable();
+    });
 
 </script>
 
@@ -180,7 +188,7 @@ class="active"
                             </div>
 
                             <div class="col-md-4">
-                                <div class="panel panel-box clearfix">
+                                <div class="panel panel-box clearfix" data-toggle="modal" data-target="#reorder">
                                     <div class="panel-icon pull-left bg-blue">
                                         <i class="glyphicon glyphicon-shopping-cart"></i>
                                     </div>
@@ -463,5 +471,40 @@ function barChartLeastItems() {
 
 </script>
 
+<div id="reorder" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+        <div class = "modal-dialog modal-md">
+            <div class = "modal-content">
+                
+                
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal"><i class="fa fa-times fa-lg" aria-hidden="true"></i></button>
+                    <h3 class="modal-title"><i class="glyphicon glyphicon-shopping-cart"></i> Re-order Items</h3>
+                </div>
+                
+                <div class="modal-body">
+  
+                    <table id="reor" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                        <thead >
+                            <tr>
+                              <th>Re Order Item</th>
+                              <th>Remaining Quantity</th>                  
+                            </tr>
+                        </thead>
+                        <tbody class="reorderbody">
+                           @foreach($item as $items)
+                                <tr>
+                                  <td>{{$items->description}}</td>
+                                  <td>{{$items->quantity}}</td>                  
+                                </tr>
+                                @endforeach
+                        </tbody>
+                    </table>
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

@@ -91,6 +91,7 @@ Route::get('admin/notification/markAsRead','AdminController@notificationMarkAsRe
 
 Route::Post('admin/changePassword','AdminController@changePassword')->name('admin.changePassword');
 
+Route::get('admin/dashboard/reorderitem','AdminController@reorderitems')->name('reorderitem');
 Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
 Route::get('admin/dashboard/getDataPoints', 'AdminController@getDataPoints')->name('dashboard.getDataPoints');
 Route::get('admin/logout','Auth\AdminLoginController@logout')->name('admin.logout');

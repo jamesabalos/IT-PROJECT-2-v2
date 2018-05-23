@@ -30,7 +30,9 @@ class AdminController extends Controller
     public function dashboard()
     {
         // return view('admin');
-        return view('dashboard.dashboard');
+
+        $item = DB::table('products')->join('salable_items','products.product_id','=','salable_items.product_id')->select('description','quantity')->where('status','=','available')->whereColumn('quantity','<=','reorder_level')->get();
+        return view('dashboard.dashboard')->with('item',$item);
     }
     public function sales()
     {
@@ -919,6 +921,8 @@ public function createPurchasesFilter(Request $request){
     public function notificationMarkAsRead(Request $request){
         // return $request->all();
         // return $request->notifications;
+    }
+    public function reorderitems(){
     }
 
 

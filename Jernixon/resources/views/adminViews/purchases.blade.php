@@ -380,6 +380,8 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
+                    <div class="hidden alert-danger text-center">
+                    </div>
                     <div class="row">
                         <div class="col-md-4 ">
                             <p>
@@ -389,8 +391,6 @@ ng-app="ourAngularJsApp"
                             </p>
                         </div>
 
-                        <div class="hidden alert-danger text-center">
-                        </div>
 
                         <div class="text-right col-md-8" style="margin-top: 10px">
                             <label for="from">From</label>

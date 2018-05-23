@@ -61,7 +61,7 @@ class="active"
                 'dateTo':dateTo
             },
             success:function(data){
-                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).html("");     
+                $(button.parentNode.parentNode.previousElementSibling).html("");     
                 if(siOrDiOrLi === "si"){
                     $('#transactionsTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -183,10 +183,10 @@ class="active"
             },
             error:function(data){
                 var response = data.responseJSON;
-                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).hide(500);
-                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).removeClass("hidden");
-                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).slideDown("slow", function() {
-                    $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).html(function(){
+                $(button.parentNode.parentNode.previousElementSibling).hide(500);
+                $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
+                $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
+                    $(button.parentNode.parentNode.previousElementSibling).html(function(){
                           var addedHtml="";
                           for (var key in response.errors) {
                               addedHtml += "<p>"+response.errors[key]+"</p>";

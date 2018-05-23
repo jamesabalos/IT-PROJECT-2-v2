@@ -416,28 +416,34 @@ ng-app="ourAngularJsApp"
             
             $.ajax({
                 type:'POST',
-                // url:'admin/storeNewItem',
                 url: "{{route('admin.createRefund')}}",
                 // data:{
                 //     'name': arrayOfData[1].value,
                 // },
-
-                // data:{data},
                 data:data,
-                //_token:$("#_token"),
+
                 success:function(data){
                     //close modal
                     $('#refund').modal('hide')                    
                     //prompt the message
                     $("#successDiv p").remove();
                     $("#successDiv").removeClass("hidden")
-                            .html("<h3>Refund successful</h3>");
+                            .html("<h3>" +data+ "</h3>");
                     $("#successDiv").css("display:block");                             
                     $("#successDiv").slideDown("slow")
                         .delay(1000)                        
                         .hide(1500);
-                    $("#errorDivCreateReturns").html("");
-                    $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
+                },
+                error:function(data){
+                    var response = data.responseJSON;
+                      $("#errorDivCreateRefund").removeClass("hidden").addClass("alert-danger text-center");
+                      $("#errorDivCreateRefund").html(function(){
+                          var addedHtml="";
+                          for (var key in response.errors) {
+                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                          }
+                          return addedHtml;
+                      });
                 }
             });
 
@@ -521,6 +527,8 @@ ng-app="ourAngularJsApp"
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
+                    <div class="hidden alert-danger text-center">
+                    </div>
                     <div class="row">
                         <div class="col-md-4 ">
                             <p>
@@ -531,8 +539,6 @@ ng-app="ourAngularJsApp"
                                     <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Refund</button>
                                 </a>
                             </p>
-                        </div>
-                        <div class="hidden alert-danger text-center">
                         </div>
 
                         <div class="text-right col-md-8" style="margin-top: 10px">
@@ -723,7 +729,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                                 <div class="col-md-9">
                                   {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
-                        <input autocomplete="off" id="refundSearchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
+                        <input autocomplete="off" id="refundSearchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input" required>
                                      <div id="refundORNumberDiv" class="searchResultDiv">
                             </div>
                                 </div>
@@ -736,7 +742,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::date('Date','',['class'=>'form-control','id' =>'refundToday','value'=>''])}}
+                                    {{Form::date('Date','',['class'=>'form-control','id' =>'refundToday','value'=>'','required'])}}
                                 </div>
                             </div>
                         </div>
@@ -780,11 +786,9 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
-
- 
                 <div id="errorDivCreateRefund" class="hidden">
 
-                        </div>
+                    </div>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

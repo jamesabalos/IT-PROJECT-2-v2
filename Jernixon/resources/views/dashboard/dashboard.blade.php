@@ -327,8 +327,8 @@ function createSlowFastMovingItem(button){
         var smiORfmi = button.id;
         // var dateFrom = document.getElementById("from").value;
         // var dateTo = document.getElementById("to").value;
-        var dateFrom = button.parentNode.children[4].value;
-        var dateTo = button.parentNode.children[6].value;
+        var dateFrom = button.parentNode.children[1].value;
+        var dateTo = button.parentNode.children[3].value;
 
         var newDateFrom = new Date(dateFrom);
         newDateFrom.setDate(newDateFrom.getDate() - 1);
@@ -369,16 +369,16 @@ function createSlowFastMovingItem(button){
                     success: function(response)
                     {
                         if(response.length == 0){
-                            $(button.parentNode.firstElementChild).hide(500);
-                            $(button.parentNode.firstElementChild).removeClass("hidden");
-                            $(button.parentNode.firstElementChild).slideDown("slow", function() {
-                            $(button.parentNode.firstElementChild).html(function(){
+                            $(button.parentNode.parentNode.previousElementSibling).hide(500);
+                            $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
+                            $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
+                            $(button.parentNode.parentNode.previousElementSibling).html(function(){
                                 return "no result";
                             });
 
                             });
                         }else{
-                            $(button.parentNode.firstElementChild).hide(1000);
+                            $(button.parentNode.parentNode.previousElementSibling).hide(1000);
                             if(smiORfmi === "FMI"){
                                 $('#bar-chart-top-items').empty(); //reinitialize chart
                                     window.barChartTopItems = Morris.Bar({
@@ -416,10 +416,10 @@ function createSlowFastMovingItem(button){
             error:function(data){
                 var response = data.responseJSON;
                 console.log(response);
-                $(button.parentNode.firstElementChild).hide(500);
-                $(button.parentNode.firstElementChild).removeClass("hidden");
-                $(button.parentNode.firstElementChild).slideDown("slow", function() {
-                    $(button.parentNode.firstElementChild).html(function(){
+                $(button.parentNode.parentNode.previousElementSibling).hide(500);
+                $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
+                $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
+                    $(button.parentNode.parentNode.previousElementSibling).html(function(){
                         var addedHtml="";
                         for (var key in response.errors) {
                             addedHtml += "<p>"+response.errors[key]+"</p>";

@@ -342,24 +342,23 @@ public function createPurchasesFilter(Request $request){
         $this->validate($request,[
             'officialReceiptNumber' => 'required',
             'price' => 'required',
-            'quantity' => 'required',
+            'exchangeQuantity' => 'required',
             'customerName' => 'required',
-            'quantity' => 'required',
             'Date' => 'required'
         ]);
 
         $arrayCount = count($request->productId);
         for($i = 0;$i<$arrayCount;$i++){
             $insertReturns = DB::table('returns')->insert(
-                ['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->quantity[$i]]
+                ['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->exchangeQuantity[$i]]
             );
 
             DB::table('salable_items')
                 ->where('product_id', $request->productId[$i])
-                ->decrement('quantity', $request->quantity[$i]);
+                ->decrement('quantity', $request->exchangeQuantity[$i]);
 
             $insertDamagedItems = DB::table('damaged_items')->insert(
-                ['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => date('Y-m-d H:i:s')]
+                ['product_id' => $request->productId[$i], 'quantity' => $request->exchangeQuantity[$i], 'created_at' => date('Y-m-d H:i:s')]
             );
             // DB::table('damaged_items')
             // ->where('product_id', $request->productId[$i])

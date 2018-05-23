@@ -70,7 +70,7 @@ ng-app="ourAngularJsApp"
             var newRow = thatTable.insertRow(-1);
             newRow.insertCell(-1).innerHTML = "<td><p>"+divElement.firstChild.innerHTML+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +divElement.firstChild.innerHTML+ "'></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' max='" +divElement.dataset.quantity+ "'class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]' min='1' value='" +divElement.dataset.price+ "'class='form-control' disabled></td>";
+            newRow.insertCell(-1).innerHTML = "<td><input type='number' value='" +divElement.dataset.price+ "'class='form-control' disabled><input type='hidden'  name='price[]' min='1' value='" +divElement.dataset.price+ "'></td>";
             newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }

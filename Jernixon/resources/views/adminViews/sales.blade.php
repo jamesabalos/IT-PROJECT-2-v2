@@ -261,6 +261,14 @@ ng-app="ourAngularJsApp"
         document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
     }
 
+    function enablePrintButton(e){
+        if( document.getElementById("receiptNumber").value !== "" && document.getElementById("customerName").value !== "" && document.getElementById("today").value !== "" ){
+            document.getElementById("printButton").removeAttribute("disabled")
+        }else{
+            document.getElementById("printButton").setAttribute("disabled","disabled")
+        }
+    }
+
     $(document).ready(function(){
 
         let today = new Date().toISOString().substr(0, 10);
@@ -431,18 +439,18 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="col-md-3" >                        
                             {{Form::label('receiptNumber', 'Receipt Number:')}}
-                            {{Form::number('receiptNumber','',['class'=>'form-control'])}}
+                            {{Form::number('receiptNumber','',['class'=>'form-control','oninput'=>'enablePrintButton(this)'])}}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-7" margin >
                             {{Form::label('customerName', 'Customer Name:')}}
-                            {{Form::text('customerName','',['class'=>'form-control'])}}
+                            {{Form::text('customerName','',['class'=>'form-control','oninput'=>'enablePrintButton(this)'])}}
                         </div>
                         <div class="col-md-4" margin >
                                 {{Form::label('Date', 'Date:')}}
-                                <input type="date" name="Date" id="today"  class="form-control"/>    
+                                <input type="date" name="Date" id="today"  oninput="enablePrintButton(this)" class="form-control"/>    
                         </div>
                       
                     </div>
@@ -454,10 +462,6 @@ ng-app="ourAngularJsApp"
                             {{Form::text('address','',['class'=>'form-control'])}}
                             
                         </div>
-                        {{-- <div class="col-md-2" margin>
-                            <input type="date" name="Date" id="today"  class="form-control"/>
-
-                        </div> --}}
                     </div>
                 </div>
                 
@@ -494,7 +498,7 @@ ng-app="ourAngularJsApp"
                                 <div class="text-right">                                           
                                     <div class="col-md-12">   
                                         <button class="btn btn-primary" type="submit">Submit</button>
-                                        <button class="btn btn-success" type="button" onclick="printReceipt()"> Print</button>
+                                        <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
                                     </div>
                                 </div>
                             </div>

@@ -575,7 +575,7 @@ ng-app="ourAngularJsApp"
     ourAngularJsApp.controller('customerPurchase', ['$scope','$compile',
         function($scope, $compile) {
             var _this = this;
-
+           
             $('#dashboardDatatable').DataTable({
                 // "processing": true,
                 // "serverSide": true,
@@ -721,13 +721,13 @@ ng-app="ourAngularJsApp"
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);    
 
-                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                var inputNumber = "<input style='width: 100px;' type='number' ng-init='" +itemName+ " =1' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 var temp1 = $compile(inputNumber)($scope);
                 // var newRow = thatTbody.insertRow(-1);
                 // angular.element( newRow.insertCell(-1) ).append(temp);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
-                var salesPrice = "<p class='form-control' style='color:green;' ng-bind='" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
+                var salesPrice = "<p class='form-control' style='color:green;' ng-init='" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
                 var temp2 = $compile(salesPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
@@ -735,7 +735,6 @@ ng-app="ourAngularJsApp"
                 var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
                 var temp3 = $compile(removeButton)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp3);
-
                 
                 //store in localStorage
                 var tds  = $(lastRow.innerHTML).slice(0);     

@@ -357,6 +357,7 @@ ng-app="ourAngularJsApp"
     $(document).ready(function(){
         let today = new Date().toISOString().substr(0, 10);
         document.querySelector("#today").value = today;
+        document.querySelector("#rtoday").value = today;
 
         $.ajaxSetup({
             headers: {
@@ -702,6 +703,7 @@ ng-app="ourAngularJsApp"
         </div>
     </div>
 </div>
+
 <div id="refund" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
@@ -742,7 +744,7 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::date('Date','',['class'=>'form-control','id' =>'refundToday','value'=>'','required'])}}
+                                    {{Form::date('Date','',['class'=>'form-control','id' =>'rtoday','value'=>'','required'])}}
                                 </div>
                             </div>
                         </div>

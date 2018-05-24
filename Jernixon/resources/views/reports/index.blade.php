@@ -60,7 +60,7 @@ class="active"
                 'dateTo':dateTo
             },
             success:function(data){
-                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).html("");     
+                $("#errorDateRangeReport").html("");     
                 if(siOrDiOrLi === "si"){
                     $('#soldTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
@@ -182,10 +182,10 @@ class="active"
             },
             error:function(data){
                 var response = data.responseJSON;
-                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).hide(500);
-                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).removeClass("hidden");
-                $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).slideDown("slow", function() {
-                    $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).html(function(){
+                $("#errorDateRangeReport").hide(500);
+                $("#errorDateRangeReport").removeClass("hidden");
+                $("#errorDateRangeReport").slideDown("slow", function() {
+                    $("#errorDateRangeReport").html(function(){
                           var addedHtml="";
                           for (var key in response.errors) {
                               addedHtml += "<p>"+response.errors[key]+"</p>";
@@ -226,6 +226,7 @@ class="active"
     });
 
     $("#soldButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";
         $("div[style='display: block;']").slideUp("slow");
         $("#soldDiv").slideDown("slow",function(){
             $('#soldTable').DataTable({
@@ -247,7 +248,7 @@ class="active"
                 });
             });
             $("#soldDiv").attr("style", "display:block");
-            $("#soldButton").attr("onclick", "hideSoldButton()");
+            // $("#soldButton").attr("onclick", "hideSoldButton()");
     });
 
     $('#damagedItemsTable').DataTable({
@@ -267,6 +268,7 @@ class="active"
     });
 
     $("#damgaedButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";        
         $("div[style='display: block;']").slideUp("slow");
         $("#damagedItemsDiv").slideDown("slow",function(){
             $('#damagedItemsTable').DataTable({
@@ -306,6 +308,7 @@ class="active"
     });
 
     $("#lostButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";        
         $("div[style='display: block;']").slideUp("slow");
         $("#lostItemsDiv").slideDown("slow", function(){
             $('#lostItemsTable').DataTable({
@@ -342,14 +345,15 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content" >
-                        <div class="hidden alert-danger text-center">
-                        </div>
+
                         <div id = "buttons">
                             <button type="button" id="soldButton" class="btn btn-basic" style="width:31%;font-size: 20px">Sold Items</button>
                             <button type="button" id="damgaedButton" class="btn btn-basic" style="width:31%; font-size: 20px">Damaged Items</button>
                             <button type="button" id="lostButton" class="btn btn-basic" style="width:31%; font-size: 20px">Lost Items</button>
                         </div>
                         <br>
+                        <div class="hidden alert-danger text-center" id="errorDateRangeReport">
+                        </div>
                         <div id="soldDiv" style="display: block;">
                         <!-- <h3>Sold Items</h3> -->
                         <div class="row">

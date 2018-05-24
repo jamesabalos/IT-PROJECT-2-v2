@@ -269,6 +269,17 @@ ng-app="ourAngularJsApp"
         }
     }
 
+    function saveReceiptNumber(e){
+        localStorage.setItem("receiptNumber",e.value);       
+    }
+
+    function saveCustomerName(e){
+        localStorage.setItem("customerName",e.value);       
+    }
+    function saveCustomerAddress(e){
+        localStorage.setItem("customerAddress",e.value);       
+    }
+
     $(document).ready(function(){
 
         let today = new Date().toISOString().substr(0, 10);
@@ -439,18 +450,18 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="col-md-3" >                        
                             {{Form::label('receiptNumber', 'Receipt Number:')}}
-                            {{Form::number('receiptNumber','',['class'=>'form-control','oninput'=>'enablePrintButton(this)'])}}
+                            {{Form::number('receiptNumber','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveReceiptNumber(this)'])}}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-7" margin >
                             {{Form::label('customerName', 'Customer Name:')}}
-                            {{Form::text('customerName','',['class'=>'form-control','oninput'=>'enablePrintButton(this)'])}}
+                            {{Form::text('customerName','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerName(this)'])}}
                         </div>
                         <div class="col-md-4" margin >
                                 {{Form::label('Date', 'Date:')}}
-                                <input type="date" name="Date" id="today"  oninput="enablePrintButton(this)" class="form-control"/>    
+                                <input type="date" name="Date" id="today"  oninput="enablePrintButton(this)"  class="form-control"/>    
                         </div>
                       
                     </div>
@@ -459,7 +470,7 @@ ng-app="ourAngularJsApp"
                     <div class="row">
                         <div class="col-md-0" margin>
                             {{Form::label('address', 'Address:')}}
-                            {{Form::text('address','',['class'=>'form-control'])}}
+                            {{Form::text('address','',['class'=>'form-control','onchange'=>'saveCustomerAddress(this)'])}}
                             
                         </div>
                     </div>
@@ -627,7 +638,12 @@ ng-app="ourAngularJsApp"
                 "initComplete": function(settings, json) {
                     var len=localStorage.length;
                     var thatTbody = document.getElementById("cartTbody");
-
+                    document.getElementById("receiptNumber").value = localStorage.getItem("receiptNumber");
+                    document.getElementById("customerName").value = localStorage.getItem("customerName");
+                    document.getElementById("address").value = localStorage.getItem("customerAddress");
+                    if( document.getElementById("receiptNumber").value !== "" && document.getElementById("customerName").value !== "" && document.getElementById("today").value !== "" ){
+                        document.getElementById("printButton").removeAttribute("disabled")
+                    }
                     var totalSalesNgBinds ="";
                     for(var i=0; i<len; i++) {
 
@@ -805,7 +821,7 @@ ng-app="ourAngularJsApp"
 
                 var item = JSON.parse(localStorage.getItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML));
                 console.log( ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model") )
-                var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",event.currentTarget.value);
+                var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"="+event.currentTarget.value);
                //remove
                localStorage.removeItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML);
                //add again

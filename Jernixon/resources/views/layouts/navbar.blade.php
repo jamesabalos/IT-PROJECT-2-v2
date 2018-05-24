@@ -391,17 +391,20 @@
                     </div>
                     
                     <div class="small-logo-container">
-                        <ul class="list-inline">                                
+                        <ul class="list-group">                                
                             <li>
-                                <ul class="nav navbar-right user-margin">
+                                <ul class="user-margin list-inline" style="padding-left:15px; ">
 
-                                    <li class="dropdown">
-                                        <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown"> </a>
-                                        <i class="fa fa-bell"></i>
-
+                                    <li class="list-inline-item dropdown">
+                                         <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown" > <i class="fa fa-bell"></i>
+                                        @if(auth()->user()->unreadnotifications->count())
+                                            <span class="badge badge-danger">{{auth()->user()->unreadnotifications->count()}}</span>
+                                        @endif
+                                        </a>
+    
                                     </li>
 
-                                    <li class="dropdown">
+                                    <li class="list-inline-item dropdown" style="text-shadow: none;text-decoration: none;">
                                         
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                             <p>

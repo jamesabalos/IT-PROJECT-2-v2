@@ -3,7 +3,6 @@
 class="active"
 @endsection
 @section('headScript')
-
 <!--jquery-->
 <script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
@@ -41,11 +40,14 @@ class="active"
         var ddf = newDateFrom.getDate();
         var mmf = newDateFrom.getMonth() + 1;
         var yf = newDateFrom.getFullYear();
+
         var newDateTo = new Date(dateTo);
         newDateTo.setDate(newDateTo.getDate() + 1);
+
         var ddt = newDateTo.getDate();
         var mmt = newDateTo.getMonth() + 1;
         var yt = newDateTo.getFullYear();
+
         var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
         var formattedDateTo = yt + '-' + mmt + '-' + ddt;
         console.log(formattedDateFrom);
@@ -60,7 +62,7 @@ class="active"
             success:function(data){
                 $(button.parentNode.parentNode.previousElementSibling.previousElementSibling).html("");     
                 if(siOrDiOrLi === "si"){
-                    $('#transactionsTable').DataTable({
+                    $('#soldTable').DataTable({
                         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                         "destroy": true,
                         "processing": true,
@@ -97,6 +99,7 @@ class="active"
                         {data: 'price'},
                         {data: 'created_at'},
                         ]
+
                     
                     });
                 }else if(siOrDiOrLi === "di"){
@@ -175,6 +178,7 @@ class="active"
                         
                     });
                 }         
+
             },
             error:function(data){
                 var response = data.responseJSON;
@@ -201,8 +205,9 @@ class="active"
             }
         });
     }
+
   $(document).ready(function() {
-    $('#transactionsTable').DataTable({
+    $('#soldTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
         "processing": true,
@@ -219,6 +224,32 @@ class="active"
           {data: 'created_at'},
         ] 
     });
+
+    $("#soldButton").click(function(){
+        $("div[style='display: block;']").slideUp("slow");
+        $("#soldDiv").slideDown("slow",function(){
+            $('#soldTable').DataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "destroy": true,
+                "processing": true,
+                "serverSide": true,
+                "colReorder": true,  
+                "pagingType": "full_numbers",
+                "ajax":  "{{ route('reports.getReports') }}",
+                "columns": [
+                  {data: 'or_number'},
+                  {data: 'description', name: 'products.description'},
+                  {data: 'customer_name'},
+                  {data: 'quantity'},
+                  {data: 'price'},
+                  {data: 'created_at'},
+                ] 
+                });
+            });
+            $("#soldDiv").attr("style", "display:block");
+            $("#soldButton").attr("onclick", "hideSoldButton()");
+    });
+
     $('#damagedItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -234,6 +265,30 @@ class="active"
         ]
         
     });
+
+    $("#damgaedButton").click(function(){
+        $("div[style='display: block;']").slideUp("slow");
+        $("#damagedItemsDiv").slideDown("slow",function(){
+            $('#damagedItemsTable').DataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "destroy": true,
+                "processing": true,
+                "serverSide": true,
+                "colReorder": true,  
+                "pagingType": "full_numbers",
+                "ajax":  "{{ route('reports.getDamagedItems') }}",
+                "columns": [
+                  {data: 'description',name: 'products.description'},
+                  {data: 'quantity'},
+                  {data: 'created_at'},
+                ]
+                
+            });
+
+        });
+        $("#damagedItemsDiv").attr("style","display:block");
+    });
+
     $('#lostItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -249,7 +304,30 @@ class="active"
         ]
         
     });
+
+    $("#lostButton").click(function(){
+        $("div[style='display: block;']").slideUp("slow");
+        $("#lostItemsDiv").slideDown("slow", function(){
+            $('#lostItemsTable').DataTable({
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "destroy": true,
+                "processing": true,
+                "serverSide": true,
+                "colReorder": true,  
+                "pagingType": "full_numbers",
+                "ajax":  "{{ route('reports.getLostItems') }}",
+                "columns": [
+                  {data: 'description',name: 'products.description'},
+                  {data: 'quantity'},
+                  {data: 'created_at'},
+                ]
+            });
+        });
+        $("#lostItemsDiv").attr("style", "display:block");
+    });
+
   });
+
 </script>
 @endsection
 
@@ -266,22 +344,27 @@ class="active"
                     <div class = "content" >
                         <div class="hidden alert-danger text-center">
                         </div>
+                        <div id = "buttons">
+                            <button type="button" id="soldButton" class="btn btn-basic" style="width:31%;font-size: 20px">Sold Items</button>
+                            <button type="button" id="damgaedButton" class="btn btn-basic" style="width:31%; font-size: 20px">Damaged Items</button>
+                            <button type="button" id="lostButton" class="btn btn-basic" style="width:31%; font-size: 20px">Lost Items</button>
+                        </div>
+                        <br>
+                        <div id="soldDiv" style="display: block;">
+                        <!-- <h3>Sold Items</h3> -->
                         <div class="row">
-                            <div class="col-md-4 ">
-                                <h3>Sold Items</h3>
-                            </div>
-                            <div class="text-right col-md-8" style="margin-top: 25px">
+                            <p class = "col-md-8">
                                 <label for="from">From</label>
                                 <input type="date">
                                 <label for="to">to</label>
                                 <input type="date">
                                 <button id="si" onclick="createReport(this)">Filter</button>
-                            </div>
+                            </p>  
                         </div>
 
-                        <div id="transactionDiv" style="display: block;">
+                        
                             <div class="content table-responsive table-full-width table-stripped">
-                                <table id="transactionsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                <table id="soldTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead >
                                         <tr>
                                           <th>OR Number</th>
@@ -296,14 +379,64 @@ class="active"
                                 </table>   
                             </div>
                         </div> 
+
+                        <div id="damagedItemsDiv" style="display: none;">
+                        <!-- <h3>Damaged Items</h3> -->
+                        <div class="row">
+                            <p class = "col-md-8">
+                                <label for="from">From</label>
+                                <input type="date">
+                                <label for="to">to</label>
+                                <input type="date">
+                                <button id="si" onclick="createReport(this)">Filter</button>
+                            </p>  
+                        </div>
+                            <div class="content table-responsive table-full-width table-stripped">
+                                <table id="damagedItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                    <thead >
+                                        <tr>
+                                          <th>Item Name</th>
+                                          <th>Quantity</th>
+                                          <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>   
+                            </div>
+                        </div> 
+
+                        <div id="lostItemsDiv" style="display: none;">
+                        <!-- <h3>Lost Items</h3> -->
+                        <div class="row">
+                            <p class = "col-md-8">
+                                <label for="from">From</label>
+                                <input type="date">
+                                <label for="to">to</label>
+                                <input type="date">
+                                <button id="si" onclick="createReport(this)">Filter</button>
+                            </p>  
+                        </div>
+                            <div class="content table-responsive table-full-width table-stripped">
+                                <table id="lostItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                    <thead >
+                                        <tr>
+                                          <th>Item Name</th>
+                                          <th>Quantity</th>
+                                          <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>   
+                            </div>
+                        </div> 
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<div class="container-fluid">
+<!-- <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -320,17 +453,15 @@ class="active"
                         </div> --}}
                         <div class="hidden alert-danger text-center">
                         </div>
+                        <h3>Damaged Items</h3>
                         <div class="row">
-                            <div class="col-md-4 ">
-                                <h3>Damaged Items</h3>
-                            </div>
-                            <div class="text-right col-md-8" style="margin-top: 25px">                            
+                            <p class = "col-md-8">
                                 <label for="from">From</label>
                                 <input type="date">
                                 <label for="to">to</label>
                                 <input type="date">
-                                <button id="di" onclick="createReport(this)">Filter</button>  
-                            </div>
+                                <button id="di" onclick="createReport(this)">Filter</button>
+                            </p>  
                         </div>
                         <div id="damagedItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
@@ -370,17 +501,15 @@ class="active"
                         </div> --}}
                         <div class="hidden alert-danger text-center">
                         </div>
+                        <h3>Lost Items</h3>
                         <div class="row">
-                            <div class="col-md-4 ">
-                                <h3>Lost Items</h3>
-                            </div>
-                            <div class="text-right col-md-8" style="margin-top: 25px">
+                            <p class = "col-md-8">
                                 <label for="from">From</label>
                                 <input type="date">
                                 <label for="to">to</label>
                                 <input type="date">
                                 <button id="li" onclick="createReport(this)">Filter</button>
-                            </div>  
+                            </p>  
                         </div>
                         <div id="lostItemsDiv" style="display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
@@ -401,7 +530,7 @@ class="active"
             </div>
         </div>
     </div>
-</div>
+</div> -->
 @endsection
 
 @section('js_link')

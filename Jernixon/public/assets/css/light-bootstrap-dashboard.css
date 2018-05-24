@@ -182,6 +182,15 @@ input[type="file"] > input[type="button"]::-moz-focus-inner {
     outline: 0;
 }
 
+.link{
+    color:white;
+    background-color: black;
+}
+
+.link:focus, .link:active{
+
+}
+
 .ui-slider-handle:focus,
 .navbar-toggle,
 input:focus {

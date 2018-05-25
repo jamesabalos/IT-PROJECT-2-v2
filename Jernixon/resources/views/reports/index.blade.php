@@ -206,7 +206,7 @@ class="active"
         });
     }
 
-  $(document).ready(function() {
+    $(document).ready(function() {
     $('#soldTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -224,33 +224,6 @@ class="active"
           {data: 'created_at'},
         ] 
     });
-
-    $("#soldButton").click(function(){
-        document.getElementById("errorDateRangeReport").innerHTML ="";
-        $("div[style='display: block;']").slideUp("slow");
-        $("#soldDiv").slideDown("slow",function(){
-            $('#soldTable').DataTable({
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                "destroy": true,
-                "processing": true,
-                "serverSide": true,
-                "colReorder": true,  
-                "pagingType": "full_numbers",
-                "ajax":  "{{ route('reports.getReports') }}",
-                "columns": [
-                  {data: 'or_number'},
-                  {data: 'description', name: 'products.description'},
-                  {data: 'customer_name'},
-                  {data: 'quantity'},
-                  {data: 'price'},
-                  {data: 'created_at'},
-                ] 
-                });
-            });
-            $("#soldDiv").attr("style", "display:block");
-            // $("#soldButton").attr("onclick", "hideSoldButton()");
-    });
-
     $('#damagedItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -266,31 +239,6 @@ class="active"
         ]
         
     });
-
-    $("#damgaedButton").click(function(){
-        document.getElementById("errorDateRangeReport").innerHTML ="";        
-        $("div[style='display: block;']").slideUp("slow");
-        $("#damagedItemsDiv").slideDown("slow",function(){
-            $('#damagedItemsTable').DataTable({
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                "destroy": true,
-                "processing": true,
-                "serverSide": true,
-                "colReorder": true,  
-                "pagingType": "full_numbers",
-                "ajax":  "{{ route('reports.getDamagedItems') }}",
-                "columns": [
-                  {data: 'description',name: 'products.description'},
-                  {data: 'quantity'},
-                  {data: 'created_at'},
-                ]
-                
-            });
-
-        });
-        $("#damagedItemsDiv").attr("style","display:block");
-    });
-
     $('#lostItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -307,26 +255,41 @@ class="active"
         
     });
 
-    $("#lostButton").click(function(){
-        document.getElementById("errorDateRangeReport").innerHTML ="";        
+    $("#soldButton").click(function(){
         $("div[style='display: block;']").slideUp("slow");
-        $("#lostItemsDiv").slideDown("slow", function(){
-            $('#lostItemsTable').DataTable({
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                "destroy": true,
-                "processing": true,
-                "serverSide": true,
-                "colReorder": true,  
-                "pagingType": "full_numbers",
-                "ajax":  "{{ route('reports.getLostItems') }}",
-                "columns": [
-                  {data: 'description',name: 'products.description'},
-                  {data: 'quantity'},
-                  {data: 'created_at'},
-                ]
-            });
-        });
-        $("#lostItemsDiv").attr("style", "display:block");
+        $("#soldDiv").slideDown("slow").removeClass('hidden');
+            
+            $("#soldButton").addClass('active');
+            $("#lostButton").removeClass('active');
+            $("#damgaedButton").removeClass('active');
+            $("#damagedItemsDiv").addClass('hidden');
+            $("#lostItemsDiv").addClass("hidden");
+    });
+
+    
+
+    $("#damgaedButton").click(function(){
+        $("div[style='display: block;']").slideUp("slow");
+        $("#damagedItemsDiv").slideDown("slow").removeClass('hidden');
+        
+        $("#soldButton").removeClass('active');
+        $("#lostButton").removeClass('active');
+        $("#damgaedButton").addClass('active');
+        $("#lostItemsDiv").addClass("hidden");
+        $("#soldDiv").addClass('hidden');
+    });
+
+    
+
+    $("#lostButton").click(function(){
+        $("div[style='display: block;']").slideUp("slow");
+        $("#lostItemsDiv").slideDown("slow").removeClass('hidden');
+        
+
+        $("#soldButton").removeClass('active');
+        $("#lostButton").addClass('active');
+        $("#damgaedButton").removeClass('active');
+        $("#lostItemsDiv").removeClass("hidden");
     });
 
   });
@@ -345,19 +308,18 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content" >
-
+                        <div class="hidden alert-danger text-center">
+                        </div>
                         <div id = "buttons">
-                            <button type="button" id="soldButton" class="btn btn-basic" style="width:31%;font-size: 20px">Sold Items</button>
+                            <button type="button" id="soldButton" class="btn btn-basic active" style="width:31%;font-size: 20px">Sold Items</button>
                             <button type="button" id="damgaedButton" class="btn btn-basic" style="width:31%; font-size: 20px">Damaged Items</button>
                             <button type="button" id="lostButton" class="btn btn-basic" style="width:31%; font-size: 20px">Lost Items</button>
                         </div>
                         <br>
-                        <div class="hidden alert-danger text-center" id="errorDateRangeReport">
-                        </div>
-                        <div id="soldDiv" style="display: block;">
+                        <div id="soldDiv" class="">
                         <!-- <h3>Sold Items</h3> -->
                         <div class="row">
-                            <p class = "col-md-8">
+                            <p class = "col-md-8">  
                                 <label for="from">From</label>
                                 <input type="date">
                                 <label for="to">to</label>
@@ -384,7 +346,7 @@ class="active"
                             </div>
                         </div> 
 
-                        <div id="damagedItemsDiv" style="display: none;">
+                        <div id="damagedItemsDiv" class="hidden">
                         <!-- <h3>Damaged Items</h3> -->
                         <div class="row">
                             <p class = "col-md-8">
@@ -392,7 +354,7 @@ class="active"
                                 <input type="date">
                                 <label for="to">to</label>
                                 <input type="date">
-                                <button id="si" onclick="createReport(this)">Filter</button>
+                                <button id="di" onclick="createReport(this)">Filter</button>
                             </p>  
                         </div>
                             <div class="content table-responsive table-full-width table-stripped">
@@ -409,7 +371,7 @@ class="active"
                             </div>
                         </div> 
 
-                        <div id="lostItemsDiv" style="display: none;">
+                        <div id="lostItemsDiv" class="hidden">
                         <!-- <h3>Lost Items</h3> -->
                         <div class="row">
                             <p class = "col-md-8">
@@ -417,7 +379,7 @@ class="active"
                                 <input type="date">
                                 <label for="to">to</label>
                                 <input type="date">
-                                <button id="si" onclick="createReport(this)">Filter</button>
+                                <button id="li" onclick="createReport(this)">Filter</button>
                             </p>  
                         </div>
                             <div class="content table-responsive table-full-width table-stripped">

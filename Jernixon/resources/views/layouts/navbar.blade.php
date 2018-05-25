@@ -107,46 +107,46 @@
         // $('button.myClass').click(function() {
         //     alert( "Handler" );
         // });
-        console.log( '<?php echo str_contains(request()->path(),'admin') ?>' )
-        $.ajax({
-                method: 'get',
-                //url: 'items/' + document.getElementById("inputItem").value,
-                url: ( '<?php echo str_contains(request()->path(),'admin') ?>' === 1) ? "{{ route('admin.notification') }}" : "{{ route('salesAssistant.notification') }}",
+        // console.log( '<?php echo str_contains(request()->path(),'admin') ?>' )
+        // $.ajax({
+        //         method: 'get',
+        //         //url: 'items/' + document.getElementById("inputItem").value,
+        //         url: ( '<?php echo str_contains(request()->path(),'admin') ?>' === 1) ? "{{ route('admin.notification') }}" : "{{ route('salesAssistant.notification') }}",
                 
-                success: function(data){
-                    notifications = data;
-                    console.log(data)
-                    var result = "";
-                    for (var i = 0; i < data.length; i++) {
-                        result += "<div class='card' id='notification" +i+ "'>";
-                        if(data[i][0] === "reorder"){
-                                result += "<div class='card-container bg-info' style='padding: 1em; margin-bottom: -1.7em'>\
-                                                    <p style='font-size: 12px'><b>Item " +data[i][2]+ " is below reorder level.</b></p>\
-                                                    <p style='font-size: 12px'><b>"+data[i][3]+" item(s) left</b></p>\
-                                                    <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-                                                </div>\
-                                            </div>";
-                                            // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\
-                        }else{
-                            result += "<div class='card-container bg-info' style='padding: 1em; margin-bottom: -1.7em'>\
-                                            <p style='font-size: 12px'><b>Item " +data[i][2]+ " quantity adjusted.</b></p>\
-                                            <p style='font-size: 12px'><b>"+data[i][3]+" item(s) deducted by " + data[i][5] +".</b></p>\
-                                            <p style='font-size: 12px'><b>Reason: " +data[i][4]+ "</b></p>\
-                                            <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b><u style='font-size: 12px; float: right' onclick='markAsRead(this)'><b>Mark As Read</b></u></p>\
-                                        </div>\
-                                    </div>";
-                                        // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\
-                        }
-                }
-                document.getElementById("listOfNotif").innerHTML = "";
-                document.getElementById("listOfNotif").innerHTML = result;
-                $("a[class='badge1']").attr("data-badge", data.length);
+        //         success: function(data){
+        //             notifications = data;
+        //             console.log(data)
+        //             var result = "";
+        //             for (var i = 0; i < data.length; i++) {
+        //                 result += "<div class='card' id='notification" +i+ "'>";
+        //                 if(data[i][0] === "reorder"){
+        //                         result += "<div class='card-container bg-info' style='padding: 1em; margin-bottom: -1.7em'>\
+        //                                             <p style='font-size: 12px'><b>Item " +data[i][2]+ " is below reorder level.</b></p>\
+        //                                             <p style='font-size: 12px'><b>"+data[i][3]+" item(s) left</b></p>\
+        //                                             <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+        //                                         </div>\
+        //                                     </div>";
+        //                                     // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\
+        //                 }else{
+        //                     result += "<div class='card-container bg-info' style='padding: 1em; margin-bottom: -1.7em'>\
+        //                                     <p style='font-size: 12px'><b>Item " +data[i][2]+ " quantity adjusted.</b></p>\
+        //                                     <p style='font-size: 12px'><b>"+data[i][3]+" item(s) deducted by " + data[i][5] +".</b></p>\
+        //                                     <p style='font-size: 12px'><b>Reason: " +data[i][4]+ "</b></p>\
+        //                                     <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b><u style='font-size: 12px; float: right' onclick='markAsRead(this)'><b>Mark As Read</b></u></p>\
+        //                                 </div>\
+        //                             </div>";
+        //                                 // <button data-notificationid='notification" +i+ "' onclick='removeNotification(this.dataset.notificationid)' type='button' class='btn btn-info'>Close</button>\
+        //                 }
+        //         }
+        //         document.getElementById("listOfNotif").innerHTML = "";
+        //         document.getElementById("listOfNotif").innerHTML = result;
+        //         $("a[class='badge1']").attr("data-badge", data.length);
 
-            },
-            error: function(data){
-                console.log(data)
-            }
-        });
+        //     },
+        //     error: function(data){
+        //         console.log(data)
+        //     }
+        // });
 
 
 

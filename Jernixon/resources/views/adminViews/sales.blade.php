@@ -259,6 +259,25 @@ ng-app="ourAngularJsApp"
         document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
     }
 
+    function enablePrintButton(e){
+        if( document.getElementById("receiptNumber").value !== "" && document.getElementById("customerName").value !== "" && document.getElementById("today").value !== "" ){
+            document.getElementById("printButton").removeAttribute("disabled")
+        }else{
+            document.getElementById("printButton").setAttribute("disabled","disabled")
+        }
+    }
+
+    function saveReceiptNumber(e){
+        localStorage.setItem("receiptNumber",e.value);       
+    }
+
+    function saveCustomerName(e){
+        localStorage.setItem("customerName",e.value);       
+    }
+    function saveCustomerAddress(e){
+        localStorage.setItem("customerAddress",e.value);       
+    }
+
     $(document).ready(function(){
 
         let today = new Date().toISOString().substr(0, 10);
@@ -319,30 +338,20 @@ ng-app="ourAngularJsApp"
 
                         //remove all rows in cart
                         $("#cartTbody tr").remove();
-
-                        //prompt the message
-
-                        //                            $("#successDiv").css("display:block");
-                        //                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
-                        //                            $("#successDiv").slideDown("slow");
-
-                        $("#successDiv p").remove();
-                        $("#successDiv").removeClass("alert-danger hidden").addClass("alert-success")
+                        $("#salesErrorDiv p").remove();
+                        $("#salesErrorDiv").removeClass("alert-danger hidden").addClass("alert-success")
                         // .addClass("alert-success")
                             .html("<h3>Transaction successful</h3>");
-
-                        //                            $("#successDiv").css("display:block");
-                        $("#successDiv").slideDown("slow")
+                        $("#salesErrorDiv").slideDown("slow")
                             .delay(1000)                        
                             .hide(1500);
-                        //                            $("#successDiv").removeAttribute("style")
 
                         //refresh dataTable
                         $("#dashboardDatatable").DataTable().ajax.reload();
                     }else{
-                        $("#successDiv").css("display","block");
-                        $("#successDiv").removeClass("alert-success hidden").addClass("alert-danger");
-                        $("#successDiv").html("Receipt Number duplicated");
+                        $("#salesErrorDiv").css("display","block");
+                        $("#salesErrorDiv").removeClass("alert-success hidden").addClass("alert-danger");
+                        $("#salesErrorDiv").html("Receipt Number duplicated");
                     }
 
 
@@ -355,11 +364,11 @@ ng-app="ourAngularJsApp"
                     var response = data.responseJSON;
                     console.log(response)
                     //prompt the message
-                        $("#successDiv").removeClass("alert-success").addClass("alert-danger");
-                    $("#successDiv").hide(500);
-                    $("#successDiv").removeClass("hidden");
-                    $("#successDiv").slideDown("slow", function() {
-                        $("#successDiv").html(function(){
+                        $("#salesErrorDiv").removeClass("alert-success").addClass("alert-danger");
+                    $("#salesErrorDiv").hide(500);
+                    $("#salesErrorDiv").removeClass("hidden");
+                    $("#salesErrorDiv").slideDown("slow", function() {
+                        $("#salesErrorDiv").html(function(){
                             var addedHtml="";
                             for (var key in response.errors) {
                                 addedHtml += "<p>"+response.errors[key]+"</p>";
@@ -429,18 +438,18 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="col-md-3" >                        
                             {{Form::label('receiptNumber', 'Receipt Number:')}}
-                            {{Form::number('receiptNumber','',['class'=>'form-control'])}}
+                            {{Form::number('receiptNumber','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveReceiptNumber(this)'])}}
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-7" margin >
                             {{Form::label('customerName', 'Customer Name:')}}
-                            {{Form::text('customerName','',['class'=>'form-control'])}}
+                            {{Form::text('customerName','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerName(this)'])}}
                         </div>
                         <div class="col-md-4" margin >
                                 {{Form::label('Date', 'Date:')}}
-                                <input type="date" name="Date" id="today"  class="form-control"/>    
+                                <input type="date" name="Date" id="today"  oninput="enablePrintButton(this)"  class="form-control"/>    
                         </div>
                       
                     </div>
@@ -449,13 +458,9 @@ ng-app="ourAngularJsApp"
                     <div class="row">
                         <div class="col-md-0" margin>
                             {{Form::label('address', 'Address:')}}
-                            {{Form::text('address','',['class'=>'form-control'])}}
+                            {{Form::text('address','',['class'=>'form-control','onchange'=>'saveCustomerAddress(this)'])}}
                             
                         </div>
-                        {{-- <div class="col-md-2" margin>
-                            <input type="date" name="Date" id="today"  class="form-control"/>
-
-                        </div> --}}
                     </div>
                 </div>
                 
@@ -492,11 +497,11 @@ ng-app="ourAngularJsApp"
                                 <div class="text-right">                                           
                                     <div class="col-md-12">   
                                         <button class="btn btn-primary" type="submit">Submit</button>
-                                        <button class="btn btn-success" type="button" onclick="printReceipt()"> Print</button>
+                                        <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="alert alert-danger text-center hidden" id="successDiv">
+                            <div class="alert alert-danger text-center hidden" id="salesErrorDiv">
                             </div>
                         </div>
                     </div> 
@@ -569,7 +574,7 @@ ng-app="ourAngularJsApp"
     ourAngularJsApp.controller('customerPurchase', ['$scope','$compile',
         function($scope, $compile) {
             var _this = this;
-
+           
             $('#dashboardDatatable').DataTable({
                 // "processing": true,
                 // "serverSide": true,
@@ -621,7 +626,12 @@ ng-app="ourAngularJsApp"
                 "initComplete": function(settings, json) {
                     var len=localStorage.length;
                     var thatTbody = document.getElementById("cartTbody");
-
+                    document.getElementById("receiptNumber").value = localStorage.getItem("receiptNumber");
+                    document.getElementById("customerName").value = localStorage.getItem("customerName");
+                    document.getElementById("address").value = localStorage.getItem("customerAddress");
+                    if( document.getElementById("receiptNumber").value !== "" && document.getElementById("customerName").value !== "" && document.getElementById("today").value !== "" ){
+                        document.getElementById("printButton").removeAttribute("disabled")
+                    }
                     var totalSalesNgBinds ="";
                     for(var i=0; i<len; i++) {
 
@@ -715,21 +725,20 @@ ng-app="ourAngularJsApp"
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);    
 
-                var inputNumber = "<input style='width: 100px;' type='number' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                var inputNumber = "<input style='width: 100px;' type='number' ng-init='" +itemName+ " =1' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 var temp1 = $compile(inputNumber)($scope);
                 // var newRow = thatTbody.insertRow(-1);
                 // angular.element( newRow.insertCell(-1) ).append(temp);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
-                var salesPrice = "<p class='form-control' style='color:green;' ng-bind='" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
-                var temp2 = $compile(salesPrice)($scope);
+                var salesPrice = "<p class='form-control' style='color:green;' ng-init='" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
+                var temp2 = $compile(salesPrice)($scope); 
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
                 // var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";
                 var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
                 var temp3 = $compile(removeButton)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp3);
-
                 
                 //store in localStorage
                 var tds  = $(lastRow.innerHTML).slice(0);     
@@ -800,7 +809,19 @@ ng-app="ourAngularJsApp"
 
                 var item = JSON.parse(localStorage.getItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML));
                 console.log( ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model") )
-                var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",event.currentTarget.value);
+                var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"="+event.currentTarget.value);
+
+
+                var ngModelName = event.currentTarget.attributes["ng-model"].value;
+                // var oldTs = parseInt(document.getElementById("totalSales").innerText);
+                var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
+                var sellingPrice = ngModelName+"SP";
+                $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
+                // document.getElementById("salesPriceValue").setAttribute("value",retailPrice * $scope[ngModelName]);
+            
+               var newSalesPrice = $($.parseHTML(item['salesPrice'])[0]).attr("ng-init", ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
+
+
                //remove
                localStorage.removeItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML);
                //add again
@@ -808,7 +829,7 @@ ng-app="ourAngularJsApp"
                     item: item['item'],
                     retailPrice: item['retailPrice'],
                     quantityPurchase: newQuantityPurchase[0].outerHTML,
-                    salesPrice: item['salesPrice'],
+                    salesPrice: newSalesPrice[0].outerHTML,
                     removeButton: item['removeButton'],
                     itemId: item['itemId'],
                     purchasePrice: item['purchasePrice'],
@@ -821,12 +842,6 @@ ng-app="ourAngularJsApp"
 
 
 
-                var ngModelName = event.currentTarget.attributes["ng-model"].value;
-                // var oldTs = parseInt(document.getElementById("totalSales").innerText);
-                var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
-                var sellingPrice = ngModelName+"SP";
-                $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
-                // document.getElementById("salesPriceValue").setAttribute("value",retailPrice * $scope[ngModelName]);
           
         
                 // $scope.totalSales =  $scope[ngModelName];

@@ -1,7 +1,7 @@
 @extends('layouts.navbar') @section('employees_link') class="active" @endsection @section('linkName')
 <div class="alert alert-success hidden" id="successDiv">
 </div>
-<h3><i class="fa fa-users" style="margin-right: 15px"></i> Account Management</h3> @endsection @section('headScript')
+<h3><i class="fa fa-users" style="margin-right: 15px"></i> Users</h3> @endsection @section('headScript')
 <script type="text/javascript">
     // function showDetails(button){
     //     //alert(button.parentNode.parentNode.parentNode);

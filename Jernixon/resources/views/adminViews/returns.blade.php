@@ -647,7 +647,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Purchase Price</th>
-                                        <th class="text-left">Return Item/s</th>
+                                        <th class="text-left">Return Item</th>
                                     </tr>
                                 </thead>
 
@@ -673,7 +673,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Price</th>
-                                        <th class="text-left">Remove Item/s</th>
+                                        <th class="text-left">Remove Item</th>
                                     </tr>
                                 </thead>
                                 <tbody id="inExchangeTbody">

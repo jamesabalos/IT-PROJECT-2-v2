@@ -493,7 +493,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Purchase Price</th>
-                                        <th class="text-left">Action</th>
+                                        <th class="text-left">Remove</th>
                                     </tr>
                                 </thead>
                                 <tbody id="purchasetable">

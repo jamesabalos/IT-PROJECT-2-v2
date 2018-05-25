@@ -422,7 +422,7 @@ class="active"
                                         <th class="text-left">Item Name</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Status</th>
-                                        <th class="text-left">Action</th>
+                                        <th class="text-left">Remove</th>
                                     </tr>
                                 </thead>
 

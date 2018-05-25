@@ -275,7 +275,7 @@
                         </li>
                         
                         <li @yield('employees_link')>
-                            <a href={{route('admin.employees')}}><i class="fa fa-users"></i><p>Account Management</p></a>
+                            <a href={{route('admin.employees')}}><i class="fa fa-users"></i><p>Users</p></a>
                         </li>
                         
                         <li @yield('stockAdjustment_link')>

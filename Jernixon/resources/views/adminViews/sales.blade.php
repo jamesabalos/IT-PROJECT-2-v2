@@ -822,6 +822,18 @@ ng-app="ourAngularJsApp"
                 var item = JSON.parse(localStorage.getItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML));
                 console.log( ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model") )
                 var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"="+event.currentTarget.value);
+
+
+                var ngModelName = event.currentTarget.attributes["ng-model"].value;
+                // var oldTs = parseInt(document.getElementById("totalSales").innerText);
+                var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
+                var sellingPrice = ngModelName+"SP";
+                $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
+                // document.getElementById("salesPriceValue").setAttribute("value",retailPrice * $scope[ngModelName]);
+            
+               var newSalesPrice = $($.parseHTML(item['salesPrice'])[0]).attr("ng-init", ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
+
+
                //remove
                localStorage.removeItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML);
                //add again
@@ -829,7 +841,7 @@ ng-app="ourAngularJsApp"
                     item: item['item'],
                     retailPrice: item['retailPrice'],
                     quantityPurchase: newQuantityPurchase[0].outerHTML,
-                    salesPrice: item['salesPrice'],
+                    salesPrice: newSalesPrice[0].outerHTML,
                     removeButton: item['removeButton'],
                     itemId: item['itemId'],
                     purchasePrice: item['purchasePrice'],
@@ -842,12 +854,6 @@ ng-app="ourAngularJsApp"
 
 
 
-                var ngModelName = event.currentTarget.attributes["ng-model"].value;
-                // var oldTs = parseInt(document.getElementById("totalSales").innerText);
-                var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
-                var sellingPrice = ngModelName+"SP";
-                $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
-                // document.getElementById("salesPriceValue").setAttribute("value",retailPrice * $scope[ngModelName]);
           
         
                 // $scope.totalSales =  $scope[ngModelName];

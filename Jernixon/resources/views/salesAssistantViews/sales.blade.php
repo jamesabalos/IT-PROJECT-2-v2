@@ -506,11 +506,7 @@ ng-app="ourAngularJsApp"
                                             <div class="text-right">                                           
                                                 <div class="col-md-12">   
                                                     <button class="btn btn-primary" type="submit">Submit</button>
-<<<<<<< HEAD
                                                     <button class="btn btn-success" type="button" onclick="printReceipt()"> Print</button>
-=======
-                                                    <button id="printButton" class="btn btn-success glyphicon glyphicon-print" type="button" onclick="printReceipt()" disabled> Print</button>
->>>>>>> 2f903f6972f364684aefdaffc58645541084a3a6
                                                 </div>
                                             </div> 
                                         </div>

@@ -407,6 +407,11 @@ ng-app="ourAngularJsApp"
                 <div class="card" >
                     <div class="header">
                         <div class="row">
+                            <div id = "buttons" class = "text-center">
+                            <button type="button" id="siButton" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
+                            <button type="button" id="dsButton" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
+                        </div>
+                            <div id = "siDiv" style = "display: block;">
                             <div class="content table-responsive table-full-width table-stripped">
                                 <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
                                     {{--  <thead> 
@@ -426,6 +431,28 @@ ng-app="ourAngularJsApp"
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                            <div id = "siDiv" style = "display: none;">
+                            <div class="content table-responsive table-full-width table-stripped">
+                                <table class="table table-hover table-bordered" style="width:100%" id="">
+                                    {{--  <thead> 
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Description</th>
+                                            <th>Category</th>
+                                            <th>Quantity in Stock</th>
+                                            <th>Purchase Price</th>
+                                            <th>Selling Price</th>
+                                            <th>Add to Cart</th>
+                                        </tr>
+                                    </thead>  --}}
+                                    {{--  <tbody id="dashboardDatatable">  --}}
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -506,7 +533,7 @@ ng-app="ourAngularJsApp"
                                             <div class="text-right">                                           
                                                 <div class="col-md-12">   
                                                     <button class="btn btn-primary" type="submit">Submit</button>
-                                                    <button class="btn btn-success" type="button" onclick="printReceipt()"> Print</button>
+                                                    <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
                                                 </div>
                                             </div> 
                                         </div>

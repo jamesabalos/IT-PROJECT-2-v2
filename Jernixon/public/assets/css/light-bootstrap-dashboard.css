@@ -1254,6 +1254,12 @@ fieldset[disabled] .btn-neutral.active {
     filter: alpha(opacity=100);
 }
 
+/*no line table data (td)*/
+
+.nl{
+    border-color: transparent;
+}
+
 /*      Checkbox and radio         */
 .checkbox,
 .radio {

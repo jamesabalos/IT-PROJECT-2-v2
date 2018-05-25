@@ -38,8 +38,6 @@ ng-app="ourAngularJsApp"
             width: 100%;
             clear: all;
             /*border: 2px solid;*/
-
-            
         }
         .blank{
             
@@ -51,11 +49,11 @@ ng-app="ourAngularJsApp"
             width:70%;
             float: left;
         }
-        #rdate{
+/*        #rdate{
             width: 30%;
             float: left;
-            /*border:2px solid;*/
-        }
+            border:2px solid;
+        }*/
         #address{
             padding-left: 60px;
             width: 85%;
@@ -125,22 +123,22 @@ ng-app="ourAngularJsApp"
         for(var i = 0; i < rows.length; i++){  
             if(m<7){
                 items += "<tr>\
-                            <td class='quantity'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td class='unit'></td>\
-                            <td class='desc'>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td class='unitp'>"+rows[i].cells[1].innerText+"</td>\
-                            <td class='amount'>"+rows[i].cells[3].innerText+"</td>\
-                            <tr>\
+                            <td class='quantity nl'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td class='unit nl'></td>\
+                            <td class='desc nl'>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td class='unitp nl'>"+rows[i].cells[1].innerText+"</td>\
+                            <td class='amount nl'>"+rows[i].cells[3].innerText+"</td>\
+                        <tr>\
                         ";
                 m++;
                 
             }else{
                 items += "<tr>\
-                            <td class='quantity'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td class='unit'></td>\
-                            <td class='desc'>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td class='unitp'>"+rows[i].cells[1].innerText+"</td>\
-                            <td class='amount'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='quantity nl'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td class='unit nl'></td>\
+                            <td class='desc nl'>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td class='unitp nl'>"+rows[i].cells[1].innerText+"</td>\
+                            <td class='amount nl'>"+rows[i].cells[3].innerText+"</td>\
                             <tr>\
                         ";
                 m=0;
@@ -167,7 +165,7 @@ ng-app="ourAngularJsApp"
                         <div class='blank'></div>\
                         <div id='custname'>"+arrayOfData[2]['value']+"</div>\
                         <div class='blank'></div>\
-                        <div id='rdate'>"+arrayOfData[3]['value']+"</div>\
+                        <div id='rdate' class = 'text-right col-md-4'>"+arrayOfData[3]['value']+"</div>\
                     </div>\
                     <div class='des'>\
                         <div class='blank'></div>\
@@ -179,8 +177,8 @@ ng-app="ourAngularJsApp"
                                 itemw[m]
                             +"</tbody></table>\
                         </div>\
-                        <p class='pag'>Page "+(m+1)+" of "+page+" </p>\
                         <p style='text-align:right' class='pagebreak'>TOTAL AMOUNT DUE: "+totalSalesPrice+"</p>\
+                        <p class='pag'>Page "+(m+1)+" of "+page+" </p>\
                         </div>";
                     // console.log("\n Receipt "+ itemw[m]+ " page "+page);
             }

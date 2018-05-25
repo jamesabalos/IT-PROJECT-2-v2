@@ -71,7 +71,7 @@ ng-app="ourAngularJsApp"
             newRow.insertCell(-1).innerHTML = "<td><p>"+divElement.firstChild.innerHTML+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +divElement.firstChild.innerHTML+ "'></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' max='" +divElement.dataset.quantity+ "'class='form-control'></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='number' value='" +divElement.dataset.price+ "'class='form-control' disabled><input type='hidden'  name='price[]' min='1' value='" +divElement.dataset.price+ "'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+            newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='form-control btn btn-danger'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
 
@@ -100,7 +100,7 @@ ng-app="ourAngularJsApp"
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='btn btn-success form-control'></td>";
                     }else{
                         var newRow = modalRefundTbody.insertRow(-1);
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
@@ -647,7 +647,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Purchase Price</th>
-                                        <th class="text-left">Action</th>
+                                        <th class="text-left">Return Item/s</th>
                                     </tr>
                                 </thead>
 
@@ -673,7 +673,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Price</th>
-                                        <th class="text-left">Action</th>
+                                        <th class="text-left">Remove Item/s</th>
                                     </tr>
                                 </thead>
                                 <tbody id="inExchangeTbody">

@@ -370,8 +370,8 @@ public function createPurchasesFilter(Request $request){
         return $request->all();
 
     }
-    public function createRefund(){
-        //query
+    public function createRefund(Request $request){
+        return $request->all();
     }
 
     public function createReturnsFilter(Request $request){

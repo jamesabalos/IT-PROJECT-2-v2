@@ -71,7 +71,7 @@ ng-app="ourAngularJsApp"
             newRow.insertCell(-1).innerHTML = "<td><p>"+divElement.firstChild.innerHTML+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +divElement.firstChild.innerHTML+ "'></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' max='" +divElement.dataset.quantity+ "'class='form-control'></td>";
             newRow.insertCell(-1).innerHTML = "<td><input type='number' value='" +divElement.dataset.price+ "'class='form-control' disabled><input type='hidden'  name='price[]' min='1' value='" +divElement.dataset.price+ "'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='form-control btn btn-danger'><i class='glyphicon glyphicon-remove'></i></button></td>";
+            newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
         }
 
@@ -100,12 +100,15 @@ ng-app="ourAngularJsApp"
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='btn btn-success form-control'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
                     }else{
                         var newRow = modalRefundTbody.insertRow(-1);
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
+                        
                     }
                 }
 
@@ -414,16 +417,29 @@ ng-app="ourAngularJsApp"
         $('#formRefund').on('submit',function(e){
             e.preventDefault();
             var data = $(this).serialize();           
+            var itemIds = [];
+            var quantity = [];
+            var status = [];
+            console.log( ($("#refundTbody tr td:nth-child(4)")[0].firstChild).checked )
+            for(var i=0; i < $("#refundTbody tr").length ;i++ ){
+                if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
+                    itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
+                    status.push( $("#refundTbody tr td:nth-child(5)")[i].firstChild.value );
+                }
+            }
+            console.log(status)
             
             $.ajax({
                 type:'POST',
                 url: "{{route('admin.createRefund')}}",
-                // data:{
-                //     'name': arrayOfData[1].value,
-                // },
-                data:data,
+                data:{
+                    'itemIds': itemIds,
+                    'status': status,
+                },
+                // data:data,
 
                 success:function(data){
+                    console.log(data)
                     //close modal
                     $('#refund').modal('hide')                    
                     //prompt the message
@@ -647,7 +663,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Purchase Price</th>
-                                        <th class="text-left">Return Item</th>
+                                        <th class="text-left">Check item to return</th>
                                     </tr>
                                 </thead>
 
@@ -673,7 +689,7 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Price</th>
-                                        <th class="text-left">Remove Item</th>
+                                        <th class="text-left">Remove</th>
                                     </tr>
                                 </thead>
                                 <tbody id="inExchangeTbody">
@@ -778,7 +794,8 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Purchase Price</th>
-                                        {{-- <th class="text-left">Action</th> --}}
+                                        <th class="text-left">Check</th>
+                                        <th class="text-left">Status</th>
                                     </tr>
                                 </thead>
 

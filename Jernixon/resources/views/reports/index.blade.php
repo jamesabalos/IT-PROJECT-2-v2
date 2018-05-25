@@ -256,6 +256,8 @@ class="active"
     });
 
     $("#soldButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";
+        document.getElementById("errorDateRangeReport").innerHTML ="";
         $("div[style='display: block;']").slideUp("slow");
         $("#soldDiv").slideDown("slow").removeClass('hidden');
             
@@ -282,6 +284,7 @@ class="active"
     
 
     $("#lostButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";
         $("div[style='display: block;']").slideUp("slow");
         $("#lostItemsDiv").slideDown("slow").removeClass('hidden');
         
@@ -308,7 +311,7 @@ class="active"
             <div class="card">
                 <div class="header">
                     <div class = "content" >
-                        <div class="hidden alert-danger text-center">
+                        <div id="errorDateRangeReport" class="hidden alert-danger text-center">
                         </div>
                         <div id = "buttons">
                             <button type="button" id="soldButton" class="btn btn-basic active" style="width:31%;font-size: 20px">Sold Items</button>

@@ -340,30 +340,20 @@ ng-app="ourAngularJsApp"
 
                         //remove all rows in cart
                         $("#cartTbody tr").remove();
-
-                        //prompt the message
-
-                        //                            $("#successDiv").css("display:block");
-                        //                            document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
-                        //                            $("#successDiv").slideDown("slow");
-
-                        $("#successDiv p").remove();
-                        $("#successDiv").removeClass("alert-danger hidden").addClass("alert-success")
+                        $("#salesErrorDiv p").remove();
+                        $("#salesErrorDiv").removeClass("alert-danger hidden").addClass("alert-success")
                         // .addClass("alert-success")
                             .html("<h3>Transaction successful</h3>");
-
-                        //                            $("#successDiv").css("display:block");
-                        $("#successDiv").slideDown("slow")
+                        $("#salesErrorDiv").slideDown("slow")
                             .delay(1000)                        
                             .hide(1500);
-                        //                            $("#successDiv").removeAttribute("style")
 
                         //refresh dataTable
                         $("#dashboardDatatable").DataTable().ajax.reload();
                     }else{
-                        $("#successDiv").css("display","block");
-                        $("#successDiv").removeClass("alert-success hidden").addClass("alert-danger");
-                        $("#successDiv").html("Receipt Number duplicated");
+                        $("#salesErrorDiv").css("display","block");
+                        $("#salesErrorDiv").removeClass("alert-success hidden").addClass("alert-danger");
+                        $("#salesErrorDiv").html("Receipt Number duplicated");
                     }
 
 
@@ -376,11 +366,11 @@ ng-app="ourAngularJsApp"
                     var response = data.responseJSON;
                     console.log(response)
                     //prompt the message
-                        $("#successDiv").removeClass("alert-success").addClass("alert-danger");
-                    $("#successDiv").hide(500);
-                    $("#successDiv").removeClass("hidden");
-                    $("#successDiv").slideDown("slow", function() {
-                        $("#successDiv").html(function(){
+                        $("#salesErrorDiv").removeClass("alert-success").addClass("alert-danger");
+                    $("#salesErrorDiv").hide(500);
+                    $("#salesErrorDiv").removeClass("hidden");
+                    $("#salesErrorDiv").slideDown("slow", function() {
+                        $("#salesErrorDiv").html(function(){
                             var addedHtml="";
                             for (var key in response.errors) {
                                 addedHtml += "<p>"+response.errors[key]+"</p>";
@@ -513,7 +503,7 @@ ng-app="ourAngularJsApp"
                                     </div>
                                 </div>
                             </div>
-                            <div class="alert alert-danger text-center hidden" id="successDiv">
+                            <div class="alert alert-danger text-center hidden" id="salesErrorDiv">
                             </div>
                         </div>
                     </div> 
@@ -744,7 +734,7 @@ ng-app="ourAngularJsApp"
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
                 var salesPrice = "<p class='form-control' style='color:green;' ng-init='" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
-                var temp2 = $compile(salesPrice)($scope);
+                var temp2 = $compile(salesPrice)($scope); 
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
                 // var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";

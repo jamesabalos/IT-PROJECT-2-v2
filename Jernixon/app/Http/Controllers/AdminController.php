@@ -115,6 +115,20 @@ class AdminController extends Controller
             ->make(true);
 
     }
+    public function getDamagedForSales(){
+        $data = DB::table('damaged_salable_items')
+            ->join('products', 'products.product_id' , '=' , 'damaged_salable_items.product_id')
+            ->join('salable_items', 'salable_items.product_id' , '=' , 'damaged_salable_items.product_id')
+            ->select('products.product_id', 'description', 'wholesale_price' , 'damaged_selling_price' , 'damaged_salable_items.quantity')
+            ->where([['status' , '=' , 'available'],['damaged_salable_items.quantity', '>', 0]]);
+
+        return Datatables::of($data)
+            ->addColumn('action',function($data){
+                return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'><i class = 'fa fa-plus'></i>Add</button>";
+            })
+            ->make(true);
+
+    }
 
     public function createSales(Request $request){
         $this->validate($request,[

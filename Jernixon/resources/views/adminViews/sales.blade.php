@@ -277,6 +277,18 @@ ng-app="ourAngularJsApp"
     function saveCustomerAddress(e){
         localStorage.setItem("customerAddress",e.value);       
     }
+    function damaged(){
+        $('#dsButton').addClass('active');
+        $('#siButton').removeClass('active');
+        $('#dsDiv').removeClass('hidden');
+        $('#siDiv').addClass('hidden');
+    }
+    function salable(){
+        $('#dsButton').removeClass('active');
+        $('#siButton').addClass('active');
+        $('#dsDiv').addClass('hidden');
+        $('#siDiv').removeClass('hidden');
+    }
 
     $(document).ready(function(){
 
@@ -424,10 +436,16 @@ ng-app="ourAngularJsApp"
             <div class="header">
                 <div class="row">
                     <div id = "buttons" class = "text-center">
-                        <button type="button" id="siButton" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
-                        <button type="button" id="dsButton" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
+
+
+                        <button type="button" id="siButton" onclick="salable()" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
+                        <button type="button" id="dsButton" onclick="damaged()" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
                     </div>
+<<<<<<< HEAD
                     <div id = "siDiv">
+=======
+                    <div id = "siDiv" class=''>
+>>>>>>> 6bafb6f715b75dc367172f9c4c76ea81e297d7e5
                     <div class="content table-responsive table-full-width table-stripped">
                         <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
                             {{--  <thead> 
@@ -450,19 +468,8 @@ ng-app="ourAngularJsApp"
                     </div>
                     <div id = "dsDiv" class="hidden">
                         <div class="content table-responsive table-full-width table-stripped">
-                        <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
-                            {{--  <thead> 
-                            <tr>
-                                <th>Id</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Qty in Stock</th>
-                                <th>Purchase Price</th>
-                                <th>Selling Price</th>
-                                <th>Add Item</th>
-                            </tr>
-                            </thead>  --}}
-                            {{--  <tbody id="dashboardDatatable">  --}}
+                        <table class="table table-hover table-bordered" style="width:100%" id="damageDatatable">
+                            
                             <tbody>
 
                             </tbody>
@@ -751,6 +758,44 @@ ng-app="ourAngularJsApp"
 
 
                 }
+
+
+
+            });
+            $('#damageDatatable').DataTable({
+               
+                "ajax":  "{{ route('dashboard.getDamaged') }}",
+           
+
+
+                columns:[{
+                    "title": "Damaged Salable Item",
+                    "data": "description"
+                    },     
+                    {
+                        "title": "Qty of Damaged Item",
+                        "data": "quantity"
+                    },
+                    {
+                        "title": "Purchase Price",
+                        "data": "wholesale_price"
+                    },
+                    {
+                        "title": "Damaged Item Selling Price",
+                        "data": "damaged_selling_price"
+                    },
+                    {
+                        "title": "Add Item",
+                        "data": "action"
+                    }
+                    ],
+
+                createdRow: function(row, data, dataIndex) {
+                    $compile(angular.element(row).contents())($scope);
+                },
+
+                
+                
 
 
             });

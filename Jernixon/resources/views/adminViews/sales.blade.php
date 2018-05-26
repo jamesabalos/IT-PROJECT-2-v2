@@ -406,25 +406,6 @@ ng-app="ourAngularJsApp"
 
     });
 
-    $("#siButton").click(function(){
-       document.getElementById("errorDateRangeReport").innerHTML ="";
-        document.getElementById("errorDateRangeReport").innerHTML ="";
-        $("div[style='display: block;']").slideUp("slow");
-        $("#siDiv").slideDown("slow").removeClass('hidden');
-            
-            $("#siButton").addClass('active');
-            $("#dsButton").removeClass('active');
-            $("#dsDiv").addClass('hidden');
-    });
-
-    $("#dsButton").click(function(){
-        $("div[style='display: block;']").slideUp("slow");
-        $("#dsDiv").slideDown("slow").removeClass('hidden');
-            
-            $("#siButton").removeClass('active');
-            $("#dsButton").addClass('active');
-            $("#siDiv").addClass('hidden');
-    });
 
 </script>
 
@@ -446,8 +427,7 @@ ng-app="ourAngularJsApp"
                         <button type="button" id="siButton" onclick="salable()" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
                         <button type="button" id="dsButton" onclick="damaged()" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
                     </div>
-                    
-                    <div id = "siDiv">
+                    <div id = "siDiv" class=''>
                     <div class="content table-responsive table-full-width table-stripped">
                         <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
                             {{--  <thead> 
@@ -684,7 +664,6 @@ ng-app="ourAngularJsApp"
                     document.getElementById("receiptNumber").value = localStorage.getItem("receiptNumber");
                     document.getElementById("customerName").value = localStorage.getItem("customerName");
                     document.getElementById("address").value = localStorage.getItem("customerAddress");
-                    
                     var totalSalesNgBinds ="";
                     for(var i=0; i<len; i++) {
 
@@ -749,14 +728,16 @@ ng-app="ourAngularJsApp"
                         ////////////////////
                         $('#dashboardDatatable').DataTable().search("").draw();
                         //////////////////////
+
+                    
                     //initialize totalSales
-                    document.getElementById("totalSalesDiv").innerHTML="";
-                    if(totalSalesNgBinds === ""){
-                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
-                    }else{
-                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
-                    }
-                    angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+                    // document.getElementById("totalSalesDiv").innerHTML="";
+                    // if(totalSalesNgBinds === ""){
+                    //     var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+                    // }else{
+                    //     var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+                    // }
+                    // angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
                 }
@@ -853,6 +834,19 @@ ng-app="ourAngularJsApp"
                                     // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
                                     totalSalesNgBinds += "+" + splitBind[0];
                                 }
+                            }else{
+                                var myItemJSON = JSON.parse(localStorage.getItem(key));  
+                                var temp2 = document.createElement('div');
+                                temp2.innerHTML = myItemJSON.salesPrice;  
+                                if(totalSalesNgBinds==""){
+                                    var splitBind = temp2.firstChild.getAttribute("ng-bind").split(" ");                                
+                                    // totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
+                                    totalSalesNgBinds += splitBind[0];
+                                }else{
+                                    var splitBind = temp2.firstChild.getAttribute("ng-bind").split(" ");
+                                    // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
+                                    totalSalesNgBinds += "+" + splitBind[0];
+                                }
                             }
 
                         }
@@ -860,13 +854,30 @@ ng-app="ourAngularJsApp"
                         ////////////////////
                         $('#damageDatatable').DataTable().search("").draw();
                         //////////////////////
+
                     //initialize totalSales
-                    document.getElementById("totalSalesDiv").innerHTML="";
+                    // if( document.getElementById("totalSalesDiv").firstElementChild.getAttribute("ng-bind") === "" ){
+                    //     console.log(document.getElementById("totalSalesDiv").firstElementChild.getAttribute("ng-bind"))
+                    //     // document.getElementById("totalSalesDiv").innerHTML="";
+                    //     if(totalSalesNgBinds === ""){
+                    //         var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+                    //     }else{
+                    //         var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+                    //     }
+                    // }else{
+                    //     var temp3 = document.getElementById("totalSalesDiv").firstElementChild.getAttribute("ng-bind").split(" ")[0] +"+"+totalSalesNgBinds;
+                    //     console.log(document.getElementById("totalSalesDiv").firstElementChild.getAttribute("ng-bind").split(" ")[0] +"+"+totalSalesNgBinds)
+                    //     var price = "<p class='form-control' style='color:green' ng-bind='" +temp3+ " |number:2'></p>";
+                    // }
+
+                    
+                     document.getElementById("totalSalesDiv").innerHTML="";
                     if(totalSalesNgBinds === ""){
                         var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
                     }else{
                         var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
                     }
+
                     angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
@@ -978,7 +989,11 @@ ng-app="ourAngularJsApp"
                         var newNgBinds = itemName+"SP";
                     }
                 }else{
-                    var newNgBinds = ngBindAttributes.split(" ")[0] + "+" + itemName+"SP";
+                    if( event.currentTarget.dataset.status === "damaged" ){
+                        var newNgBinds = ngBindAttributes.split(" ")[0] + "+damaged" + itemName+"SP";
+                    }else{
+                        var newNgBinds = ngBindAttributes.split(" ")[0] + "+" + itemName+"SP";
+                    }
                 }
 
                 console.log("TScorrect: " + newNgBinds)

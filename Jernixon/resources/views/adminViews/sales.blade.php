@@ -389,6 +389,25 @@ ng-app="ourAngularJsApp"
 
     });
 
+    $("#siButton").click(function(){
+       document.getElementById("errorDateRangeReport").innerHTML ="";
+        document.getElementById("errorDateRangeReport").innerHTML ="";
+        $("div[style='display: block;']").slideUp("slow");
+        $("#siDiv").slideDown("slow").removeClass('hidden');
+            
+            $("#siButton").addClass('active');
+            $("#dsButton").removeClass('active');
+            $("#dsDiv").addClass('hidden');
+    });
+
+    $("#dsButton").click(function(){
+        $("div[style='display: block;']").slideUp("slow");
+        $("#dsDiv").slideDown("slow").removeClass('hidden');
+            
+            $("#siButton").removeClass('active');
+            $("#dsButton").addClass('active');
+            $("#siDiv").addClass('hidden');
+    });
 
 </script>
 
@@ -408,7 +427,7 @@ ng-app="ourAngularJsApp"
                         <button type="button" id="siButton" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
                         <button type="button" id="dsButton" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
                     </div>
-                    <div id = "siDiv" style = "display: block;">
+                    <div id = "siDiv">
                     <div class="content table-responsive table-full-width table-stripped">
                         <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
                             {{--  <thead> 
@@ -429,7 +448,7 @@ ng-app="ourAngularJsApp"
                         </table>
                     </div>
                     </div>
-                    <div id = "dsDiv" style = "display:none">
+                    <div id = "dsDiv" class="hidden">
                         <div class="content table-responsive table-full-width table-stripped">
                         <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
                             {{--  <thead> 

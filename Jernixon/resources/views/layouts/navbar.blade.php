@@ -292,11 +292,11 @@
                             <a href={{route('salesAssistant.sales')}}><i class="fa fa-dollar"></i><p>Sales</p></a>
                         </li>
                         
-                        <li   @yield('return_link')>
+                        <li @yield('return_link')>
                             <a href={{route('salesAssistant.return')}}><i class="fa fa-mail-reply"></i><p>Returns</p></a>
                         </li>
                         
-                        <li   @yield('stockAdjustment_link')>
+                        <li @yield('stockAdjustment_link')>
                             <a href={{route('salesAssistant.stockAdjustment')}}><i class="fa fa-adjust"></i><p>Stock Adjustment</p></a>
                         </li>
                         {{-- <li @yield('physicalCount_link')>

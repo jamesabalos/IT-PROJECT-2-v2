@@ -441,11 +441,8 @@ ng-app="ourAngularJsApp"
                         <button type="button" id="siButton" onclick="salable()" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
                         <button type="button" id="dsButton" onclick="damaged()" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
                     </div>
-<<<<<<< HEAD
+                    
                     <div id = "siDiv">
-=======
-                    <div id = "siDiv" class=''>
->>>>>>> 6bafb6f715b75dc367172f9c4c76ea81e297d7e5
                     <div class="content table-responsive table-full-width table-stripped">
                         <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
                             {{--  <thead> 

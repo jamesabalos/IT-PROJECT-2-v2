@@ -257,7 +257,6 @@ class="active"
 
     $("#soldButton").click(function(){
         document.getElementById("errorDateRangeReport").innerHTML ="";
-        document.getElementById("errorDateRangeReport").innerHTML ="";
         $("div[style='display: block;']").slideUp("slow");
         $("#soldDiv").slideDown("slow").removeClass('hidden');
             
@@ -271,6 +270,7 @@ class="active"
     
 
     $("#damgaedButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";
         $("div[style='display: block;']").slideUp("slow");
         $("#damagedItemsDiv").slideDown("slow").removeClass('hidden');
         

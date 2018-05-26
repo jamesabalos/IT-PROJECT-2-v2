@@ -207,6 +207,7 @@ ng-app="ourAngularJsApp"
             var newRow = thatTbody.insertRow(-1);
             newRow.insertCell(-1).innerHTML = button.parentNode.parentNode.firstChild.innerHTML;
         button.parentNode.parentNode.setAttribute("class","hidden");
+        enablePrintButton();
             
             // newRow.innerHTML = a.parentNode.parentNode.innerHTML ;
             // thatTbody.append(newTr);
@@ -257,8 +258,8 @@ ng-app="ourAngularJsApp"
                 //show the plus sign button again in dataTables
                 document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
             }
-            function enablePrintButton(e){
-        if( document.getElementById("receiptNumber").value !== "" && document.getElementById("customerName").value !== "" && document.getElementById("today").value !== "" ){
+    function enablePrintButton(e){
+        if( document.getElementById("cartTbody").rows.length > 0 &&  document.getElementById("receiptNumber").value !== "" && document.getElementById("customerName").value !== "" && document.getElementById("today").value !== "" && document.getElementById("address").value !== ""){        
             document.getElementById("printButton").removeAttribute("disabled")
         }else{
             document.getElementById("printButton").setAttribute("disabled","disabled")
@@ -488,7 +489,7 @@ ng-app="ourAngularJsApp"
                                 <div class="row">
                                     <div class="col-md-0" margin>
                                         {{Form::label('address', 'Address:')}}
-                                        {{Form::text('address','',['class'=>'form-control','onchange'=>'saveCustomerAddress(this)'])}}
+                                        {{Form::text('address','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerAddress(this)'])}}
                                         
                                     </div>
                                     {{-- <div class="col-md-2" margin>
@@ -725,6 +726,7 @@ $('#dashboardDatatable').DataTable({
 
                         }
                     }
+                    enablePrintButton();                    
                         ////////////////////
                         $('#dashboardDatatable').DataTable().search("").draw();
                         //////////////////////
@@ -877,6 +879,7 @@ $('#dashboardDatatable').DataTable({
                 localStorage.removeItem(data[0].innerHTML);
                 
                 event.currentTarget.parentNode.parentNode.remove();
+                enablePrintButton();
                 
                 var thatTable = document.querySelectorAll('#cartTable > tbody > tr')
                 var numberOfRows = thatTable.length;

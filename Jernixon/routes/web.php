@@ -101,6 +101,7 @@ Route::get('admin/dashboard/createFastMovingItem', 'AdminController@createFastMo
 Route::get('admin/dashboard/createSlowMovingItem', 'AdminController@createSlowMovingItems')->name('admin.dashboard.createSlowMovingItem');
 
 Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('dashboard.getItems');
+Route::get('admin/sales/getDamaged', 'AdminController@getDamagedForSales')->name('dashboard.getDamaged');
 Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');
 Route::Post('admin/sales/createSales', 'AdminController@createSales')->name('admin.createSales');
 

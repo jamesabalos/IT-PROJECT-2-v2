@@ -459,6 +459,9 @@ ng-app="ourAngularJsApp"
                                 <a href = "#return" data-toggle="modal">
                                     <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
                                 </a>
+                                <a href = "#refund" data-toggle="modal">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Refund</button>
+                                </a>
                             </p>
                         </div>
                         <div class="text-right col-md-8" style="margin-top: 10px">
@@ -469,8 +472,8 @@ ng-app="ourAngularJsApp"
                             <button onclick="createReport(this)">Filter</button>
                         </div>
                     </div>
-                    <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="returnsDataTable">
+                    <div class="content table-responsive table-full-width table-stripped">
+                        <table class="table table-hover table-bordered" style="width:100%" id="returnsDataTable">
                             <thead>
                                 <tr>
                                     <th class="text-left">OR Numbers</th>
@@ -506,25 +509,19 @@ ng-app="ourAngularJsApp"
                 <div class="panel panel-default">
                     <div id="errorDivCreateReturns" class="hidden">
                     </div>
-
+                    <div id = "buttons">
+                        <button type="button" id="customerButton" class="btn btn-basic active" style="width:49.6%;font-size: 16px">Customer Return Item(s)</button>
+                        <button type="button" id="supplierButton" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
+                    </div>
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-info-sign"></span>
                             Information
                         </strong>
                     </div>
-                    <div class="panel-body">
 
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Date', 'Date:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{Form::date('Date','',['class'=>'form-control','value'=>'','id' =>'today'])}}
-                                </div>
-                            </div>
-                        </div>
+                                        <div id = "customerDiv">
+                    <div class="panel-body">
 
                         <div class="form-group">                                
                             <div class="row">
@@ -532,13 +529,25 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Official Receipt No:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
-                                    <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
-                                    <div id="resultORNumberDiv" class="searchResultDiv">
-                                    </div>
+                                  {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
+                        <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
+                                     <div id="resultORNumberDiv" class="searchResultDiv">
+                            </div>
                                 </div>
                             </div>
                         </div>
+            
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date', 'Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::date('Date','',['class'=>'form-control','id' =>'today','value'=>''])}}
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="form-group">    
                             <div class="row">
@@ -547,10 +556,54 @@ ng-app="ourAngularJsApp"
                                 </div>
                                 <div class="col-md-9">
                                     {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}
-                                    <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
+                        <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    </div>
+
+                    <div id = "supplierDiv" class = "hidden">
+                    <div class="panel-body">
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Delivery Receipt No.:')}}
+                                </div>
+                                <div class="col-md-9">
+                                  {{--  {{ Form::number('Delivery Receipt No.','',['class'=>'form-control','min'=>'1']) }}  --}}
+                                     <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
+                                    <div id="resultDRNumberDiv" class="searchResultDiv">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date', 'Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::date('Date','',['class'=>'form-control','id' =>'today','value'=>''])}}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Supplier', 'Supplier:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('Supplier','',['class'=>'form-control','value'=>'','disabled'])}}
+                                    <input id="returnSupplierName" type="hidden" name="supplierName" class="form-control border-input" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
@@ -609,6 +662,108 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="text-right">                                           
+                        <div class="col-md-12">   
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="refund" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+
+            {!! Form::open(['method'=>'post','id'=>'formRefund']) !!}
+
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"><i class=" fa fa-reply" style="margin-right: 10px"></i> Refund</h3>
+            </div>
+            <div class = "modal-body">  
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                             Information
+                        </strong>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Official Receipt No:')}}
+                                </div>
+                                <div class="col-md-9">
+                                  {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
+                        <input autocomplete="off" id="refundSearchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input" required>
+                                     <div id="refundORNumberDiv" class="searchResultDiv">
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date', 'Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::date('Date','',['class'=>'form-control','id' =>'rtoday','value'=>'','required'])}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('refundCustomer', 'Customer:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('refundCustomer','',['class'=>'form-control','value'=>'','disabled'])}}
+                        <input id="refundCustomerName" type="hidden" name="customerName" class="form-control border-input" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="fa fa-reply"></span>
+                            Return Item
+                        </strong>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Qty</th>
+                                        <th class="text-left">Purchase Price</th>
+                                        <th class="text-left">Check</th>
+                                        <th class="text-left">Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="refundTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="errorDivCreateRefund" class="hidden">
+
+                    </div>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

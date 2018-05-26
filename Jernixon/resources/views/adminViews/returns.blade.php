@@ -600,12 +600,17 @@ ng-app="ourAngularJsApp"
             </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
+                    <div id = "buttons">
+                        <button type="button" id="customerButton" class="btn btn-basic active" style="width:49.6%;font-size: 16px">Customer Return Item(s)</button>
+                        <button type="button" id="supplierButton" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
+                    </div>
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-info-sign"></span>
                              Information
                         </strong>
                     </div>
+                    <div id = "customerDiv">
                     <div class="panel-body">
 
                         <div class="form-group">                                
@@ -646,6 +651,51 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
                     </div>
+                    </div>
+
+                    <div id = "supplierDiv" class = "hidden">
+                    <div class="panel-body">
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Delivery Receipt No.:')}}
+                                </div>
+                                <div class="col-md-9">
+                                  {{--  {{ Form::number('Delivery Receipt No.','',['class'=>'form-control','min'=>'1']) }}  --}}
+                                     <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
+                                    <div id="resultDRNumberDiv" class="searchResultDiv">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date', 'Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::date('Date','',['class'=>'form-control','id' =>'today','value'=>''])}}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">    
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Supplier', 'Supplier:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('Supplier','',['class'=>'form-control','value'=>'','disabled'])}}
+                                    <input id="returnSupplierName" type="hidden" name="supplierName" class="form-control border-input" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">

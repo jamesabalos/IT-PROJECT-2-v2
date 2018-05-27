@@ -6,8 +6,8 @@ class="active"
 @endsection
 
 @section('headScript')
-    <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
 @endsection
 
 @extends('inc.headScripts')
@@ -74,7 +74,7 @@ class="active"
                                         <th class="text-left" style="width: 5%">Selling Price</th>
                                         <th class="text-left" style="width: 5%">Reorder Level</th>
                                         <!--th>Created At</th>
-                                        <th>Updated At</th-->
+<th>Updated At</th-->
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
@@ -124,7 +124,7 @@ class="active"
             type:'Get',
             url:'items/getDamagePrice/' + id,
             success:function(data){
-                
+
                 if(data != 'Empty'){
                     $('#damaged_price').removeClass('hidden');
                     // alert(data);
@@ -158,27 +158,27 @@ class="active"
     function formUpdateChangeStatus(buttonValue,itemId){
         // button.preventDefault(); //prevent the page to load when submitting form
         // var fullRoute = "/admin/items/updateStatus/"+button.currentTarget.attributes[0].value; //id
-         var fullRoute = "/admin/items/updateStatus"; //id
-            var status = "";
-            if( buttonValue === "Enable"){
-                status="unavailable";
-            }else{
-                status="available";
-            }
-            $.ajax({
-                type:'Post',
-                url: fullRoute,
-                dataType:'json',
-                data:{
-                    'itemId':itemId,
-                    'status': status //'status': unavailable | available 
-                },
-                success:function(data){
-                    $('#disableConfirmation').modal('hide');                                       
-                    $("#tableItems").DataTable().ajax.reload();//reload the dataTables                        
+        var fullRoute = "/admin/items/updateStatus"; //id
+        var status = "";
+        if( buttonValue === "Enable"){
+            status="unavailable";
+        }else{
+            status="available";
+        }
+        $.ajax({
+            type:'Post',
+            url: fullRoute,
+            dataType:'json',
+            data:{
+                'itemId':itemId,
+                'status': status //'status': unavailable | available 
+            },
+            success:function(data){
+                $('#disableConfirmation').modal('hide');                                       
+                $("#tableItems").DataTable().ajax.reload();//reload the dataTables                        
 
-                }
-            });
+            }
+        });
 
     }
     function viewItemHistory(button){
@@ -190,44 +190,44 @@ class="active"
             // dataType:"json",
             success:function(data){
                 $("#historyTbody tr").remove();
-                
+
                 var result = "";
-//                 for (var i = 0; i < data.length; i++) {
-//                     result += "<div class='card'>";
-//                     if(data[i][0] === "added"){
-//                         result += "<div class='card-container bg-success' style='padding: 1em; margin-bottom: -1.7em'>\
-// <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Added</b></p>\
-// <p style='font-size: 12px'><b>Supplied by " +data[i][4]+ "</b></p>\
-// <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-//     </div>\
-//     </div>";
-//                     }else{
-//                         if(data[i][1] === "bought"){
-//                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
-// <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
-// <p style='font-size: 12px'><b>Bought by " +data[i][4]+ "</b></p>\
-// <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-//     </div>\
-//     </div>";
+                //                 for (var i = 0; i < data.length; i++) {
+                //                     result += "<div class='card'>";
+                //                     if(data[i][0] === "added"){
+                //                         result += "<div class='card-container bg-success' style='padding: 1em; margin-bottom: -1.7em'>\
+                // <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Added</b></p>\
+                // <p style='font-size: 12px'><b>Supplied by " +data[i][4]+ "</b></p>\
+                // <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                //     </div>\
+                //     </div>";
+                //                     }else{
+                //                         if(data[i][1] === "bought"){
+                //                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
+                // <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+                // <p style='font-size: 12px'><b>Bought by " +data[i][4]+ "</b></p>\
+                // <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                //     </div>\
+                //     </div>";
 
-//                         }else if(data[i][1] === "damaged"){
-//                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
-// <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
-// <p style='font-size: 12px'><b>Damaged item.</b></p>\
-// <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-//     </div>\
-//     </div>";
-//                         }else{
-//                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
-// <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
-// <p style='font-size: 12px'><b>Lost item.</b></p>\
-// <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
-//     </div>\
-//     </div>";
-//                         }
+                //                         }else if(data[i][1] === "damaged"){
+                //                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
+                // <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+                // <p style='font-size: 12px'><b>Damaged item.</b></p>\
+                // <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                //     </div>\
+                //     </div>";
+                //                         }else{
+                //                             result += "<div class='card-container bg-danger' style='padding: 1em; margin-bottom: -1.7em'>\
+                // <p style='font-size: 12px'><b>"+data[i][3]+" Item(s) Subtracted</b></p>\
+                // <p style='font-size: 12px'><b>Lost item.</b></p>\
+                // <p style='font-size: 12px'><b>Date: " +data[i]['date']+ "</b></p>\
+                //     </div>\
+                //     </div>";
+                //                         }
 
-//                     }
-//                 }
+                //                     }
+                //                 }
                 var thatTbody = document.getElementById("historyTbody");
                 if(data.length == 0){
                     thatTbody.insertRow(-1).innerHTML = "<td colspan='5' class='text-center'>No history</td>"
@@ -251,7 +251,7 @@ class="active"
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
-                            
+
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i][1]+ "</td>";
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
                         }
@@ -304,18 +304,18 @@ class="active"
             // {data: 'product_id'},
             {data: 'description', 
             name: 'products.description'},
-            {data: 'quantity', 
-            name: 'salable_items.quantity'},
-            {data: 'wholesale_price', 
-            name: 'salable_items.wholesale_price'},
-            {data: 'retail_price', 
-            name: 'salable_items.retail_price'},
-            {data: 'reorder_level'},
-            // {data: 'created_at'},
-            // {data: 'updated_at'},
-            {data: 'action'},
-                        ]
-                        });
+                                   {data: 'quantity', 
+                                    name: 'salable_items.quantity'},
+                                   {data: 'wholesale_price', 
+                                    name: 'salable_items.wholesale_price'},
+                                   {data: 'retail_price', 
+                                    name: 'salable_items.retail_price'},
+                                   {data: 'reorder_level'},
+                                   // {data: 'created_at'},
+                                   // {data: 'updated_at'},
+                                   {data: 'action'},
+                                   ]
+                                   });
 
 
         $('#formAddNewItem').on('submit',function(e){
@@ -639,10 +639,10 @@ class="active"
                 <p class="text-center"> There are still <span id="itemQuantityLeft"></span> left. Do you want to continue? </p>
                 <div class="panel-body">
                     <div class="text-center">
-                     
-                            <button id="statusAndId" data-status="" data-item="" type="button" onclick="formUpdateChangeStatus(this.dataset.status,this.dataset.item)" class="btn btn-success">Continue</button>
-                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                      
+
+                        <button id="statusAndId" data-status="" data-item="" type="button" onclick="formUpdateChangeStatus(this.dataset.status,this.dataset.item)" class="btn btn-success">Continue</button>
+                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+
                     </div>
                 </div>
             </div>    
@@ -653,13 +653,13 @@ class="active"
 <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
-                <div class="modal-header">
-                        <div id="errorDivEditItem" class="hidden">
-        
-                        </div>
-                        <button class="close" data-dismiss="modal">&times;</button>
-                        <h3 class="modal-title"><i class=" fa fa-history" style="margin-right: 8px"></i> History</h3>
-                    </div>
+            <div class="modal-header">
+                <div id="errorDivEditItem" class="hidden">
+
+                </div>
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"><i class=" fa fa-history" style="margin-right: 8px"></i> History</h3>
+            </div>
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -670,9 +670,9 @@ class="active"
                     </div>
                     <div class="panel-body" style="overflow-y: scroll; max-height:60%;">
                         {{-- <div class="autocomplete" style="width:200px;">
-                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
-                            <div id="searchResultDiv" class="searchResultDiv">
-                            </div>
+                        <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Search">
+                        <div id="searchResultDiv" class="searchResultDiv">
+                        </div>
                         </div>
                         <div id="historyResult">
                         </div> --}}
@@ -680,12 +680,12 @@ class="active"
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="text-left">No. of items</th>
-                                        <th class="text-left">Action</th>
-                                        <th class="text-left">Bought/Supplied/Stock adjusted by</th>
-                                        <th class="text-right">Amount</th>
-										<th class="text-left">Reason</th>
-                                        <th class="text-left">Date</th>
+                                        <th class="text-left">Date/Time</th>
+                                        <th class="text-left">Activity</th>
+                                        <th class="text-left">Initial Inventory</th>
+                                        <th class="text-left">Inventory In</th>
+                                        <th class="text-left">Inventory Out</th>
+                                        <th class="text-left">Balance</th>
                                     </tr>
                                 </thead>
                                 <tbody id="historyTbody">

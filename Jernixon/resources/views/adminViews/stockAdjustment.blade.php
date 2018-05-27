@@ -64,7 +64,7 @@ class="active"
               newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='itemName[]' value='" +divElement.firstChild.innerHTML+ "'>"+divElement.firstChild.innerHTML+ "</td>";
               newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
             //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
-              newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
+              newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='damaged'>DAMAGED</option><option class='form-control'  value='damaged salable'>DAMAGED SALABLE</option><option class='form-control' value='lost'>LOST</option></select></td>";
 
               newRow.insertCell(-1).innerHTML = "<td><input  class=' form-control  dp' id='damaged_price"+divElement.id+"' disabled  type='number' name='dprice[]' value='0' ></input></td>";
 
@@ -367,7 +367,6 @@ class="active"
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Qty</th>
                                     <th class="text-left">Status</th>
-                                    <th class="text-left">Price</th>
                                     <th class="text-left">Date</th>
                                 </tr>
                             </thead>
@@ -385,7 +384,7 @@ class="active"
 
 @section('modals')
 <div id="adjustment" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
+    <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
 
             {!! Form::open(['method'=>'post','id'=>'formAdjustment']) !!}
@@ -436,6 +435,7 @@ class="active"
                                         <th class="text-left">Item Name</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left">Status</th>
+                                        <th class="text-left">Price</th>
                                         <th class="text-left">Remove</th>
                                     </tr>
                                 </thead>

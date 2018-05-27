@@ -1,5 +1,5 @@
 @extends('layouts.navbar')
-@section('returns_link')
+@section('return_link')
 class="active"
 @endsection
 

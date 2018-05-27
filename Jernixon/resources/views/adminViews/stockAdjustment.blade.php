@@ -65,6 +65,9 @@ class="active"
               newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
             //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
               newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='lost'>LOST</option></select></td>";
+
+              newRow.insertCell(-1).innerHTML = "<td><input  class=' form-control  dp' id='damaged_price"+divElement.id+"' disabled  type='number' name='dprice[]' value='0' ></input></td>";
+
               newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
           }
@@ -72,6 +75,16 @@ class="active"
           document.getElementById("searchItemInput").value = "";
           document.getElementById("searchResultDiv").innerHTML = "";
 
+      }
+      function getsalable(inm){
+        var name = $( "#foo"+inm).val();
+        
+        if(name == 'damaged salable'){
+          $('#damaged_price'+inm).removeClass('hidden');
+          $('#damaged_price'+inm).prop("disabled", false);
+        }else{
+          $('#damaged_price'+inm).prop("disabled", true);
+        }
       }
 
       function searchItem(a){
@@ -354,6 +367,7 @@ class="active"
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Qty</th>
                                     <th class="text-left">Status</th>
+                                    <th class="text-left">Price</th>
                                     <th class="text-left">Date</th>
                                 </tr>
                             </thead>

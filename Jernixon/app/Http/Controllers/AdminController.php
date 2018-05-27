@@ -364,6 +364,7 @@ public function createPurchasesFilter(Request $request){
         ]);
 
         $arrayCount = count($request->productId);
+        
         for($i = 0;$i<$arrayCount;$i++){
             $insertReturns = DB::table('returns')->insert(
                 ['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->exchangeQuantity[$i]]
@@ -543,6 +544,22 @@ public function createPurchasesFilter(Request $request){
 
                 $insertDamagedItems = DB::table('damaged_items')->insert(
                     ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                    
+                    DB::table('salable_items')
+                        ->where('product_id', $request->productId[$i])
+                        ->decrement('quantity', $request->quantity[$i]);
+            }elseif($request->status[$i] == "damaged salable"){
+                $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date]
+                );
+
+                $data = DB::table('stock_adjustments')
+                    ->select('stock_adjustments_id')
+                    ->latest()
+                    ->first();
+
+                $insertDamagedItems = DB::table('damaged_salable_items')->insert(
+                    ['product_id' => $request->productId[$i],'damaged_selling_price'=>$request->dprice[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
                     
                     DB::table('salable_items')
                         ->where('product_id', $request->productId[$i])

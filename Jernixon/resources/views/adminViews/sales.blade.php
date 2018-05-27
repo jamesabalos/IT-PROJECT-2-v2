@@ -371,9 +371,6 @@ ng-app="ourAngularJsApp"
                         $("#salesErrorDiv").html("Receipt Number duplicated");
                     }
 
-
-
-
                 },
 
 

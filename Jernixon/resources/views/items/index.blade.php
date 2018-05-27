@@ -680,7 +680,12 @@ class="active"
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Date/Time</th>
+                                        <th class="text-left">No. of Items</th>
+                                        <th class="text-left">Action</th>
+                                        <th class="text-left">Bought/Supplied/Stock Adjusted by</th>
+                                        <th class="text-left">Amount</th>
+                                        <th class="text-left">Reason</th>
+                                        <th class="text-left">Date</th>
                                         <th class="text-left">Activity</th>
                                         <th class="text-left">Initial Inventory</th>
                                         <th class="text-left">Inventory In</th>

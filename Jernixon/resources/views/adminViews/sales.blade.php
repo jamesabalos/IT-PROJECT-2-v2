@@ -328,6 +328,7 @@ ng-app="ourAngularJsApp"
                 data:data,
                 //_token:$("#_token"),
                 success:function(data){
+                    // console.log(data)
                     if(data === "successful"){
                         document.getElementById("formSales").reset();
                         var items = [];
@@ -898,12 +899,16 @@ ng-app="ourAngularJsApp"
                 var lastRow = thatTable.rows[numberOfRows-1];
                 var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
 
-                var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='description[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
+                if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
+                    var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='damagedRetailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='damagedDescription[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
+                }else{
+                    var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='description[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
+                }                
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);    
                 
                 if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
-                    var inputNumber = "<input style='width: 100px;' type='number' ng-init='damaged" +itemName+ " =1' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='damaged" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                    var inputNumber = "<input style='width: 100px;' type='number' ng-init='damaged" +itemName+ " =1' name='damagedQuantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='damaged" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 }else{
                     var inputNumber = "<input style='width: 100px;' type='number' ng-init='" +itemName+ " =1' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 }
@@ -922,7 +927,7 @@ ng-app="ourAngularJsApp"
 
                 // var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";
                 if( event.currentTarget.dataset.status === "damaged" ){ // damaged item
-                    var removeButton = "<button data-status='damaged' class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
+                    var removeButton = "<button data-status='damaged' class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='damagedProductIds[]' value='"+(event.currentTarget.id).split("_")[0]+"'>";
                 }else{
                     var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
                 }

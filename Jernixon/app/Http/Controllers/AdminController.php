@@ -137,8 +137,10 @@ class AdminController extends Controller
             'quantity' => 'required',
             'Date' => 'required',
         ]);
-
+        
+        // return $request->all();
         $arrayCount = count($request->productIds);
+        $arrayCount2 = count($request->damagedProductIds);
         $mytime = date('Y-m-d H:i:s');
         $successful = true;
 
@@ -171,6 +173,11 @@ class AdminController extends Controller
 
                 }
             }
+
+            for($i = 0; $i < $arrayCount2; $i++){
+                //query damage_salable
+            }
+
             return "successful";
         }else{
             return "unsuccessful";

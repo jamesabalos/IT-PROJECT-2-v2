@@ -48,9 +48,9 @@ Route::get('salesAssistant/notification','HomeController@getNotification')->name
 Route::get('salesAssistant/dashboard/getItems', 'HomeController@getItemsForDashboard')->name('SADashboard.getItems');
 
 Route::get('salesAssistant/sales/getItemsSales', 'HomeController@getItemsForSales')->name('salesAssistant.getItemsSales');
+Route::get('salesAssistant/sales/getDamaged', 'HomeController@getDamagedForSales')->name('salesAssistant.getDamaged');
 Route::get('salesAssistant/sales', 'HomeController@sales')->name('salesAssistant.sales');
 Route::Post('salesAssistant/sales/createSales', 'HomeController@createSales')->name('salesAssistant.createSales');
-Route::get('salesAssistant/sales/getDamaged', 'HomeController@getDamagedForSales')->name('salesAssistant.getDamaged');
 
 Route::get('salesAssistant/return', 'HomeController@return')->name('salesAssistant.return');
 Route::get('salesAssistant/returns/getReturns', 'HomeController@getReturns')->name('salesAssistant.returns.getReturns');

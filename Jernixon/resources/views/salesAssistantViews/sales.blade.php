@@ -104,7 +104,7 @@ ng-app="ourAngularJsApp"
 
 </style>
 <script>
-        function printReceipt(){
+    function printReceipt(){
         // var data = $("#formSales").serialize();   
         var arrayOfData = $("#formSales").serializeArray();  
         console.log( arrayOfData )
@@ -124,22 +124,22 @@ ng-app="ourAngularJsApp"
         for(var i = 0; i < rows.length; i++){  
             if(m<7){
                 items += "<tr>\
-                            <td class='quantity'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td class='unit'></td>\
-                            <td class='desc'>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td class='unitp'>"+rows[i].cells[1].innerText+"</td>\
-                            <td class='amount'>"+rows[i].cells[3].innerText+"</td>\
-                            <tr>\
+                            <td class='quantity nl'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td class='unit nl'></td>\
+                            <td class='desc nl'>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td class='unitp nl'>"+rows[i].cells[1].innerText+"</td>\
+                            <td class='amount nl'>"+rows[i].cells[3].innerText+"</td>\
+                        <tr>\
                         ";
                 m++;
                 
             }else{
                 items += "<tr>\
-                            <td class='quantity'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td class='unit'></td>\
-                            <td class='desc'>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td class='unitp'>"+rows[i].cells[1].innerText+"</td>\
-                            <td class='amount'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='quantity nl'>"+rows[i].cells[2].lastChild.value+"</td>\
+                            <td class='unit nl'></td>\
+                            <td class='desc nl'>"+rows[i].cells[0].innerHTML+"</td>\
+                            <td class='unitp nl'>"+rows[i].cells[1].innerText+"</td>\
+                            <td class='amount nl'>"+rows[i].cells[3].innerText+"</td>\
                             <tr>\
                         ";
                 m=0;
@@ -166,7 +166,7 @@ ng-app="ourAngularJsApp"
                         <div class='blank'></div>\
                         <div id='custname'>"+arrayOfData[2]['value']+"</div>\
                         <div class='blank'></div>\
-                        <div id='rdate'>"+arrayOfData[3]['value']+"</div>\
+                        <div id='rdate' class = 'text-right col-md-4'>"+arrayOfData[3]['value']+"</div>\
                     </div>\
                     <div class='des'>\
                         <div class='blank'></div>\
@@ -178,8 +178,8 @@ ng-app="ourAngularJsApp"
                                 itemw[m]
                             +"</tbody></table>\
                         </div>\
-                        <p class='pag'>Page "+(m+1)+" of "+page+" </p>\
                         <p style='text-align:right' class='pagebreak'>TOTAL AMOUNT DUE: "+totalSalesPrice+"</p>\
+                        <p class='pag'>Page "+(m+1)+" of "+page+" </p>\
                         </div>";
                     // console.log("\n Receipt "+ itemw[m]+ " page "+page);
             }
@@ -199,67 +199,74 @@ ng-app="ourAngularJsApp"
         // $(button i).remove()
         //.show(500);
         //.html("<button class='btn btn-danger' onclick='addItemToCart(this)'>Remove</button>")
-        
-        
+
+
         // var data  = $(button.parentNode.parentNode.innerHTML).slice(0);
         // if( localStorage.getItem(data[0].innerHTML) == null){
-            var thatTbody = document.getElementById("cartTbody");
-            var newRow = thatTbody.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = button.parentNode.parentNode.firstChild.innerHTML;
+        var thatTbody = document.getElementById("cartTbody");
+        var newRow = thatTbody.insertRow(-1);
+        newRow.insertCell(-1).innerHTML = button.parentNode.parentNode.firstChild.innerHTML;
+        if( button.dataset.status === "damaged" ){
+        newRow.setAttribute("style","background-color:#ff8080");
+        }
         button.parentNode.parentNode.setAttribute("class","hidden");
+
         enablePrintButton();
-            
-            // newRow.innerHTML = a.parentNode.parentNode.innerHTML ;
-            // thatTbody.append(newTr);
-            // for(var i=0; i<data.length;i++){
-                
-            //     newRow.insertCell(-1).innerHTML = data[i].innerHTML;
-            // }
-            
-            
-            // newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>";
-            ///// newRow.insertCell(-1).innerHTML ="<td ng-bind='" +data[0].innerHTML+"'></td>";
-            // newRow.insertCell(-1).innerHTML ="<td><h2 ng-bind='" +data[0].innerHTML+ "'></h2></td>";
-            // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +button.getAttribute("id")+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
-            
-            //add to localStorage
-            // var itemObject = {
-                //     item: data[0].innerHTML,
-                //     quantityLeft: data[2].innerHTML,
-                //     wholeSalePrice: data[3].innerHTML,
-                //     retailPrice: data[3].innerHTML,
-                //     quantityPurchase: "1",
-                //     //totalPrice:data[5].innerHTML,
-                //     itemId:button.getAttribute("id")
-                
-                // };
-                
-                // var jsonObject = JSON.stringify(itemObject);
-                // localStorage.setItem(data[0].innerHTML,jsonObject);
-                
-                // }
-                
-            }
-            
-            function removeRowInCart(button){
-                document.getElementById(button.getAttribute("data-item-id")).parentNode.parentNode.removeAttribute("class","hidden");
-                
-                //var i = a.parentNode.parentNode.rowIndex;
-                //document.getElementById("cartTable").deleteRow(i);
-                // var row = button.parentNode.parentNode; //row
-                // $(row).hide(500)
-                // $(row).remove();
-                // });
-                
-                //remove item in local storage
-                var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
-                localStorage.removeItem(data[0].innerHTML);
-                
-                //show the plus sign button again in dataTables
-                document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
-            }
+        // button.parentNode.parentNode.setAttribute("name","description[]");
+
+        // newRow.innerHTML = a.parentNode.parentNode.innerHTML ;
+        // thatTbody.append(newTr);
+        // for(var i=0; i<data.length;i++){
+
+        //     newRow.insertCell(-1).innerHTML = data[i].innerHTML;
+        // }
+
+
+        // newRow.insertCell(-1).innerHTML = "<td><input class='ng-valid ng-valid-min ng-not-empty ng-dirty ng-valid-number ng-touched' type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>";
+        ///// newRow.insertCell(-1).innerHTML ="<td ng-bind='" +data[0].innerHTML+"'></td>";
+        // newRow.insertCell(-1).innerHTML ="<td><h2 ng-bind='" +data[0].innerHTML+ "'></h2></td>";
+        // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +button.getAttribute("id")+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
+
+        //add to localStorage
+        // var itemObject = {
+        //     item: data[0].innerHTML,
+        //     quantityLeft: data[2].innerHTML,
+        //     wholeSalePrice: data[3].innerHTML,
+        //     retailPrice: data[3].innerHTML,
+        //     quantityPurchase: "1",
+        //     //totalPrice:data[5].innerHTML,
+        //     itemId:button.getAttribute("id")
+
+        // };
+
+        // var jsonObject = JSON.stringify(itemObject);
+        // localStorage.setItem(data[0].innerHTML,jsonObject);
+
+        // }
+
+    }
+
+    function removeRowInCart(button){
+        document.getElementById(button.getAttribute("data-item-id")).parentNode.parentNode.removeAttribute("class","hidden");
+
+        //var i = a.parentNode.parentNode.rowIndex;
+        //document.getElementById("cartTable").deleteRow(i);
+        // var row = button.parentNode.parentNode; //row
+        // $(row).hide(500)
+        // $(row).remove();
+        // });
+
+        //remove item in local storage
+        var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
+        localStorage.removeItem(data[0].innerHTML);
+
+        //show the plus sign button again in dataTables
+        document.getElementById(button.getAttribute("data-item-id")).removeAttribute("style");
+    }
+
     function enablePrintButton(e){
-        if( document.getElementById("cartTbody").rows.length > 0 &&  document.getElementById("receiptNumber").value !== "" && document.getElementById("customerName").value !== "" && document.getElementById("today").value !== "" && document.getElementById("address").value !== ""){        
+  
+        if( document.getElementById("cartTbody").rows.length > 0 &&  document.getElementById("receiptNumber").value !== "" && document.getElementById("customerName").value !== "" && document.getElementById("today").value !== "" && document.getElementById("address").value !== ""){
             document.getElementById("printButton").removeAttribute("disabled")
         }else{
             document.getElementById("printButton").setAttribute("disabled","disabled")
@@ -288,125 +295,117 @@ ng-app="ourAngularJsApp"
         $('#dsDiv').addClass('hidden');
         $('#siDiv').removeClass('hidden');
     }
-            $(document).ready(function(){
 
-                let today = new Date().toISOString().substr(0, 10);
-                document.querySelector("#today").value = today;
+    $(document).ready(function(){
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                
-                $('#formSales').on('submit',function(e){
-                    e.preventDefault();
-                    var data = $(this).serialize();   
-                    var arrayOfData = $(this).serializeArray();           
+        let today = new Date().toISOString().substr(0, 10);
+        document.querySelector("#today").value = today;
 
-                    var thatTbody = $("#cartTbody tr td:first-child");
-                   
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-                    $.ajax({
-                        type:'POST',
-                        // url:'admin/storeNewItem',
-                        url: "{{route('salesAssistant.createSales')}}",
-//                        dataType:'json',
+        $('#formSales').on('submit',function(e){
+            e.preventDefault();
+            var data = $(this).serialize();   
+            var arrayOfData = $(this).serializeArray();           
+ 
+            var thatTbody = $("#cartTbody tr td:first-child");
 
-                        // data:{
-                        //     'name': arrayOfData[1].value,
-                        // },
 
-                        // data:{data},
-                        data:data,
-                        //_token:$("#_token"),
-                        success:function(data){
-                            if(data === "successful"){
-                                document.getElementById("formSales").reset();
-                                var items = [];
-                                var len=localStorage.length;
-                                for(var i=0; i<len; i++) {
-                                    var key = localStorage.key(i);
-                                    var value = localStorage[key];
-                                    if(value.includes("item")){
-                                        items.push(key);
-                                    }
-                                }
+            $.ajax({
+                type:'POST',
+                // url:'admin/storeNewItem',
+                url: "{{route('salesAssistant.createSales')}}",
+                //                        dataType:'json',
 
-                                //delete items in localStorage
-                                for(var i=0; i < items.length; i++){
-                                    localStorage.removeItem(items[i]);
-                                }
-                                //clear total sales
-                                document.getElementById("totalSalesDiv").firstChild.innerHTML="";
-                                
-                                //show the plus sign button again in dataTables
-                                var itemId = $("#cartTbody tr td:nth-child(5) button");
-                                for(var i = 0; i<itemId.length; i++){
-                                document.getElementById(itemId[i].getAttribute("data-item-id")).removeAttribute("style");
-                                }
-                                
-                                //remove all rows in cart
-                                $("#cartTbody tr").remove();
-                                
-                                //prompt the message
-                                
-                                //$("#successDiv").css("display:block");
-                                //document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
-                                //$("#successDiv").slideDown("slow");
-                                
-                                $("#salesErrorDiv p").remove();
-                                $("#salesErrorDiv").removeClass("alert-danger hidden").addClass("alert-success")
-                                // .addClass("alert-success")
-                                    .html("<h3>Transaction successful</h3>");
+                // data:{
+                //     'name': arrayOfData[1].value,
+                // },
 
-                                // $("#successDiv").css("display:block");
-                                $("#salesErrorDiv").slideDown("slow")
-                                                .delay(1000)                        
-                                                .hide(1500);
-                                 //$("#successDiv").removeAttribute("style")
-
-                                //refresh dataTable
-                                $("#dashboardDatatable").DataTable().ajax.reload();
-                            }else{
-                                $("#salesErrorDiv").css("display","block");
-                                $("#salesErrorDiv").removeClass("alert-success hidden").addClass("alert-danger");
-                                $("#salesErrorDiv").html("Receipt Number duplicated");
+                // data:{data},
+                data:data,
+                //_token:$("#_token"),
+                success:function(data){
+                    if(data === "successful"){
+                        document.getElementById("formSales").reset();
+                        var items = [];
+                        var len=localStorage.length;
+                        for(var i=0; i<len; i++) {
+                            var key = localStorage.key(i);
+                            var value = localStorage[key];
+                            if(value.includes("item")){
+                                items.push(key);
                             }
-
-                        },
-                        
-                        error:function(data){
-                            var response = data.responseJSON;
-                            console.log(response)
-
-                             //prompt the message
-                            $("#salesErrorDiv").css("display","block");
-                           // document.getElementById("successDiv").innerHTML = "<h3>" +data+ "</h3>"
-                           // $("#successDiv").slideDown("slow");
-                           // $("#successDiv").css("display:block");
-                            $("#salesErrorDiv").removeClass("alert-success hidden").addClass("alert-danger");
-                            $("#salesErrorDiv").html(function(){
-                                var addedHtml="";
-                                for (var key in response.errors) {
-                                    addedHtml += "<p>"+response.errors[key]+"</p>";
-                                }
-                                return addedHtml;
-                            });
                         }
+
+                        //delete items in localStorage
+                        for(var i=0; i < items.length; i++){
+                            localStorage.removeItem(items[i]);
+                        }
+                        //clear total sales
+                        document.getElementById("totalSalesDiv").firstChild.innerHTML="";
+
+                        //show the plus sign button again in dataTables
+                        // var itemId = $("#cartTbody tr td:nth-child(5) button");
+                        // for(var i = 0; i<itemId.length; i++){
+                        //     document.getElementById(itemId[i].getAttribute("data-item-id")).removeAttribute("style");
+                        // }
+
+                        //remove all rows in cart
+                        $("#cartTbody tr").remove();
+                        $("#salesErrorDiv p").remove();
+                        $("#salesErrorDiv").removeClass("alert-danger hidden").addClass("alert-success")
+                        // .addClass("alert-success")
+                            .html("<h3>Transaction successful</h3>");
+                        $("#salesErrorDiv").slideDown("slow")
+                            .delay(1000)                        
+                            .hide(1500);
+
+                        //refresh dataTable
+                        $("#dashboardDatatable").DataTable().ajax.reload();
+                    }else{
+                        $("#salesErrorDiv").css("display","block");
+                        $("#salesErrorDiv").removeClass("alert-success hidden").addClass("alert-danger");
+                        $("#salesErrorDiv").html("Receipt Number duplicated");
+                    }
+
+                },
+
+
+                error:function(data){
+                    var response = data.responseJSON;
+                    console.log(response)
+                    //prompt the message
+                        $("#salesErrorDiv").removeClass("alert-success").addClass("alert-danger");
+                    $("#salesErrorDiv").hide(500);
+                    $("#salesErrorDiv").removeClass("hidden");
+                    $("#salesErrorDiv").slideDown("slow", function() {
+                        $("#salesErrorDiv").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
                     });
-                    // .done(function(data) {
-                    //          alert("success!!!!"); 
-                    // });
-
-
-                })
-                
-                
+                    
+                }
             });
-            
-            
-        </script>
+            // .done(function(data) {
+            //          alert("success!!!!"); 
+            // });
+
+
+        })
+
+
+    });
+
+
+</script>
         
         @endsection
         
@@ -421,51 +420,40 @@ ng-app="ourAngularJsApp"
                     <div class="header">
                         <div class="row">
                             <div id = "buttons" class = "text-center">
-                            <button type="button" id="siButton" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
-                            <button type="button" id="dsButton" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
+                            <button type="button" id="siButton" class="btn btn-basic active" onclick="salable()" style="width:48%;font-size: 20px">Salable Items</button>
+                            <button type="button" onclick="damaged()" id="dsButton" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
                         </div>
                             <div id = "siDiv" style = "">
-                            <div class="content table-responsive table-full-width table-stripped">
-                                <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
-                                    {{--  <thead> 
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Description</th>
-                                            <th>Category</th>
-                                            <th>Quantity in Stock</th>
-                                            <th>Purchase Price</th>
-                                            <th>Selling Price</th>
-                                            <th>Add to Cart</th>
-                                        </tr>
-                                    </thead>  --}}
-                                    {{--  <tbody id="dashboardDatatable">  --}}
+                                <div class="content table-responsive table-full-width table-stripped">
+                                    <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
+                                        {{--  <thead> 
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Description</th>
+                                                <th>Category</th>
+                                                <th>Quantity in Stock</th>
+                                                <th>Purchase Price</th>
+                                                <th>Selling Price</th>
+                                                <th>Add to Cart</th>
+                                            </tr>
+                                        </thead>  --}}
+                                        {{--  <tbody id="dashboardDatatable">  --}}
+                                            <tbody>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+                            <div id = "dsDiv" class="hidden">
+                                <div class="content table-responsive table-full-width table-stripped">
+                                    <table class="table table-hover table-bordered" style="width:100%" id="damageDatatable">
+                                        
                                         <tbody>
-                                            
+
                                         </tbody>
                                     </table>
+                                    </div>
                                 </div>
-                            </div>
-                            <div id = "siDiv" class = "hidden">
-                            <div class="content table-responsive table-full-width table-stripped">
-                                <table class="table table-hover table-bordered" style="width:100%" id="">
-                                    {{--  <thead> 
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Description</th>
-                                            <th>Category</th>
-                                            <th>Quantity in Stock</th>
-                                            <th>Purchase Price</th>
-                                            <th>Selling Price</th>
-                                            <th>Add to Cart</th>
-                                        </tr>
-                                    </thead>  --}}
-                                    {{--  <tbody id="dashboardDatatable">  --}}
-                                        <tbody>
-                                            
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -760,7 +748,7 @@ $('#dashboardDatatable').DataTable({
 
             $('#damageDatatable').DataTable({
                
-                "ajax":  "{{ route('dashboard.getDamaged') }}",
+                "ajax":  "{{ route('salesAssistant.getDamaged') }}",
                 columns:[{
                     "title": "Damaged Salable Item",
                     "data": "description"

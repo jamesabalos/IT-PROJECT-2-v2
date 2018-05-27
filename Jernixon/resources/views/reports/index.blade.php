@@ -78,7 +78,14 @@ class="active"
                                     {extend: 'copy', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
                                     {extend: 'excel', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
                                     {extend: 'csv', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
-                                    {extend: 'pdf', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'pdfHtml5', title: 'Jernixon Motorparts and Accessories',
+                    customize: function ( doc ) {
+                    doc.content.splice( 1, 0, {
+                        margin: [ 0, 0, 0, 12 ],
+                        alignment: 'center',
+                        
+                    } );
+                }},
                                     {extend: 'print', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'}
                                     
                                 ]
@@ -157,7 +164,7 @@ class="active"
                                     {extend: 'copy', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
                                     {extend: 'excel', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
                                     {extend: 'csv', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
-                                    {extend: 'pdf', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
+                                    {extend: 'pdf', title: 'Jernixon Motorparts and Access - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
                                     {extend: 'print', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'}
                                     
                                 ]

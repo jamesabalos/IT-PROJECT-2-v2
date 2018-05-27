@@ -686,7 +686,6 @@ class="active"
                                         <th class="text-left">Amount</th>
                                         <th class="text-left">Reason</th>
                                         <th class="text-left">Date</th>
-                                        <th class="text-left">Activity</th>
                                         <th class="text-left">Initial Inventory</th>
                                         <th class="text-left">Inventory In</th>
                                         <th class="text-left">Inventory Out</th>

@@ -48,7 +48,7 @@ Route::get('salesAssistant/notification','HomeController@getNotification')->name
 Route::get('salesAssistant/dashboard/getItems', 'HomeController@getItemsForDashboard')->name('SADashboard.getItems');
 
 Route::get('salesAssistant/sales/getItemsSales', 'HomeController@getItemsForSales')->name('salesAssistant.getItemsSales');
-Route::get('salesAssistant/sales/getDamaged', 'HomeController@getDamagedForSales')->name('salesAssistant.getDamaged');
+Route::get('salesAssistant/sales/getDamaged', 'HomeController@getDamagedForSales')->name('salesAssistant.dashboard.getDamaged');
 Route::get('salesAssistant/sales', 'HomeController@sales')->name('salesAssistant.sales');
 Route::Post('salesAssistant/sales/createSales', 'HomeController@createSales')->name('salesAssistant.createSales');
 
@@ -137,7 +137,6 @@ Route::Post('admin/items/addQuantity','AdminController@addQuantity');
 Route::Post('admin/items/subtractQuantity','AdminController@subtractQuantity');
 Route::Post('admin/items/returnItem','AdminController@returnItem');
 Route::get('admin/items/getItems', 'AdminController@getItemsForItems')->name('items.getItems');
-Route::get('admin/items/getDamagePrice/{id}', 'AdminController@getDamagePrice')->name('items.getDamagePrice');
 Route::get('admin/items', 'AdminController@items')->name('admin.items');
 
 Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');

@@ -360,11 +360,11 @@ public function createPurchasesFilter(Request $request){
             'price' => 'required',
             'exchangeQuantity' => 'required',
             'customerName' => 'required',
-            'Date' => 'required'
+            'Date' => 'required',
+            'productId' => 'required'
         ]);
 
         $arrayCount = count($request->productId);
-        
         for($i = 0;$i<$arrayCount;$i++){
             $insertReturns = DB::table('returns')->insert(
                 ['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->exchangeQuantity[$i]]
@@ -386,6 +386,27 @@ public function createPurchasesFilter(Request $request){
 
     }
     public function createRefund(Request $request){
+        $this->validate($request,[
+            'officialReceiptNumber' => 'required',
+            'customerName' => 'required',
+            'Date' => 'required',
+            'productId' => 'required'
+        ]);
+
+        // $arrayCount = count($request->productId);
+        // for($i = 0;$i<$arrayCount;$i++){
+        //     $insertDamagedItems = DB::table('damaged_items')->insert(
+        //         ['product_id' => $request->productId[$i], 'quantity' => $request->quantityDamage[$i], 'created_at' => date('Y-m-d H:i:s')]
+        //     );
+        //     }
+
+        //     if( $request->quantityUndamage[$i] > 0 ){
+        //         $insertDamagedItems = DB::table('damaged_salable_items')->insert(
+        //             ['product_id' => $request->productId[$i],  'damaged_selling_price'=>$request->price[$i], 'quantity' => $request->quantityUndamage[$i], 'created_at' => date('Y-m-d H:i:s')]
+        //         );
+        //     }
+
+
         return $request->all();
     }
 
@@ -548,22 +569,6 @@ public function createPurchasesFilter(Request $request){
                     DB::table('salable_items')
                         ->where('product_id', $request->productId[$i])
                         ->decrement('quantity', $request->quantity[$i]);
-            }elseif($request->status[$i] == "damaged salable"){
-                $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date]
-                );
-
-                $data = DB::table('stock_adjustments')
-                    ->select('stock_adjustments_id')
-                    ->latest()
-                    ->first();
-
-                $insertDamagedItems = DB::table('damaged_salable_items')->insert(
-                    ['product_id' => $request->productId[$i],'damaged_selling_price'=>$request->dprice[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
-                    
-                    DB::table('salable_items')
-                        ->where('product_id', $request->productId[$i])
-                        ->decrement('quantity', $request->quantity[$i]);
             }else{
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
@@ -623,26 +628,6 @@ public function createPurchasesFilter(Request $request){
             })
             ->make(true);
     }
-    public function getDamagePrice($id){
-
-        $data = DB::table('products')
-            ->join('damaged_salable_items', 'products.product_id', '=', 'damaged_salable_items.product_id')
-            ->select('damaged_selling_price')->where('damaged_salable_items.product_id' ,'=',$id)->get();
-        // ->where('status','=','available');
-        // $string = "";
-        // if(true){
-
-        // }
-        // return view(inde)
-            $count =$data->count();
-            if( $count == '0'){
-                return 'Empty';    
-            }else{
-                $getprice=$data->first()->damaged_selling_price;
-                return $getprice;
-            }
-            
-    }
     public function storeNewItem(Request $request){
         $this->validate($request,[
             'description' => 'required',
@@ -701,11 +686,6 @@ public function createPurchasesFilter(Request $request){
         DB::table('salable_items')
             ->where('product_id', $request->productId)
             ->update(['retail_price' => $request->retailPrice,'updated_at' => date('Y-m-d H:i:s')]);
-
-        DB::table('damaged_salable_items')
-            ->where('product_id', $request->productId)
-            ->update(['damaged_selling_price' => $request->Dprice,'updated_at'=>date('Y-m-d H:i:s')]);
-
         return "successful";
 
     }

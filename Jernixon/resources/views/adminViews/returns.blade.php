@@ -100,14 +100,17 @@ ng-app="ourAngularJsApp"
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' onchange='toggleCheckbox(this)' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'></td>";
                     }else{
                         var newRow = modalRefundTbody.insertRow(-1);
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'></td>";
+                        // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' disabled min='0' value='0' max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
                         
                     }
                 }
@@ -138,23 +141,39 @@ ng-app="ourAngularJsApp"
         var exchangeTable = document.getElementById("inExchangeTbody");
         
         if(button.checked){
-            var newRow = exchangeTable.insertRow(-1);
-            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='" +button.getAttribute("data-productId")+ "'>" +data[0].innerHTML+ "</td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' class='form-control' value='" +data[1].innerHTML+ "' max='" +data[1].innerHTML+ "' min='1'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='price[]' value='" +data[2].innerHTML+ "'>" +data[2].innerHTML+ "</td>";
-            button.parentNode.previousSibling.previousSibling.childNodes[0].removeAttribute("disabled");
+            // var newRow = exchangeTable.insertRow(-1);
+            // newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='" +button.getAttribute("data-productId")+ "'>" +data[0].innerHTML+ "</td>";
+            // newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' class='form-control' value='" +data[1].innerHTML+ "' max='" +data[1].innerHTML+ "' min='1'></td>";
+            // newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='price[]' value='" +data[2].innerHTML+ "'>" +data[2].innerHTML+ "</td>";
+            // button.parentNode.previousSibling.previousSibling.childNodes[0].removeAttribute("disabled");
+            button.nextElementSibling.removeAttribute("disabled");
 
         }else{
-            for(var i = 0; i < itemsInExchangeTable.length; i++){
-                if(itemsInExchangeTable[i].outerText === itemName){
+            // for(var i = 0; i < itemsInExchangeTable.length; i++){
+            //     if(itemsInExchangeTable[i].outerText === itemName){
 
-                    document.getElementById("inEchangeTable").deleteRow(i+1);
-                }
-            }
+            //         document.getElementById("inEchangeTable").deleteRow(i+1);
+            //     }
+            // }
+            button.nextElementSibling.setAttribute("disabled",true);
 
         }
     }
-
+    function toggleCheckboxRefund(button){
+        if(button.checked){        
+            button.nextElementSibling.removeAttribute("disabled");            
+            button.nextElementSibling.nextElementSibling.removeAttribute("disabled");
+            button.parentNode.nextElementSibling.firstElementChild.removeAttribute("disabled");
+            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
+            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
+        }else{
+            button.nextElementSibling.setAttribute("disabled",true);                      
+            button.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
+            button.parentNode.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+        }
+    }
     function searchItem(a){
         if(a.value === ""){
             document.getElementById("searchResultDiv").innerHTML ="";   
@@ -373,8 +392,14 @@ ng-app="ourAngularJsApp"
 
         $('#formReturnItem').on('submit',function(e){
             e.preventDefault();
-            var data = $(this).serialize();           
-            
+            var data = $(this).serialize();         
+            // var itemIds = [];    
+            // for(var i=0; i < $("#returnTbody tr").length ;i++ ){
+            //     if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
+            //         itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
+            //     }
+            // }
+
             $.ajax({
                 type:'POST',
                 // url:'admin/storeNewItem',
@@ -390,7 +415,7 @@ ng-app="ourAngularJsApp"
                     //close modal
                     $('#return').modal('hide')                    
                     //prompt the message
-                    $("#successDiv p").remove();
+                    $("#successDiv p").remove();    
                     $("#successDiv").removeClass("hidden")
                             .html("<h3>Return Item(s) successful</h3>");
                     $("#successDiv").css("display:block");                             
@@ -420,26 +445,25 @@ ng-app="ourAngularJsApp"
         $('#formRefund').on('submit',function(e){
             e.preventDefault();
             var data = $(this).serialize();           
-            var itemIds = [];
-            var quantity = [];
-            var status = [];
-            console.log( ($("#refundTbody tr td:nth-child(4)")[0].firstChild).checked )
-            for(var i=0; i < $("#refundTbody tr").length ;i++ ){
-                if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
-                    itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
-                    status.push( $("#refundTbody tr td:nth-child(5)")[i].firstChild.value );
-                }
-            }
-            console.log(status)
+            // var itemIds = [];
+            // var quantity = [];
+            // var status = [];
+            // console.log( ($("#refundTbody tr td:nth-child(4)")[0].firstChild).checked )
+            // for(var i=0; i < $("#refundTbody tr").length ;i++ ){
+            //     if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
+            //         itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
+            //         status.push( $("#refundTbody tr td:nth-child(5)")[i].firstChild.value );
+            //     }
+            // }
             
             $.ajax({
                 type:'POST',
                 url: "{{route('admin.createRefund')}}",
-                data:{
-                    'itemIds': itemIds,
-                    'status': status,
-                },
-                // data:data,
+                // data:{
+                //     'itemIds': itemIds,
+                //     'status': status,
+                // },
+                data:data,
 
                 success:function(data){
                     console.log(data)
@@ -897,9 +921,12 @@ ng-app="ourAngularJsApp"
                                     <tr>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
-                                        <th class="text-left">Purchase Price</th>
+                                        <th class="text-left">Price</th>
                                         <th class="text-left">Check</th>
-                                        <th class="text-left">Status</th>
+                                        {{-- <th class="text-left">Status</th> --}}
+                                        <th class="text-left">Damaged</th>
+                                        <th class="text-left">Undamaged</th>
+                                        <th class="text-left">Damage Salable</th>
                                     </tr>
                                 </thead>
 

@@ -361,6 +361,9 @@ ng-app="ourAngularJsApp"
         let today = new Date().toISOString().substr(0, 10);
         document.querySelector("#today").value = today;
         document.querySelector("#rtoday").value = today;
+        document.querySelector("#suppliertoday").value = today;
+
+
 
         $.ajaxSetup({
             headers: {
@@ -498,6 +501,18 @@ ng-app="ourAngularJsApp"
           });
 
     });
+    function supplier(){
+        $('#supplierDiv').removeClass('hidden');
+        $('#customerDiv').addClass('hidden');
+        $('#customerButton').removeClass('active');
+        $('#supplierButton').addClass('active');
+    }
+    function customer(){
+        $('#supplierDiv').addClass('hidden');
+        $('#customerDiv').removeClass('hidden');        
+        $('#customerButton').addClass('active');
+        $('#supplierButton').removeClass('active');
+    }
 
 </script>
 
@@ -589,7 +604,7 @@ ng-app="ourAngularJsApp"
 
 @section('modals')
 <div id="return" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
+    <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
 
             {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
@@ -601,158 +616,197 @@ ng-app="ourAngularJsApp"
             <div class = "modal-body">  
                 <div class="panel panel-default">
                     <div id = "buttons">
-                        <button type="button" id="customerButton" class="btn btn-basic active" style="width:49.6%;font-size: 16px">Customer Return Item(s)</button>
-                        <button type="button" id="supplierButton" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
+                        <button type="button" id="customerButton" onclick="customer()" class="btn btn-basic active" style="width:49.6%;font-size: 16px">Customer Return Item(s)</button>
+                        <button type="button" id="supplierButton" onclick="supplier()" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
                     </div>
-                    <div class="panel-heading">
-                        <strong>
-                            <span class="glyphicon glyphicon-info-sign"></span>
-                             Information
-                        </strong>
-                    </div>
+                </div>
+                    
                     <div id = "customerDiv">
-                    <div class="panel-body">
-
-                        <div class="form-group">                                
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Official Receipt No:')}}
-                                </div>
-                                <div class="col-md-9">
-                                  {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
-                        <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
-                                     <div id="resultORNumberDiv" class="searchResultDiv">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                     Customer Return Information
+                                </strong>
                             </div>
+                            <div class="panel-body">
+
+                                <div class="form-group">                                
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Official Receipt No:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                          {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
+                                <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
+                                             <div id="resultORNumberDiv" class="searchResultDiv">
+                                    </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-						
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Date', 'Date:')}}
+        						
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Date', 'Date:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{Form::date('Date','',['class'=>'form-control','id' =>'today','value'=>''])}}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-9">
-                                    {{Form::date('Date','',['class'=>'form-control','id' =>'today','value'=>''])}}
-                                </div>
-                            </div>
-                        </div>
 
 
-                        <div class="form-group">    
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Customer', 'Customer:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}
-                        <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-
-                    <div id = "supplierDiv" class = "hidden">
-                    <div class="panel-body">
-
-                        <div class="form-group">                                
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Delivery Receipt No.:')}}
-                                </div>
-                                <div class="col-md-9">
-                                  {{--  {{ Form::number('Delivery Receipt No.','',['class'=>'form-control','min'=>'1']) }}  --}}
-                                     <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
-                                    <div id="resultDRNumberDiv" class="searchResultDiv">
+                                <div class="form-group">    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Customer', 'Customer:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}
+                                <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Date', 'Date:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{Form::date('Date','',['class'=>'form-control','id' =>'today','value'=>''])}}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>
+                                    <span class="fa fa-reply"></span>
+                                    Return Item
+                                </strong>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content table-responsive">
+                                    <table class="table table-bordered table-striped">
+
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Description</th>
+                                                <th class="text-left">Qty</th>
+                                                <th class="text-left">Purchase Price</th>
+                                                <th class="text-left">Check item to return</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="returnItemTbody">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="form-group">    
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Supplier', 'Supplier:')}}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>
+                                    <span class="glyphicon glyphicon-refresh"></span>
+                                    In Exchange for
+                                </strong>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content table-responsive">
+                                    <table id="inEchangeTable" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Description</th>
+                                                <th class="text-left">Qty</th>
+                                                <th class="text-left">Price</th>
+                                                <th class="text-left">Remove</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="inExchangeTbody">
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-md-9">
-                                    {{Form::text('Supplier','',['class'=>'form-control','value'=>'','disabled'])}}
-                                    <input id="returnSupplierName" type="hidden" name="supplierName" class="form-control border-input" >
+                                <div class="autocomplete" style="width:100%;">
+                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
+                                    <div id="searchResultDiv" class="searchResultDiv">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    </div>
 
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>
-                            <span class="fa fa-reply"></span>
-                            Return Item
-                        </strong>
-                    </div>
-                    <div class="modal-body">
-                        <div class="content table-responsive">
-                            <table class="table table-bordered table-striped">
+                    <div id = "supplierDiv" class = "hidden">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                     Return to Supplier Information
+                                </strong>
+                            </div>
+                            <div class="panel-body">
 
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Description</th>
-                                        <th class="text-left">Qty</th>
-                                        <th class="text-left">Purchase Price</th>
-                                        <th class="text-left">Check item to return</th>
-                                    </tr>
-                                </thead>
+                                <div class="form-group">                                
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Delivery Receipt No.:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                          {{--  {{ Form::number('Delivery Receipt No.','',['class'=>'form-control','min'=>'1']) }}  --}}
+                                             <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
+                                            <div id="resultDRNumberDiv" class="searchResultDiv">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Date', 'Date:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{Form::date('Date','',['class'=>'form-control','id' =>'suppliertoday','value'=>''])}}
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <tbody id="returnItemTbody">
-                                </tbody>
-                            </table>
+
+                                <div class="form-group">    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Supplier', 'Supplier:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{Form::text('Supplier','',['class'=>'form-control','value'=>'','disabled'])}}
+                                            <input id="returnSupplierName" type="hidden" name="supplierName" class="form-control border-input" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>
+                                    <span class="fa fa-reply"></span>
+                                    Return to Supplier Item
+                                </strong>
+                            </div>
+                            <div class="modal-body">
+                                <div class="content table-responsive">
+                                    <table class="table table-bordered table-striped">
 
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>
-                            <span class="glyphicon glyphicon-refresh"></span>
-                            In Exchange for
-                        </strong>
-                    </div>
-                    <div class="modal-body">
-                        <div class="content table-responsive">
-                            <table id="inEchangeTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Description</th>
-                                        <th class="text-left">Qty</th>
-                                        <th class="text-left">Price</th>
-                                        <th class="text-left">Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="inExchangeTbody">
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="autocomplete" style="width:100%;">
-                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
-                            <div id="searchResultDiv" class="searchResultDiv">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Description</th>
+                                                <th class="text-left">Qty</th>
+                                                <th class="text-left">Purchase Price</th>
+                                                <th class="text-left">Check item to return</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="returnItemTbody">
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                
+
+                
                 <div id="errorDivCreateReturns" class="hidden">
 
                         </div>

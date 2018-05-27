@@ -605,7 +605,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="submitPurchases" type="button" data-dismiss="modal" class="btn btn-success">Close</button>
+                            <button id="submitPurchases" type="button" data-dismiss="modal" class="btn btn-danger">Close</button>
                         </div>
                     </div>
                 </div>

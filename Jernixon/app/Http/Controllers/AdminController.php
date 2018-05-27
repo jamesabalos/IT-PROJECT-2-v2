@@ -606,6 +606,26 @@ public function createPurchasesFilter(Request $request){
             })
             ->make(true);
     }
+    public function getDamagePrice($id){
+
+        $data = DB::table('products')
+            ->join('damaged_salable_items', 'products.product_id', '=', 'damaged_salable_items.product_id')
+            ->select('damaged_selling_price')->where('damaged_salable_items.product_id' ,'=',$id)->get();
+        // ->where('status','=','available');
+        // $string = "";
+        // if(true){
+
+        // }
+        // return view(inde)
+            $count =$data->count();
+            if( $count == '0'){
+                return 'Empty';    
+            }else{
+                $getprice=$data->first()->damaged_selling_price;
+                return $getprice;
+            }
+            
+    }
     public function storeNewItem(Request $request){
         $this->validate($request,[
             'description' => 'required',
@@ -664,6 +684,11 @@ public function createPurchasesFilter(Request $request){
         DB::table('salable_items')
             ->where('product_id', $request->productId)
             ->update(['retail_price' => $request->retailPrice,'updated_at' => date('Y-m-d H:i:s')]);
+
+        DB::table('damaged_salable_items')
+            ->where('product_id', $request->productId)
+            ->update(['damaged_selling_price' => $request->Dprice,'updated_at'=>date('Y-m-d H:i:s')]);
+
         return "successful";
 
     }

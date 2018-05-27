@@ -115,6 +115,29 @@ class="active"
         document.getElementById("productId").value = button.parentNode.parentNode.lastChild.id;
 
         $("#errorDivEditItem").html("");
+        $("#errorDivEditItem").html("");
+        var id= $('#productId').val();
+        var max = data[3].innerHTML;
+        var min = data[2].innerHTML;
+
+        $.ajax({
+            type:'Get',
+            url:'items/getDamagePrice/' + id,
+            success:function(data){
+                
+                if(data != 'Empty'){
+                    $('#damaged_price').removeClass('hidden');
+                    // alert(data);
+                    console.log(min);
+
+                    document.getElementById("damagedPrice").value = data;
+                    document.getElementById("damagedPrice").setAttribute("min", min);
+                    document.getElementById("damagedPrice").setAttribute("max", max);
+                }else{
+                    $('#damaged_price').addClass('hidden');
+                }
+            }
+        });
 
     }
     function checkItemQuantity(button){
@@ -474,6 +497,7 @@ class="active"
                                 </div>
                             </div>
                         </div>
+
                         @include('inc.messages')
                     </div>
                 </div>
@@ -572,6 +596,16 @@ class="active"
                                 </div>
                                 <div class="col-md-9">                                    
                                     {{Form::number('reOrder Level','',['class'=>'form-control','id'=>'itemReorderLevel'])}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group hidden " id="damaged_price">   
+                            <div class="row">
+                                <div class="col-md-3">                                                             
+                                    {{Form::label('Damage Item Selling Price', 'Damage Item Selling Price:')}}
+                                </div>
+                                <div class="col-md-9">                                    
+                                    {{Form::number('Dprice','',['class'=>'form-control','id'=>'damagedPrice'])}}
                                 </div>
                             </div>
                         </div>

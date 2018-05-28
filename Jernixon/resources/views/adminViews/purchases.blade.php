@@ -611,11 +611,13 @@ ng-app="ourAngularJsApp"
                 </div>
             </div>
         </div>
-        @endsection
+    </div>
+</div>
+@endsection
 
 
-        @section('js_link')
-        <!--   Core JS Files   -->
-        {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>  --}}
-        <script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
-        @endsection
+@section('js_link')
+<!--   Core JS Files   -->
+{{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}" type="text/javascript"></script>  --}}
+<script src="{{asset('assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
+@endsection

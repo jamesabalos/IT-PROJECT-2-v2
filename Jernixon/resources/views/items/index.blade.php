@@ -236,20 +236,20 @@ class="active"
                     for (var i = 0; i < data.length; i++) {
                         var newRow = thatTbody.insertRow(-1);
                         var rows = $("#historyTbody tr");
-                        if(data[i][0] === "Added"){
+                        if(data[i].stat === "Added"){
                             rows[rows.length-1].setAttribute("style","background-color:#66cc66")
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].itemq+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].stat+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].by+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
 
                             /*Jake dito ako nagdagdag oh*/
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+[3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].reason+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].date+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].initial+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].in+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].out+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].balance+ "</td>";
 
                             /* Ito lang yung tinanggal ko
 
@@ -260,18 +260,18 @@ class="active"
                             */
                         }else{
                             rows[rows.length-1].setAttribute("style","background-color:#ff6666")                                        
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][0]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].itemq+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].stat+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].by+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
 
                             /*Jake dito ako nagdagdag oh*/
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+[3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].reason+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].date+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].initial+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].in+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].out+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].balance+ "</td>";
 
                             /* Ito lang yung tinanggal ko
 
@@ -685,7 +685,7 @@ class="active"
 </div>
 
 <div id="viewHistory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog modal-lg" style="width: 1140px;">
         <div class = "modal-content">
             <div class="modal-header">
                 <div id="errorDivEditItem" class="hidden">

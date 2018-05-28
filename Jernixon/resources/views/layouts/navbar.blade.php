@@ -211,7 +211,7 @@
     color:white;
     border:1px solid white;
     }
-	u:hover{
+	ul:hover{
 		cursor:pointer;
 	}
 </style>

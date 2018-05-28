@@ -479,6 +479,7 @@ ng-app="ourAngularJsApp"
                                 </a>
                             </p>
                         </div>
+
                         <div class="text-right col-md-8" style="margin-top: 10px">
                             <label for="from">From</label>
                             <input type="date">
@@ -487,11 +488,11 @@ ng-app="ourAngularJsApp"
                             <button onclick="createReport(this)">Filter</button>
                         </div>
                     </div>
-                    <div class="content table-responsive table-full-width table-stripped">
-                        <table class="table table-hover table-bordered" style="width:100%" id="returnsDataTable">
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-bordered table-striped" id="returnsDataTable">
                             <thead>
                                 <tr>
-                                    <th class="text-left">OR Numbers</th>
+                                    <th class="text-left">OR Number</th>
                                     <th class="text-left">Date Created</th>
                                     <th class="text-left">Action</th>
                                 </tr>
@@ -517,18 +518,16 @@ ng-app="ourAngularJsApp"
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title"><i class="fa fa-reply" style="margin-right: 10px;"></i> Returns</h3>
+                <h3 class="modal-title"><i class=" fa fa-reply" style="margin-right: 10px"></i> Returns</h3>
             </div>
-
             <div class = "modal-body">  
                 <div class="panel panel-default">
-                    <div id="errorDivCreateReturns" class="hidden">
-                    </div>
                     <div id = "buttons">
                         <button type="button" id="customerButton" onclick="customer()" class="btn btn-basic active" style="width:49.6%;font-size: 16px">Customer Return Item(s)</button>
                         <button type="button" id="supplierButton" onclick="supplier()" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
                     </div>
-
+                </div>
+                    
                     <div id = "customerDiv">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -711,6 +710,9 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
                     </div>
+
+                
+
                 
                 <div id="errorDivCreateReturns" class="hidden">
 
@@ -724,10 +726,10 @@ ng-app="ourAngularJsApp"
                     </div>
                 </div>
                 {!! Form::close() !!}
-          </div>
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
 <div id="refund" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
     <div class = "modal-dialog modal-md">
@@ -802,9 +804,12 @@ ng-app="ourAngularJsApp"
                                     <tr>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Qty</th>
-                                        <th class="text-left">Purchase Price</th>
+                                        <th class="text-left">Price</th>
                                         <th class="text-left">Check</th>
-                                        <th class="text-left">Status</th>
+                                        {{-- <th class="text-left">Status</th> --}}
+                                        <th class="text-left">Damaged</th>
+                                        <th class="text-left">Undamaged</th>
+                                        <th class="text-left">Damage Salable</th>
                                     </tr>
                                 </thead>
 
@@ -839,57 +844,57 @@ ng-app="ourAngularJsApp"
                 <h3 class="modal-title">Official Receipt Information</h3>
             </div>
             <div class="modal-body">
+                    <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong>
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                     Information
+                                </strong>
+                            </div>
+                            <div class="panel-body">
+        
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Date', 'Date:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{--  {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
+                                            <p class="form-control" id="returnedDate"></p>   
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">                                
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Official Receipt No:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
+                                            <p class="form-control" id="returnedORNumber"></p>
+
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="form-group">    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Customer', 'Customer:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{--  {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
+                                        <p class="form-control" id="customerName"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
-                            <span class="glyphicon glyphicon-th"></span>
-                            Information
-                        </strong>
-                    </div>
-                    <div class="panel-body">
-
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Date', 'Date:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{--  {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
-                                    <p class="form-control" id="returnedDate"></p>   
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">                                
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Official Receipt No:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
-                                    <p class="form-control" id="returnedORNumber"></p>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">    
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Customer', 'Customer:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{--  {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
-                                    <p class="form-control" id="customerName"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>
-                            <span class="glyphicon glyphicon-th"></span>
+                            <span class="fa fa-reply"></span>
                             Returned Item
                         </strong>
                     </div>
@@ -913,11 +918,11 @@ ng-app="ourAngularJsApp"
                     </div>
                 </div>
                 <div class="row">
-                    <div class="text-right">                                           
-                        <div class="col-md-12">   
-                            <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <div class="text-right">                                           
+                            <div class="col-md-12">   
+                                <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

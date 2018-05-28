@@ -134,7 +134,7 @@ class AdminController extends Controller
         $this->validate($request,[
             'customerName' => 'required',
             'receiptNumber' => 'required',
-            'quantity' => 'required',
+            // 'quantity' => 'required',
             'Date' => 'required',
         ]);
         
@@ -175,7 +175,15 @@ class AdminController extends Controller
             }
 
             for($i = 0; $i < $arrayCount2; $i++){
-                //query damage_salable
+
+                $insert = DB::table('sales')->insert(
+                ['or_number' => $request->receiptNumber, 'product_id' => $request->damagedProductIds[$i], 'customer_name' => $request->customerName, 'price' => $request->damagedRetailPrices[$i],'quantity' => $request->damagedQuantity[$i],'created_at' => $request->Date]
+                );
+                DB::table('damaged_salable_items')
+                //->select('product_id')
+                ->where('product_id', $request->damagedProductIds[$i])
+                //->where('or_number', $request->officialReceiptNumber)
+                ->decrement('quantity', $request->damagedQuantity[$i]);
             }
 
             return "successful";
@@ -350,11 +358,11 @@ public function createPurchasesFilter(Request $request){
 
     }
 
-    public function gerReturnedItems(Request $request){
+    public function getReturnedItems(Request $request){
 
         $data = DB::table('returns')
             ->join('products', 'products.product_id', '=', 'returns.product_id')
-            ->select('returns.product_id','description', 'customer_name', 'quantity', 'price', 'quantity', 'returns.created_at')
+            ->select('returns.product_id','description', 'customer_name', 'damagedQuantity','undamagedQuantity','damagedSalableQuantity', 'price', 'returns.created_at')
             ->where('or_number', '=',$request->ORNumber)
             ->where('returns.created_at', '=',$request->Date)
             ->get();
@@ -364,29 +372,71 @@ public function createPurchasesFilter(Request $request){
     public function createReturnItem(Request $request){
         $this->validate($request,[
             'officialReceiptNumber' => 'required',
-            'price' => 'required',
-            'exchangeQuantity' => 'required',
+            // 'price' => 'required',
+            // 'exchangeQuantity' => 'required',
             'customerName' => 'required',
             'Date' => 'required',
             'productId' => 'required'
         ]);
 
         $arrayCount = count($request->productId);
-        for($i = 0;$i<$arrayCount;$i++){
-            $insertReturns = DB::table('returns')->insert(
-                ['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'quantity' => $request->exchangeQuantity[$i]]
+        for($i = 0;$i<$arrayCount;$i++){    
+
+         $insertReturns = DB::table('returns')->insert(
+               ['or_number' => $request->officialReceiptNumber, 'product_id' => $request->productId[$i], 'customer_name' => $request->customerName, 'price' => $request->price[$i],'damagedQuantity' => $request->quantityDamage[$i],
+               'undamagedQuantity' => $request->quantityUndamage[$i], 'damagedSalableQuantity' => $request->quantityDamageSalable[$i]]
             );
 
-            DB::table('salable_items')
-                ->where('product_id', $request->productId[$i])
-                ->decrement('quantity', $request->exchangeQuantity[$i]);
+            // DB::table('salable_items')
+            //     ->where('product_id', $request->productId[$i])
+            //     ->decrement('quantity', $request->exchangeQuantity[$i]);
 
-            $insertDamagedItems = DB::table('damaged_items')->insert(
-                ['product_id' => $request->productId[$i], 'quantity' => $request->exchangeQuantity[$i], 'created_at' => date('Y-m-d H:i:s')]
-            );
+            // $insertDamagedItems = DB::table('damaged_items')->insert(
+            //     ['product_id' => $request->productId[$i], 'quantity' => $request->exchangeQuantity[$i], 'created_at' => date('Y-m-d H:i:s')]
+            // );
+
             // DB::table('damaged_items')
             // ->where('product_id', $request->productId[$i])
             // ->increment(['quantity' => $request->quantity[$i]]);
+
+            if( $request->quantityDamage[$i] > 0 ){
+                 $insertDamagedItems = DB::table('damaged_items')->insert(
+                         ['product_id' => $request->productId[$i], 'quantity' => $request->quantityDamage[$i], 'created_at' => date('Y-m-d H:i:s')]);
+            }
+              if( $request->quantityUndamage[$i] > 0 ){
+                $data = DB::table('salable_items')
+                ->select('product_id')
+                ->where('product_id', $request->productId[$i]);
+                if( count($data) > 0 ){
+                    $temp = DB::table('salable_items')
+                    ->where('product_id', $request->productId[$i])
+                    ->increment('quantity', $request->quantityUndamage[$i]);
+                }
+              }
+             if( $request->quantityDamageSalable[$i] > 0 ){
+
+                $data2 = DB::table('damaged_salable_items')
+                    ->select('product_id')
+                    ->where('product_id', $request->productId[$i])
+                    ->get();
+                if( count($data2) > 0 ){
+                    $temp = DB::table('damaged_salable_items')
+                    ->where('product_id', $request->productId[$i])
+                    ->increment('quantity', $request->quantityDamageSalable[$i]);
+                }else{
+                    $insertDamagedSalableItems = DB::table('damaged_salable_items')->insert(
+                    ['product_id' => $request->productId[$i],'damaged_selling_price' => $request->price[$i],  'quantity' => $request->quantityDamageSalable[$i], 'created_at' => date('Y-m-d H:i:s')]);
+                }
+            }
+            $data = DB::table('sales')
+            ->select('product_id')
+            ->where('product_id', $request->productId[$i])
+            ->where('or_number', $request->officialReceiptNumber)
+            ->decrement('quantity', $request->totalQuantity[$i]);
+
+
+
+
         }
 
         return $request->all();

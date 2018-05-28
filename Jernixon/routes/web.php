@@ -120,7 +120,7 @@ Route::Post('admin/returns/createReturnItem', 'AdminController@createReturnItem'
 Route::Post('admin/returns/createRefund', 'AdminController@createRefund')->name('admin.createRefund');
 Route::get('admin/returns/getORNumber/{ORNumber}', 'AdminController@getORNumber');
 Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')->name('admin.getORNumberItems');
-Route::get('admin/returns/getReturnedItems', 'AdminController@gerReturnedItems')->name('admin.getReturnedItems');
+Route::get('admin/returns/getReturnedItems', 'AdminController@getReturnedItems')->name('admin.getReturnedItems');
 Route::Post('admin/returns/createReturnsFilter', 'AdminController@createReturnsFilter')->name('returns.createReturnsFilter');
 
 Route::get('admin/physicalCount', 'AdminController@physicalCount')->name('admin.physicalCount');

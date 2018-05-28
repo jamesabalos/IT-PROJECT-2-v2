@@ -348,6 +348,7 @@ ng-app="ourAngularJsApp"
                         //clear total sales
                         document.getElementById("totalSalesDiv").firstChild.innerHTML="";
 
+
                         //show the plus sign button again in dataTables
                         // var itemId = $("#cartTbody tr td:nth-child(5) button");
                         // for(var i = 0; i<itemId.length; i++){
@@ -366,6 +367,13 @@ ng-app="ourAngularJsApp"
 
                         //refresh dataTable
                         $("#dashboardDatatable").DataTable().ajax.reload();
+                        $("#damageDatatable").DataTable().ajax.reload();
+                    
+                    localStorage.clear();
+                    document.getElementById("receiptNumber").value = localStorage.getItem("receiptNumber");
+                    document.getElementById("customerName").value = localStorage.getItem("customerName");
+                    document.getElementById("address").value = localStorage.getItem("customerAddress");
+
                     }else{
                         $("#salesErrorDiv").css("display","block");
                         $("#salesErrorDiv").removeClass("alert-success hidden").addClass("alert-danger");

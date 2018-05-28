@@ -79,6 +79,72 @@ ng-app="ourAngularJsApp"
         document.getElementById("searchResultDiv").innerHTML = "";
 
     }
+    function inputQuantityDamageRefund(input){
+        var total = parseInt(input.value) + parseInt(input.parentNode.nextElementSibling.firstElementChild.value) + parseInt(input.parentNode.nextElementSibling.nextElementSibling.firstElementChild.value);
+        // input.parentNode.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
+        // input.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total);
+        // input.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)- total)
+        if(total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)){
+            document.getElementById("returnSaveButton").setAttribute("disabled",true);
+            $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+            $("#errorDivCreateReturns").html(function(){
+                var addedHtml="";
+                // for (var key in response.errors) {
+                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
+                // }
+                return addedHtml;
+            });
+        }else{
+            document.getElementById("returnSaveButton").removeAttribute("disabled");            
+            $("#errorDivCreateReturns").html("");
+
+        }
+        input.parentNode.previousElementSibling.children[3].setAttribute("value",total);
+    }
+    function inputQuantityUndamageRefund(input){
+        var total = parseInt(input.parentNode.previousElementSibling.firstElementChild.value)+ parseInt(input.value) + parseInt(input.parentNode.nextElementSibling.firstElementChild.value);
+        // input.parentNode.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
+        // input.parentNode.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total);
+        // input.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)- total)
+        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)){
+            document.getElementById("returnSaveButton").setAttribute("disabled",true);            
+            $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+            $("#errorDivCreateReturns").html(function(){
+                var addedHtml="";
+                // for (var key in response.errors) {
+                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
+                // }
+                return addedHtml;
+            });
+        }else{
+            $("#errorDivCreateReturns").html("");
+            document.getElementById("returnSaveButton").removeAttribute("disabled");                        
+        }
+        input.parentNode.previousElementSibling.previousElementSibling.children[3].setAttribute("value",total);
+        
+    }
+    function inputQuantityDamageSalable(input){
+        var total = parseInt(input.parentNode.previousElementSibling.firstElementChild.value) + parseInt(input.parentNode.previousElementSibling.previousElementSibling.firstElementChild.value) + parseInt(input.value);        
+        // input.parentNode.previousElementSibling.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
+        // input.parentNode.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total); 
+        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)){
+            document.getElementById("returnSaveButton").setAttribute("disabled",true);           
+            $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+            $("#errorDivCreateReturns").html(function(){
+                var addedHtml="";
+                // for (var key in response.errors) {
+                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
+                // }
+                return addedHtml;
+            });
+        }else{
+            $("#errorDivCreateReturns").html("");
+            document.getElementById("returnSaveButton").removeAttribute("disabled");            
+        }
+        input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.children[3].setAttribute("value",total);
+        
+    }
+        
     function addReturnItem(div){
         var items =[];
         var thatTbody = $("#returnItemTbody tr td:first-child");
@@ -95,30 +161,30 @@ ng-app="ourAngularJsApp"
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
                 var modalRefundTbody = document.getElementById("refundTbody");
                 for(var i = 0; i < data.length; i++){
-                    if(div.dataset.modal === "searchORNumberInput"){
+                    // if(div.dataset.modal === "searchORNumberInput"){
+                    //     var newRow = modalReturnItemTbody.insertRow(-1);
+                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
+                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    //     newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' onchange='toggleCheckbox(this)' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'></td>";
+                    // }else{
                         var newRow = modalReturnItemTbody.insertRow(-1);
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' onchange='toggleCheckbox(this)' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'></td>";
-                    }else{
-                        var newRow = modalRefundTbody.insertRow(-1);
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]'></td>";
                         // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' disabled min='0' value='0' max='" +data[i].quantity+ "'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputQuantityDamageRefund(this)' disabled min='0' value='0' max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputQuantityUndamageRefund(this)' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputQuantityDamageSalable(this)' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
                         
-                    }
+                    // }
                 }
 
                 document.getElementById("Customer").value = data[0].customer_name;
                 document.getElementById("returnCustomerName").value = data[0].customer_name;
-                document.getElementById("refundCustomer").value = data[0].customer_name;
-                document.getElementById("refundCustomerName").value = data[0].customer_name;
+                // document.getElementById("refundCustomer").value = data[0].customer_name;
+                // document.getElementById("refundCustomerName").value = data[0].customer_name;
               
 
                 
@@ -163,12 +229,17 @@ ng-app="ourAngularJsApp"
         if(button.checked){        
             button.nextElementSibling.removeAttribute("disabled");            
             button.nextElementSibling.nextElementSibling.removeAttribute("disabled");
+            button.nextElementSibling.nextElementSibling.nextElementSibling.removeAttribute("disabled");
             button.parentNode.nextElementSibling.firstElementChild.removeAttribute("disabled");
             button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
             button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
         }else{
+            button.parentNode.nextElementSibling.firstElementChild.setAttribute("max",12);
+            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
+            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
             button.nextElementSibling.setAttribute("disabled",true);                      
             button.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
+            button.nextElementSibling.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
             button.parentNode.nextElementSibling.firstElementChild.setAttribute("disabled",true);
             button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
             button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
@@ -275,8 +346,10 @@ ng-app="ourAngularJsApp"
                 for(var i = 0; i < data.length; i++){
                     var newRow = returnedItemTable.insertRow(-1);
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
 
                 }
 
@@ -380,7 +453,7 @@ ng-app="ourAngularJsApp"
         let today = new Date().toISOString().substr(0, 10);
         document.querySelector("#today").value = today;
         document.querySelector("#rtoday").value = today;
-        document.querySelector("#suppliertoday").value = today;
+        // document.querySelector("#suppliertoday").value = today;
 
 
 
@@ -392,13 +465,14 @@ ng-app="ourAngularJsApp"
 
         $('#formReturnItem').on('submit',function(e){
             e.preventDefault();
-            var data = $(this).serialize();         
-            // var itemIds = [];    
-            // for(var i=0; i < $("#returnTbody tr").length ;i++ ){
-            //     if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
-            //         itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
-            //     }
-            // }
+            var data = $(this).serialize();     
+                
+            var itemIds = [];    
+            for(var i=0; i < $("#returnTbody tr").length ;i++ ){
+                if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
+                    itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
+                }
+            }
 
             $.ajax({
                 type:'POST',
@@ -412,6 +486,7 @@ ng-app="ourAngularJsApp"
                 data:data,
                 //_token:$("#_token"),
                 success:function(data){
+                    console.log(data)
                     //close modal
                     $('#return').modal('hide')                    
                     //prompt the message
@@ -423,7 +498,7 @@ ng-app="ourAngularJsApp"
                         .delay(1000)                        
                         .hide(1500);
                     $("#errorDivCreateReturns").html("");
-
+                    $('#returnOrRefundPrompt').modal('show');
                     $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
 
 
@@ -591,9 +666,9 @@ ng-app="ourAngularJsApp"
                                 <a href = "#return" data-toggle="modal">
                                     <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
                                 </a>
-                                <a href = "#refund" data-toggle="modal">
+                                {{-- <a href = "#refund" data-toggle="modal">
                                     <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Refund</button>
-                                </a>
+                                </a> --}}
                             </p>
                         </div>
 
@@ -711,6 +786,9 @@ ng-app="ourAngularJsApp"
                                                 <th class="text-left">Qty</th>
                                                 <th class="text-left">Purchase Price</th>
                                                 <th class="text-left">Check item to return</th>
+                                                <th class="text-left">Damaged</th>
+                                                <th class="text-left">Undamaged</th>
+                                                <th class="text-left">Damage Salable</th>
                                             </tr>
                                         </thead>
 
@@ -720,7 +798,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default">
+                        {{-- <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
                                     <span class="glyphicon glyphicon-refresh"></span>
@@ -748,10 +826,10 @@ ng-app="ourAngularJsApp"
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
-                    <div id = "supplierDiv" class = "hidden">
+                    {{-- <div id = "supplierDiv" class = "hidden">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
@@ -767,7 +845,6 @@ ng-app="ourAngularJsApp"
                                             {{Form::label('Delivery Receipt No.:')}}
                                         </div>
                                         <div class="col-md-9">
-                                          {{--  {{ Form::number('Delivery Receipt No.','',['class'=>'form-control','min'=>'1']) }}  --}}
                                              <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
                                             <div id="resultDRNumberDiv" class="searchResultDiv">
                                             </div>
@@ -815,7 +892,7 @@ ng-app="ourAngularJsApp"
                                             <tr>
                                                 <th class="text-left">Description</th>
                                                 <th class="text-left">Qty</th>
-                                                <th class="text-left">Purchase Price</th>
+                                                <th class="text-left">Price</th>
                                                 <th class="text-left">Check item to return</th>
                                             </tr>
                                         </thead>
@@ -826,7 +903,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                 
 
@@ -837,7 +914,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" id="returnSaveButton" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -942,7 +1019,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button id="refundSubmitButton" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -1022,9 +1099,11 @@ ng-app="ourAngularJsApp"
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
-                                        <th class="text-left">Quantity</th>
+                                        {{-- <th class="text-left">Quantity</th> --}}
                                         <th class="text-left">Purchase Price</th>
-                                        {{-- <th class="text-left">Action</th> --}}
+                                        <th class="text-left">Damaged</th>
+                                        <th class="text-left">Undamaged</th>
+                                        <th class="text-left">Damage Salable</th>
                                     </tr>
                                 </thead>
 
@@ -1046,6 +1125,32 @@ ng-app="ourAngularJsApp"
     </div>
 </div>
 
+<div id="returnOrRefundPrompt" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+        <div class = "modal-dialog modal-md">
+            <div class = "modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <p></p>
+                </div>
+                <div class = "modal-body">
+                    <div class="text-center">
+                        <strong>
+                            <h3>If you want to exchange item/s, please click Sales.</h3>
+                            {{-- <p>There are still <span id="itemQuantityLeft"></span> left. Do you want to continue?</p> --}}
+                        </strong>
+                    </div>
+                    <div class="panel-body">
+                        <div class="text-center">
+    
+                            <button id="statusAndId" data-status="" data-item="" type="button" onclick="window.location.href='/admin/sales'" class="btn btn-success">Sales</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+    
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
 
 
 @endsection

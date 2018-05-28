@@ -244,12 +244,12 @@ class="active"
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
 
                             /*Jake dito ako nagdagdag oh*/
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+[3]+ "</td>";
 
                             /* Ito lang yung tinanggal ko
 
@@ -266,12 +266,12 @@ class="active"
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i][5]+ "</td>";
 
                             /*Jake dito ako nagdagdag oh*/
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][4]+ "</td>";
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i]['date']+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i][3]+[3]+ "</td>";
 
                             /* Ito lang yung tinanggal ko
 

@@ -84,7 +84,7 @@ ng-app="ourAngularJsApp"
         // input.parentNode.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
         // input.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total);
         // input.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)- total)
-        if(total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)){
+        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) ){
             document.getElementById("returnSaveButton").setAttribute("disabled",true);
             $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
             $("#errorDivCreateReturns").html(function(){
@@ -99,6 +99,7 @@ ng-app="ourAngularJsApp"
             $("#errorDivCreateReturns").html("");
 
         }
+
         input.parentNode.previousElementSibling.children[3].setAttribute("value",total);
     }
     function inputQuantityUndamageRefund(input){
@@ -120,8 +121,8 @@ ng-app="ourAngularJsApp"
             $("#errorDivCreateReturns").html("");
             document.getElementById("returnSaveButton").removeAttribute("disabled");                        
         }
+
         input.parentNode.previousElementSibling.previousElementSibling.children[3].setAttribute("value",total);
-        
     }
     function inputQuantityDamageSalable(input){
         var total = parseInt(input.parentNode.previousElementSibling.firstElementChild.value) + parseInt(input.parentNode.previousElementSibling.previousElementSibling.firstElementChild.value) + parseInt(input.value);        
@@ -141,8 +142,52 @@ ng-app="ourAngularJsApp"
             $("#errorDivCreateReturns").html("");
             document.getElementById("returnSaveButton").removeAttribute("disabled");            
         }
+
         input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.children[3].setAttribute("value",total);
-        
+    }
+    function checkTotalQuantityOfCheckedBox(){
+        //get total quantity for every raw then check if the total Quantity == 0, if 0, then disabled save button
+            var errorMessages = "";
+            var status = false;
+            var totalCheck = 0;
+            if(document.getElementById("searchORNumberInput").value === ""){
+                status = true;
+                $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");                
+                document.getElementById("errorDivCreateReturns").innerHTML = "<h4>Please input the official receipt number first.</h4>";
+                return status;
+            }
+            for(var i=0; i < $("#returnItemTbody tr").length ;i++ ){
+                if( ($("#returnItemTbody tr td:nth-child(4)")[i].firstChild).checked && $("#returnItemTbody tr td:nth-child(4) :nth-child(4)")[i].value == 0 ){
+                        $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreateReturns").html(function(){
+                                var addedHtml = errorMessages+"<h4>Quantity return for " + ($("#returnItemTbody tr td:nth-child(1)")[i]).innerHTML + " must be atleast 1</h4>";
+                            return addedHtml;
+                        });
+                        errorMessages += document.getElementById("errorDivCreateReturns").innerHTML;
+                        status = true;
+                        return status;
+                }
+                if( !(($("#returnItemTbody tr td:nth-child(4)")[i].firstChild).checked) ) {
+                    totalCheck++;
+                }
+
+                if(totalCheck == $("#returnItemTbody tr").length ){
+                    status = true;
+                    $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");                
+                    document.getElementById("errorDivCreateReturns").innerHTML = "<h4>Check an item to be return.</h4>";   
+                    return status;
+                }
+            }
+            
+            // for(var i=0; i < $("#returnItemTbody tr").length ;i++ ){            
+            //     if( !(($("#returnItemTbody tr td:nth-child(4)")[i].firstChild).checked) ){
+            //         status = true;
+            //         $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");                
+            //         document.getElementById("errorDivCreateReturns").innerHTML = "<h4>Check an item to be return.</h4>";
+            //     return status;
+            //     }
+            // }
+
     }
         
     function addReturnItem(div){
@@ -243,6 +288,7 @@ ng-app="ourAngularJsApp"
             button.parentNode.nextElementSibling.firstElementChild.setAttribute("disabled",true);
             button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
             button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+
         }
     }
     function searchItem(a){
@@ -285,11 +331,12 @@ ng-app="ourAngularJsApp"
     }
       
     function searchOfficialReceipt(a){
-        
+        document.getElementById("errorDivCreateReturns").innerHTML= "";
 		var officialReceipt = a.value;
 		var fullRoute = "/admin/returns/getORNumber/"+officialReceipt;
         if(a.value === ""){
-            document.getElementById("resultORNumberDiv").innerHTML ="";   
+            document.getElementById("resultORNumberDiv").innerHTML ="";
+            $("#returnItemTbody tr").remove();
         }else{
             $.ajax({
                 method: 'get',
@@ -312,11 +359,11 @@ ng-app="ourAngularJsApp"
                         var textNode = document.createTextNode(data[i].or_number);
                         pElement.appendChild(textNode);
                         node.appendChild(pElement);    
-                        if(a.id === "searchORNumberInput"){
+                        // if(a.id === "searchORNumberInput"){
                             resultORNumberDiv.appendChild(node);  
-                        }else{
-                            refundORNumberDiv.appendChild(node);  
-                        }
+                        // }else{
+                        //     refundORNumberDiv.appendChild(node);  
+                        // }
                     }
                     console.log(data)  
                 }
@@ -465,56 +512,60 @@ ng-app="ourAngularJsApp"
 
         $('#formReturnItem').on('submit',function(e){
             e.preventDefault();
-            var data = $(this).serialize();     
-                
-            var itemIds = [];    
-            for(var i=0; i < $("#returnTbody tr").length ;i++ ){
-                if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
-                    itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
+            if( checkTotalQuantityOfCheckedBox() ){
+                console.log("ifff")
+            }else{
+                var data = $(this).serialize();     
+                var itemIds = [];    
+                for(var i=0; i < $("#returnTbody tr").length ;i++ ){
+                    if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
+                        itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
+                    }
                 }
+                $.ajax({
+                    type:'POST',
+                    // url:'admin/storeNewItem',
+                    url: "{{route('admin.createReturnItem')}}",
+                    // data:{
+                    //     'name': arrayOfData[1].value,
+                    // },
+
+                    // data:{data},
+                    data:data,
+                    //_token:$("#_token"),
+                    success:function(data){
+                        console.log(data)
+                        //close modal
+                        $('#return').modal('hide')                    
+                        //prompt the message
+                        $("#successDiv p").remove();    
+                        $("#successDiv").removeClass("hidden")
+                                .html("<h3>Return Item(s) successful</h3>");
+                        $("#successDiv").css("display:block");                             
+                        $("#successDiv").slideDown("slow")
+                            .delay(1000)                        
+                            .hide(1500);
+                        $("#errorDivCreateReturns").html("");
+                        $('#returnOrRefundPrompt').modal('show');
+                        $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
+
+
+                    },
+                    error:function(data){
+                        var response = data.responseJSON;
+                        $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreateReturns").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
+                    }
+                });
+
             }
-
-            $.ajax({
-                type:'POST',
-                // url:'admin/storeNewItem',
-                url: "{{route('admin.createReturnItem')}}",
-                // data:{
-                //     'name': arrayOfData[1].value,
-                // },
-
-                // data:{data},
-                data:data,
-                //_token:$("#_token"),
-                success:function(data){
-                    console.log(data)
-                    //close modal
-                    $('#return').modal('hide')                    
-                    //prompt the message
-                    $("#successDiv p").remove();    
-                    $("#successDiv").removeClass("hidden")
-                            .html("<h3>Return Item(s) successful</h3>");
-                    $("#successDiv").css("display:block");                             
-                    $("#successDiv").slideDown("slow")
-                        .delay(1000)                        
-                        .hide(1500);
-                    $("#errorDivCreateReturns").html("");
-                    $('#returnOrRefundPrompt').modal('show');
-                    $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
-
-
-                },
-                error:function(data){
-                    var response = data.responseJSON;
-                      $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
-                      $("#errorDivCreateReturns").html(function(){
-                          var addedHtml="";
-                          for (var key in response.errors) {
-                              addedHtml += "<p>"+response.errors[key]+"</p>";
-                          }
-                          return addedHtml;
-                      });
-                }
-            });
+                
 
         });
         $('#formRefund').on('submit',function(e){

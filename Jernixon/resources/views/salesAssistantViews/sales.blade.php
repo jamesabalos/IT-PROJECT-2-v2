@@ -313,7 +313,17 @@ ng-app="ourAngularJsApp"
             var arrayOfData = $(this).serializeArray();           
  
             var thatTbody = $("#cartTbody tr td:first-child");
-
+            if(thatTbody.length == 0){
+                $("#salesErrorDiv").removeClass("alert-success").addClass("alert-danger");
+                    $("#salesErrorDiv").hide(500);
+                    $("#salesErrorDiv").removeClass("hidden");
+                    $("#salesErrorDiv").slideDown("slow", function() {
+                        $("#salesErrorDiv").html(function(){
+                            return "<h4>Please add item/s first.</h4>";
+                        });
+                    });
+                    return true;
+            }
 
             $.ajax({
                 type:'POST',

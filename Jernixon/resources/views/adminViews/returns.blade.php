@@ -500,7 +500,7 @@ ng-app="ourAngularJsApp"
         let today = new Date().toISOString().substr(0, 10);
         document.querySelector("#today").value = today;
         document.querySelector("#rtoday").value = today;
-        // document.querySelector("#suppliertoday").value = today;
+        document.querySelector("#suppliertoday").value = today;
 
 
 
@@ -568,6 +568,7 @@ ng-app="ourAngularJsApp"
                 
 
         });
+        
         $('#formRefund').on('submit',function(e){
             e.preventDefault();
             var data = $(this).serialize();           
@@ -653,11 +654,15 @@ ng-app="ourAngularJsApp"
     });
     function supplier(){
         $('#supplierDiv').removeClass('hidden');
+        $('#supplierreturnbutton').removeClass('hidden');
+        $('#returnSaveButton').addClass('hidden');
         $('#customerDiv').addClass('hidden');
         $('#customerButton').removeClass('active');
         $('#supplierButton').addClass('active');
     }
     function customer(){
+        $('#supplierreturnbutton').addClass('hidden');
+        $('#returnSaveButton').removeClass('hidden');
         $('#supplierDiv').addClass('hidden');
         $('#customerDiv').removeClass('hidden');        
         $('#customerButton').addClass('active');
@@ -757,7 +762,7 @@ ng-app="ourAngularJsApp"
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
 
-            {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
+            
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -770,7 +775,7 @@ ng-app="ourAngularJsApp"
                         <button type="button" id="supplierButton" onclick="supplier()" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
                     </div>
                 </div>
-                    
+                    {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
                     <div id = "customerDiv">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -879,7 +884,9 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div> --}}
                     </div>
+                    {!! Form::close() !!}
 
+                    {!! Form::open(['method'=>'post','id'=>'formsupplierReturnItem']) !!}
                     <div id = "supplierDiv" class = "hidden">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -955,7 +962,8 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
                     </div>
-
+                    {!! Form::close() !!}
+        
                 
 
                 
@@ -965,12 +973,13 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" id="returnSaveButton" class="btn btn-success">Save</button>
+                            <button type="submit" id="returnSaveButton" class="btn btn-success" form='formReturnItem'>Save</button>
+                            <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
-                {!! Form::close() !!}
+                
             </div>
         </div>
     </div>

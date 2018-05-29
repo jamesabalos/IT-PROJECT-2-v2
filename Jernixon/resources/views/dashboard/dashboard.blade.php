@@ -140,89 +140,95 @@ ng-app="ourAngularJsApp"
                     <div class="panel-heading" >
                         <div class="row">
                             <div class="col-md-4">
-                                <div class="panel panel-box clearfix">
-                                    <div class="panel-icon pull-left bg-green">
-                                        <i class="glyphicon glyphicon-user"></i>
-                                    </div>
-                                    <div class="panel-value">
-                                        <h2 class="margin-top"> 
+                                <a href='employees' style="color: black;">
+                                    <div class="panel panel-box clearfix">
+                                        <div class="panel-icon pull-left bg-green">
+                                            <i class="glyphicon glyphicon-user"></i>
+                                        </div>
+                                        <div class="panel-value">
+                                            <h2 class="margin-top"> 
 
-                                             <?php 
-                                                //index.php
-                                                //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
-                                                $query = "SELECT COUNT(id) as id from users where status='active'";
-                                                $result = mysqli_query($connect, $query);
-                                                $row = $result->fetch_assoc();
-                                                print_r($row["id"]);
-                                                
-                                            ?> 
+                                                 <?php 
+                                                    //index.php
+                                                    //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
+                                                    $query = "SELECT COUNT(id) as id from users where status='active'";
+                                                    $result = mysqli_query($connect, $query);
+                                                    $row = $result->fetch_assoc();
+                                                    print_r($row["id"]);
+                                                    
+                                                ?> 
 
-                                        </h2>
-                                        <p class="text-muted" >Users</p>
+                                            </h2>
+                                            <p class="text-muted" >Users</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
 
                             <div class="col-md-4">
-                                <div class="panel panel-box clearfix">
-                                    <div class="panel-icon pull-left bg-red">
-                                        <i class="glyphicon glyphicon-list"></i>
+                                <a href='items' style="color: black;">
+                                    <div class="panel panel-box clearfix">
+                                        <div class="panel-icon pull-left bg-red">
+                                            <i class="glyphicon glyphicon-list"></i>
+                                        </div>
+                                        <div class="panel-value">
+                                            <h2 class="">
+                                            
+                                                <?php 
+                                                    //index.php
+                                                    //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
+                                                    $query = "SELECT COUNT(product_id) as product_id from products where status='available'";
+                                                    $result = mysqli_query($connect, $query);
+                                                    $row = $result->fetch_assoc();
+                                                    print_r($row["product_id"]);
+                                                    
+                                                ?>
+                                                
+                                            </h2>
+                                            <p class="text-muted">Total Items</p>
+                                        </div>
                                     </div>
-                                    <div class="panel-value">
-                                        <h2 class="margin-top">
-                                        
+                                </a>
+                            </div>
+
+                            <div class="col-md-4">
+                                <a href="#" class="" data-toggle="modal" data-target="#reorder" style="color: black;">
+                                    <div class="panel panel-box clearfix">
+                                        <div class="panel-icon pull-left bg-blue">
+                                            <i class="glyphicon glyphicon-shopping-cart"></i>
+                                        </div>
+                                        <div class="panel-value ">
+                                            <h2 class="">
+                                                
                                             <?php 
-                                                //index.php
-                                                //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
-                                                $query = "SELECT COUNT(product_id) as product_id from products where status='available'";
-                                                $result = mysqli_query($connect, $query);
-                                                $row = $result->fetch_assoc();
-                                                print_r($row["product_id"]);
-                                                
-                                            ?>
-                                            
-                                        </h2>
-                                        <p class="text-muted">Total Items</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="panel panel-box clearfix" data-toggle="modal" data-target="#reorder">
-                                    <div class="panel-icon pull-left bg-blue">
-                                        <i class="glyphicon glyphicon-shopping-cart"></i>
-                                    </div>
-                                    <div class="panel-value ">
-                                        <h2 class="margin-top">
-                                            
-                                        <?php 
-                                                //index.php
-                                                //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
-                                                $query = "SELECT product_id from products where status='available'";
-                                                $result = mysqli_query($connect, $query);
-                                                $row = $result->fetch_assoc();
-                                                $count = 0;
-                                                do{
-                                                    $dataQuery = "SELECT product_id from products join salable_items using(product_id) where product_id='".$row['product_id']."' and status='available' and quantity <= (Select reorder_level from products where product_id='".$row['product_id']."')";
+                                                    //index.php
+                                                    //$connect = mysqli_connect("localhost", "root", "db.password", "inventory_jernixon");
+                                                    $query = "SELECT product_id from products where status='available'";
+                                                    $result = mysqli_query($connect, $query);
+                                                    $row = $result->fetch_assoc();
+                                                    $count = 0;
+                                                    do{
+                                                        $dataQuery = "SELECT product_id from products join salable_items using(product_id) where product_id='".$row['product_id']."' and status='available' and quantity <= (Select reorder_level from products where product_id='".$row['product_id']."')";
+                                                        
+                                                        $dataResult = mysqli_query($connect, $dataQuery);
+                                                        $dataRow = $dataResult->fetch_assoc();
+                                                        
+                                                        if (mysqli_num_rows($dataResult)!=0){
+                                                            $count++;
+                                                        }
+                                                        // while($rowData = mysqli_fetch_array($data)){
+                                                            // $count++;
+                                                        // }
+                                                    }while($row = mysqli_fetch_array($result));
+                                                    echo($count);
                                                     
-                                                    $dataResult = mysqli_query($connect, $dataQuery);
-                                                    $dataRow = $dataResult->fetch_assoc();
-                                                    
-                                                    if (mysqli_num_rows($dataResult)!=0){
-                                                        $count++;
-                                                    }
-                                                    // while($rowData = mysqli_fetch_array($data)){
-                                                        // $count++;
-                                                    // }
-                                                }while($row = mysqli_fetch_array($result));
-                                                echo($count);
+                                                ?> 
                                                 
-                                            ?> 
-                                            
-                                        </h2>
-                                        <p class="text-muted">Re-order</p>
+                                            </h2>
+                                            <p class="text-muted">Re-order</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
 
                         </div>

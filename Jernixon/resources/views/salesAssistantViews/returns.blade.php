@@ -70,8 +70,8 @@ ng-app="ourAngularJsApp"
               var thatTable = document.getElementById("inExchangeTbody");
               var newRow = thatTable.insertRow(-1);
               newRow.insertCell(-1).innerHTML = "<td><p>"+divElement.firstChild.innerHTML+"</p><input type='hidden' class='form-control' name='exchangeItemName[]' value='" +divElement.firstChild.innerHTML+ "'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' max='" +divElement.dataset.quantity+ "'class='form-control'></td>";
-            newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]' min='1' value='" +divElement.dataset.price+ "'class='form-control' disabled></td>";
+                newRow.insertCell(-1).innerHTML = "<td><input type='number' name='exchangeQuantity[]' min='1' max='" +divElement.dataset.quantity+ "'class='form-control'></td>";
+                newRow.insertCell(-1).innerHTML = "<td><input type='number' name='price[]' min='1' value='" +divElement.dataset.price+ "'class='form-control' disabled></td>";
               newRow.insertCell(-1).innerHTML = "<td><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
           }
@@ -80,8 +80,117 @@ ng-app="ourAngularJsApp"
           document.getElementById("searchResultDiv").innerHTML = "";
 
       }
+      function inputQuantityDamageRefund(input){
+        var total = parseInt(input.value) + parseInt(input.parentNode.nextElementSibling.firstElementChild.value) + parseInt(input.parentNode.nextElementSibling.nextElementSibling.firstElementChild.value);
+        // input.parentNode.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
+        // input.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total);
+        // input.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)- total)
+        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) ){
+            document.getElementById("returnSaveButton").setAttribute("disabled",true);
+            $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+            $("#errorDivCreateReturns").html(function(){
+                var addedHtml="";
+                // for (var key in response.errors) {
+                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
+                // }
+                return addedHtml;
+            });
+        }else{
+            document.getElementById("returnSaveButton").removeAttribute("disabled");            
+            $("#errorDivCreateReturns").html("");
 
-      function addReturnItem(ORNumber){
+        }
+
+        input.parentNode.previousElementSibling.children[3].setAttribute("value",total);
+    }
+    function inputQuantityUndamageRefund(input){
+        var total = parseInt(input.parentNode.previousElementSibling.firstElementChild.value)+ parseInt(input.value) + parseInt(input.parentNode.nextElementSibling.firstElementChild.value);
+        // input.parentNode.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
+        // input.parentNode.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total);
+        // input.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)- total)
+        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)){
+            document.getElementById("returnSaveButton").setAttribute("disabled",true);            
+            $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+            $("#errorDivCreateReturns").html(function(){
+                var addedHtml="";
+                // for (var key in response.errors) {
+                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
+                // }
+                return addedHtml;
+            });
+        }else{
+            $("#errorDivCreateReturns").html("");
+            document.getElementById("returnSaveButton").removeAttribute("disabled");                        
+        }
+
+        input.parentNode.previousElementSibling.previousElementSibling.children[3].setAttribute("value",total);
+    }
+    function inputQuantityDamageSalable(input){
+        var total = parseInt(input.parentNode.previousElementSibling.firstElementChild.value) + parseInt(input.parentNode.previousElementSibling.previousElementSibling.firstElementChild.value) + parseInt(input.value);        
+        // input.parentNode.previousElementSibling.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
+        // input.parentNode.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total); 
+        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)){
+            document.getElementById("returnSaveButton").setAttribute("disabled",true);           
+            $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+            $("#errorDivCreateReturns").html(function(){
+                var addedHtml="";
+                // for (var key in response.errors) {
+                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
+                // }
+                return addedHtml;
+            });
+        }else{
+            $("#errorDivCreateReturns").html("");
+            document.getElementById("returnSaveButton").removeAttribute("disabled");            
+        }
+
+        input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.children[3].setAttribute("value",total);
+    }
+    function checkTotalQuantityOfCheckedBox(){
+        //get total quantity for every raw then check if the total Quantity == 0, if 0, then disabled save button
+            var errorMessages = "";
+            var status = false;
+            var totalCheck = 0;
+            if(document.getElementById("searchORNumberInput").value === ""){
+                status = true;
+                $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");                
+                document.getElementById("errorDivCreateReturns").innerHTML = "<h4>Please input the official receipt number first.</h4>";
+                return status;
+            }
+            for(var i=0; i < $("#returnItemTbody tr").length ;i++ ){
+                if( ($("#returnItemTbody tr td:nth-child(4)")[i].firstChild).checked && $("#returnItemTbody tr td:nth-child(4) :nth-child(4)")[i].value == 0 ){
+                        $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreateReturns").html(function(){
+                                var addedHtml = errorMessages+"<h4>Quantity return for " + ($("#returnItemTbody tr td:nth-child(1)")[i]).innerHTML + " must be atleast 1</h4>";
+                            return addedHtml;
+                        });
+                        errorMessages += document.getElementById("errorDivCreateReturns").innerHTML;
+                        status = true;
+                        return status;
+                }
+                if( !(($("#returnItemTbody tr td:nth-child(4)")[i].firstChild).checked) ) {
+                    totalCheck++;
+                }
+
+                if(totalCheck == $("#returnItemTbody tr").length ){
+                    status = true;
+                    $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");                
+                    document.getElementById("errorDivCreateReturns").innerHTML = "<h4>Check an item to be return.</h4>";   
+                    return status;
+                }
+            }
+            
+            // for(var i=0; i < $("#returnItemTbody tr").length ;i++ ){            
+            //     if( !(($("#returnItemTbody tr td:nth-child(4)")[i].firstChild).checked) ){
+            //         status = true;
+            //         $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");                
+            //         document.getElementById("errorDivCreateReturns").innerHTML = "<h4>Check an item to be return.</h4>";
+            //     return status;
+            //     }
+            // }
+
+    }
+      function addReturnItem(div){
           var items =[];
           var thatTbody = $("#returnItemTbody tr td:first-child");
 
@@ -89,7 +198,7 @@ ng-app="ourAngularJsApp"
               method: 'get',
               url: "{{route('salesAssistant.getORNumberItems')}}",
               data:{
-                  'ORNumber': ORNumber,
+                  'ORNumber': div.firstChild.innerHTML,
               },        
               success: function(data){
                   $("#returnItemTbody tr").remove();
@@ -98,9 +207,13 @@ ng-app="ourAngularJsApp"
                   for(var i = 0; i < data.length; i++){
                       var newRow = modalReturnItemTbody.insertRow(-1);
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                      newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled></td>";
-                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                      newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' class='form-control'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' disabled></td>";
+                        // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputQuantityDamageRefund(this)' disabled min='0' value='0' max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputQuantityUndamageRefund(this)' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputQuantityDamageSalable(this)' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
                   } 
                 //   document.getElementById("Date").value = data[0].created_at;
                   document.getElementById("Customer").value = data[0].customer_name;
@@ -112,7 +225,7 @@ ng-app="ourAngularJsApp"
           });
 
 
-          document.getElementById("searchORNumberInput").value = ORNumber ;
+          document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML  ;
           document.getElementById("resultORNumberDiv").innerHTML = "";
 
       }
@@ -139,7 +252,27 @@ ng-app="ourAngularJsApp"
 
           }
       }
+      function toggleCheckboxRefund(button){
+        if(button.checked){        
+            button.nextElementSibling.removeAttribute("disabled");            
+            button.nextElementSibling.nextElementSibling.removeAttribute("disabled");
+            button.nextElementSibling.nextElementSibling.nextElementSibling.removeAttribute("disabled");
+            button.parentNode.nextElementSibling.firstElementChild.removeAttribute("disabled");
+            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
+            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
+        }else{
+            button.parentNode.nextElementSibling.firstElementChild.setAttribute("max",12);
+            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
+            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
+            button.nextElementSibling.setAttribute("disabled",true);                      
+            button.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
+            button.nextElementSibling.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
+            button.parentNode.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
 
+        }
+    }
       function searchItem(a){
           if(a.value === ""){
               document.getElementById("searchResultDiv").innerHTML ="";   
@@ -183,7 +316,8 @@ ng-app="ourAngularJsApp"
           var officialReceipt = a.value;
           var fullRoute = "/salesAssistant/returns/getORNumber/"+officialReceipt;
           if(a.value === ""){
-              document.getElementById("resultORNumberDiv").innerHTML ="";   
+              document.getElementById("resultORNumberDiv").innerHTML ="";  
+                $("#returnItemTbody tr").remove();
           }else{
               $.ajax({
                   method: 'get',
@@ -195,7 +329,7 @@ ng-app="ourAngularJsApp"
                       resultORNumberDiv.innerHTML = "";
                       for (var i = 0;  i< data.length; i++) {
                           var node = document.createElement("DIV");
-                          node.setAttribute("onclick","addReturnItem(this.firstChild.innerHTML)")
+                          node.setAttribute("onclick","addReturnItem(this)")                       
                           var pElement = document.createElement("P");
                           //add the price
                           //pElement.setAttribute("data-price" , data[i].) 
@@ -212,34 +346,42 @@ ng-app="ourAngularJsApp"
 
       }
 
-      function getItems(button){
+ 	function getItems(button){
+		
+		var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+		var date = button.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
+		// console.log(itemId);
+		// var fullRoute = "/admin/returns/getReturnedItems/"+ORnumber;
+		$.ajax({
+			type:'GET',
+			url: "{{route('admin.getReturnedItems')}}",
+            data: {
+                'ORNumber': ORnumber,
+                'Date': date
+            },
 
-          var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
-          // console.log(itemId);
-          var fullRoute = "/salesAssistant/returns/getReturnedItems/"+ORnumber;
-          $.ajax({
-              type:'GET',
-              url: fullRoute,
+			success:function(data){
+                $("#veiwReturnedItemTbody tr").remove();
+                var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
+                for(var i = 0; i < data.length; i++){
+                    var newRow = returnedItemTable.insertRow(-1);
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
 
-              success:function(data){
-                  $("#veiwReturnedItemTbody tr").remove();
-                  var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
-                  for(var i = 0; i < data.length; i++){
-                      var newRow = returnedItemTable.insertRow(-1);
-                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
-                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                }
 
-                  }
+                document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
+                document.getElementById("returnedORNumber").innerHTML = ORnumber;
+                document.getElementById("customerName").innerHTML = data[0].customer_name;
 
-                  document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
-                  document.getElementById("returnedORNumber").innerHTML = ORnumber;
-                  document.getElementById("customerName").innerHTML = data[0].customer_name;
-              }
-          });
+			}
+		});
 
-
-      }
+	
+	}
       function createReport(button){
         // var dateFrom = document.getElementById("from").value;
         // var dateTo = document.getElementById("to").value;
@@ -323,7 +465,7 @@ ng-app="ourAngularJsApp"
         let today = new Date().toISOString().substr(0, 10);
         document.querySelector("#today").value = today;
         document.querySelector("#rtoday").value = today;
-        document.querySelector("#suppliertoday").value = today;
+        // document.querySelector("#suppliertoday").value = today;
 
           $.ajaxSetup({
               headers: {
@@ -333,46 +475,50 @@ ng-app="ourAngularJsApp"
 
           $('#formReturnItem').on('submit',function(e){
               e.preventDefault();
-              var data = $(this).serialize();           
+              if( checkTotalQuantityOfCheckedBox() ){
+                console.log("ifff")
+            }else{
+                // return true;
+                var data = $(this).serialize();           
+                $.ajax({
+                    type:'POST',
+                    // url:'admin/storeNewItem',
+                    url: "{{route('salesAssistant.createReturnItem')}}",
+                    // data:{
+                    //     'name': arrayOfData[1].value,
+                    // },
 
-              $.ajax({
-                  type:'POST',
-                  // url:'admin/storeNewItem',
-                  url: "{{route('salesAssistant.createReturnItem')}}",
-                  // data:{
-                  //     'name': arrayOfData[1].value,
-                  // },
+                    // data:{data},
+                    data:data,
+                    //_token:$("#_token"),
+                    success:function(data){
+                        //close modal
+                        $('#return').modal('hide')                    
+                        //prompt the message
+                        $("#successDiv p").remove();
+                        $("#successDiv").removeClass("hidden")
+                            .html("<h3>Return Item(s) successful</h3>");
+                        $("#successDiv").css("display:block");                             
+                        $("#successDiv").slideDown("slow")
+                            .delay(1000)                        
+                            .hide(1500);
+                        $("#errorDivCreateReturns").html("");
 
-                  // data:{data},
-                  data:data,
-                  //_token:$("#_token"),
-                  success:function(data){
-                      //close modal
-                      $('#return').modal('hide')                    
-                      //prompt the message
-                      $("#successDiv p").remove();
-                      $("#successDiv").removeClass("hidden")
-                          .html("<h3>Return Item(s) successful</h3>");
-                      $("#successDiv").css("display:block");                             
-                      $("#successDiv").slideDown("slow")
-                          .delay(1000)                        
-                          .hide(1500);
-                      $("#errorDivCreateReturns").html("");
-
-                      $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
-                  },
-                  error:function(data){
-                      var response = data.responseJSON;
-                      $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
-                      $("#errorDivCreateReturns").html(function(){
-                          var addedHtml="";
-                          for (var key in response.errors) {
-                              addedHtml += "<p>"+response.errors[key]+"</p>";
-                          }
-                          return addedHtml;
-                      });
-                  }
-              });
+                        $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
+                    },
+                    error:function(data){
+                        var response = data.responseJSON;
+                        $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreateReturns").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
+                    }
+                });
+            }
 
           })
 
@@ -594,6 +740,9 @@ ng-app="ourAngularJsApp"
                                                 <th class="text-left">Qty</th>
                                                 <th class="text-left">Purchase Price</th>
                                                 <th class="text-left">Check item to return</th>
+                                                <th class="text-left">Damaged</th>
+                                                <th class="text-left">Undamaged</th>
+                                                <th class="text-left">Damage Salable</th>
                                             </tr>
                                         </thead>
 
@@ -603,7 +752,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default">
+                        {{-- <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
                                     <span class="glyphicon glyphicon-refresh"></span>
@@ -631,10 +780,10 @@ ng-app="ourAngularJsApp"
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
-                    <div id = "supplierDiv" class = "hidden">
+                    {{-- <div id = "supplierDiv" class = "hidden">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
@@ -650,7 +799,6 @@ ng-app="ourAngularJsApp"
                                             {{Form::label('Delivery Receipt No.:')}}
                                         </div>
                                         <div class="col-md-9">
-                                          {{--  {{ Form::number('Delivery Receipt No.','',['class'=>'form-control','min'=>'1']) }}  --}}
                                              <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
                                             <div id="resultDRNumberDiv" class="searchResultDiv">
                                             </div>
@@ -709,7 +857,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                 
 
@@ -720,7 +868,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button id="returnSaveButton" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -905,9 +1053,12 @@ ng-app="ourAngularJsApp"
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
-                                        <th class="text-left">Quantity</th>
+                                        {{-- <th class="text-left">Quantity</th> --}}
                                         <th class="text-left">Purchase Price</th>
-                                        {{-- <th class="text-left">Action</th> --}}
+                                        <th class="text-left">Damaged</th>
+                                        <th class="text-left">Undamaged</th>
+                                        <th class="text-left">Damage Salable</th>
+                                    </tr>
                                     </tr>
                                 </thead>
 

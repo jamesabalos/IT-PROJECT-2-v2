@@ -57,7 +57,7 @@ Route::get('salesAssistant/returns/getReturns', 'HomeController@getReturns')->na
 Route::Post('salesAssistant/returns/createReturnItem', 'HomeController@createReturnItem')->name('salesAssistant.createReturnItem');
 Route::get('salesAssistant/returns/getORNumber/{ORNumber}', 'HomeController@getORNumber');
 Route::get('salesAssistant/returns/getORNumberItems', 'HomeController@getORNumberItems')->name('salesAssistant.getORNumberItems');
-Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@gerReturnedItems');
+Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@getReturnedItems');
 Route::Post('salesAssistant/returns/createReturnsFilter', 'HomeController@createReturnsFilter')->name('salesAssistant.createReturnsFilter');
 
 

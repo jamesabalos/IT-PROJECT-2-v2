@@ -474,9 +474,9 @@ ng-app="ourAngularJsApp"
                                 <a href = "#return" data-toggle="modal">
                                     <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
                                 </a>
-                                <a href = "#refund" data-toggle="modal">
+<!--                                 <a href = "#refund" data-toggle="modal">
                                     <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Refund</button>
-                                </a>
+                                </a> -->
                             </p>
                         </div>
 
@@ -489,7 +489,7 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="returnsDataTable">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="returnsDataTable">
                             <thead>
                                 <tr>
                                     <th class="text-left">OR Number</th>
@@ -603,35 +603,6 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <strong>
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                    In Exchange for
-                                </strong>
-                            </div>
-                            <div class="modal-body">
-                                <div class="content table-responsive">
-                                    <table id="inEchangeTable" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left">Description</th>
-                                                <th class="text-left">Qty</th>
-                                                <th class="text-left">Price</th>
-                                                <th class="text-left">Remove</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="inExchangeTbody">
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="autocomplete" style="width:100%;">
-                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
-                                    <div id="searchResultDiv" class="searchResultDiv">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div id = "supplierDiv" class = "hidden">
@@ -710,9 +681,6 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div>
                     </div>
-
-                
-
                 
                 <div id="errorDivCreateReturns" class="hidden">
 
@@ -917,6 +885,29 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <strong>
+                          <span class="glyphicon glyphicon-refresh"></span>
+                          In Exchange for
+                      </strong>
+                  </div>
+                  <div class="modal-body">
+                      <div class="content table-responsive">
+                          <table id="inEchangeTable" class="table table-bordered table-striped">
+                              <thead>
+                                  <tr>
+                                      <th class="text-left">Description</th>
+                                      <th class="text-left">Quantity</th>
+                                      <th class="text-left">Purchase Price</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="inExchangeTbody">
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+                </div>
                 <div class="row">
                         <div class="text-right">                                           
                             <div class="col-md-12">   
@@ -929,8 +920,6 @@ ng-app="ourAngularJsApp"
     </div>
 </div>
 
-
-
 @endsection
 
 
@@ -941,6 +930,5 @@ ng-app="ourAngularJsApp"
 <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
 {{--  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>  --}}
 {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-
 
 @endsection

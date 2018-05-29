@@ -829,7 +829,7 @@ ng-app="ourAngularJsApp"
                         </div> --}}
                     </div>
 
-                    {{-- <div id = "supplierDiv" class = "hidden">
+                    <div id = "supplierDiv" class = "hidden">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
@@ -903,7 +903,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
 
                 
 
@@ -1085,6 +1085,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
@@ -1113,6 +1114,33 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-refresh"></span>
+                            Exchanged Item
+                        </strong>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Purchase Price</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="veiwReturnedItemTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                         <div class="text-right">                                           
                             <div class="col-md-12">   
@@ -1150,19 +1178,17 @@ ng-app="ourAngularJsApp"
                 </div>    
             </div>
         </div>
-    </div>
+</div>
 
 
 @endsection
 
 
-    @section('js_link')
-    <!--   Core JS Files   -->
-    {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
-    {{--  <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>  --}}
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    {{--  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>  --}}
-    {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-
-
-    @endsection
+@section('js_link')
+<!--   Core JS Files   -->
+{{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>  --}}
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+{{--  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
+@endsection

@@ -131,7 +131,7 @@ ng-app="ourAngularJsApp"
                 <div class="header">
                     <div class="content table-responsive table-full-width">
                     {!! Form::open(['method'=>'post','id'=>'formPhysicalCount']) !!}
-                        <table class="table table-bordered table-striped" id="physicalCountDataTable">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="physicalCountDataTable">
                             <thead>
                                 <tr>
                                     <th class="text-left">Item Name</th>

@@ -752,8 +752,6 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-<<<<<<< HEAD
-=======
                         {{-- <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
@@ -783,10 +781,9 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div> --}}
->>>>>>> b7ae0135f9dd2ae93e4bf23aad66373ca1fe33b4
                     </div>
 
-                    {{-- <div id = "supplierDiv" class = "hidden">
+                    <div id = "supplierDiv" class = "hidden">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
@@ -849,7 +846,7 @@ ng-app="ourAngularJsApp"
                                             <tr>
                                                 <th class="text-left">Description</th>
                                                 <th class="text-left">Qty</th>
-                                                <th class="text-left">Purchase Price</th>
+                                                <th class="text-left">Price</th>
                                                 <th class="text-left">Check item to return</th>
                                             </tr>
                                         </thead>
@@ -860,14 +857,10 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-<<<<<<< HEAD
                     </div>
-=======
-                    </div> --}}
 
                 
 
->>>>>>> b7ae0135f9dd2ae93e4bf23aad66373ca1fe33b4
                 
                 <div id="errorDivCreateReturns" class="hidden">
 
@@ -875,7 +868,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button id="returnSaveButton" type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" id="returnSaveButton" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -980,7 +973,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button id="refundSubmitButton" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -1046,6 +1039,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
@@ -1066,6 +1060,31 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Undamaged</th>
                                         <th class="text-left">Damage Salable</th>
                                     </tr>
+                                </thead>
+
+                                <tbody id="veiwReturnedItemTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-refresh"></span>
+                            Exchanged Item
+                        </strong>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Purchase Price</th>
                                     </tr>
                                 </thead>
 
@@ -1075,29 +1094,7 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                      <strong>
-                          <span class="glyphicon glyphicon-refresh"></span>
-                          In Exchange for
-                      </strong>
-                  </div>
-                  <div class="modal-body">
-                      <div class="content table-responsive">
-                          <table id="inEchangeTable" class="table table-bordered table-striped">
-                              <thead>
-                                  <tr>
-                                      <th class="text-left">Description</th>
-                                      <th class="text-left">Quantity</th>
-                                      <th class="text-left">Purchase Price</th>
-                                  </tr>
-                              </thead>
-                              <tbody id="inExchangeTbody">
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
-                </div>
+
                 <div class="row">
                         <div class="text-right">                                           
                             <div class="col-md-12">   

@@ -626,6 +626,22 @@ public function createPurchasesFilter(Request $request){
                     DB::table('salable_items')
                         ->where('product_id', $request->productId[$i])
                         ->decrement('quantity', $request->quantity[$i]);
+            }elseif($request->status[$i] == "damaged salable"){
+                $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date]
+                );
+
+                $data = DB::table('stock_adjustments')
+                    ->select('stock_adjustments_id')
+                    ->latest()
+                    ->first();
+
+                $insertDamagedItems = DB::table('damaged_salable_items')->insert(
+                    ['product_id' => $request->productId[$i],'damaged_selling_price'=>$request->dprice[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                    
+                    DB::table('salable_items')
+                        ->where('product_id', $request->productId[$i])
+                        ->decrement('quantity', $request->quantity[$i]);
             }else{
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
@@ -788,15 +804,15 @@ public function createPurchasesFilter(Request $request){
                 ->where('status','=','lost')
                 ->sum('quantity');
 
-            $in1 = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$sales[$i]->date)
-                ->sum('quantity');
+            // $in1 = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$sales[$i]->date)
+            //     ->sum('quantity');
 
-            $in2 = DB::table('damaged_salable_items')->select('quantity', 'created_at')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$sales[$i]->date)
-                ->count();
+            // $in2 = DB::table('damaged_salable_items')->select('quantity', 'created_at')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$sales[$i]->date)
+            //     ->count();
 
             $inventoryinitial = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
                 ->where('product_id', '=', $id)
@@ -804,11 +820,11 @@ public function createPurchasesFilter(Request $request){
                 ->sum('quantity');
 
                 $inventoryout = $soldquantity+$out1+$out2;
-                $inventoryin = $in1 + $in2;
-                $balance = $inventoryinitial + $inventoryin - $inventoryout;
+                // $inventoryin = $in1 + $in2;
+                $balance = $inventoryinitial - $inventoryout;
 
             // array_push($data, [$sales[$i]->customer_name]);
-            array_push($data, ['stat'=>"Deducted",'itemq'=>$sales[$i]->quantity, 'reason'=>"bought", 'desc'=>$sales[$i]->description, 'quant'=>$sales[$i]->quantity,'by'=> $sales[$i]->customer_name,'price'=> $sales[$i]->price, 'date'=>$sales[$i]->date,'initial'=>$inventoryinitial,'in'=>$inventoryin,'out'=>$inventoryout,'balance'=>$balance]);
+            array_push($data, ['stat'=>"Deducted",'itemq'=>$sales[$i]->quantity, 'reason'=>"bought", 'desc'=>$sales[$i]->description, 'quant'=>$sales[$i]->quantity,'by'=> $sales[$i]->customer_name,'price'=> $sales[$i]->price, 'date'=>$sales[$i]->date,'initial'=>$inventoryinitial,'in'=>'0','out'=>$inventoryout,'balance'=>$balance]);
         }
 
         $purchases = DB::table('purchases')
@@ -821,24 +837,24 @@ public function createPurchasesFilter(Request $request){
         $purchasequantity = $purchases->sum('quantity');
 
         for($i = 0;$i<$arrayCount2;$i++){
-            $out1 = DB::table('stock_adjustments')
-                ->select('product_id', 'quantity', 'created_at')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$purchases[$i]->date)
-                ->where('status','=','damaged')
-                ->sum('quantity');
+            // $out1 = DB::table('stock_adjustments')
+            //     ->select('product_id', 'quantity', 'created_at')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$purchases[$i]->date)
+            //     ->where('status','=','damaged')
+            //     ->sum('quantity');
 
-            $out2 = DB::table('stock_adjustments')
-                ->select('product_id', 'quantity', 'created_at')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$purchases[$i]->date)
-                ->where('status','=','lost')
-                ->sum('quantity');
+            // $out2 = DB::table('stock_adjustments')
+            //     ->select('product_id', 'quantity', 'created_at')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$purchases[$i]->date)
+            //     ->where('status','=','lost')
+            //     ->sum('quantity');
 
-            $out3 = DB::table('sales')->select('quantity', 'customer_name', 'created_at', 'price')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$purchases[$i]->date)
-                ->sum('quantity');
+            // $out3 = DB::table('sales')->select('quantity', 'customer_name', 'created_at', 'price')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$purchases[$i]->date)
+            //     ->sum('quantity');
 
             $in2 = DB::table('damaged_salable_items')->select('quantity', 'created_at')
                 ->where('product_id', '=', $id)
@@ -850,11 +866,11 @@ public function createPurchasesFilter(Request $request){
                 ->where('created_at','<',$purchases[$i]->date)
                 ->sum('quantity');
 
-                $inventoryout = $out1+$out2+$out3;
+                // $inventoryout = $out1+$out2+$out3;
                 $inventoryin = $purchases[$i]->quantity + $in2;
-                $balance = $inventoryinitial + $inventoryin - $inventoryout;
+                $balance = $inventoryinitial + $inventoryin;
 
-            array_push($data, ['stat'=>"Added",'itemq'=>$purchases[$i]->quantity, 'reason'=>"purchased", 'desc'=>$purchases[$i]->description, 'quant'=>$purchases[$i]->quantity,'by'=> $purchases[$i]->supplier_name,'price'=> $purchases[$i]->price, 'date'=>$purchases[$i]->date,'initial'=>$inventoryinitial,'in'=>$inventoryin,'out'=>$inventoryout,'balance'=>$balance]);
+            array_push($data, ['stat'=>"Added",'itemq'=>$purchases[$i]->quantity, 'reason'=>"purchased", 'desc'=>$purchases[$i]->description, 'quant'=>$purchases[$i]->quantity,'by'=> $purchases[$i]->supplier_name,'price'=> $purchases[$i]->price, 'date'=>$purchases[$i]->date,'initial'=>$inventoryinitial,'in'=>$inventoryin,'out'=>'0','balance'=>$balance]);
         }
 
 
@@ -882,15 +898,15 @@ public function createPurchasesFilter(Request $request){
                 ->where('created_at','=',$damaged_items[$i]->date)
                 ->sum('quantity');
 
-            $in1 = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$damaged_items[$i]->date)
-                ->sum('quantity');
+            // $in1 = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$damaged_items[$i]->date)
+            //     ->sum('quantity');
 
-            $in2 = DB::table('damaged_salable_items')->select('quantity', 'created_at')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$damaged_items[$i]->date)
-                ->count();
+            // $in2 = DB::table('damaged_salable_items')->select('quantity', 'created_at')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$damaged_items[$i]->date)
+            //     ->count();
 
             $inventoryinitial = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
                 ->where('product_id', '=', $id)
@@ -898,10 +914,10 @@ public function createPurchasesFilter(Request $request){
                 ->sum('quantity');
 
                 $inventoryout = $out1+$out2+$out3;
-                $inventoryin = $in1+ $in2;
-                $balance = $inventoryinitial + $inventoryin - $inventoryout;
+                // $inventoryin = $in1+ $in2;
+                $balance = $inventoryinitial - $inventoryout;
 
-            array_push($data, ['stat'=>"Deducted",'itemq'=>$damaged_items[$i]->quantity, 'reason'=>"Stock Adjustment- Damaged", 'desc'=>$damaged_items[$i]->description, 'quant'=>$damaged_items[$i]->quantity,'by'=> $damaged_items[$i]->employee_name,'price'=> 0, 'date'=>$damaged_items[$i]->date,'initial'=>$inventoryinitial,'in'=>$inventoryin,'out'=>$inventoryout,'balance'=>$balance]);
+            array_push($data, ['stat'=>"Deducted",'itemq'=>$damaged_items[$i]->quantity, 'reason'=>"Stock Adjustment- Damaged", 'desc'=>$damaged_items[$i]->description, 'quant'=>$damaged_items[$i]->quantity,'by'=> $damaged_items[$i]->employee_name,'price'=> 0, 'date'=>$damaged_items[$i]->date,'initial'=>$inventoryinitial,'in'=>'0','out'=>$inventoryout,'balance'=>$balance]);
         }
 
         $lost_items = DB::table('lost_items')
@@ -927,15 +943,15 @@ public function createPurchasesFilter(Request $request){
                 ->where('created_at','=',$lost_items[$i]->date)
                 ->sum('quantity');
 
-            $in1 = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$lost_items[$i]->date)
-                ->sum('quantity');
+            // $in1 = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$lost_items[$i]->date)
+            //     ->sum('quantity');
 
-            $in2 = DB::table('damaged_salable_items')->select('quantity', 'created_at')
-                ->where('product_id', '=', $id)
-                ->where('created_at','=',$lost_items[$i]->date)
-                ->count();
+            // $in2 = DB::table('damaged_salable_items')->select('quantity', 'created_at')
+            //     ->where('product_id', '=', $id)
+            //     ->where('created_at','=',$lost_items[$i]->date)
+            //     ->count();
 
             $inventoryinitial = DB::table('purchases')->select('quantity', 'supplier_name', 'created_at', 'price')
                 ->where('product_id', '=', $id)
@@ -943,10 +959,10 @@ public function createPurchasesFilter(Request $request){
                 ->sum('quantity');
 
                 $inventoryout = $out1+$out2+$out3;
-                $inventoryin = $in1+ $in2;
-                $balance = $inventoryinitial + $inventoryin - $inventoryout;
+                // $inventoryin = $in1+ $in2;
+                $balance = $inventoryinitial  - $inventoryout;
 
-            array_push($data, ['stat'=>"Deducted",'itemq'=>$lost_items[$i]->quantity, 'reason'=>"Stock Adjustment- Lost", 'desc'=>$lost_items[$i]->description, 'quant'=>$lost_items[$i]->quantity,'by'=> $lost_items[$i]->employee_name,'price'=> 0, 'date'=>$lost_items[$i]->date,'initial'=>$inventoryinitial,'in'=>$inventoryin,'out'=>$inventoryout,'balance'=>$balance]);          
+            array_push($data, ['stat'=>"Deducted",'itemq'=>$lost_items[$i]->quantity, 'reason'=>"Stock Adjustment- Lost", 'desc'=>$lost_items[$i]->description, 'quant'=>$lost_items[$i]->quantity,'by'=> $lost_items[$i]->employee_name,'price'=> 0, 'date'=>$lost_items[$i]->date,'initial'=>$inventoryinitial,'in'=>'0','out'=>$inventoryout,'balance'=>$balance]);          
         }
 
         foreach ($data as $key => $row){

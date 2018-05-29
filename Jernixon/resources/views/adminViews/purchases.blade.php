@@ -227,7 +227,9 @@ ng-app="ourAngularJsApp"
       $(document).ready(function(){
 
       let today = new Date().toISOString().substr(0, 10);
-      document.querySelector("#today").value = today;
+      var d = new Date();
+        
+      document.querySelector("#today").value = today+"T"+d.getHours()+":"+d.getMinutes();
       
 
           $.ajaxSetup({
@@ -307,7 +309,7 @@ ng-app="ourAngularJsApp"
                       document.getElementById("formPurchaseOrder").reset(); //reset the form
 
                        $("#purchasesDataTable").DataTable().ajax.reload();//reload the dataTables
-
+                        $("#purchasetable tr").remove();
                     }else{
                         $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
                         $("#errorDivCreatePurchase").html("Official Receipt Number duplicated");
@@ -458,7 +460,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                                 <div class="col-md-9">
                                     {{-- {{Form::date('Date','',['class'=>'form-control','value'=>''])}} --}}
-                                    <input type="date" name="Date" id="today"  class="form-control"/>
+                                    <input type="datetime-local" name="Date" id="today"  class="form-control"/>
                                     
                                 </div>
                             </div>

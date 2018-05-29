@@ -224,7 +224,20 @@ class="active"
 
       $(document).ready(function(){
           let today = new Date().toISOString().substr(0, 10);
-          document.querySelector("#today").value = today;
+          var d = new Date();
+          var hours = "";
+        var minutes = "";
+        if( parseInt(d.getHours()) < 10  ){
+            hours = "0"+d.getHours();
+        }else{
+            hours = d.getHours();
+        }
+        if( parseInt(d.getMinutes()) < 10){
+            minutes = "0"+d.getMinutes();
+        }else{
+            minutes = d.getMinutes();
+        }
+        document.querySelector("#today").value = today+"T"+hours +":"+minutes;
 
 
           $('#stockAdjustmentDataTable').DataTable({
@@ -270,6 +283,8 @@ class="active"
                       $("#errorDivCreateStockAdjustment").html("");
                       document.getElementById("formAdjustment").reset(); //reset the form
                       $("#stockAdjustmentDataTable").DataTable().ajax.reload();//reload the dataTables
+                      $("#stockTable tr").remove();
+                      
 
                   },
                   error:function(data){
@@ -404,9 +419,8 @@ class="active"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::date('Date','',['id'=>'today', 'class'=>'form-control','value'=>''])}}
+                        <input type="datetime-local" name="Date" id="today" class="form-control"/>    
                                 </div>
-                                <input type="hidden" name="authName" value="{{ Auth::user()->name }}">
                             </div>
                         </div>
                     </div>

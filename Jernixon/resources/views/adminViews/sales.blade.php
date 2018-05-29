@@ -296,9 +296,23 @@ ng-app="ourAngularJsApp"
     }
 
     $(document).ready(function(){
-
+        
         let today = new Date().toISOString().substr(0, 10);
-        document.querySelector("#today").value = today;
+        var d = new Date();
+        var hours = "";
+        var minutes = "";
+        if( parseInt(d.getHours()) < 10  ){
+            hours = "0"+d.getHours();
+        }else{
+            hours = d.getHours();
+        }
+        if( parseInt(d.getMinutes()) < 10){
+            minutes = "0"+d.getMinutes();
+        }else{
+            minutes = d.getMinutes();
+        }
+        document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+    
 
         $.ajaxSetup({
             headers: {
@@ -501,7 +515,7 @@ ng-app="ourAngularJsApp"
                         </div>
                         <div class="col-md-4" margin >
                                 {{Form::label('Date', 'Date:')}}
-                                <input type="date" name="Date" id="today"  oninput="enablePrintButton(this)"  class="form-control"/>    
+                                <input type="datetime-local" name="Date" id="today"  oninput="enablePrintButton(this)"  class="form-control"/>    
                         </div>
                       
                     </div>

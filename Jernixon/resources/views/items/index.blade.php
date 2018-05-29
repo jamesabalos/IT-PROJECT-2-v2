@@ -230,7 +230,7 @@ class="active"
                 //                 }
                 var thatTbody = document.getElementById("historyTbody");
                 if(data.length == 0){
-                    thatTbody.insertRow(-1).innerHTML = "<td colspan='5' class='text-center'>No history</td>"
+                    thatTbody.insertRow(-1).innerHTML = "<td colspan='10' class='text-center'>No history</td>"
                 }else{
                     console.log(data)
                     for (var i = 0; i < data.length; i++) {

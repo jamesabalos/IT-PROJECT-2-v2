@@ -463,9 +463,20 @@ ng-app="ourAngularJsApp"
 
       $(document).ready(function(){
         let today = new Date().toISOString().substr(0, 10);
-        document.querySelector("#today").value = today;
-        document.querySelector("#rtoday").value = today;
-        // document.querySelector("#suppliertoday").value = today;
+        var d = new Date();
+        var hours = "";
+        var minutes = "";
+        if( parseInt(d.getHours()) < 10  ){
+            hours = "0"+d.getHours();
+        }else{
+            hours = d.getHours();
+        }
+        if( parseInt(d.getMinutes()) < 10){
+            minutes = "0"+d.getMinutes();
+        }else{
+            minutes = d.getMinutes();
+        }
+        document.querySelector("#today").value = today+"T"+hours +":"+minutes;
 
           $.ajaxSetup({
               headers: {
@@ -505,6 +516,10 @@ ng-app="ourAngularJsApp"
                         $("#errorDivCreateReturns").html("");
 
                         $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
+                        $('#formReturnItem').reset();
+                        $("#returnItemTbody tr").remove();
+                        
+                        
                     },
                     error:function(data){
                         var response = data.responseJSON;
@@ -620,9 +635,9 @@ ng-app="ourAngularJsApp"
                                 <a href = "#return" data-toggle="modal">
                                     <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Return Item</button>
                                 </a>
-                                <a href = "#refund" data-toggle="modal">
+                                {{-- <a href = "#refund" data-toggle="modal">
                                     <button type="button" class="btn btn-success"><i class="fa fa-reply"></i> Refund</button>
-                                </a>
+                                </a> --}}
                             </p>
                         </div>
 
@@ -704,7 +719,7 @@ ng-app="ourAngularJsApp"
                                             {{Form::label('Date', 'Date:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::date('Date','',['class'=>'form-control','id' =>'today','value'=>''])}}
+                                <input type="datetime-local" name="Date" id="today" class="form-control"/>    
                                         </div>
                                     </div>
                                 </div>

@@ -365,6 +365,7 @@ ng-app="ourAngularJsApp"
     function createReport(button){
         // var dateFrom = document.getElementById("from").value;
         // var dateTo = document.getElementById("to").value;
+        var crsr = button.id;
         var dateFrom = button.parentNode.children[1].value;
         var dateTo = button.parentNode.children[3].value;
         var newDateFrom = new Date(dateFrom);
@@ -534,6 +535,7 @@ ng-app="ourAngularJsApp"
                 
 
         });
+        
         $('#formRefund').on('submit',function(e){
             e.preventDefault();
             var data = $(this).serialize();           
@@ -619,15 +621,32 @@ ng-app="ourAngularJsApp"
     });
     function supplier(){
         $('#supplierDiv').removeClass('hidden');
+        $('#supplierreturnbutton').removeClass('hidden');
+        $('#returnSaveButton').addClass('hidden');
         $('#customerDiv').addClass('hidden');
         $('#customerButton').removeClass('active');
         $('#supplierButton').addClass('active');
     }
     function customer(){
+        $('#supplierreturnbutton').addClass('hidden');
+        $('#returnSaveButton').removeClass('hidden');
         $('#supplierDiv').addClass('hidden');
         $('#customerDiv').removeClass('hidden');        
         $('#customerButton').addClass('active');
         $('#supplierButton').removeClass('active');
+    }
+
+    function supReturn(){
+        $('#supReturnDiv').removeClass('hidden');
+        $('#custReturnDiv').addClass('hidden');
+        $('#custButton').removeClass('active');
+        $('#supButton').addClass('active');
+    }
+    function custReturn(){
+        $('#supReturnDiv').addClass('hidden');
+        $('#custReturnDiv').removeClass('hidden');        
+        $('#custButton').addClass('active');
+        $('#supButton').removeClass('active');
     }
 
 </script>
@@ -688,27 +707,57 @@ ng-app="ourAngularJsApp"
                                 </a> --}}
                             </p>
                         </div>
+                    </div>
+                    <div class = "row">
+                        <div id = "buttons" class = "text-center">
+                          <button type="button" id="custButton" onclick="custReturn()" class="btn btn-basic active" style="width:48%;font-size: 20px">Returns from Customer</button>
+                          <button type="button" id="supButton" onclick="supReturn()" class="btn btn-basic" style="width:48%; font-size: 20px">Returns to Supplier</button>
+                        </div>
+                    </div>
+                    <div id = "custReturnDiv" class = "">
+                        <div class="" style="margin-top: 10px">
+                                <label for="from">From</label>
+                                <input type="date">
+                                <label for="to">to</label>
+                                <input type="date">
+                                <button id = "cr" onclick="createReport(this)">Filter</button>
+                        </div>
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">OR Number</th>
+                                        <th class="text-left">Date Created</th>
+                                        <th class="text-left">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                        <div class="text-right col-md-8" style="margin-top: 10px">
+                    <div id = "supReturnDiv" class = "hidden">
+                        <div class="" style="margin-top: 10px">
                             <label for="from">From</label>
                             <input type="date">
                             <label for="to">to</label>
                             <input type="date">
-                            <button onclick="createReport(this)">Filter</button>
+                            <button id = "sr" onclick="createReport(this)">Filter</button>
                         </div>
-                    </div>
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="returnsDataTable">
-                            <thead>
-                                <tr>
-                                    <th class="text-left">OR Number</th>
-                                    <th class="text-left">Date Created</th>
-                                    <th class="text-left">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">DR Number</th>
+                                        <th class="text-left">Date Created</th>
+                                        <th class="text-left">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -723,7 +772,7 @@ ng-app="ourAngularJsApp"
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
 
-            {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
+            
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -736,7 +785,7 @@ ng-app="ourAngularJsApp"
                         <button type="button" id="supplierButton" onclick="supplier()" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
                     </div>
                 </div>
-                    
+                    {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
                     <div id = "customerDiv">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -845,8 +894,10 @@ ng-app="ourAngularJsApp"
                             </div>
                         </div> --}}
                     </div>
+                    {!! Form::close() !!}
 
-                    {{-- <div id = "supplierDiv" class = "hidden">
+                    {!! Form::open(['method'=>'post','id'=>'formsupplierReturnItem']) !!}
+                    <div id = "supplierDiv" class = "hidden">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
@@ -920,8 +971,9 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
-
+                    </div>
+                    {!! Form::close() !!}
+        
                 
 
                 
@@ -931,12 +983,13 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" id="returnSaveButton" class="btn btn-success">Save</button>
+                            <button type="submit" id="returnSaveButton" class="btn btn-success" form='formReturnItem'>Save</button>
+                            <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
                 </div>
-                {!! Form::close() !!}
+                
             </div>
         </div>
     </div>
@@ -1102,6 +1155,7 @@ ng-app="ourAngularJsApp"
                                 </div>
                             </div>
                         </div>
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
@@ -1130,6 +1184,33 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-refresh"></span>
+                            Exchanged Item
+                        </strong>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Purchase Price</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="veiwReturnedItemTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                         <div class="text-right">                                           
                             <div class="col-md-12">   
@@ -1167,19 +1248,17 @@ ng-app="ourAngularJsApp"
                 </div>    
             </div>
         </div>
-    </div>
+</div>
 
 
 @endsection
 
 
-    @section('js_link')
-    <!--   Core JS Files   -->
-    {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
-    {{--  <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>  --}}
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    {{--  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>  --}}
-    {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-
-
-    @endsection
+@section('js_link')
+<!--   Core JS Files   -->
+{{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>  --}}
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+{{--  <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
+@endsection

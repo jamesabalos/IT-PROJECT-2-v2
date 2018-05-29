@@ -453,8 +453,6 @@ ng-app="ourAngularJsApp"
             <div class="header">
                 <div class="row">
                     <div id = "buttons" class = "text-center">
-
-
                         <button type="button" id="siButton" onclick="salable()" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
                         <button type="button" id="dsButton" onclick="damaged()" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
                     </div>

@@ -405,7 +405,7 @@ ng-app="ourAngularJsApp"
                     </div>
 
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="purchasesDataTable">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="purchasesDataTable">
                             <thead>
                                 <tr>
                                     <th class="text-left">PO ID</th>

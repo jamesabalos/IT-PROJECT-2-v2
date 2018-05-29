@@ -412,6 +412,7 @@ ng-app="ourAngularJsApp"
     function createReport(button){
         // var dateFrom = document.getElementById("from").value;
         // var dateTo = document.getElementById("to").value;
+        var crsr = button.id;
         var dateFrom = button.parentNode.children[1].value;
         var dateTo = button.parentNode.children[3].value;
         var newDateFrom = new Date(dateFrom);
@@ -664,6 +665,19 @@ ng-app="ourAngularJsApp"
         $('#supplierButton').removeClass('active');
     }
 
+    function supReturn(){
+        $('#supReturnDiv').removeClass('hidden');
+        $('#custReturnDiv').addClass('hidden');
+        $('#custButton').removeClass('active');
+        $('#supButton').addClass('active');
+    }
+    function custReturn(){
+        $('#supReturnDiv').addClass('hidden');
+        $('#custReturnDiv').removeClass('hidden');        
+        $('#custButton').addClass('active');
+        $('#supButton').removeClass('active');
+    }
+
 </script>
 
 <style>
@@ -722,27 +736,57 @@ ng-app="ourAngularJsApp"
                                 </a> --}}
                             </p>
                         </div>
+                    </div>
+                    <div class = "row">
+                        <div id = "buttons" class = "text-center">
+                          <button type="button" id="custButton" onclick="custReturn()" class="btn btn-basic active" style="width:48%;font-size: 20px">Returns from Customer</button>
+                          <button type="button" id="supButton" onclick="supReturn()" class="btn btn-basic" style="width:48%; font-size: 20px">Returns to Supplier</button>
+                        </div>
+                    </div>
+                    <div id = "custReturnDiv" class = "">
+                        <div class="" style="margin-top: 10px">
+                                <label for="from">From</label>
+                                <input type="date">
+                                <label for="to">to</label>
+                                <input type="date">
+                                <button id = "cr" onclick="createReport(this)">Filter</button>
+                        </div>
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">OR Number</th>
+                                        <th class="text-left">Date Created</th>
+                                        <th class="text-left">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                        <div class="text-right col-md-8" style="margin-top: 10px">
+                    <div id = "supReturnDiv" class = "hidden">
+                        <div class="" style="margin-top: 10px">
                             <label for="from">From</label>
                             <input type="date">
                             <label for="to">to</label>
                             <input type="date">
-                            <button onclick="createReport(this)">Filter</button>
+                            <button id = "sr" onclick="createReport(this)">Filter</button>
                         </div>
-                    </div>
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="returnsDataTable">
-                            <thead>
-                                <tr>
-                                    <th class="text-left">OR Number</th>
-                                    <th class="text-left">Date Created</th>
-                                    <th class="text-left">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">DR Number</th>
+                                        <th class="text-left">Date Created</th>
+                                        <th class="text-left">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -194,6 +194,20 @@
             })
         })
     })
+
+    function reorder(){
+
+    }
+    function returns(){
+
+    }
+
+    function stockAdj(){
+
+    }
+    function oldNotif(){
+
+    }
 </script>
 <style>
     .badge1[data-badge]:after {
@@ -630,10 +644,19 @@
                         
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <strong>
-                                    <span class="glyphicon glyphicon-list"></span>
-                                    List of Notifications
-                                </strong>
+                                
+                                <div id = "buttons" class="text-center">
+                                    <button type = "button" id = "reorder" onclick = "reorder()" class = "btn btn-basic active" style ="width: 20%">Reorder</button>
+                                    <button type = "button" id = "returns" onclick = "returns()" class = "btn btn-basic" style ="width: 20%">Returns</button>
+                                    <button type = "button" id = "stockAdj" onclick = "stockAdj()" class = "btn btn-basic" style ="width: 27%">Stock Adjustments</button>
+                                    <button type = "button" id = "oldNotif" onclick = "oldNotif()" class = "btn btn-basic" style ="width: 25%">Old Notification</button>
+                                </div>
+                                <div style="padding-top: 10px">
+                                    <strong>
+                                        <span class="glyphicon glyphicon-list"></span>
+                                        List of Notifications
+                                    </strong>
+                                </div>
                             </div>
                             
                             <div class="panel-body">

@@ -196,18 +196,40 @@
     })
 
     function reorder(){
+        $('.unreadstock').addClass('hidden');   
+        $('.unreadreturn').addClass('hidden');        
+        $('.unreadreorder').removeClass('hidden');
+        $('.readNotif').addClass('hidden');
+        
+
 
     }
     function returns(){
 
+        $('.unreadstock').addClass('hidden');   
+        $('.unreadreturn').removeClass('hidden');        
+        $('.unreadreorder').addClass('hidden');
+        $('.readNotif').addClass('hidden');
+        $('#reorder').removeClass('active');
     }
 
     function stockAdj(){
-
+        $(".unreadstock").removeClass('hidden');
+        $('.unreadreturn').addClass('hidden');        
+        $('.readNotif').addClass('hidden');
+        $(".unreadreorder").addClass('hidden');
+        $('#reorder').removeClass('active');
     }
     function oldNotif(){
-
+        $(".unreadstock").addClass('hidden');
+        $('.unreadreturn').addClass('hidden');        
+        $(".unreadreorder").addClass('hidden');
+        $('.readNotif').removeClass('hidden');
+        $('#reorder').removeClass('active');
     }
+    $(document).ready(function(){
+
+    });
 </script>
 <style>
     .badge1[data-badge]:after {
@@ -641,16 +663,19 @@
                     </div>
                     
                     <div class = "modal-body">  
-                        
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                
-                                <div id = "buttons" class="text-center">
+
+                        <div class="panel">
+                              <div id = "buttons" class="text-center">
                                     <button type = "button" id = "reorder" onclick = "reorder()" class = "btn btn-basic active" style ="width: 20%">Reorder</button>
                                     <button type = "button" id = "returns" onclick = "returns()" class = "btn btn-basic" style ="width: 20%">Returns</button>
                                     <button type = "button" id = "stockAdj" onclick = "stockAdj()" class = "btn btn-basic" style ="width: 27%">Stock Adjustments</button>
                                     <button type = "button" id = "oldNotif" onclick = "oldNotif()" class = "btn btn-basic" style ="width: 25%">Old Notification</button>
                                 </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                
+                                
                                 <div style="padding-top: 10px">
                                     <strong>
                                         <span class="glyphicon glyphicon-list"></span>
@@ -668,10 +693,62 @@
                                 </div>
                                 <div id="listOfNotif">
                                     <ul class="list-group">
-                                        @foreach (Auth::user()->unreadNotifications->take(10) as $notification)
-                                            @include('notifications.'.snake_case(class_basename($notification->type)))
+                                        <!--  Stock Adjustment Notification -->
+                                        @if(!empty(auth()->user()->unreadNotifications->where('type','App\Notifications\StockAdjustmentNotification')->where('read_at',Null)->count()))
+
+                                            <!-- for loop for Stockadjustment NOtification and  include Stockadjustment blade -->
+                                            @foreach ( auth()->user()->unreadNotifications->where('type','App\Notifications\StockAdjustmentNotification') as $notification)
+
+                                                @include('notifications.'.snake_case(class_basename($notification->type)))           
+
+                                            @endforeach
+                                        @else
+                                            <li class="list-group-item hidden unreadstock">No Unread Stock Adjustment Notification</li>
+                                        @endif
+
+                                        <!--  Return Notification -->
+                                        @if(!empty(auth()->user()->unreadNotifications->where('type','App\Notifications\ReturnNotification')->where('read_at',Null)->count()))
+
+                                            <!-- for loop for Stockadjustment NOtification and  include Stockadjustment blade -->
+                                            @foreach ( auth()->user()->unreadNotifications->where('type','App\Notifications\ReturnNotification') as $notification)
+
+                                                @include('notifications.'.snake_case(class_basename($notification->type)))           
+
+                                            @endforeach
+                                        @else
+                                            <li class="list-group-item hidden unreadreturn">No Unread Return Notification</li>
+                                        @endif
+
+                                        <!-- Re Order Notification -->
+
+                                        @if(!empty(auth()->user()->notifications->where('type','App\Notifications\ReorderNotification')->where('read_at',Null)->count()))
+
+                                            <!-- for loop for Re Order NOtification and  include Reorder blade -->
+                                            @foreach ( auth()->user()->unreadNotifications->where('type','App\Notifications\ReorderNotification') as $notification)
+
+                                                @include('notifications.'.snake_case(class_basename($notification->type)))           
+
+                                            @endforeach
+                                        @else
+                                            <li class="list-group-item unreadreorder">No Unread Re Order Item Notification</li>
+                                        @endif
+
+
                                             
-                                        @endforeach
+                                        <!-- All Old Notification -->
+                                        @if(empty(auth()->user()->readNotifications->where('type','App\Notifications\ReorderNotification')->count()))
+                                            <li class="list-group-item hidden readNotif">No Read Notifications</li>
+                                        @else
+                                            @foreach (Auth::user()->readNotifications->take(40) as $notification)
+                                                    @include('notifications.'.snake_case(class_basename($notification->type))) 
+                                            @endforeach
+                                            
+            
+                                        @endif
+    
+                                           
+                                        
+
                                     </ul>
                                 </div>
                                 

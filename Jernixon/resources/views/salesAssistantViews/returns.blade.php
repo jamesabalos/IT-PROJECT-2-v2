@@ -80,71 +80,22 @@ ng-app="ourAngularJsApp"
           document.getElementById("searchResultDiv").innerHTML = "";
 
       }
-      function inputQuantityDamageRefund(input){
-        var total = parseInt(input.value) + parseInt(input.parentNode.nextElementSibling.firstElementChild.value) + parseInt(input.parentNode.nextElementSibling.nextElementSibling.firstElementChild.value);
-        // input.parentNode.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
-        // input.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total);
-        // input.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)- total)
-        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) ){
-            document.getElementById("returnSaveButton").setAttribute("disabled",true);
+      function inputDamageUndamageDamageSaleble(input){
+        var total = parseInt( $(input).closest("tr")[0].children[4].firstElementChild.value ) + parseInt($(input).closest("tr")[0].children[5].firstElementChild.value) + parseInt($(input).closest("tr")[0].children[6].firstElementChild.value)
+        if( total > parseInt( $(input).closest("tr")[0].children[1].innerHTML ) ){
             $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
             $("#errorDivCreateReturns").html(function(){
                 var addedHtml="";
-                // for (var key in response.errors) {
-                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
-                // }
+                    addedHtml += "<h4>Total quantity return for "+ $(input).closest("tr")[0].children[0].innerHTML +" exceeded.</h4>";
                 return addedHtml;
             });
-        }else{
-            document.getElementById("returnSaveButton").removeAttribute("disabled");            
+        }else{          
             $("#errorDivCreateReturns").html("");
 
         }
+        $(input).closest("tr")[0].children[3].children[3].setAttribute("value",total);
+        
 
-        input.parentNode.previousElementSibling.children[3].setAttribute("value",total);
-    }
-    function inputQuantityUndamageRefund(input){
-        var total = parseInt(input.parentNode.previousElementSibling.firstElementChild.value)+ parseInt(input.value) + parseInt(input.parentNode.nextElementSibling.firstElementChild.value);
-        // input.parentNode.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
-        // input.parentNode.nextElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total);
-        // input.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)- total)
-        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)){
-            document.getElementById("returnSaveButton").setAttribute("disabled",true);            
-            $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
-            $("#errorDivCreateReturns").html(function(){
-                var addedHtml="";
-                // for (var key in response.errors) {
-                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
-                // }
-                return addedHtml;
-            });
-        }else{
-            $("#errorDivCreateReturns").html("");
-            document.getElementById("returnSaveButton").removeAttribute("disabled");                        
-        }
-
-        input.parentNode.previousElementSibling.previousElementSibling.children[3].setAttribute("value",total);
-    }
-    function inputQuantityDamageSalable(input){
-        var total = parseInt(input.parentNode.previousElementSibling.firstElementChild.value) + parseInt(input.parentNode.previousElementSibling.previousElementSibling.firstElementChild.value) + parseInt(input.value);        
-        // input.parentNode.previousElementSibling.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total );
-        // input.parentNode.previousElementSibling.firstElementChild.setAttribute("max",parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML) - total); 
-        if( total > parseInt(input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.innerHTML)){
-            document.getElementById("returnSaveButton").setAttribute("disabled",true);           
-            $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
-            $("#errorDivCreateReturns").html(function(){
-                var addedHtml="";
-                // for (var key in response.errors) {
-                    addedHtml += "<h4>Total quantity return exceeded!</h4>";
-                // }
-                return addedHtml;
-            });
-        }else{
-            $("#errorDivCreateReturns").html("");
-            document.getElementById("returnSaveButton").removeAttribute("disabled");            
-        }
-
-        input.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.children[3].setAttribute("value",total);
     }
     function checkTotalQuantityOfCheckedBox(){
         //get total quantity for every raw then check if the total Quantity == 0, if 0, then disabled save button
@@ -190,45 +141,61 @@ ng-app="ourAngularJsApp"
             // }
 
     }
-      function addReturnItem(div){
-          var items =[];
-          var thatTbody = $("#returnItemTbody tr td:first-child");
-
-          $.ajax({
-              method: 'get',
-              url: "{{route('salesAssistant.getORNumberItems')}}",
-              data:{
-                  'ORNumber': div.firstChild.innerHTML,
-              },        
-              success: function(data){
-                  $("#returnItemTbody tr").remove();
-
-                  var modalReturnItemTbody = document.getElementById("returnItemTbody");
-                  for(var i = 0; i < data.length; i++){
-                      var newRow = modalReturnItemTbody.insertRow(-1);
-                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+    function addReturnItem(div){
+        var items =[];
+        var thatTbody = $("#returnItemTbody tr td:first-child");
+        
+         $.ajax({
+            method: 'get',
+            url: "{{route('admin.getORNumberItems')}}",
+            data:{
+                 'ORNumber': div.firstChild.innerHTML,
+            },        
+            success: function(data){
+                $("#returnItemTbody tr").remove();
+                $("#refundTbody tr").remove();
+                var modalReturnItemTbody = document.getElementById("returnItemTbody");
+                var modalRefundTbody = document.getElementById("refundTbody");
+                for(var i = 0; i < data.length; i++){
+                    // if(div.dataset.modal === "searchORNumberInput"){
+                    //     var newRow = modalReturnItemTbody.insertRow(-1);
+                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
+                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    //     newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' onchange='toggleCheckbox(this)' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'></td>";
+                    // }else{
+                        var newRow = modalReturnItemTbody.insertRow(-1);
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' disabled></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
                         // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputQuantityDamageRefund(this)' disabled min='0' value='0' max='" +data[i].quantity+ "'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputQuantityUndamageRefund(this)' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputQuantityDamageSalable(this)' disabled min='0' value='0'max='" +data[i].quantity+ "'></td>";
-                  } 
-                //   document.getElementById("Date").value = data[0].created_at;
-                  document.getElementById("Customer").value = data[0].customer_name;
-                  document.getElementById("returnCustomerName").value = data[0].customer_name;
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
+                        
+                    // }
+                }
 
+                document.getElementById("Customer").value = data[0].customer_name;
+                document.getElementById("returnCustomerName").value = data[0].customer_name;
+                // document.getElementById("refundCustomer").value = data[0].customer_name;
+                // document.getElementById("refundCustomerName").value = data[0].customer_name;
+              
 
+                
+            }
+            });
 
-              }
-          });
+        // if(div.dataset.modal === "searchORNumberInput"){
+            document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
+            document.getElementById("resultORNumberDiv").innerHTML = "";
+        // }else{
+        //     document.getElementById("refundSearchORNumberInput").value = div.firstChild.innerHTML ;
+        //     document.getElementById("refundORNumberDiv").innerHTML = "";
+        // }
 
-
-          document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML  ;
-          document.getElementById("resultORNumberDiv").innerHTML = "";
-
-      }
+    }
       function toggleCheckbox(button){
           var data  = $(button.parentNode.parentNode.innerHTML).slice(0,-1);
           var itemName = data[0].innerHTML;
@@ -477,7 +444,22 @@ ng-app="ourAngularJsApp"
             minutes = d.getMinutes();
         }
         document.querySelector("#today").value = today+"T"+hours +":"+minutes;
-
+        var t = setInterval(function(){
+            var d = new Date();
+            var hours = "";
+            var minutes = "";
+            if( parseInt(d.getHours()) < 10  ){
+                hours = "0"+d.getHours();
+            }else{
+                hours = d.getHours();
+            }
+            if( parseInt(d.getMinutes()) < 10){
+                minutes = "0"+d.getMinutes();
+            }else{
+                minutes = d.getMinutes();
+            }
+            document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+        },60000)
           $.ajaxSetup({
               headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -692,12 +674,13 @@ ng-app="ourAngularJsApp"
                             <button id = "sr" onclick="createReport(this)">Filter</button>
                         </div>
                     <div class="content table-responsive table-full-width">
-                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable">
+                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable2">
                                 <thead>
                                     <tr>
-                                        <th class="text-left">DR Number</th>
-                                        <th class="text-left">Date Created</th>
-                                        <th class="text-left">Action</th>
+                                            <th class="text-left">Item</th>
+                                            <th class="text-left">Supplier</th>
+                                            <th class="text-left">Date</th>
+                                            <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -715,227 +698,237 @@ ng-app="ourAngularJsApp"
 
 @section('modals')
 <div id="return" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-lg">
-        <div class = "modal-content">
-
-            {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
-
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title"><i class=" fa fa-reply" style="margin-right: 10px"></i> Returns</h3>
-            </div>
-            <div class = "modal-body">  
-                <div class="panel panel-default">
-                    <div id = "buttons">
-                        <button type="button" id="customerButton" onclick="customer()" class="btn btn-basic active" style="width:49.6%;font-size: 16px">Customer Return Item(s)</button>
-                        <button type="button" id="supplierButton" onclick="supplier()" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
-                    </div>
+        <div class = "modal-dialog modal-lg">
+            <div class = "modal-content">
+    
+                
+    
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"><i class=" fa fa-reply" style="margin-right: 10px"></i> Returns</h3>
                 </div>
-                    
-                    <div id = "customerDiv">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <strong>
-                                    <span class="glyphicon glyphicon-info-sign"></span>
-                                     Customer Return Information
-                                </strong>
-                            </div>
-                            <div class="panel-body">
-
-                                <div class="form-group">                                
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            {{Form::label('Official Receipt No:')}}
-                                        </div>
-                                        <div class="col-md-9">
-                                          {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
-                                <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
-                                             <div id="resultORNumberDiv" class="searchResultDiv">
-                                    </div>
-                                        </div>
-                                    </div>
-                                </div>
-                    
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            {{Form::label('Date', 'Date:')}}
-                                        </div>
-                                        <div class="col-md-9">
-                                <input type="datetime-local" name="Date" id="today" class="form-control"/>    
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">    
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            {{Form::label('Customer', 'Customer:')}}
-                                        </div>
-                                        <div class="col-md-9">
-                                            {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}
-                                <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <div class = "modal-body">  
+                    <div class="panel panel-default">
+                        <div id = "buttons">
+                            <button type="button" id="customerButton" onclick="customer()" class="btn btn-basic active" style="width:49.6%;font-size: 16px">Customer Return Item(s)</button>
+                            <button type="button" id="supplierButton" onclick="supplier()" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <strong>
-                                    <span class="fa fa-reply"></span>
-                                    Return Item
-                                </strong>
-                            </div>
-                            <div class="modal-body">
-                                <div class="content table-responsive">
-                                    <table class="table table-bordered table-striped">
-
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left">Description</th>
-                                                <th class="text-left">Qty</th>
-                                                <th class="text-left">Purchase Price</th>
-                                                <th class="text-left">Check item to return</th>
-                                                <th class="text-left">Damaged</th>
-                                                <th class="text-left">Undamaged</th>
-                                                <th class="text-left">Damage Salable</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="returnItemTbody">
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <strong>
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                    In Exchange for
-                                </strong>
-                            </div>
-                            <div class="modal-body">
-                                <div class="content table-responsive">
-                                    <table id="inEchangeTable" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left">Description</th>
-                                                <th class="text-left">Qty</th>
-                                                <th class="text-left">Price</th>
-                                                <th class="text-left">Remove</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="inExchangeTbody">
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="autocomplete" style="width:100%;">
-                                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
-                                    <div id="searchResultDiv" class="searchResultDiv">
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                     </div>
-
-                    <div id = "supplierDiv" class = "hidden">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <strong>
-                                    <span class="glyphicon glyphicon-info-sign"></span>
-                                     Return to Supplier Information
-                                </strong>
-                            </div>
-                            <div class="panel-body">
-
-                                <div class="form-group">                                
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            {{Form::label('Delivery Receipt No.:')}}
+                        {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
+                        <div id = "customerDiv">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                         Customer Return Information
+                                    </strong>
+                                </div>
+                                <div class="panel-body">
+    
+                                    <div class="form-group">                                
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                {{Form::label('Official Receipt No:')}}
+                                            </div>
+                                            <div class="col-md-9">
+                                              {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
+                                    <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
+                                                 <div id="resultORNumberDiv" class="searchResultDiv">
                                         </div>
-                                        <div class="col-md-9">
-                                             <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
-                                            <div id="resultDRNumberDiv" class="searchResultDiv">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                {{Form::label('Date', 'Date:')}}
+                                            </div>
+                                            <div class="col-md-9">
+                                    <input type="datetime-local" name="Date" id="today" class="form-control"/>    
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                    <div class="form-group">    
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                {{Form::label('Customer', 'Customer:')}}
+                                            </div>
+                                            <div class="col-md-9">
+                                                {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}
+                                    <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            {{Form::label('Date', 'Date:')}}
-                                        </div>
-                                        <div class="col-md-9">
-                                            {{Form::date('Date','',['class'=>'form-control','id' =>'suppliertoday','value'=>''])}}
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>
+                                        <span class="fa fa-reply"></span>
+                                        Return Item
+                                    </strong>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="content table-responsive">
+                                        <table class="table table-bordered table-striped">
+    
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">Description</th>
+                                                    <th class="text-left">Qty</th>
+                                                    <th class="text-left">Selling Price</th>
+                                                    <th class="text-left">Check item to return</th>
+                                                    <th class="text-left">Damaged</th>
+                                                    <th class="text-left">Undamaged</th>
+                                                    <th class="text-left">Damage Salable</th>
+                                                </tr>
+                                            </thead>
+    
+                                            <tbody id="returnItemTbody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>
+                                        <span class="glyphicon glyphicon-refresh"></span>
+                                        In Exchange for
+                                    </strong>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="content table-responsive">
+                                        <table id="inEchangeTable" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">Description</th>
+                                                    <th class="text-left">Qty</th>
+                                                    <th class="text-left">Price</th>
+                                                    <th class="text-left">Remove</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="inExchangeTbody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="autocomplete" style="width:100%;">
+                                        <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" name="item" class="form-control border-input" placeholder="Enter the name of the item">
+                                        <div id="searchResultDiv" class="searchResultDiv">
                                         </div>
                                     </div>
                                 </div>
-
-
-                                <div class="form-group">    
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            {{Form::label('Supplier', 'Supplier:')}}
+                            </div> --}}
+                        </div>
+                        {!! Form::close() !!}
+    
+                        {!! Form::open(['method'=>'post','id'=>'formsupplierReturnItem']) !!}
+                        <div id = "supplierDiv" class = "hidden">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>
+                                        <span class="glyphicon glyphicon-info-sign"></span>
+                                         Return to Supplier Information
+                                    </strong>
+                                </div>
+                                <div class="panel-body">
+    
+                                    {{-- <div class="form-group">                                
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                {{Form::label('Delivery Receipt No.:')}}
+                                            </div>
+                                            <div class="col-md-9">
+                                                 <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
+                                                <div id="resultDRNumberDiv" class="searchResultDiv">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-9">
-                                            {{Form::text('Supplier','',['class'=>'form-control','value'=>'','disabled'])}}
-                                            <input id="returnSupplierName" type="hidden" name="supplierName" class="form-control border-input" >
+                                    </div> --}}
+                                    
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                {{Form::label('Date', 'Date:')}}
+                                            </div>
+                                            <div class="col-md-9">
+                                                {{Form::date('Date','',['class'=>'form-control','id' =>'suppliertoday','value'=>''])}}
+                                            </div>
+                                        </div>
+                                    </div>
+    
+    
+                                    <div class="form-group">    
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                {{Form::label('Supplier', 'Supplier:')}}
+                                            </div>
+                                            <div class="col-md-9">
+                                                {{Form::text('Supplier','',['class'=>'form-control','value'=>''])}}
+                                                <input id="returnSupplierName" type="hidden" name="supplierName" class="form-control border-input" >
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <strong>
-                                    <span class="fa fa-reply"></span>
-                                    Return to Supplier Item
-                                </strong>
-                            </div>
-                            <div class="modal-body">
-                                <div class="content table-responsive">
-                                    <table class="table table-bordered table-striped">
-
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left">Description</th>
-                                                <th class="text-left">Qty</th>
-                                                <th class="text-left">Price</th>
-                                                <th class="text-left">Check item to return</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="returnItemTbody">
-                                        </tbody>
-                                    </table>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>
+                                        <span class="fa fa-reply"></span>
+                                        Return to Supplier Item
+                                    </strong>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="content table-responsive">
+                                        <table class="table table-bordered table-striped">
+    
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">Description</th>
+                                                    <th class="text-left">Supplier</th>
+                                                    <th class="text-left">Type</th>
+                                                    <th class="text-left">Quantity in inventory</th>
+                                                    <th class="text-left">Quantity to be returned</th>
+                                                </tr>
+                                            </thead>
+    
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                            <div class="autocomplete" style="width:100%;">
+                                                <input autocomplete="off" type="text" id="searchItemInput2" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                                                {{-- <div id="searchResultDiv" class="searchResultDiv">
+                                                </div> --}}
+                                            </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                
-
-                
-                <div id="errorDivCreateReturns" class="hidden">
-
+                        {!! Form::close() !!}
+            
+                    
+    
+                    
+                    <div id="errorDivCreateReturns" class="hidden">
+    
+                            </div>
+                    <div class="row">
+                        <div class="text-right">                                           
+                            <div class="col-md-12">   
+                                <button type="submit" id="returnSaveButton" class="btn btn-success" form='formReturnItem'>Save</button>
+                                <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
                         </div>
-                <div class="row">
-                    <div class="text-right">                                           
-                        <div class="col-md-12">   
-                            <button type="submit" id="returnSaveButton" class="btn btn-success">Save</button>
-                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                        </div>
                     </div>
+                    
                 </div>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>
-</div>
 
 <div id="refund" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
     <div class = "modal-dialog modal-md">
@@ -1127,7 +1120,7 @@ ng-app="ourAngularJsApp"
                     </div>
                 </div>
 
-                <div class="panel panel-default">
+                {{-- <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-refresh"></span>
@@ -1151,7 +1144,7 @@ ng-app="ourAngularJsApp"
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row">
                         <div class="text-right">                                           

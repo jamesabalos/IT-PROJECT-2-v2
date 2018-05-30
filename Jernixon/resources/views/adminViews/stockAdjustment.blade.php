@@ -64,7 +64,7 @@ class="active"
               newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='itemName[]' value='" +divElement.firstChild.innerHTML+ "'>"+divElement.firstChild.innerHTML+ "</td>";
               newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
             //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
-              newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='damaged'>DAMAGED</option><option class='form-control'  value='damaged salable'>DAMAGED SALABLE</option><option class='form-control' value='lost'>LOST</option></select></td>";
+              newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='Damaged'>Damaged</option><option class='form-control'  value='Damaged Saleable'>Damaged Saleable</option><option class='form-control' value='Lost'>Lost</option></select></td>";
 
               newRow.insertCell(-1).innerHTML = "<td><input  class=' form-control  dp' id='damaged_price"+divElement.id+"' disabled  type='number' name='dprice[]' value='"+divElement.dataset.price+"' ></input></td>";
 
@@ -240,7 +240,22 @@ class="active"
         }
         document.querySelector("#today").value = today+"T"+hours +":"+minutes;
 
-
+        var t = setInterval(function(){
+            var d = new Date();
+            var hours = "";
+            var minutes = "";
+            if( parseInt(d.getHours()) < 10  ){
+                hours = "0"+d.getHours();
+            }else{
+                hours = d.getHours();
+            }
+            if( parseInt(d.getMinutes()) < 10){
+                minutes = "0"+d.getMinutes();
+            }else{
+                minutes = d.getMinutes();
+            }
+            document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+        },60000)
           $('#stockAdjustmentDataTable').DataTable({
               "destroy": true,
               "processing": true,
@@ -261,7 +276,8 @@ class="active"
           $('#formAdjustment').on('submit',function(e){
               e.preventDefault();
               var data = $(this).serialize();
-
+                // console.log(data)
+            // return true;
               $.ajax({
                   type:'POST',
                   url: "{{route('admin.createStockAdjustment')}}",
@@ -418,6 +434,7 @@ class="active"
                     </div>
                     <div class="panel-body">
                         <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="authName" value="{{Auth::user()->name}}">
 
                         <div class="form-group">
                             <div class="row">

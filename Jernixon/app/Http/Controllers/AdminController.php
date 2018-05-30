@@ -119,7 +119,7 @@ class AdminController extends Controller
         $data = DB::table('damaged_salable_items')
             ->join('products', 'products.product_id' , '=' , 'damaged_salable_items.product_id')
             ->join('salable_items', 'salable_items.product_id' , '=' , 'damaged_salable_items.product_id')
-            ->select('products.product_id', 'description', 'wholesale_price' , 'damaged_selling_price' , 'damaged_salable_items.quantity')
+            ->select('products.product_id', 'description', 'retail_price' , 'wholesale_price' , 'damaged_salable_items.quantity')
             ->where([['status' , '=' , 'available'],['damaged_salable_items.quantity', '>', 0]]);
 
         return Datatables::of($data)
@@ -202,7 +202,7 @@ class AdminController extends Controller
 
         $items = DB::table('products')
         ->join('salable_items', 'products.product_id' , '=' , 'salable_items.product_id')        
-        ->select('salable_items.created_at', 'products.description', 'products.product_id', 'reorder_level', 'status','salable_items.quantity','salable_items.retail_price')
+        ->select('salable_items.created_at', 'products.description', 'products.product_id', 'reorder_level', 'status','salable_items.quantity','salable_items.retail_price', 'salable_items.wholesale_price')
         ->where([['description','LIKE','%'.$itemName.'%'],['status', '=', 'available'],])
         ->orderBy('description','asc')  
         ->limit(5)              
@@ -260,7 +260,8 @@ class AdminController extends Controller
 
                     DB::table('salable_items')
                         ->where('product_id', $request->product_id[$i])
-                        ->update(['wholesale_price' => $newPrice, 'retail_price' => $newPrice]);
+                        // ->update(['wholesale_price' => $newPrice, 'retail_price' => $newPrice]);
+                        ->update(['wholesale_price' => $newPrice]);
                 }
 
             }
@@ -336,6 +337,24 @@ public function createPurchasesFilter(Request $request){
             })
             ->make(true);
     }
+    // public function getReturns2(){
+    //     $data = DB::table('returns')
+    //         ->select('or_number', 'created_at')
+    //         ->orderBy('created_at', 'desc')
+    //         ->distinct();
+    //     return Datatables::of($data)
+    //         ->addColumn('action',function($data){
+    //             return "
+    //             <a href = '#viewReturn' data-toggle='modal' >
+    //                 <button onclick='getItems2(this)' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
+    //             </a>
+
+    //             ";
+
+
+    //         })
+    //         ->make(true);
+    // }
     public function getORNumber($ORNumber){
         $data = DB::table('sales')
             ->select('or_number')
@@ -369,6 +388,17 @@ public function createPurchasesFilter(Request $request){
         return $data;
 
     }
+    // public function getReturnedItems2(Request $request){
+
+    //     $data = DB::table('returns')
+    //         ->join('products', 'products.product_id', '=', 'returns.product_id')
+    //         ->select('returns.product_id','description', 'customer_name', 'damagedQuantity','undamagedQuantity','damagedSalableQuantity', 'price', 'returns.created_at')
+    //         ->where('or_number', '=',$request->ORNumber)
+    //         ->where('returns.created_at', '=',$request->Date)
+    //         ->get();
+    //     return $data;
+
+    // }
     public function createReturnItem(Request $request){
         $this->validate($request,[
             'officialReceiptNumber' => 'required',
@@ -517,8 +547,11 @@ public function createPurchasesFilter(Request $request){
     public function getReports(){
         $data = DB::table('sales')
             ->join('products', 'products.product_id', '=', 'sales.product_id')
-            ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at');
+            // ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at');
+            ->select('products.description',DB::raw('sum(quantity) as totalQuantity'),DB::raw('sum(quantity*price) as totalPrice') )
+            ->groupBy('products.description');
         return Datatables::of($data)
+
             ->make(true);
     }
     public function getDamagedItems(){
@@ -555,13 +588,21 @@ public function createPurchasesFilter(Request $request){
   
         $data = DB::table('sales')
             ->join('products', 'products.product_id', '=', 'sales.product_id')
-            ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at')
+            // ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at')
+            ->select('products.description',DB::raw('sum(quantity) as totalQuantity'),DB::raw('sum(quantity*price) as totalPrice') )            
             ->where('sales.created_at','>',$request->dateFrom)
-            ->where('sales.created_at','<',$request->dateTo);
+            ->where('sales.created_at','<',$request->dateTo)
+            ->groupBy('products.description');
+            
             // ->whereBetween('quantity',[$request->dateFrom, $request->dateTo]);
             
         return Datatables::of($data)
-            ->make(true);
+        // ->addColumn('totalPrice',function($data){
+        //     // $totalPrice = "<p>".$data->quantity * $data->price."</p>";
+        //     $buttons = "<a href = '#editModal' data-toggle='modal' >
+        //     <button class='btn btn-info' onclick='insertDataToModal(this)'><i class='glyphicon glyphicon-edit'></i> Edit</button></a>";
+        // })
+        ->make(true);
     }
     public function createReportDamagedItems(Request $request){
         $data = DB::table('damaged_items')
@@ -610,7 +651,7 @@ public function createPurchasesFilter(Request $request){
 
         $arrayCount = count($request->productId);
         for($i = 0;$i<$arrayCount;$i++){
-            if($request->status[$i] == "damaged"){
+            if($request->status[$i] == "Damaged"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
                 );
@@ -626,7 +667,7 @@ public function createPurchasesFilter(Request $request){
                     DB::table('salable_items')
                         ->where('product_id', $request->productId[$i])
                         ->decrement('quantity', $request->quantity[$i]);
-            }elseif($request->status[$i] == "damaged salable"){
+            }elseif($request->status[$i] == "Damaged Saleable"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date]
                 );
@@ -711,7 +752,7 @@ public function createPurchasesFilter(Request $request){
                 //     <button id='$data->product_id' class='btn btn-danger formUpdatechangeStatus'><i class='glyphicon glyphicon-remove'></i>$data->status</button>
                 // ";
 
-
+  
 
             })
             ->make(true);
@@ -835,7 +876,7 @@ public function createPurchasesFilter(Request $request){
                 ->sum('quantity');
 
                 $inventoryout = $soldquantity+$out1+$out2;
-                // $inventoryin = $in1 + $in2;
+                // $inventoryin = $in1 + $in2;  
                 $balance = $inventoryinitial - $inventoryout;
 
             // array_push($data, [$sales[$i]->customer_name]);

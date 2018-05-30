@@ -362,6 +362,41 @@ ng-app="ourAngularJsApp"
 
 	
 	}
+	// function getItems2(button){
+		
+	// 	var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+	// 	var date = button.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
+
+	// 	$.ajax({
+	// 		type:'GET',
+	// 		url: "{{route('admin.getReturnedItems')}}",
+    //         data: {
+    //             'ORNumber': ORnumber,
+    //             'Date': date
+    //         },
+
+	// 		success:function(data){
+    //             $("#veiwReturnedItemTbody2 tr").remove();
+    //             var returnedItemTable = document.getElementById("veiwReturnedItemTbody2");
+    //             for(var i = 0; i < data.length; i++){
+    //                 var newRow = returnedItemTable.insertRow(-1);
+    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
+    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
+    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
+
+    //             }
+
+    //             document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
+    //             document.getElementById("returnedORNumber").innerHTML = ORnumber;
+    //             document.getElementById("customerName").innerHTML = data[0].customer_name;
+
+	// 		}
+	// 	});
+
+	
+	// }
     function createReport(button){
         // var dateFrom = document.getElementById("from").value;
         // var dateTo = document.getElementById("to").value;
@@ -464,10 +499,25 @@ ng-app="ourAngularJsApp"
             minutes = "0"+d.getMinutes();
         }else{
             minutes = d.getMinutes();
-        }
+        }   
         document.querySelector("#today").value = today+"T"+hours +":"+minutes;
 
-
+        var t = setInterval(function(){
+            var d = new Date();
+            var hours = "";
+            var minutes = "";
+            if( parseInt(d.getHours()) < 10  ){
+                hours = "0"+d.getHours();
+            }else{
+                hours = d.getHours();
+            }
+            if( parseInt(d.getMinutes()) < 10){
+                minutes = "0"+d.getMinutes();
+            }else{
+                minutes = d.getMinutes();
+            }
+            document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+        },60000)
 
         $.ajaxSetup({
             headers: {
@@ -513,7 +563,7 @@ ng-app="ourAngularJsApp"
                         $("#errorDivCreateReturns").html("");
                         $('#returnOrRefundPrompt').modal('show');
                         $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
-                        $('#formReturnItem').reset();
+                        // $('#formReturnItem').reset();
                         $("#returnItemTbody tr").remove();
 
 
@@ -619,6 +669,38 @@ ng-app="ourAngularJsApp"
           });
 
     });
+        //  $('#returnsDataTable2').DataTable({
+        //       "destroy": true,
+        //       "processing": true,
+        //       "serverSide": true,
+        //       "colReorder": true,  
+        //       //"autoWidth": true,
+        //       "pagingType": "full_numbers",
+        //     //   dom: 'Bfrtip',
+        //     //   "buttons": [
+        //     //       {
+        //     //           extend: 'collection',
+        //     //           text: 'EXPORT',
+        //     //           buttons: [
+        //     //              {extend: 'copy', title: 'Jernixon Motorparts - Returns'},
+        //     //               {extend: 'excel', title: 'Jernixon Motorparts - Returns'},
+        //     //               {extend: 'csv', title: 'Jernixon Motorparts - Returns'},
+        //     //               {extend: 'pdf', title: 'Jernixon Motorparts - Returns'},
+        //     //               {extend: 'print', title: 'Jernixon Motorparts - Returns'}
+        //     //           ]
+        //     //       }
+        //     //   ],
+
+        //       "ajax":  "{{ route('returns.getReturns') }}",
+        //       "columns": [
+        //           {data: 'or_number'},
+        //         //   {data: 'price'},
+        //           {data: 'created_at'},
+        //           {data: 'action'},
+        //       ]
+        //   });
+
+    
     function supplier(){
         $('#supplierDiv').removeClass('hidden');
         $('#supplierreturnbutton').removeClass('hidden');
@@ -746,11 +828,12 @@ ng-app="ourAngularJsApp"
                             <button id = "sr" onclick="createReport(this)">Filter</button>
                         </div>
                     <div class="content table-responsive table-full-width">
-                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable">
+                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable2">
                                 <thead>
                                     <tr>
-                                        <th class="text-left">DR Number</th>
-                                        <th class="text-left">Date Created</th>
+                                        <th class="text-left">Item</th>
+                                        <th class="text-left">Supplier</th>
+                                        <th class="text-left">Date</th>
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
@@ -850,7 +933,7 @@ ng-app="ourAngularJsApp"
                                             <tr>
                                                 <th class="text-left">Description</th>
                                                 <th class="text-left">Qty</th>
-                                                <th class="text-left">Purchase Price</th>
+                                                <th class="text-left">Selling Price</th>
                                                 <th class="text-left">Check item to return</th>
                                                 <th class="text-left">Damaged</th>
                                                 <th class="text-left">Undamaged</th>
@@ -907,7 +990,7 @@ ng-app="ourAngularJsApp"
                             </div>
                             <div class="panel-body">
 
-                                <div class="form-group">                                
+                                {{-- <div class="form-group">                                
                                     <div class="row">
                                         <div class="col-md-3">
                                             {{Form::label('Delivery Receipt No.:')}}
@@ -918,7 +1001,7 @@ ng-app="ourAngularJsApp"
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 
                                 <div class="form-group">
                                     <div class="row">
@@ -938,7 +1021,7 @@ ng-app="ourAngularJsApp"
                                             {{Form::label('Supplier', 'Supplier:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::text('Supplier','',['class'=>'form-control','value'=>'','disabled'])}}
+                                            {{Form::text('Supplier','',['class'=>'form-control','value'=>''])}}
                                             <input id="returnSupplierName" type="hidden" name="supplierName" class="form-control border-input" >
                                         </div>
                                     </div>
@@ -959,16 +1042,22 @@ ng-app="ourAngularJsApp"
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Description</th>
-                                                <th class="text-left">Qty</th>
-                                                <th class="text-left">Price</th>
-                                                <th class="text-left">Check item to return</th>
+                                                <th class="text-left">Supplier</th>
+                                                <th class="text-left">Type</th>
+                                                <th class="text-left">Quantity in inventory</th>
+                                                <th class="text-left">Quantity to be returned</th>
                                             </tr>
                                         </thead>
 
-                                        <tbody id="returnItemTbody">
+                                        <tbody>
                                         </tbody>
                                     </table>
                                 </div>
+                                        <div class="autocomplete" style="width:100%;">
+                                            <input autocomplete="off" type="text" id="searchItemInput2" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                                            {{-- <div id="searchResultDiv" class="searchResultDiv">
+                                            </div> --}}
+                                        </div>
                             </div>
                         </div>
                     </div>
@@ -1171,7 +1260,7 @@ ng-app="ourAngularJsApp"
                                     <tr>
                                         <th class="text-left">Description</th>
                                         {{-- <th class="text-left">Quantity</th> --}}
-                                        <th class="text-left">Purchase Price</th>
+                                        <th class="text-left">Selling Price</th>
                                         <th class="text-left">Damaged</th>
                                         <th class="text-left">Undamaged</th>
                                         <th class="text-left">Damage Salable</th>
@@ -1185,7 +1274,7 @@ ng-app="ourAngularJsApp"
                     </div>
                 </div>
 
-                <div class="panel panel-default">
+                {{-- <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-refresh"></span>
@@ -1209,7 +1298,7 @@ ng-app="ourAngularJsApp"
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="row">
                         <div class="text-right">                                           
@@ -1222,6 +1311,78 @@ ng-app="ourAngularJsApp"
         </div>
     </div>
 </div>
+
+<div id="viewReturn1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Official Receipt Information</h3>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            Information
+                        </strong>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Item Name', 'Item Name:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{--  {{Form::text('Item Name','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
+                                    <p class="form-control" id="returnedDate"></p>   
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{--  {{ Form::number('Date','',['class'=>'form-control']) }}  --}}
+                                    <p class="form-control" id="returnedORNumber"></p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered table-striped">
+
+                            <thead>
+                                <tr>
+                                    <th class="text-left">Type</th>
+                                    <th class="text-left">Returned Quantity</th>
+                                    <th class="text-left">Quantity Accepted</th>
+                                    <th class="text-left">Status</th>
+                                    <th class="text-left">Edit</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="veiwReturnedItemTbody2">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-right">                                           
+                        <div class="col-md-12">   
+                            <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div id="returnOrRefundPrompt" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
         <div class = "modal-dialog modal-md">

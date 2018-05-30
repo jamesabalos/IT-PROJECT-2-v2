@@ -57,11 +57,14 @@ ng-app="ourAngularJsApp"
 
               newRow.insertCell(-1).innerHTML = "<td>" +div.firstChild.innerHTML+ "</td>";
               newRow.insertCell(-1).innerHTML = "<td><input name='quantity[]' type='number' min='1' value='1' class='form-control'></td>";
-              newRow.insertCell(-1).innerHTML = "<td><input name='price[]' type='number' min='1.00' value='1.00' class='form-control'></td>";
+              newRow.insertCell(-1).innerHTML = "<td><input name='price[]' type='number' onchange='changeValuePrice(this)' min='1.00' value='"+div.dataset.price+"' class='form-control'></td>";
               newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='product_id[]' value='" +div.getAttribute("id")+ "'><button type='button' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
           }
           document.getElementById("searchItemInput").value = "";
           document.getElementById("searchResultDiv").innerHTML = "";
+      }
+      function changeValuePrice(input){
+          input.setAttribute("value",input.value)
       }
 
       function searchItem(a){
@@ -86,6 +89,7 @@ ng-app="ourAngularJsApp"
                       var node = document.createElement("DIV");
                       node.setAttribute("id",data[i].product_id)
                       node.setAttribute("onclick","addRow(this)")
+                      node.setAttribute("data-price",data[i].wholesale_price)
                       var pElement = document.createElement("P");
                       var textNode = document.createTextNode(data[i].description);
                       pElement.appendChild(textNode);
@@ -228,9 +232,36 @@ ng-app="ourAngularJsApp"
 
       let today = new Date().toISOString().substr(0, 10);
       var d = new Date();
+        var hours = "";
+        var minutes = "";
+        if( parseInt(d.getHours()) < 10  ){
+            hours = "0"+d.getHours();
+        }else{
+            hours = d.getHours();
+        }
+        if( parseInt(d.getMinutes()) < 10){
+            minutes = "0"+d.getMinutes();
+        }else{
+            minutes = d.getMinutes();
+        }
         
-      document.querySelector("#today").value = today+"T"+d.getHours()+":"+d.getMinutes();
-      
+      document.querySelector("#today").value = today+"T"+hours+":"+minutes;
+      var t = setInterval(function(){
+            var d = new Date();
+            var hours = "";
+            var minutes = "";
+            if( parseInt(d.getHours()) < 10  ){
+                hours = "0"+d.getHours();
+            }else{
+                hours = d.getHours();
+            }
+            if( parseInt(d.getMinutes()) < 10){
+                minutes = "0"+d.getMinutes();
+            }else{
+                minutes = d.getMinutes();
+            }
+            document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+        },60000)
 
           $.ajaxSetup({
               headers: {
@@ -284,7 +315,11 @@ ng-app="ourAngularJsApp"
           $('#formPurchaseOrder').on('submit',function(e){
               e.preventDefault();
               var data = $(this).serialize();
-
+                if( $("#purchasetable tr").length == 0 ){
+                    $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreatePurchase").html("<h4>Please input item/s</h4>");
+                    return true;
+                }
               $.ajax({
                   type:'POST',
                   url: "{{route('admin.createPurchases')}}",
@@ -300,7 +335,7 @@ ng-app="ourAngularJsApp"
                       $("#successDiv p").remove();
                       $("#successDiv").removeClass("hidden")
                       // .addClass("alert-success")
-                             .html("<h3>Transaction successful</h3>");
+                             .html("<h3>Purchase successful</h3>");
                       $("#successDiv").css("display:block");                             
                       $("#successDiv").slideDown("slow")
                           .delay(1000)                        
@@ -312,7 +347,7 @@ ng-app="ourAngularJsApp"
                         $("#purchasetable tr").remove();
                     }else{
                         $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
-                        $("#errorDivCreatePurchase").html("Official Receipt Number duplicated");
+                        $("#errorDivCreatePurchase").html("<h4>Official Receipt Number duplicated</h4>");
                     }
 
 
@@ -325,7 +360,7 @@ ng-app="ourAngularJsApp"
                     $("#errorDivCreatePurchase").html(function(){
                           var addedHtml="";
                           for (var key in response.errors) {
-                              addedHtml += "<p>"+response.errors[key]+"</p>";
+                              addedHtml += "<h4>"+response.errors[key]+"</h4>";
                           }
                           return addedHtml;
                       });
@@ -459,7 +494,6 @@ ng-app="ourAngularJsApp"
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{-- {{Form::date('Date','',['class'=>'form-control','value'=>''])}} --}}
                                     <input type="datetime-local" name="Date" id="today"  class="form-control"/>
                                     
                                 </div>

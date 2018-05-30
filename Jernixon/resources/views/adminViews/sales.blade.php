@@ -312,7 +312,23 @@ ng-app="ourAngularJsApp"
             minutes = d.getMinutes();
         }
         document.querySelector("#today").value = today+"T"+hours +":"+minutes;
-    
+        
+        var t = setInterval(function(){
+            var d = new Date();
+            var hours = "";
+            var minutes = "";
+            if( parseInt(d.getHours()) < 10  ){
+                hours = "0"+d.getHours();
+            }else{
+                hours = d.getHours();
+            }
+            if( parseInt(d.getMinutes()) < 10){
+                minutes = "0"+d.getMinutes();
+            }else{
+                minutes = d.getMinutes();
+            }
+            document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+        },60000)
 
         $.ajaxSetup({
             headers: {
@@ -453,8 +469,8 @@ ng-app="ourAngularJsApp"
             <div class="header">
                 <div class="row">
                     <div id = "buttons" class = "text-center">
-                        <button type="button" id="siButton" onclick="salable()" class="btn btn-basic active" style="width:48%;font-size: 20px">Salable Items</button>
-                        <button type="button" id="dsButton" onclick="damaged()" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Salable Items</button>
+                        <button type="button" id="siButton" onclick="salable()" class="btn btn-basic active" style="width:48%;font-size: 20px">Saleable Items</button>
+                        <button type="button" id="dsButton" onclick="damaged()" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Saleable Items</button>
                     </div>
                     <div id = "siDiv" class=''>
                     <div class="content table-responsive table-full-width table-stripped">
@@ -787,12 +803,12 @@ ng-app="ourAngularJsApp"
                        "data": "quantity"
                    },
                    {
-                       "title": "Purchase Price",
-                       "data": "wholesale_price"
+                       "title": "Selling Price",
+                       "data": "retail_price"
                    },
                    {
                        "title": "Damaged Item Selling Price",
-                       "data": "damaged_selling_price"
+                       "data": "wholesale_price"
                    },
                    {
                        "title": "Add Item",
@@ -932,6 +948,7 @@ ng-app="ourAngularJsApp"
 
                 if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
                     var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='damagedRetailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='damagedDescription[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
+                    // var retailPrice = "<input type='number' min='1' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'><input type='hidden' name='damagedRetailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='damagedDescription[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
                 }else{
                     var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='description[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
                 }                
@@ -1109,8 +1126,10 @@ ng-app="ourAngularJsApp"
                     table.row.add( {
                             "description":  temp['item'],
                             "quantity":  $.parseHTML(temp['quantityPurchase'])[0]['max'],
+                            // "wholesale_price": temp['purchasePrice'],
+                            // "damaged_selling_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
+                            "retail_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
                             "wholesale_price": temp['purchasePrice'],
-                            "damaged_selling_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
                             "action":   temp['action']
                         } ).draw();
                 }else{

@@ -213,7 +213,7 @@ class HomeController extends Controller
     }
     public function createStockAdjustment(Request $request){
         $this->validate($request,[
-            'productId' => 'required',
+            // 'productId' => 'required',
             'status' => 'required',
             'quantity' => 'required',
             'Date' => 'required'
@@ -221,7 +221,7 @@ class HomeController extends Controller
 
         $arrayCount = count($request->productId);
         for($i = 0;$i<$arrayCount;$i++){
-           if($request->status[$i] == "damaged"){
+            if($request->status[$i] == "Damaged"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
                 );
@@ -237,6 +237,37 @@ class HomeController extends Controller
                     DB::table('salable_items')
                         ->where('product_id', $request->productId[$i])
                         ->decrement('quantity', $request->quantity[$i]);
+            }elseif($request->status[$i] == "Damaged Saleable"){
+                $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date]
+                );
+
+
+
+                $data = DB::table('stock_adjustments')
+                    ->select('stock_adjustments_id')
+                    ->latest()
+                    ->first();
+
+                // $insertDamagedItems = DB::table('damaged_salable_items')->insert(
+                //     ['product_id' => $request->productId[$i],'damaged_selling_price'=>$request->dprice[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                    
+                //     DB::table('salable_items')
+                //         ->where('product_id', $request->productId[$i])
+                //         ->decrement('quantity', $request->quantity[$i]);
+                $data2 = DB::table('damaged_salable_items')
+                ->select('product_id')
+                ->where('product_id', $request->productId[$i])
+                ->get();
+
+                if( count($data2) > 0 ){
+                    $temp = DB::table('damaged_salable_items')
+                    ->where('product_id', $request->productId[$i])
+                    ->increment('quantity', $request->quantity[$i]);
+                }else{
+                    $insertDamagedItems = DB::table('damaged_salable_items')->insert(
+                    ['product_id' => $request->productId[$i],'damaged_selling_price'=>$request->dprice[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                }
             }else{
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
@@ -253,11 +284,14 @@ class HomeController extends Controller
                         ->where('product_id', $request->productId[$i])
                         ->decrement('quantity', $request->quantity[$i]);
             }
+
+            
             $admin = Admin::all();
-            foreach($admin as $admins){
-                $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->quantity[$i],$request->status[$i],$request->authName));
-            }
+                foreach($admin as $admins){
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->quantity[$i],$request->status[$i],$request->authName));
+                }
         }
+        
         return $request->all();
     }
 

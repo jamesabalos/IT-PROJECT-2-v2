@@ -10,10 +10,14 @@ class="active"
 {{--  plugin DataTable  --}}
 
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('assets/css/colReorder.dataTables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
 <script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('assets/js/jszip.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.colVis.min.js')}}"></script>
+{{-- <script src="{{asset('assets/js/dataTables.rowReorder.min.js')}}"></script> --}}
+<script src="{{asset('assets/js/dataTables.colReorder.min.js')}}"></script>
 
 {{--  pdf    --}}
 <script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
@@ -28,6 +32,17 @@ class="active"
 {{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
 
 <script type="text/javascript">
+    function addCommas(nStr){
+        nStr += '';
+        var x = nStr.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+    }
     function createReport(button){
         // var dateFrom = document.getElementById("from").value;
         // var dateTo = document.getElementById("to").value;
@@ -62,6 +77,14 @@ class="active"
 				'currentTime':currentTime
             },
             success:function(data){
+                var row = $("#soldItemTbody tr ");
+                var totalPrice = 0;
+                for(var i = 0; i < row.length; i++){
+                    totalPrice += parseInt(row[i].children[2].innerHTML)    
+                }
+                totalPrice = addCommas(totalPrice);
+                console.log(totalPrice)
+                // console.log(row)
                 $("#errorDateRangeReport").html("");     
                 if(siOrDiOrLi === "si"){
                     $('#soldTable').DataTable({
@@ -71,6 +94,7 @@ class="active"
                         "serverSide": true,
                         "colReorder": true,  
                         "pagingType": "full_numbers",
+ 
                         dom: 'Blfrtip',
                         "buttons": [
                             {
@@ -81,8 +105,17 @@ class="active"
                                     {extend: 'excel', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
                                     {extend: 'csv', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'},
                                     {extend: 'pdfHtml5',title: 'Jernixon Motorparts and Accessories                                                                  Sales Report (From '+dateFrom+' to '+dateTo+')',
-									
+                                    message:"Total Sales: "+totalPrice+".00",
 									 customize: function ( doc ) {
+                                        //  console.log(doc)
+                                        //  console.log(doc.content[1].table.body)
+                                        // var table = $('#soldTable').DataTable();
+                                        // table.row.add( {
+                                        //         "description":  "column1",
+                                        //         "totalQuantity":  "column2",
+                                        //         "totalPrice": "column3",
+                                        //     } ).draw();
+
 										 var cols = [];
 										 cols[0] = {margin: [0, 0, 0, 12],
 											 alignment: 'center',
@@ -104,11 +137,18 @@ class="active"
 									
 									
 									},
-                                    {extend: 'print', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')'}
+                                    {extend: 'print', title: 'Jernixon Motorparts - Sales Reports (From '+dateFrom+' to '+dateTo+')',
+                                    
+                                    }
                                     
                                 ]
-                            }
+                            },
+                            'colvis'
                         ],
+                        columnDefs: [ {
+                            targets: -1,
+                            visible: false
+                        } ],
                         "ajax":  {
                             "url": "{{ route('reports.createReportSoldItems') }}",
                             "data":{
@@ -117,15 +157,40 @@ class="active"
                             }
                         },
                         "columns": [
-                        {data: 'or_number'},
+                        // {data: 'or_number'},
                         {data: 'description', name: 'products.description'},
-                        {data: 'customer_name'},
-                        {data: 'quantity'},
-                        {data: 'price'},
-                        {data: 'created_at'},
+                        // {data: 'customer_name'},
+                        {data: 'totalQuantity', name: 'quantity'},
+                        {data: 'totalPrice', name: 'price'},
+                        // {data: 'created_at'},
+                        // {data: 'totalPrice'},
                         ]
 
-                    
+                        // columns:[{
+                        //     "title": "Description",
+                        //     "data": "or_number"
+                        // },
+                        //     {
+                        //         "title": "Qty in Stock",
+                        //         "data": "description"
+                        //     },
+                        //     {
+                        //         "title": "Purchase Price",
+                        //         "data": "customer_name"
+                        //     },
+                        //     {
+                        //         "title": "Selling Price",
+                        //         "data": "quantity"
+                        //     },
+                        //     {
+                        //         "title": "Selling Price",
+                        //         "data": "created_at"
+                        //     },
+                        //     {
+                        //         "title": "Add Item",
+                        //         "data": "totalPrice"
+                        //     }],
+                            
                     });
                 }else if(siOrDiOrLi === "di"){
                     $('#damagedItemsTable').DataTable({
@@ -207,7 +272,7 @@ class="active"
                                     {extend: 'csv', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'},
                                     {extend: 'pdfHtml5',title: 'Jernixon Motorparts and Accessories                                                                  Lost Report (From '+dateFrom+' to '+dateTo+')',
 									
-									 customize: function ( doc ) {
+									customize: function ( doc ) {
 										 var cols = [];
 										 cols[0] = {margin: [0, 0, 0, 12],
 											 alignment: 'center',
@@ -224,7 +289,7 @@ class="active"
 											 
     }
    );
-}
+                                    }
 									
 									
 									
@@ -232,8 +297,13 @@ class="active"
                                     {extend: 'print', title: 'Jernixon Motorparts - Lost items Reports (From '+dateFrom+' to '+dateTo+')'}
                                     
                                 ]
-                            }
+                            },
+                            'colvis'
                         ],
+                        columnDefs: [ {
+                            targets: -1,
+                            visible: false
+                        } ],
                     "ajax":  {
                             "url": "{{ route('reports.createReportLostItems') }}",
                             "data":{
@@ -287,12 +357,13 @@ class="active"
         "pagingType": "full_numbers",
         "ajax":  "{{ route('reports.getReports') }}",
         "columns": [
-          {data: 'or_number'},
+        //   {data: 'or_number'},
           {data: 'description', name: 'products.description'},
-          {data: 'customer_name'},
-          {data: 'quantity'},
-          {data: 'price'},
-          {data: 'created_at'},
+        //   {data: 'customer_name'},
+          {data: 'totalQuantity',name:'quantity'},
+        //   {data: 'price'},
+        //   {data: 'created_at'},
+          {data: 'totalPrice',name:'price'},
         ] 
     });
     $('#damagedItemsTable').DataTable({
@@ -407,15 +478,17 @@ class="active"
                                 <table id="soldTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead >
                                         <tr>
-                                          <th>OR Number</th>
-                                          <th>Item Purchased</th>
-                                          <th>Customer</th>
-                                          <th>Qty</th>
-                                          <th>Purchase Price</th>
-                                          <th>Date of Transaction</th>
+                                          {{-- <th>OR Number</th> --}}
+                                          <th>Item name</th>
+                                          <th>Total Quantity</th>
+                                          <th>Total Price</th>
+                                          {{-- <th>Qty</th> --}}
+                                          {{-- <th>Purchase Price</th> --}}
+                                          {{-- <th>Date of Transaction</th> --}}
+                                          {{-- <th>Total Price</th> --}}
                                         </tr>
                                     </thead>
-                                    <tbody></tbody>
+                                    <tbody id="soldItemTbody"></tbody>
                                 </table>   
                             </div>
                         </div> 

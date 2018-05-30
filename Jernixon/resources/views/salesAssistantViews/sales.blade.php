@@ -723,6 +723,8 @@ var _this = this;
                                     updateTemp[0].innerHTML=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price if ever the selling price of ITEM changes!
                                     updateTemp[1].value=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price if ever the selling price of ITEM changes!
                                     console.log(updateTemp[0].outerHTML+updateTemp[1].outerHTML)
+                                var sellingPrice = document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML;
+                                    
                                     //  document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML
         
                                     //hide row
@@ -745,8 +747,11 @@ var _this = this;
                                     //newRow.insertCell(-1).innerHTML = myItemJSON.quantityPurchase;
                                     angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );
 
-                                    //newRow.insertCell(-1).innerHTML = myItemJSON.salesPrice;
-                                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.salesPrice)($scope) );
+                                     var ngModelName = ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model");
+                                    var retailPrice = parseInt(sellingPrice);                                
+                                    var newSalesPrice = $($.parseHTML(myItemJSON['salesPrice'])[0]).attr("ng-init", ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
+                                    // angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.salesPrice)($scope) );
+                                    angular.element( newRow.insertCell(-1) ).append( $compile(newSalesPrice)($scope) );
 
                                     angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
                                     // newRow.insertCell(-1).innerHTML = myItemJSON.removeButton;

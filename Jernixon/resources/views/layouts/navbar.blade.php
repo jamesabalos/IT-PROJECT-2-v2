@@ -678,7 +678,7 @@
                                     </button>
                                     <button type = "button" id = "stockAdj" onclick = "stockAdj()" class = "btn btn-basic" style ="">Stock Adjustments
                                         @if(auth()->user()->unreadNotifications->where('type','App\Notifications\StockAdjustmentNotification')->where('read_at',Null)->count())
-                                            <span class="badge badge-danger">{{auth()->user()->unreadNotifications->where('type','App\Notifications\StockAdjustmentNotification')->where('read_at',Null)->count()}}</span>
+                                            <div class="badge badge-danger" style = "float: 100%">{{auth()->user()->unreadNotifications->where('type','App\Notifications\StockAdjustmentNotification')->where('read_at',Null)->count()}}</div>
                                         @endif
                                     </button>
                                     <button type = "button" id = "oldNotif" onclick = "oldNotif()" class = "btn btn-basic" style ="width: 25%">Old Notification</button>

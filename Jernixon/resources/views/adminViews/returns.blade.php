@@ -394,7 +394,9 @@ ng-app="ourAngularJsApp"
                 'dateTo':dateTo
             },
             success:function(data){
-                $(button.parentNode.parentNode.previousElementSibling).html("");    
+                // $(button.parentNode.parentNode.previousElementSibling).html("");    
+                $("#errorDateRangeReport").html("");   
+                if(crsr == "cr"){
                 $('#returnsDataTable').DataTable({
                     "destroy": true,
                     "processing": true,
@@ -416,6 +418,7 @@ ng-app="ourAngularJsApp"
                         {data: 'action'},
                     ]
                 });
+        }
                             
 
             },
@@ -587,6 +590,7 @@ ng-app="ourAngularJsApp"
 
         });
 
+        $(document).ready(function(){
          $('#returnsDataTable').DataTable({
               "destroy": true,
               "processing": true,
@@ -619,35 +623,31 @@ ng-app="ourAngularJsApp"
           });
 
     });
-    function supplier(){
-        $('#supplierDiv').removeClass('hidden');
-        $('#supplierreturnbutton').removeClass('hidden');
-        $('#returnSaveButton').addClass('hidden');
-        $('#customerDiv').addClass('hidden');
-        $('#customerButton').removeClass('active');
-        $('#supplierButton').addClass('active');
-    }
-    function customer(){
-        $('#supplierreturnbutton').addClass('hidden');
-        $('#returnSaveButton').removeClass('hidden');
-        $('#supplierDiv').addClass('hidden');
-        $('#customerDiv').removeClass('hidden');        
-        $('#customerButton').addClass('active');
-        $('#supplierButton').removeClass('active');
-    }
 
-    function supReturn(){
-        $('#supReturnDiv').removeClass('hidden');
-        $('#custReturnDiv').addClass('hidden');
-        $('#custButton').removeClass('active');
-        $('#supButton').addClass('active');
-    }
-    function custReturn(){
-        $('#supReturnDiv').addClass('hidden');
-        $('#custReturnDiv').removeClass('hidden');        
-        $('#custButton').addClass('active');
-        $('#supButton').removeClass('active');
-    }
+    $("#custButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";
+        $("div[style='display: block;']").slideUp("slow");
+        $("#custReturnDiv").slideDown("slow").removeClass('hidden');
+            
+            $("#custButton").addClass('active');
+            $("#supButton").removeClass('active');
+            $("#supReturnDiv").addClass('hidden');
+    });
+
+    
+
+    $("#supButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";
+        $("div[style='display: block;']").slideUp("slow");
+        $("#supReturnDiv").slideDown("slow").removeClass('hidden');
+        
+        $("#custButton").removeClass('active');
+        $("#supButton").addClass('active');
+        $("#custReturnDiv").addClass("hidden");
+    });
+
+});
+    
 
 </script>
 
@@ -710,8 +710,10 @@ ng-app="ourAngularJsApp"
                     </div>
                     <div class = "row">
                         <div id = "buttons" class = "text-center">
-                          <button type="button" id="custButton" onclick="custReturn()" class="btn btn-basic active" style="width:48%;font-size: 20px">Returns from Customer</button>
-                          <button type="button" id="supButton" onclick="supReturn()" class="btn btn-basic" style="width:48%; font-size: 20px">Returns to Supplier</button>
+                          <button type="button" id="custButton" class="btn btn-basic active" style="width:48%;font-size: 20px">Returns from Customer</button>
+                          <button type="button" id="supButton" class="btn btn-basic" style="width:48%; font-size: 20px">Returns to Supplier</button>
+                        </div>
+                        <div id="errorDateRangeReport" class="hidden alert-danger text-center">
                         </div>
                     </div>
                     <div id = "custReturnDiv" class = "">

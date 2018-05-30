@@ -666,9 +666,21 @@
 
                         <div class="panel">
                               <div id = "buttons" class="text-center">
-                                    <button type = "button" id = "reorder" onclick = "reorder()" class = "btn btn-basic active" style ="width: 20%">Reorder</button>
-                                    <button type = "button" id = "returns" onclick = "returns()" class = "btn btn-basic" style ="width: 20%">Returns</button>
-                                    <button type = "button" id = "stockAdj" onclick = "stockAdj()" class = "btn btn-basic" style ="width: 27%">Stock Adjustments</button>
+                                    <button type = "button" id = "reorder" onclick = "reorder()" class = "btn btn-basic active" style ="width: 20%">Reorder
+                                        @if(auth()->user()->notifications->where('type','App\Notifications\ReorderNotification')->where('read_at',Null)->count())
+                                            <span class="badge badge-danger">{{auth()->user()->notifications->where('type','App\Notifications\ReorderNotification')->where('read_at',Null)->count()}}</span>
+                                        @endif
+                                    </button>
+                                    <button type = "button" id = "returns" onclick = "returns()" class = "btn btn-basic" style ="width: 20%">Returns
+                                        @if(auth()->user()->unreadNotifications->where('type','App\Notifications\ReturnNotification')->where('read_at',Null)->count())
+                                            <span class="badge badge-danger">{{auth()->user()->unreadNotifications->where('type','App\Notifications\ReturnNotification')->where('read_at',Null)->count()}}</span>
+                                        @endif
+                                    </button>
+                                    <button type = "button" id = "stockAdj" onclick = "stockAdj()" class = "btn btn-basic" style ="">Stock Adjustments
+                                        @if(auth()->user()->unreadNotifications->where('type','App\Notifications\StockAdjustmentNotification')->where('read_at',Null)->count())
+                                            <span class="badge badge-danger">{{auth()->user()->unreadNotifications->where('type','App\Notifications\StockAdjustmentNotification')->where('read_at',Null)->count()}}</span>
+                                        @endif
+                                    </button>
                                     <button type = "button" id = "oldNotif" onclick = "oldNotif()" class = "btn btn-basic" style ="width: 25%">Old Notification</button>
                                 </div>
                         </div>
@@ -742,7 +754,7 @@
                                             @foreach (Auth::user()->readNotifications->take(40) as $notification)
                                                     @include('notifications.'.snake_case(class_basename($notification->type))) 
                                             @endforeach
-                                            
+
             
                                         @endif
     

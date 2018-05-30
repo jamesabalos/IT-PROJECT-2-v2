@@ -774,15 +774,15 @@ var _this = this;
                         //////////////////////
 
                     //initialize totalSales
-                    // document.getElementById("totalSalesDiv").innerHTML="";
-                    // if(totalSalesNgBinds === ""){
-                    //     var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
-                    // }else{
-                    //     var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
-                    // }
-                    // angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+                    document.getElementById("totalSalesDiv").innerHTML="";
+                    if(totalSalesNgBinds === ""){
+                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+                    }else{
+                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+                    }
+                    angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
-
+                  
                 }
 
 

@@ -498,7 +498,7 @@ ng-app="ourAngularJsApp"
                         $("#errorDivCreateReturns").html("");
 
                         $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
-                        $('#formReturnItem').reset();
+                        // $('#formReturnItem').reset();
                         $("#returnItemTbody tr").remove();
                         
                         

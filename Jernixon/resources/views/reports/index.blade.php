@@ -366,36 +366,8 @@ class="active"
           {data: 'totalPrice',name:'price'},
         ] 
     });
-    $('#damagedItemsTable').DataTable({
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        "destroy": true,
-        "processing": true,
-        "serverSide": true,
-        "colReorder": true,  
-        "pagingType": "full_numbers",
-        "ajax":  "{{ route('reports.getDamagedItems') }}",
-        "columns": [
-          {data: 'description',name: 'products.description'},
-          {data: 'quantity'},
-          {data: 'created_at'},
-        ]
-        
-    });
-    $('#lostItemsTable').DataTable({
-        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        "destroy": true,
-        "processing": true,
-        "serverSide": true,
-        "colReorder": true,  
-        "pagingType": "full_numbers",
-        "ajax":  "{{ route('reports.getLostItems') }}",
-        "columns": [
-          {data: 'description',name: 'products.description'},
-          {data: 'quantity'},
-          {data: 'created_at'},
-        ]
-        
-    });
+
+
 
     $("#soldButton").click(function(){
         document.getElementById("errorDateRangeReport").innerHTML ="";
@@ -421,6 +393,21 @@ class="active"
         $("#damgaedButton").addClass('active');
         $("#lostItemsDiv").addClass("hidden");
         $("#soldDiv").addClass('hidden');
+        $('#damagedItemsTable').DataTable({
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "destroy": true,
+        "processing": true,
+        "serverSide": true,
+        "colReorder": true,  
+        "pagingType": "full_numbers",
+        "ajax":  "{{ route('reports.getDamagedItems') }}",
+        "columns": [
+          {data: 'description',name: 'products.description'},
+          {data: 'quantity'},
+          {data: 'created_at'},
+        ]
+        
+    });
     });
 
     
@@ -435,6 +422,21 @@ class="active"
         $("#lostButton").addClass('active');
         $("#damgaedButton").removeClass('active');
         $("#lostItemsDiv").removeClass("hidden");
+        $('#lostItemsTable').DataTable({
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        "destroy": true,
+        "processing": true,
+        "serverSide": true,
+        "colReorder": true,  
+        "pagingType": "full_numbers",
+        "ajax":  "{{ route('reports.getLostItems') }}",
+        "columns": [
+          {data: 'description',name: 'products.description'},
+          {data: 'quantity'},
+          {data: 'created_at'},
+        ]
+        
+    });
     });
 
   });

@@ -677,6 +677,19 @@ ng-app="ourAngularJsApp"
 
 }); 
 
+    function supplier(){
+        $('#supplierDiv').removeClass('hidden');
+        $('#customerDiv').addClass('hidden');
+        $('#customerButton').removeClass('active');
+        $('#supplierButton').addClass('active');
+    }
+    function customer(){
+        $('#supplierDiv').addClass('hidden');
+        $('#customerDiv').removeClass('hidden');        
+        $('#customerButton').addClass('active');
+        $('#supplierButton').removeClass('active');
+    }
+
 </script>
 
 <style>

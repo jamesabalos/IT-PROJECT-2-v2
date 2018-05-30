@@ -424,17 +424,16 @@ ng-app="ourAngularJsApp"
             },
             error:function(data){
                 var response = data.responseJSON;
-                console.log(button.parentNode.parentNode.previousElementSibling);
-                $(button.parentNode.parentNode.previousElementSibling).hide(500);
-                $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
-                $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
-                    $(button.parentNode.parentNode.previousElementSibling).html(function(){
+                $("#errorDateRangeReport").hide(500);
+                $("#errorDateRangeReport").removeClass("hidden");
+                $("#errorDateRangeReport").slideDown("slow", function() {
+                    $("#errorDateRangeReport").html(function(){
                           var addedHtml="";
                           for (var key in response.errors) {
                               addedHtml += "<p>"+response.errors[key]+"</p>";
                           }
                           return addedHtml;
-                      });                
+                      });                  
                 });
                 
                 // $("#errorDivReport").removeClass("hidden").addClass("alert-danger text-center");
@@ -591,7 +590,7 @@ ng-app="ourAngularJsApp"
         });
 
         $(document).ready(function(){
-         $('#returnsDataTable').DataTable({
+         $('#custReturnsDataTable').DataTable({
               "destroy": true,
               "processing": true,
               "serverSide": true,
@@ -622,7 +621,37 @@ ng-app="ourAngularJsApp"
               ]
           });
 
-    });
+         $('#supReturnsDataTable').DataTable({
+              "destroy": true,
+              "processing": true,
+              "serverSide": true,
+              "colReorder": true,  
+              //"autoWidth": true,
+              "pagingType": "full_numbers",
+            //   dom: 'Bfrtip',
+            //   "buttons": [
+            //       {
+            //           extend: 'collection',
+            //           text: 'EXPORT',
+            //           buttons: [
+            //              {extend: 'copy', title: 'Jernixon Motorparts - Returns'},
+            //               {extend: 'excel', title: 'Jernixon Motorparts - Returns'},
+            //               {extend: 'csv', title: 'Jernixon Motorparts - Returns'},
+            //               {extend: 'pdf', title: 'Jernixon Motorparts - Returns'},
+            //               {extend: 'print', title: 'Jernixon Motorparts - Returns'}
+            //           ]
+            //       }
+            //   ],
+
+              "ajax":  "{{ route('returns.getReturns') }}",
+              "columns": [
+                  {data: 'or_number'},
+                //   {data: 'price'},
+                  {data: 'created_at'},
+                  {data: 'action'},
+              ]
+          });
+        }); 
 
     $("#custButton").click(function(){
         document.getElementById("errorDateRangeReport").innerHTML ="";
@@ -646,8 +675,7 @@ ng-app="ourAngularJsApp"
         $("#custReturnDiv").addClass("hidden");
     });
 
-});
-    
+}); 
 
 </script>
 
@@ -713,7 +741,7 @@ ng-app="ourAngularJsApp"
                           <button type="button" id="custButton" class="btn btn-basic active" style="width:48%;font-size: 20px">Returns from Customer</button>
                           <button type="button" id="supButton" class="btn btn-basic" style="width:48%; font-size: 20px">Returns to Supplier</button>
                         </div>
-                        <div id="errorDateRangeReport" class="hidden alert-danger text-center">
+                        <div id="errorDateRangeReport" class="hidden alert-danger text-center" style = "margin-top: 10px">
                         </div>
                     </div>
                     <div id = "custReturnDiv" class = "">
@@ -725,7 +753,7 @@ ng-app="ourAngularJsApp"
                                 <button id = "cr" onclick="createReport(this)">Filter</button>
                         </div>
                         <div class="content table-responsive table-full-width">
-                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable">
+                            <table class="table table-bordered table-striped" style="width:100%" id="custReturnsDataTable">
                                 <thead>
                                     <tr>
                                         <th class="text-left">OR Number</th>
@@ -748,7 +776,7 @@ ng-app="ourAngularJsApp"
                             <button id = "sr" onclick="createReport(this)">Filter</button>
                         </div>
                     <div class="content table-responsive table-full-width">
-                            <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable">
+                            <table class="table table-bordered table-striped" style="width:100%" id="supReturnsDataTable">
                                 <thead>
                                     <tr>
                                         <th class="text-left">DR Number</th>

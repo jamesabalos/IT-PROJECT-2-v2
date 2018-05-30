@@ -14,6 +14,7 @@ use DB;
 use Hash;
 use App\Notifications\ReorderNotification;
 use App\Notifications\StockAdjustmentNotification;
+use App\Notifications\ReturnNotification;
 class AdminController extends Controller
 {
     /**
@@ -387,6 +388,8 @@ public function createPurchasesFilter(Request $request){
                'undamagedQuantity' => $request->quantityUndamage[$i], 'damagedSalableQuantity' => $request->quantityDamageSalable[$i]]
             );
 
+         $pname = DB::table('products')->where('product_id',$request->productId[$i])->first();
+
             // DB::table('salable_items')
             //     ->where('product_id', $request->productId[$i])
             //     ->decrement('quantity', $request->exchangeQuantity[$i]);
@@ -402,6 +405,10 @@ public function createPurchasesFilter(Request $request){
             if( $request->quantityDamage[$i] > 0 ){
                  $insertDamagedItems = DB::table('damaged_items')->insert(
                          ['product_id' => $request->productId[$i], 'quantity' => $request->quantityDamage[$i], 'created_at' => date('Y-m-d H:i:s')]);
+                  $admin = Admin::all();
+                foreach($admin as $admins){
+                    $admins->notify(new ReturnNotification($pname->description,$request->quantityDamage[$i],'Damaged Items',$request->customerName));
+                }
             }
               if( $request->quantityUndamage[$i] > 0 ){
                 $data = DB::table('salable_items')
@@ -411,6 +418,10 @@ public function createPurchasesFilter(Request $request){
                     $temp = DB::table('salable_items')
                     ->where('product_id', $request->productId[$i])
                     ->increment('quantity', $request->quantityUndamage[$i]);
+                }
+                 $admin = Admin::all();
+                foreach($admin as $admins){
+                    $admins->notify(new ReturnNotification($pname->description,$request->quantityUndamage[$i],'Undamaged Item',$request->customerName));
                 }
               }
              if( $request->quantityDamageSalable[$i] > 0 ){
@@ -427,6 +438,12 @@ public function createPurchasesFilter(Request $request){
                     $insertDamagedSalableItems = DB::table('damaged_salable_items')->insert(
                     ['product_id' => $request->productId[$i],'damaged_selling_price' => $request->price[$i],  'quantity' => $request->quantityDamageSalable[$i], 'created_at' => date('Y-m-d H:i:s')]);
                 }
+                 $admin = Admin::all();
+                foreach($admin as $admins){
+                    $admins->notify(new ReturnNotification($pname->description,$request->quantityDamageSalable[$i],'Damaged Salable Items',$request->customerName));
+                }
+
+
             }
             $data = DB::table('sales')
             ->select('product_id')

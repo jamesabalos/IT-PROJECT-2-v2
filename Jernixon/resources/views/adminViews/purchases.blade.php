@@ -512,7 +512,7 @@ ng-app="ourAngularJsApp"
                         <div class="form-group">                                
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{Form::label('Official Receipt Number:')}}
+                                    {{Form::label('Delivery Receipt Number:')}}
                                 </div>
                                 <div class="col-md-9">
                                     {{ Form::text('Official Receipt Number','',['class'=>'form-control']) }}
@@ -535,9 +535,12 @@ ng-app="ourAngularJsApp"
                             <table class="table table-bordered table-striped" >
                                 <thead>
                                     <tr>
+                                        <th class="text-left">Qty.</th>
+                                        <th class="text-left">Unit</th>
                                         <th class="text-left">Description</th>
-                                        <th class="text-left">Qty</th>
-                                        <th class="text-left">Purchase Price</th>
+                                        <th class="text-left">Unit Price</th>
+                                        <th class="text-left">Amount</th>
+                                        <th class="text-left">Total Amount</th>
                                         <th class="text-left">Remove</th>
                                     </tr>
                                 </thead>

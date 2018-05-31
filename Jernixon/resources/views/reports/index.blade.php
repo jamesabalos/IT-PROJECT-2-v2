@@ -456,9 +456,10 @@ class="active"
                 <div class="header">
                     <div class = "content" >
                         <div id = "buttons">
-                            <button type="button" id="soldButton" class="btn btn-basic active" style="width:31%;font-size: 20px">Sold Items</button>
-                            <button type="button" id="damgaedButton" class="btn btn-basic" style="width:31%; font-size: 20px">Damaged Items</button>
-                            <button type="button" id="lostButton" class="btn btn-basic" style="width:31%; font-size: 20px">Lost Items</button>
+                            <button type="button" id="soldButton" class="btn btn-basic active" style="width:24.5%;font-size: 20px">Sold Items</button>
+                            <button type="button" id="damgaedButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Damaged Items</button>
+                            <button type="button" id="lostButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Lost Items</button>
+                            <button type="button" id="lostButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Stock Adjustments</button>
                         </div>
                         <div id="errorDateRangeReport" class="hidden alert-danger text-center" style = "margin-top: 10px">
                         </div>

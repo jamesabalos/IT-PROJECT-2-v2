@@ -178,9 +178,9 @@ ng-app="ourAngularJsApp"
                             +"</tbody></table>\
                         </div>\
                         <p style='text-align:right' class='pagebreak'>TOTAL AMOUNT DUE: "+totalSalesPrice+"</p>\
-                        <p class='pag'>Page "+(m+1)+" of "+page+" </p>\
                         </div>";
                     // console.log("\n Receipt "+ itemw[m]+ " page "+page);
+                    // <p class='pag'>Page "+(m+1)+" of "+page+" </p>\
             }
                         
             officialReceipt+="";

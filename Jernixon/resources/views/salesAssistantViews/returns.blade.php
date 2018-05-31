@@ -635,12 +635,12 @@ ng-app="ourAngularJsApp"
                             </p>
                         </div>
                     </div>
-                    <div class = "row">
+                    <!-- <div class = "row">
                         <div id = "buttons" class = "text-center">
                           <button type="button" id="custButton" onclick="custReturn()" class="btn btn-basic active" style="width:48%;font-size: 20px">Returns from Customer</button>
                           <button type="button" id="supButton" onclick="supReturn()" class="btn btn-basic" style="width:48%; font-size: 20px">Returns to Supplier</button>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div id = "custReturnDiv" class = "">
                         <div class="" style="margin-top: 10px">
@@ -665,7 +665,7 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
 
-                    <div id = "supReturnDiv" class = "hidden">
+                    <!-- <div id = "supReturnDiv" class = "hidden">
                         <div class="" style="margin-top: 10px">
                             <label for="from">From</label>
                             <input type="date">
@@ -687,7 +687,7 @@ ng-app="ourAngularJsApp"
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -708,12 +708,12 @@ ng-app="ourAngularJsApp"
                     <h3 class="modal-title"><i class=" fa fa-reply" style="margin-right: 10px"></i> Returns</h3>
                 </div>
                 <div class = "modal-body">  
-                    <div class="panel panel-default">
+                    <!-- <div class="panel panel-default">
                         <div id = "buttons">
                             <button type="button" id="customerButton" onclick="customer()" class="btn btn-basic active" style="width:49.6%;font-size: 16px">Customer Return Item(s)</button>
                             <button type="button" id="supplierButton" onclick="supplier()" class="btn btn-basic" style="width:49.6%; font-size: 16px">Supplier Return Item(s)</button>
                         </div>
-                    </div>
+                    </div> -->
                         {!! Form::open(['method'=>'post','id'=>'formReturnItem']) !!}
                         <div id = "customerDiv">
                             <div class="panel panel-default">

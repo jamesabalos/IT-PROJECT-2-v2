@@ -181,6 +181,8 @@ ng-app="ourAngularJsApp"
 
                 document.getElementById("Customer").value = data[0].customer_name;
                 document.getElementById("returnCustomerName").value = data[0].customer_name;
+                document.getElementById("ORdate").value = data[0].created_at;
+                console.log(data[0].created_at)
                 // document.getElementById("refundCustomer").value = data[0].customer_name;
                 // document.getElementById("refundCustomerName").value = data[0].customer_name;
               
@@ -356,6 +358,7 @@ ng-app="ourAngularJsApp"
                 document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
                 document.getElementById("customerName").innerHTML = data[0].customer_name;
+                {{-- document.getElementById("warrantyDay").value = data[0].created_at; --}}
 
 			}
 		});
@@ -963,6 +966,16 @@ function customer(){
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('OfficialReceiptDate', 'Official Receipt Date:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                <input type="datetime-local" name="Date" id="ORdate" class="form-control"/>    
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <div class="form-group">    
                                     <div class="row">
@@ -975,6 +988,18 @@ function customer(){
                                         </div>
                                     </div>
                                 </div>
+
+                          <div class="form-group">    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('remainingWarrantyDays', 'Remaining warranty day/s:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{Form::text('remainingWarrantyDays','',['class'=>'form-control','value'=>'','disabled'])}}
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <div class="panel panel-default">

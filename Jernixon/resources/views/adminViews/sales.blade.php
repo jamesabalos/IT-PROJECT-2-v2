@@ -569,7 +569,22 @@ ng-app="ourAngularJsApp"
                         </table>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-9 text-right">
+                                    <div class="col-md-7">
+                                        
+                                    </div>
+                                    <div class="col-md-2 text-right">
+                                        <label>Discount:</label>
+                                    </div>
+                                    <div class="col-md-3" id="Discount">
+                                        <input type='number' value='0' class='form-control' min='0'>
+                                    </div>
+                                    
+                                </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    
+                                </div>
+                                <div class="col-md-2 text-right">
                                     <label>Total Amount Due:</label>
                                 </div>
                                 <div class="col-md-3" id="totalSalesDiv">

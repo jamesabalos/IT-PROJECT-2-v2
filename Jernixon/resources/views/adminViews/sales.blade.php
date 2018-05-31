@@ -549,10 +549,11 @@ ng-app="ourAngularJsApp"
                         <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
                             <thead>
                                 <tr>
-                                    <th>Item</th>
-                                    <th>Selling Price</th>
-                                    <th>Qty Purchase</th>
-                                    <th>Sales</th>
+                                    <th>Qty.</th>
+                                    <th>Unit</th>
+                                    <th>Description</th>
+                                    <th>Unit Price</th>
+                                    <th>Amount</th>
                                     <th>Action</th>
                                 </tr> 
 
@@ -569,7 +570,7 @@ ng-app="ourAngularJsApp"
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-9 text-right">
-                                    <label>Total Sales:</label>
+                                    <label>Total Amount Due:</label>
                                 </div>
                                 <div class="col-md-3" id="totalSalesDiv">
                                     <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>

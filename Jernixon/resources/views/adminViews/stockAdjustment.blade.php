@@ -391,14 +391,15 @@ class="active"
                         </div>  
                     </div>
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="stockAdjustmentDataTable">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="stockAdjustmentDataTable">
                             <thead>
                                 <tr>
-                                    <th class="text-left">Employee Name</th>
+                                    <th class="text-left">User Name</th>
+                                    <th class="text-left">Date of Transaction</th>
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Qty</th>
                                     <th class="text-left">Status</th>
-                                    <th class="text-left">Date</th>
+                                    <th class="text-left">Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>

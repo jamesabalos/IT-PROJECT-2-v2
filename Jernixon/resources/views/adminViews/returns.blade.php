@@ -870,9 +870,19 @@ function customer(){
                             <table class="table table-bordered table-striped" style="width:100%" id="custReturnsDataTable">
                                 <thead>
                                     <tr>
-                                        <th class="text-left">OR Number</th>
+                                        <!-- <th class="text-left">OR Number</th>
                                         <th class="text-left">Date Created</th>
-                                        <th class="text-left">Action</th>
+                                        <th class="text-left">Action</th> -->
+                                        <th>OR Number</th>
+                                        <th>Date of Transaction</th>
+                                        <th>Sold to</th>
+                                        <th>Address</th>
+                                        <th>Qty.</th>
+                                        <th>Unit</th>
+                                        <th>Description</th>
+                                        <th>Unit Price</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -916,8 +926,6 @@ function customer(){
 <div id="return" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
     <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
-
-            
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -1247,6 +1255,7 @@ function customer(){
                                         <th class="text-left">Damaged</th>
                                         <th class="text-left">Undamaged</th>
                                         <th class="text-left">Damage Salable</th>
+
                                     </tr>
                                 </thead>
 
@@ -1358,7 +1367,7 @@ function customer(){
                     </div>
                 </div>
 
-                {{-- <div class="panel panel-default">
+                <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-refresh"></span>
@@ -1371,9 +1380,10 @@ function customer(){
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Returned Item</th>
+                                        <th class="text-left">New Item</th>
                                         <th class="text-left">Quantity</th>
-                                        <th class="text-left">Purchase Price</th>
+                                        <!-- <th class="text-left">Purchase Price</th> -->
                                     </tr>
                                 </thead>
 
@@ -1382,7 +1392,7 @@ function customer(){
                             </table>
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
                 <div class="row">
                         <div class="text-right">                                           

@@ -322,7 +322,8 @@
                                     <th class="text-center">Email</th>
                                     <th class="text-center" style="width: 15%;">Contact Number</th>
                                     <th class="text-center" style="width: 10%;">Address</th>
-                                    <th class="text-center" style="width: 20%;">Status</th>
+                                    <th class="text-center" style="width: 10%;">Type of User</th>
+                                    <th class="text-center" style="width: 10%;">Status</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -335,6 +336,7 @@
                                     <td class="text-center">{{$employee->email}}</td>
                                     <td class="text-center">{{$employee->contact_number}}</td>
                                     <td class="text-center">{{$employee->address}}</td>
+                                    <td class="text-center">{{$employee->status}}</td>
                                     <td class="text-center">{{$employee->status}}</td>
                                     <td class="text-center">
                                         {{--

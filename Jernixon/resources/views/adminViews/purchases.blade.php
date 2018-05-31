@@ -443,9 +443,18 @@ ng-app="ourAngularJsApp"
                         <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="purchasesDataTable">
                             <thead>
                                 <tr>
-                                    <th class="text-left">PO ID</th>
+                                    <!-- <th class="text-left">PO ID</th>
                                     <th class="text-left">Date Created </th>
-                                    <th class="text-left">Action</th>
+                                    <th class="text-left">Action</th> -->
+                                    <th>Delivery Receipt No.</th>
+                                    <th>Date of Transaction</th>
+                                    <th>Supplier</th>
+                                    <th>Quantity</th>
+                                    <th>Unit</th>
+                                    <th>Description</th>
+                                    <th>Unit Price</th>
+                                    <th>Amount</th>
+
                                 </tr>
                             </thead>
                             <tbody>

@@ -948,25 +948,25 @@ fieldset[disabled] .btn-neutral.active {
 }
 
 .form-control::-moz-placeholder {
-    color: #DDDDDD;
+    color: #727272;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .form-control:-moz-placeholder {
-    color: #DDDDDD;
+    color: #727272;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .form-control::-webkit-input-placeholder {
-    color: #DDDDDD;
+    color: #727272;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .form-control:-ms-input-placeholder {
-    color: #DDDDDD;
+    color: #727272;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -1046,8 +1046,10 @@ fieldset[disabled] .btn-neutral.active {
 }
 
 .input-group-addon {
-    background-color: #FFFFFF;
+    background-color: #727272;
     border: 1px solid #E3E3E3;
+    border-color: #727272;
+    color: white;
     border-radius: 4px;
 }
 

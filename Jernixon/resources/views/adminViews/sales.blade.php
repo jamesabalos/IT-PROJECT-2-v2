@@ -134,6 +134,32 @@ ng-app="ourAngularJsApp"
         background-color: DodgerBlue !important; 
         color: #ffffff; 
     }
+
+
+     /* Popover */
+/* .popover {
+    border: 2px dotted red;
+} */
+
+/* Popover Header */
+.popover-title {
+    /* background-color: #73AD21;  */
+    color: red; 
+    /* font-size: 28px; */
+    text-align:center;
+}
+
+/* Popover Body */
+.popover-content {
+    /* background-color: coral; */
+    /* color: #FFFFFF; */
+    padding: 20px;
+}
+
+/* Popover Arrow */
+.arrow {
+    border-right-color: red !important;
+}
 </style>
 <script>
     function printReceipt(){
@@ -334,13 +360,20 @@ ng-app="ourAngularJsApp"
           }
           document.getElementById("searchResultDivTable_filter").setAttribute("class","hidden")
           $('#searchResultDivTable').DataTable().search(a.value).draw();
-          
-
+        
+      }
+      function checkQuantity(input){
+        var errorsDiv = $("#salesErrorDiv p")
+        var tempError = "";
+        if( parseInt(input.value) > parseInt(input.dataset.max)  ){
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
       }
 
-
     $(document).ready(function(){
-        
+        $('[data-toggle="popover"]').popover();
         let today = new Date().toISOString().substr(0, 10);
         var d = new Date();
         var hours = "";
@@ -394,6 +427,15 @@ ng-app="ourAngularJsApp"
                     $("#salesErrorDiv").slideDown("slow", function() {
                         $("#salesErrorDiv").html(function(){
                             return "<h4>Please add item/s first.</h4>";
+                        });
+                    });
+                    return true;
+            }else if( (document.getElementById("totalSalesDiv")).firstChild.innerHTML === "" ){
+                    $("#salesErrorDiv").hide(500);
+                    $("#salesErrorDiv").removeClass("hidden");
+                    $("#salesErrorDiv").slideDown("slow", function() {
+                        $("#salesErrorDiv").html(function(){
+                            return "<h4>Please fill up a valid quantity.</h4>";
                         });
                     });
                     return true;
@@ -910,7 +952,7 @@ ng-app="ourAngularJsApp"
                 },
 
                 //fetch the items in localStorage after the dataTables initialization
-                "initComplete": function(settings, json) {
+                "initComplete": function(settings, json) {  
                     var len=localStorage.length;
                     var thatTbody = document.getElementById("cartTbody");
                     document.getElementById("receiptNumber").value = localStorage.getItem("receiptNumber");
@@ -1162,7 +1204,7 @@ ng-app="ourAngularJsApp"
                 if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
                     var inputNumber = "<input style='width: 100px;' type='number' ng-init='damaged" +itemName+ " =1' name='damagedQuantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='damaged" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 }else{
-                    var inputNumber = "<input style='width: 100px;' type='number' ng-init='" +itemName+ " =1' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                    var inputNumber = "<input style='width: 100px;' trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Lagpas na po sa " +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML + "!' type='number' ng-init='" +itemName+ " =1' name='quantity[]' onchange='checkQuantity(this)' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' data-max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 }
                 var temp1 = $compile(inputNumber)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
@@ -1287,8 +1329,11 @@ ng-app="ourAngularJsApp"
                     var item = JSON.parse(localStorage.getItem(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.innerHTML));
                 // }
                 console.log( ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model") )
-                var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"="+event.currentTarget.value);
-
+                if( parseInt(event.currentTarget.value) <= parseInt(event.currentTarget.dataset.max)  ){
+                    var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"="+event.currentTarget.value);
+                }else{
+                    var newQuantityPurchase =  $($.parseHTML(item['quantityPurchase'])[0]);
+                }
 
                 var ngModelName = event.currentTarget.attributes["ng-model"].value;
                 // var oldTs = parseInt(document.getElementById("totalSales").innerText);
@@ -1355,9 +1400,10 @@ ng-app="ourAngularJsApp"
                 }else{
                     var temp = JSON.parse(localStorage.getItem(data[2].innerHTML));
                     var table = $('#searchResultDivTable').DataTable();
+                    console.log( ($.parseHTML(temp['quantityPurchase'])[0]).dataset.max )
                     table.row.add( {
                             "description":  temp['item'],
-                            "quantity":  $.parseHTML(temp['quantityPurchase'])[0]['max'],
+                            "quantity":  ($.parseHTML(temp['quantityPurchase'])[0]).dataset.max,
                             "wholesale_price": temp['purchasePrice'],
                             "retail_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
                             "action":   temp['action']

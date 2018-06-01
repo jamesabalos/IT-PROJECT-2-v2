@@ -100,6 +100,11 @@ ng-app="ourAngularJsApp"
         }
     }
 
+    input.empty {
+        font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+        text-decoration: inherit;
+    }
+
 
 </style>
 <style>
@@ -623,7 +628,7 @@ ng-app="ourAngularJsApp"
                             {{-- {{Form::label('address', 'Address:')}} --}}
                             {{-- {{Form::text('searchItem','',['class'=>'form-control','onkeyup'=>'searchItem(this)'])}} --}}
                 <div class="autocomplete" style="width:100%;">        
-                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input empty" placeholder="&#xF002; Enter an item name">
                     <div id="searchResultDiv" class="searchResultDiv hidden">
                         <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
                             <tbody>            
@@ -679,7 +684,7 @@ ng-app="ourAngularJsApp"
                                     <label>Total Amount Due:</label>
                                 </div>
                                 <div class="col-md-3" id="totalSalesDiv">
-                                    <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
+                                    <p class="form-control" id="totalSales" ng-bind="" style="float: right;"></p>
                                 </div>
                                 <div class="text-right">                                           
                                     <div class="col-md-12">   
@@ -1216,19 +1221,19 @@ ng-app="ourAngularJsApp"
 
 
                 if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
-                    var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='damagedRetailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='damagedDescription[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
+                    var retailPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p></div><input type='hidden' name='damagedRetailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='damagedDescription[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
                     // var retailPrice = "<input type='number' min='1' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'><input type='hidden' name='damagedRetailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='damagedDescription[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
                 }else{
-                    var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='description[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
+                    var retailPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p></div><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'><input type='hidden' name='description[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
                 }   
                 var temp0 = $compile(retailPrice)($scope);                
                 angular.element( lastRow.insertCell(-1) ).append(temp0);
                 
 
                 if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
-                    var salesPrice = "<p class='form-control' style='color:green;' ng-init='damaged" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='damaged" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
+                    var salesPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-init='damaged" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='damaged" +itemName+ "SP |number:2'></p></div><input  type='hidden' name='salesPrices[]' value=''>";
                 }else{
-                    var salesPrice = "<p class='form-control' style='color:green;' ng-init='" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
+                    var salesPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-init='" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='" +itemName+ "SP |number:2'></p></div><input  type='hidden' name='salesPrices[]' value=''>";
                 }                
                 var temp2 = $compile(salesPrice)($scope); 
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
@@ -1308,7 +1313,7 @@ ng-app="ourAngularJsApp"
                 }
 
                 console.log("TScorrect: " + newNgBinds)
-                var price = "<p class='form-control' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
+                var price = "<p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
@@ -1434,9 +1439,9 @@ ng-app="ourAngularJsApp"
                             ngBindsWithoutFormat += "+" + thatTable[i].childNodes[4].childNodes[0].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
-                    var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
+                    var price = "<p class='form-control text-right' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
                 }else{
-                    var price = "<p class='form-control' style='color:green' ng-bind></p>";
+                    var price = "<p class='form-control text-right' style='color:green' ng-bind></p>";
                 }
                 // console.log("ngBinds: " + ngBinds)
                 // console.log("ngBindsWithoutFormat: "+ngBindsWithoutFormat)

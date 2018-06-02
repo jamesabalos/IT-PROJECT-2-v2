@@ -27,11 +27,6 @@
     // }
     function User(){
         var user = document.getElementById("ll").value;
-        if(user=="salesAssistant"){
-            document.getElementById("address").setAttribute("class","visible form-group");
-        }else if(user=="admin"){
-            document.getElementById("address").setAttribute("class","hidden");
-        }
         
         
         
@@ -328,16 +323,17 @@
                                 </tr>
                             </thead>
                             <tbody id="employeeTbody">
-                                @if(count($employees) >= 0)
-                                @foreach($employees as $employee)
-                                <tr id="{{$employee->id}}">
-                                    <td class="text-center hidden">{{$employee->id}}</td>
-                                    <td class="text-center">{{$employee->name}}</td>
-                                    <td class="text-center">{{$employee->email}}</td>
-                                    <td class="text-center">{{$employee->contact_number}}</td>
-                                    <td class="text-center">{{$employee->address}}</td>
-                                    <td class="text-center">{{$employee->status}}</td>
-                                    <td class="text-center">{{$employee->status}}</td>
+                                @if(count($data) >= 0)
+                                 
+                                @for($i=0;$i<count($data);$i++)
+                                <tr id="{{$data[$i]['id']}}">
+                                    <td class="text-center hidden">{{$data[$i]['id']}}</td>
+                                    <td class="text-center">{{$data[$i]['name']}}</td>
+                                    <td class="text-center">{{$data[$i]['email']}}</td>
+                                    <td class="text-center">{{$data[$i]['contact']}}</td>
+                                    <td class="text-center">{{$data[$i]['address']}}</td>
+                                    <td class="text-center">{{$data[$i]['type']}}</td>
+                                    <td class="text-center">{{$data[$i]['status']}}</td>
                                     <td class="text-center">
                                         {{--
                                         <a href="#editEmployee" onclick="showDetails(this)" class="btn btn-xs btn-warning" data-toggle="modal">
@@ -349,9 +345,9 @@
                                         @else
                                         <input type="hidden" name="status" value="Active"> {{Form::hidden('_method','PUT')}}
                                         <button type="submit">Activate</button>
-                                        @endif {!! Form::close() !!} --}} @if( $employee->status == "active")
+                                        @endif {!! Form::close() !!} --}} @if( $data[$i]['status'] == "active")
 
-                                        <button data-id="{{$employee->id}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger"><i class="fa fa-times-circle"></i> Deactivate</button>
+                                        <button data-id="{{$data[$i]['id']}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger"><i class="fa fa-times-circle"></i> Deactivate</button>
                                         <a href="#reset" data-toggle="modal">
                                             <button onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" type="button" class="btn btn-info">Reset Password</button>
                                         </a>
@@ -359,7 +355,7 @@
 
                                         @else
 
-                                        <button data-id="{{$employee->id}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success"><i class="fa fa-check"></i> Activate</button>
+                                        <button data-id="{{$data[$i]['id']}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success"><i class="fa fa-check"></i> Activate</button>
                                         <a href="#reset" data-toggle="modal">
                                             <button type="button" onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" class="btn btn-info">Reset Password</button>
                                         </a>
@@ -368,7 +364,7 @@
 
                                     </td>
                                 </tr>
-                                @endforeach @else
+                                @endfor @else
                                 <p>no account</p>
                                 @endif
 

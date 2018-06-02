@@ -68,9 +68,24 @@ class AdminController extends Controller
 
     }
     public function employees(){
+        $data = [];
         $employees = User::all();
+        $admins = Admin::where('type','Admin')->get();
 
-        return view('pages.employees')->with('employees',$employees);
+        foreach( $employees as $employee){
+            array_push($data, ['id'=>$employee->id,'name'=>$employee->name,'type'=>'Employee','email'=>$employee->email, 'contact'=>$employee->contact_number,'address'=>$employee->address,'status'=>$employee->status,'date'=>$employee->created_at]);
+        };
+        foreach( $admins as $admin){
+            array_push($data, ['id'=>$admin->id,'name'=>$admin->name,'type'=>'Admin','email'=>$admin->email, 'contact'=>$admin->contact_number,'address'=>$admin->address,'status'=>$admin->status,'date'=>$admin->created_at]);
+        };  
+        foreach ($data as $key => $row){
+            $date[$key] = $row['date'];
+            // $edition[$key] = $row['edition'];
+        }
+        
+        array_multisort($date, SORT_DESC, $data);
+        
+        return view('pages.employees',compact('data'));
     }
 
     public function stockAdjustment()

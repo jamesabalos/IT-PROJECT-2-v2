@@ -27,6 +27,11 @@
     // }
     function User(){
         var user = document.getElementById("ll").value;
+        if(user=="salesAssistant"){
+            document.getElementById("address").setAttribute("class","visible form-group");
+        }else if(user=="admin"){
+            document.getElementById("address").setAttribute("class","hidden");
+        }
         
         
         
@@ -345,20 +350,23 @@
                                         @else
                                         <input type="hidden" name="status" value="Active"> {{Form::hidden('_method','PUT')}}
                                         <button type="submit">Activate</button>
-                                        @endif {!! Form::close() !!} --}} @if( $data[$i]['status'] == "active")
-
-                                        <button data-id="{{$data[$i]['id']}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger"><i class="fa fa-times-circle"></i> Deactivate</button>
-                                        <a href="#reset" data-toggle="modal">
-                                            <button onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" type="button" class="btn btn-info">Reset Password</button>
-                                        </a>
+                                        @endif {!! Form::close() !!} --}}
+                                         @if( $data[$i]['status'] == "active")
+                                            @if($data[$i]['type'] == 'Employee')
+                                                <button data-id="{{$data[$i]['id']}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger"><i class="fa fa-times-circle"></i> Deactivate</button>
+                                            <a href="#reset" data-toggle="modal">
+                                            @endif
+                                                <button onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" type="button" class="btn btn-info">Reset Password</button>
+                                            </a>
 
 
                                         @else
-
-                                        <button data-id="{{$data[$i]['id']}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success"><i class="fa fa-check"></i> Activate</button>
-                                        <a href="#reset" data-toggle="modal">
-                                            <button type="button" onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" class="btn btn-info">Reset Password</button>
-                                        </a>
+                                            @if($data[$i]['type'] == 'Employee')
+                                                <button data-id="{{$data[$i]['id']}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success"><i class="fa fa-check"></i> Activate</button>
+                                            @endif
+                                            <a href="#reset" data-toggle="modal">
+                                                <button type="button" onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" class="btn btn-info">Reset Password</button>
+                                            </a>
 
                                         @endif
 

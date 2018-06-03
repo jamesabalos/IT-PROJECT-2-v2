@@ -101,7 +101,63 @@ ng-app="ourAngularJsApp"
         }
     }
 
+    .autocomplete {
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
+    }
+    .searchResultDiv {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .searchResultDiv div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff; 
+        border-bottom: 1px solid #d4d4d4; 
+    }
+    .searchResultDiv div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9; 
+    }
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important; 
+        color: #ffffff; 
+    }
 
+
+     /* Popover */
+/* .popover {
+    border: 2px dotted red;
+} */
+
+/* Popover Header */
+.popover-title {
+    /* background-color: #73AD21;  */
+    color: red; 
+    /* font-size: 28px; */
+    text-align:center;
+}
+
+/* Popover Body */
+.popover-content {
+    /* background-color: coral; */
+    /* color: #FFFFFF; */
+    padding: 20px;
+}
+
+/* Popover Arrow */
+.arrow {
+    border-right-color: red !important;
+}
 </style>
 <script>
     function printReceipt(){
@@ -295,7 +351,28 @@ ng-app="ourAngularJsApp"
         $('#dsDiv').addClass('hidden');
         $('#siDiv').removeClass('hidden');
     }
-
+    function searchItem(a){
+        a.nextElementSibling.removeAttribute("class");
+          if(a.value === ""){
+              document.getElementById("searchResultDiv").setAttribute("class","hidden");   
+          }
+          document.getElementById("searchResultDivTable_filter").setAttribute("class","hidden")
+          $('#searchResultDivTable').DataTable().search(a.value).draw();
+        
+    }
+    function checkQuantity(input){
+        var errorsDiv = $("#salesErrorDiv p")
+        var tempError = "";
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Lagpas na po sa "+input.dataset.max+"!");
+            $(input).popover('show');
+        }else if( parseInt(input.value) <= 0 ){
+            input.setAttribute("data-content","Quantity should be greater than 0!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
+      }
     $(document).ready(function(){
 
         let today = new Date().toISOString().substr(0, 10);
@@ -351,6 +428,26 @@ ng-app="ourAngularJsApp"
                         });
                     });
                     return true;
+            }else{
+                var check = false;
+                for(var i=0; i < $("#cartTbody tr").length ;i++ ){
+                    if( ($("#cartTbody tr td:nth-child(1)")[i].firstChild).value <= 0 ){
+                        check = true;
+                        checkQuantity( $("#cartTbody tr td:nth-child(1)")[i].firstChild );
+                        // ($("#cartTbody tr td:nth-child(1)")[i].firstChild).setAttribute("data-content","Quantiity should be greate");
+                        // $($("#cartTbody tr td:nth-child(1)")[i].firstChild).popover("show");
+                        // $("#salesErrorDiv").hide(500);
+                        // $("#salesErrorDiv").removeClass("hidden");
+                        // $("#salesErrorDiv").slideDown("slow", function() {
+                        //     $("#salesErrorDiv").html(function(){
+                        //         return "<h4>Please fill up a valid quantity.</h4>";
+                        //     });
+                        // });
+                    }
+                }
+                if(check){
+                    return true;
+                }
             }
 
             $.ajax({
@@ -452,30 +549,14 @@ ng-app="ourAngularJsApp"
         @endsection
         
         @section('right')
-        <div class="row" >
+        {{-- <div class="row" >
             <div class="col-md-12" >
                 <div class="card" >
                     <div class="header">
                         <div class="row">
-                            {{-- <div id = "buttons" class = "text-center">
-                            <button type="button" id="siButton" class="btn btn-basic active" onclick="salable()" style="width:48%;font-size: 20px">Saleable Items</button>
-                            <button type="button" onclick="damaged()" id="dsButton" class="btn btn-basic" style="width:48%; font-size: 20px">Damaged Saleable Items</button>
-                        </div> --}}
                             <div id = "siDiv" style = "">
                                 <div class="content table-responsive table-full-width table-stripped">
                                     <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
-                                        {{--  <thead> 
-                                            <tr>
-                                                <th>Id</th>
-                                                <th>Description</th>
-                                                <th>Category</th>
-                                                <th>Quantity in Stock</th>
-                                                <th>Purchase Price</th>
-                                                <th>Selling Price</th>
-                                                <th>Add to Cart</th>
-                                            </tr>
-                                        </thead>  --}}
-                                        {{--  <tbody id="dashboardDatatable">  --}}
                                             <tbody>
                                                 
                                             </tbody>
@@ -496,7 +577,7 @@ ng-app="ourAngularJsApp"
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             
             <div class="row" >
                 <div class="col-md-12" >
@@ -536,18 +617,26 @@ ng-app="ourAngularJsApp"
                                     </div> --}}
                                 </div>
                             </div>
+                            <div class="autocomplete" style="width:100%;">        
+                                <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input empty" placeholder="&#xF002; Enter an item name">
+                                <div id="searchResultDiv" class="searchResultDiv hidden">
+                                    <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
+                                        <tbody>            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             
                             <div class="row"> 
                                 <div class="col-md-12 table-responsive">
                                     <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
                                         <thead>
                                             <tr>
-                                                <th>Item</th>
-                                                {{--  <td>Quantity Left</td>  --}}
-                                                {{--  <td>Purchase Price</td>  --}}
-                                                <th>Price</th>
-                                                <th>Qty Purchase</th>
-                                                <th>Sales</th>
+                                                <th>Qty.</th>
+                                                <th>Unit</th>
+                                                <th>Description</th>
+                                                <th>Unit Price</th>
+                                                <th>Amount</th>
                                                 <th>Action</th>
                                             </tr> 
                                             
@@ -651,147 +740,147 @@ ourAngularJsApp.controller('customerPurchase', ['$scope','$compile',
 function($scope, $compile) {
 var _this = this;
 
-            $('#dashboardDatatable').DataTable({
-                // "processing": true,
-                // "serverSide": true,
-                "ajax":  "{{ route('salesAssistant.getItemsSales') }}",
-                // data: [{
-                //     "LastName": "Doe",
-                //     "Link": "<button type=\"button\" ng-click=\"Ctrl.addButton()\">Test Alert</a>"
-                // }],
-                // columns: [{
-                    //     "title": "Last Name",
-                    //     "data": "LastName"
-                    // }, {
-                        //     "title": "Actions",
-                        //     "data": "Link"
-                        // }],
+            // $('#dashboardDatatable').DataTable({
+            //     // "processing": true,
+            //     // "serverSide": true,
+            //     "ajax":  "{{ route('salesAssistant.getItemsSales') }}",
+            //     // data: [{
+            //     //     "LastName": "Doe",
+            //     //     "Link": "<button type=\"button\" ng-click=\"Ctrl.addButton()\">Test Alert</a>"
+            //     // }],
+            //     // columns: [{
+            //         //     "title": "Last Name",
+            //         //     "data": "LastName"
+            //         // }, {
+            //             //     "title": "Actions",
+            //             //     "data": "Link"
+            //             // }],
                         
                 
                 
-                columns:[{
-                    "title": "Description",
-                    "data": "description"
-                },
-                // {
-                //     "title": "Category",
-                //     "data": "status"
-                // },
-                {
-                    "title": "Qty in Stock",
-                    "data": "quantity"
-                },
-                // {
-                //     "title": "Purchase Price",
-                //     "data": "wholesale_price"
-                // },
-                {
-                    "title": "Selling Price",
-                    "data": "retail_price"
-                },
-                {
-                    "title": "Add Item",
-                    "data": "action"
-                }],
+            //     columns:[{
+            //         "title": "Description",
+            //         "data": "description"
+            //     },
+            //     // {
+            //     //     "title": "Category",
+            //     //     "data": "status"
+            //     // },
+            //     {
+            //         "title": "Qty in Stock",
+            //         "data": "quantity"
+            //     },
+            //     // {
+            //     //     "title": "Purchase Price",
+            //     //     "data": "wholesale_price"
+            //     // },
+            //     {
+            //         "title": "Selling Price",
+            //         "data": "retail_price"
+            //     },
+            //     {
+            //         "title": "Add Item",
+            //         "data": "action"
+            //     }],
         
-                createdRow: function(row, data, dataIndex) {
-                    $compile(angular.element(row).contents())($scope);
-                },
+            //     createdRow: function(row, data, dataIndex) {
+            //         $compile(angular.element(row).contents())($scope);
+            //     },
 
-                //fetch the items in localStorage after the dataTables initialization
-                "initComplete": function(settings, json) {
-                    var len=localStorage.length;
-                    var thatTbody = document.getElementById("cartTbody");
-                    document.getElementById("receiptNumber").value = localStorage.getItem("receiptNumber");
-                    document.getElementById("customerName").value = localStorage.getItem("customerName");
-                    document.getElementById("address").value = localStorage.getItem("customerAddress");
-                    var totalSalesNgBinds ="";
-                    for(var i=0; i<len; i++) {
+            //     //fetch the items in localStorage after the dataTables initialization
+            //     "initComplete": function(settings, json) {
+            //         var len=localStorage.length;
+            //         var thatTbody = document.getElementById("cartTbody");
+            //         document.getElementById("receiptNumber").value = localStorage.getItem("receiptNumber");
+            //         document.getElementById("customerName").value = localStorage.getItem("customerName");
+            //         document.getElementById("address").value = localStorage.getItem("customerAddress");
+            //         var totalSalesNgBinds ="";
+            //         for(var i=0; i<len; i++) {
 
-                        var key = localStorage.key(i);
-                        var value = localStorage[key];
-                        if(value.includes("item")){
-                            if( !key.includes("damaged") ){
-                                var myItemJSON = JSON.parse(localStorage.getItem(key));            
+            //             var key = localStorage.key(i);
+            //             var value = localStorage[key];
+            //             if(value.includes("item")){
+            //                 if( !key.includes("damaged") ){
+            //                     var myItemJSON = JSON.parse(localStorage.getItem(key));            
                                 
                             
-                                ////////////////////
-                                $('#dashboardDatatable').DataTable().search(key).draw();
-                                //////////////////////
-                                    var updateTemp = $.parseHTML( myItemJSON.retailPrice );
-                                    console.log(document.getElementById(myItemJSON.itemId))
-                                    updateTemp[0].innerHTML=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price if ever the selling price of ITEM changes!
-                                    updateTemp[1].value=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price if ever the selling price of ITEM changes!
-                                    console.log(updateTemp[0].outerHTML+updateTemp[1].outerHTML)
-                                var sellingPrice = document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML;
+            //                     ////////////////////
+            //                     $('#dashboardDatatable').DataTable().search(key).draw();
+            //                     //////////////////////
+            //                         var updateTemp = $.parseHTML( myItemJSON.retailPrice );
+            //                         console.log(document.getElementById(myItemJSON.itemId))
+            //                         updateTemp[0].innerHTML=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price if ever the selling price of ITEM changes!
+            //                         updateTemp[1].value=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price if ever the selling price of ITEM changes!
+            //                         console.log(updateTemp[0].outerHTML+updateTemp[1].outerHTML)
+            //                     var sellingPrice = document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML;
                                     
-                                    //  document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML
+            //                         //  document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML
         
-                                    //hide row
-                                    // document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
-                                    var row = $('#'+myItemJSON.itemId).closest("tr");
-                                    $('#dashboardDatatable').dataTable().fnDeleteRow( row );
+            //                         //hide row
+            //                         // document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
+            //                         var row = $('#'+myItemJSON.itemId).closest("tr");
+            //                         $('#dashboardDatatable').dataTable().fnDeleteRow( row );
 
-                                    var newRow = thatTbody.insertRow(-1);
-                                    newRow.insertCell(-1).innerHTML = myItemJSON.item ;
-                                    // newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;
-                                    // newRow.insertCell(-1).innerHTML = myItemJSON.wholeSalePrice;
+            //                         var newRow = thatTbody.insertRow(-1);
+            //                         newRow.insertCell(-1).innerHTML = myItemJSON.item ;
+            //                         // newRow.insertCell(-1).innerHTML = myItemJSON.quantityLeft;
+            //                         // newRow.insertCell(-1).innerHTML = myItemJSON.wholeSalePrice;
 
-                                    // var salesPrice = "<p class='form-control style='color:green' ng-bind='" +itemName+ "SP'></p>";
-                                    // var temp2 = $compile(salesPrice)($scope);
-                                    // angular.element( lastRow.insertCell(-1) ).append(temp2);
+            //                         // var salesPrice = "<p class='form-control style='color:green' ng-bind='" +itemName+ "SP'></p>";
+            //                         // var temp2 = $compile(salesPrice)($scope);
+            //                         // angular.element( lastRow.insertCell(-1) ).append(temp2);
 
-                                    //newRow.insertCell(-1).innerHTML = myItemJSON.retailPrice;
-                                    angular.element( newRow.insertCell(-1) ).append( $compile(updateTemp[0].outerHTML+updateTemp[1].outerHTML)($scope) );
+            //                         //newRow.insertCell(-1).innerHTML = myItemJSON.retailPrice;
+            //                         angular.element( newRow.insertCell(-1) ).append( $compile(updateTemp[0].outerHTML+updateTemp[1].outerHTML)($scope) );
 
-                                    //newRow.insertCell(-1).innerHTML = myItemJSON.quantityPurchase;
-                                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );
+            //                         //newRow.insertCell(-1).innerHTML = myItemJSON.quantityPurchase;
+            //                         angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );
 
-                                     var ngModelName = ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model");
-                                    var retailPrice = parseInt(sellingPrice);                                
-                                    var newSalesPrice = $($.parseHTML(myItemJSON['salesPrice'])[0]).attr("ng-init", ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
-                                    // angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.salesPrice)($scope) );
-                                    angular.element( newRow.insertCell(-1) ).append( $compile(newSalesPrice)($scope) );
+            //                          var ngModelName = ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model");
+            //                         var retailPrice = parseInt(sellingPrice);                                
+            //                         var newSalesPrice = $($.parseHTML(myItemJSON['salesPrice'])[0]).attr("ng-init", ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
+            //                         // angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.salesPrice)($scope) );
+            //                         angular.element( newRow.insertCell(-1) ).append( $compile(newSalesPrice)($scope) );
 
-                                    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
-                                    // newRow.insertCell(-1).innerHTML = myItemJSON.removeButton;
-                                    // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
+            //                         angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
+            //                         // newRow.insertCell(-1).innerHTML = myItemJSON.removeButton;
+            //                         // newRow.insertCell(-1).innerHTML = "<td><button class='btn btn-danger' data-item-id='" +myItemJSON.itemId+ "' onclick='removeRowInCart(this)'>Remove</button></td>";
 
-                                    var temp = document.createElement('div');
-                                    temp.innerHTML = myItemJSON.salesPrice;  
-                                    if(totalSalesNgBinds==""){
-                                        var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");                                
-                                        // totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
-                                        totalSalesNgBinds += splitBind[0];
-                                    }else{
-                                        var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");
-                                        // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
-                                        totalSalesNgBinds += "+" + splitBind[0];
-                                    }
-                            }
+            //                         var temp = document.createElement('div');
+            //                         temp.innerHTML = myItemJSON.salesPrice;  
+            //                         if(totalSalesNgBinds==""){
+            //                             var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");                                
+            //                             // totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
+            //                             totalSalesNgBinds += splitBind[0];
+            //                         }else{
+            //                             var splitBind = temp.firstChild.getAttribute("ng-bind").split(" ");
+            //                             // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
+            //                             totalSalesNgBinds += "+" + splitBind[0];
+            //                         }
+            //                 }
 
 
-                        }
-                    }
-                    enablePrintButton();                    
-                        ////////////////////
-                        $('#dashboardDatatable').DataTable().search("").draw();
-                        //////////////////////
+            //             }
+            //         }
+            //         enablePrintButton();                    
+            //             ////////////////////
+            //             $('#dashboardDatatable').DataTable().search("").draw();
+            //             //////////////////////
 
-                    //initialize totalSales
-                    document.getElementById("totalSalesDiv").innerHTML="";
-                    if(totalSalesNgBinds === ""){
-                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
-                    }else{
-                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
-                    }
-                    angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+            //         //initialize totalSales
+            //         document.getElementById("totalSalesDiv").innerHTML="";
+            //         if(totalSalesNgBinds === ""){
+            //             var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+            //         }else{
+            //             var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+            //         }
+            //         angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
                   
-                }
+            //     }
 
 
-            });
+            // });
 
         //      $('#damageDatatable').DataTable({
                
@@ -930,49 +1019,197 @@ var _this = this;
 
         //        }
 
-               
-               
-
-
         //    });
+        $('#searchResultDivTable').DataTable({
+                // "processing": true,
+                // "serverSide": true,
+                // "bFilter": false,
+                // "order": [[1, 'asc']],
+                "ajax":  "{{ route('salesAssistant.getItemsSales') }}",
+                // data: [{
+                //     "LastName": "Doe",
+                //     "Link": "<button type=\"button\" ng-click=\"Ctrl.addButton()\">Test Alert</a>"
+                // }],
+                // columns: [{
+                //     "title": "Last Name",
+                //     "data": "LastName"
+                // }, {
+                //     "title": "Actions",
+                //     "data": "Link"
+                // }],
+
+
+
+                columns:[{
+                    "title": "Description",
+                    "data": "description"
+                },
+                            // {
+                            //     "title": "Category",
+                            //     "data": "status"
+                            // },
+                            {
+                                "title": "Qty in Stock",
+                                "data": "quantity"
+                            },
+                            // {
+                            //     "title": "Purchase Price",
+                            //     "data": "wholesale_price"
+                            // },
+                            {
+                                "title": "Selling Price",
+                                "data": "retail_price"
+                            },
+                            {
+                                "title": "Add Item",
+                                "data": "action"
+                            }],
+
+                createdRow: function(row, data, dataIndex) {
+                    $compile(angular.element(row).contents())($scope);
+                },
+
+                //fetch the items in localStorage after the dataTables initialization
+                "initComplete": function(settings, json) {  
+                    var len=localStorage.length;
+                    var thatTbody = document.getElementById("cartTbody");
+                    document.getElementById("receiptNumber").value = localStorage.getItem("receiptNumber");
+                    document.getElementById("customerName").value = localStorage.getItem("customerName");
+                    document.getElementById("address").value = localStorage.getItem("customerAddress");
+                    var totalSalesNgBinds ="";
+                    for(var i=0; i<len; i++) {
+                        var key = localStorage.key(i);
+                        var value = localStorage[key];
+                        if(value.includes("item")){
+                            if( !key.includes("damaged") ){
+                                var myItemJSON = JSON.parse(localStorage.getItem(key));            
+                                
+                                ////////////////////
+                                $('#searchResultDivTable').DataTable().search(key).draw();
+                            //////////////////////
+                                var updateTemp = $.parseHTML( myItemJSON.retailPrice );
+                                updateTemp[0].children[1].innerHTML=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price
+                                updateTemp[1].value=document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML; //update selling price
+                                // console.log(updateTemp[0].outerHTML+updateTemp[1].outerHTML)
+                                var sellingPrice = document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML;
+                                //  document.getElementById(myItemJSON.itemId).parentNode.previousSibling.innerHTML
+    
+                                //hide row
+                                // document.getElementById(myItemJSON.itemId).parentNode.parentNode.setAttribute("class","hidden");
+                                var row = $('#'+myItemJSON.itemId).closest("tr");
+                                $('#searchResultDivTable').dataTable().fnDeleteRow( row );
+
+                                var newRow = thatTbody.insertRow(-1);
+                                angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.quantityPurchase)($scope) );
+
+                                newRow.insertCell(-1).innerHTML = myItemJSON.unit ;
+
+                                newRow.insertCell(-1).innerHTML = myItemJSON.item ;
+                             
+                                angular.element( newRow.insertCell(-1) ).append( $compile(updateTemp[0].outerHTML+updateTemp[1].outerHTML)($scope) );
+
+                                var ngModelName = ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model");
+                                var tempSalesPrice = $.parseHTML(myItemJSON.salesPrice);
+                                var retailPrice = parseInt(sellingPrice);    
+                                var newSalesPrice = $($.parseHTML(myItemJSON['salesPrice'])[0].children[1]).attr("ng-init", ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
+                                // var salesPriceSpanElement = ($.parseHTML( myItemJSON.salesPrice)[0].children[0]);
+                                var changeSalesPricePElement = (tempSalesPrice[0].children[1]).outerHTML=newSalesPrice[0].outerHTML;
+                                // console.log( $.parseHTML(myItemJSON.salesPrice)[0].childNodes[1].outerHTML="newSalesPrice" )
+                                angular.element( newRow.insertCell(-1) ).append( $compile(tempSalesPrice[0].outerHTML + ($.parseHTML(myItemJSON.salesPrice))[1].outerHTML)($scope) ); 
+
+                                angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
+
+                                var temp = document.createElement('div');
+                                temp.innerHTML = myItemJSON.salesPrice;  
+                                // console.log(temp)
+                                if(totalSalesNgBinds==""){
+                                    var splitBind = temp.firstChild.childNodes[1].getAttribute("ng-bind").split(" ");                                
+                                    // totalSalesNgBinds += temp.firstChild.getAttribute("ng-bind");
+                                    totalSalesNgBinds += splitBind[0];
+                                }else{
+                                    var splitBind = temp.firstChild.childNodes[1].getAttribute("ng-bind").split(" ");
+                                    // totalSalesNgBinds += "+ " + temp.firstChild.getAttribute("ng-bind");
+                                    totalSalesNgBinds += "+" + splitBind[0];
+                                }
+                            }
+
+                        }
+                    }
+                    enablePrintButton();
+                        ////////////////////
+                        $('#searchResultDivTable').DataTable().search("").draw();
+                        //////////////////////
+
+                    
+                    //initialize totalSales
+                    document.getElementById("totalSalesDiv").innerHTML="";
+                    if(totalSalesNgBinds === ""){
+                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+                    }else{
+                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+                    }
+                    angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+
+
+                }
+
+
+
+        });
 
             $scope.addButton = function(event) {
+                document.getElementById("searchResultDiv").setAttribute("class","hidden");   
+                document.getElementById("searchItemInput").value = "";
                 // alert("yesssss!!!")
                 // var thatTbody = document.getElementById("cartTbody");
                 // console.log( event.currentTarget.parentNode.parentNode.innerHTML )
                 // alert( event.target.parentNode.parentNode.innerHTML )
                 // var data = $(event.target.parentNode.parentNode.innerHTML).slice(0,-1);
                 // console.log(event)
+                var thatTbody = document.getElementById("cartTbody");
+                var newRow = thatTbody.insertRow(-1);
+
                 var thatTable = document.getElementById("cartTable");
                 var numberOfRows = thatTable.rows.length;
                 var lastRow = thatTable.rows[numberOfRows-1];
-                var itemName = lastRow.cells[0].innerHTML.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
+                 var itemDescription = event.currentTarget.parentNode.parentNode.firstChild.innerHTML;
+                var itemName = itemDescription.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
 
-                var retailPrice = "<p class='form-control' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='description[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
-                var temp0 = $compile(retailPrice)($scope);                
-                angular.element( lastRow.insertCell(-1) ).append(temp0);    
-                
                 if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
-                    var inputNumber = "<input style='width: 100px;' type='number' ng-init='damaged" +itemName+ " =1' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='damaged" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                    var inputNumber = "<input style='width: 100px;' type='number' ng-init='damaged" +itemName+ " =1' name='damagedQuantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='damaged" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 }else{
-                    var inputNumber = "<input style='width: 100px;' type='number' ng-init='" +itemName+ " =1' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                    var inputNumber = "<input style='width: 100px;' trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Lagpas na po sa " +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML + "!' type='number' ng-init='" +itemName+ " =1' name='quantity[]' oninput='checkQuantity(this)' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' data-max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
                 }
                 var temp1 = $compile(inputNumber)($scope);
-                // var newRow = thatTbody.insertRow(-1);
-                // angular.element( newRow.insertCell(-1) ).append(temp);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
+                var unit = "<select class='form-control' name='unit[]' > <option class='form-control'  value='pcs'>Pcs</option><option class='form-control'  value='sets'>Sets</option></select>";
+                angular.element( lastRow.insertCell(-1) ).append(unit);
+
+                angular.element( lastRow.insertCell(-1) ).append(itemDescription);
+
+
                 if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
-                    var salesPrice = "<p class='form-control' style='color:green;' ng-init='damaged" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='damaged" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
+                    var retailPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p></div><input type='hidden' name='damagedRetailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='damagedDescription[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
+                    // var retailPrice = "<input type='number' min='1' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'><input type='hidden' name='damagedRetailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'> <input type='hidden' name='damagedDescription[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
                 }else{
-                    var salesPrice = "<p class='form-control' style='color:green;' ng-init='" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='" +itemName+ "SP |number:2'></p><input  type='hidden' name='salesPrices[]' value=''>";
+                    var retailPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green; width: 100px;'>" +event.currentTarget.parentNode.previousSibling.innerHTML+ "</p></div><input type='hidden' name='retailPrices[]' value='" +event.currentTarget.parentNode.previousSibling.innerHTML+ "'><input type='hidden' name='description[]' value='" +event.currentTarget.parentNode.previousSibling.previousSibling.previousSibling.innerHTML+ "'>";
+                }   
+                var temp0 = $compile(retailPrice)($scope);                
+                angular.element( lastRow.insertCell(-1) ).append(temp0);
+                
+
+                if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
+                    var salesPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-init='damaged" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='damaged" +itemName+ "SP |number:2'></p></div><input  type='hidden' name='salesPrices[]' value=''>";
+                }else{
+                    var salesPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-init='" +itemName+ "SP=" +event.currentTarget.parentNode.previousSibling.innerHTML+ "' ng-bind='" +itemName+ "SP |number:2'></p></div><input  type='hidden' name='salesPrices[]' value=''>";
                 }                
                 var temp2 = $compile(salesPrice)($scope); 
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
-                // var removeButton = "<button class='btn btn-dan   ger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";
+                // var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)' onclick='removeRowInCart(this)'>Remove</button>";
                 if( event.currentTarget.dataset.status === "damaged" ){ // damaged item
-                    var removeButton = "<button data-status='damaged' class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
+                    var removeButton = "<button data-status='damaged' class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='damagedProductIds[]' value='"+(event.currentTarget.id).split("_")[0]+"'>";
                 }else{
                     var removeButton = "<button class='btn btn-danger' data-item-id='" +event.currentTarget.id+ "' ng-click='remove($event)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
                 }
@@ -982,42 +1219,27 @@ var _this = this;
                 
 
                 //store in localStorage
-                var tds  = $(lastRow.innerHTML).slice(0);     
-                if( event.currentTarget.dataset.status === "damaged" ){
-                    var itemObject = {
-                        item: tds[0].innerHTML,
-                        // quantityLeft: tds[1].innerHTML,
-                        // wholeSalePrice: tds[2].innerHTML,
-                        retailPrice: tds[1].childNodes[0].outerHTML + tds[1].childNodes[1].outerHTML,
-                        quantityPurchase: tds[2].firstChild.outerHTML,
-                        salesPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
-                        removeButton: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
-                        itemId: event.currentTarget.getAttribute("id"),
-                        purchasePrice: $(event.currentTarget).closest("tr")[0]['cells'][2].innerHTML,
-                        action: $(event.currentTarget).closest("tr")[0]['cells'][4].innerHTML,
-                    };
-
-                }else{
-                    var itemObject = {
-                        item: tds[0].innerHTML,
-                        // quantityLeft: tds[1].innerHTML,
-                        // wholeSalePrice: tds[2].innerHTML,
-                        retailPrice: tds[1].childNodes[0].outerHTML + tds[1].childNodes[1].outerHTML,
-                        quantityPurchase: tds[2].firstChild.outerHTML,
-                        salesPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML,
-                        removeButton: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
-                        itemId: event.currentTarget.getAttribute("id"),
-                        purchasePrice: $(event.currentTarget).closest("tr")[0]['cells'][2].innerHTML,
-                        action: $(event.currentTarget).closest("tr")[0]['cells'][3].innerHTML,
-                    };
-
-                }
+                var tds  = $(lastRow.innerHTML).slice(0);   
+                console.log(tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML)  
+                var itemObject = {
+                    item: tds[2].innerHTML,
+                    // quantityLeft: tds[1].innerHTML,
+                    // wholeSalePrice: tds[2].innerHTML,    
+                    retailPrice: tds[3].childNodes[0].outerHTML + tds[3].childNodes[1].outerHTML+tds[3].childNodes[2].outerHTML,
+                    quantityPurchase: tds[0].firstChild.outerHTML,
+                    salesPrice: tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML,
+                    removeButton: tds[5].childNodes[0].outerHTML + tds[5].childNodes[1].outerHTML,
+                    itemId: event.currentTarget.getAttribute("id"),
+                    purchasePrice: $(event.currentTarget).closest("tr")[0]['cells'][2].innerHTML,
+                    action: $(event.currentTarget).closest("tr")[0]['cells'][3].innerHTML,
+                    unit: tds[1].firstChild.outerHTML
+                };
 
                 var jsonObject = JSON.stringify(itemObject);
                 if( event.currentTarget.dataset.status === "damaged" ){ // damage item
                     localStorage.setItem("damaged "+tds[0].innerHTML,jsonObject);
                 }else{
-                    localStorage.setItem(tds[0].innerHTML,jsonObject);
+                    localStorage.setItem(tds[2].innerHTML,jsonObject);
                 }
 
                 // var totalSalesDiv = document.getElementById("totalSalesDiv");
@@ -1061,13 +1283,13 @@ var _this = this;
                 }
 
                 console.log("TScorrect: " + newNgBinds)
-                var price = "<p class='form-control' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
+                var price = "<p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
                 //remove the row dataTable
                 var row = $(event.currentTarget).closest("tr");
-                $('#dashboardDatatable').dataTable().fnDeleteRow(row);
+                $('#searchResultDivTable').dataTable().fnDeleteRow(row);
                 // console.log(row)
 
             };
@@ -1076,49 +1298,54 @@ var _this = this;
                 // alert("changing!!!");
                 // console.log( angular.element(event).attr('class') );
                 // console.log( event.currentTarget.getAttribute("class") );
-                if( event.currentTarget.parentNode.nextElementSibling.nextElementSibling.firstElementChild.dataset.status === "damaged" ){
-                    var item = JSON.parse(localStorage.getItem("damaged "+event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML));
-                }else{
-                    var item = JSON.parse(localStorage.getItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML));
-                }
+                // if( event.currentTarget.parentNode.nextElementSibling.nextElementSibling.firstElementChild.dataset.status === "damaged" ){
+                //     var item = JSON.parse(localStorage.getItem("damaged "+event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML));
+                // }else{
+                    var item = JSON.parse(localStorage.getItem(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.innerHTML));
+                // }
                 console.log( ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model") )
-                var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"="+event.currentTarget.value);
-
+                if( parseInt(event.currentTarget.value) <= parseInt(event.currentTarget.dataset.max) && parseInt(event.currentTarget.value) > 0 ){
+                    var newQuantityPurchase = $($.parseHTML(item['quantityPurchase'])[0]).attr("ng-init",($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"="+event.currentTarget.value);
+                }else{
+                    var newQuantityPurchase =  $($.parseHTML(item['quantityPurchase'])[0]);
+                }
 
                 var ngModelName = event.currentTarget.attributes["ng-model"].value;
                 // var oldTs = parseInt(document.getElementById("totalSales").innerText);
-                var retailPrice = parseInt(event.currentTarget.parentNode.previousSibling.innerText);
+                // var retailPrice = parseInt(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.children[1].innerText);
+                var retailPrice = parseInt(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.children[1].innerText);
                 var sellingPrice = ngModelName+"SP";
                 $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
                 // document.getElementById("salesPriceValue").setAttribute("value",retailPrice * $scope[ngModelName]);
             
                var newSalesPrice = $($.parseHTML(item['salesPrice'])[0]).attr("ng-init", ($.parseHTML(item['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
-
+                var salesPriceInput = ($.parseHTML(item.salesPrice))[1].outerHTML;
 
                //remove
-                if( event.currentTarget.parentNode.nextElementSibling.nextElementSibling.firstElementChild.dataset.status === "damaged" ){
-                    localStorage.removeItem("damaged "+event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML);
-                }else{
-                    localStorage.removeItem(event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML);
-                }
+                // if( event.currentTarget.parentNode.nextElementSibling.nextElementSibling.firstElementChild.dataset.status === "damaged" ){
+                //     localStorage.removeItem("damaged "+event.currentTarget.parentNode.previousElementSibling.previousElementSibling.innerHTML);
+                // }else{
+                    localStorage.removeItem(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.innerHTML);
+                // }
                //add again
                var itemObject = {
                     item: item['item'],
                     retailPrice: item['retailPrice'],
                     quantityPurchase: newQuantityPurchase[0].outerHTML,
-                    salesPrice: newSalesPrice[0].outerHTML,
+                    salesPrice: newSalesPrice[0].outerHTML + salesPriceInput,
                     removeButton: item['removeButton'],
                     itemId: item['itemId'],
                     purchasePrice: item['purchasePrice'],
                     action: item['action'],
+                    unit: item['unit']
                 };
 
                 var jsonObject = JSON.stringify(itemObject);
-                if( event.currentTarget.parentNode.nextElementSibling.nextElementSibling.firstElementChild.dataset.status === "damaged" ){
-                    localStorage.setItem("damaged "+item['item'],jsonObject);
-                }else{
+                // if( event.currentTarget.parentNode.nextElementSibling.nextElementSibling.firstElementChild.dataset.status === "damaged" ){
+                //     localStorage.setItem("damaged "+item['item'],jsonObject);
+                // }else{
                     localStorage.setItem(item['item'],jsonObject);
-                }
+                // }
                 
     
 
@@ -1134,27 +1361,27 @@ var _this = this;
             }
 
             $scope.remove = function(event){
-                var data  = $(event.currentTarget.parentNode.parentNode.innerHTML).slice(0,2);
+                var data  = $(event.currentTarget.parentNode.parentNode.innerHTML).slice(0);
                 if( event.currentTarget.dataset.status === "damaged" ){
                     var temp = JSON.parse(localStorage.getItem("damaged "+data[0].innerHTML));
                     var table = $('#damageDatatable').DataTable();
                     table.row.add( {
                             "description":  temp['item'],
                             "quantity":  $.parseHTML(temp['quantityPurchase'])[0]['max'],
-                            "wholesale_price": temp['purchasePrice'],
-                            "damaged_selling_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
-                            // "retail_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
                             // "wholesale_price": temp['purchasePrice'],
+                            // "damaged_selling_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
+                            "retail_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
+                            "wholesale_price": temp['purchasePrice'],
                             "action":   temp['action']
                         } ).draw();
                 }else{
-                    var temp = JSON.parse(localStorage.getItem(data[0].innerHTML));
-                    var table = $('#dashboardDatatable').DataTable();
+                    var temp = JSON.parse(localStorage.getItem(data[2].innerHTML));
+                    var table = $('#searchResultDivTable').DataTable();
                     table.row.add( {
                             "description":  temp['item'],
-                            "quantity":  $.parseHTML(temp['quantityPurchase'])[0]['max'],
+                            "quantity":  ($.parseHTML(temp['quantityPurchase'])[0]).dataset.max,
                             "wholesale_price": temp['purchasePrice'],
-                            "retail_price": $.parseHTML(temp['retailPrice'])[0].innerHTML,
+                            "retail_price": $.parseHTML(temp['retailPrice'])[0].children[1].innerHTML,
                             "action":   temp['action']
                         } ).draw();
                 }
@@ -1162,7 +1389,7 @@ var _this = this;
                 if( event.currentTarget.dataset.status === "damaged" ){
                     localStorage.removeItem("damaged "+data[0].innerHTML);
                 }else{
-                    localStorage.removeItem(data[0].innerHTML);
+                    localStorage.removeItem(data[2].innerHTML);
                 }
                 
                 event.currentTarget.parentNode.parentNode.remove();
@@ -1176,16 +1403,16 @@ var _this = this;
                 if(numberOfRows > 0){
                     for(var i=0; i < numberOfRows; i++){
                         if(ngBinds==""){
-                            ngBinds += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
-                            ngBindsWithoutFormat += thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind").split(" ")[0];
+                            ngBinds += thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind");
+                            ngBindsWithoutFormat += thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind").split(" ")[0];
                         }else{
-                            ngBinds += " + " + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind");
-                            ngBindsWithoutFormat += "+" + thatTable[i].childNodes[3].childNodes[0].getAttribute("ng-bind").split(" ")[0];
+                            ngBinds += " + " + thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind");
+                            ngBindsWithoutFormat += "+" + thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
-                    var price = "<p class='form-control' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
+                    var price = "<p class='form-control text-right' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
                 }else{
-                    var price = "<p class='form-control' style='color:green' ng-bind></p>";
+                    var price = "<p class='form-control text-right' style='color:green' ng-bind></p>";
                 }
                 // console.log("ngBinds: " + ngBinds)
                 // console.log("ngBindsWithoutFormat: "+ngBindsWithoutFormat)

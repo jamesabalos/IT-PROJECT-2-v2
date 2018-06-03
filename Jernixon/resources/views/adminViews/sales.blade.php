@@ -366,7 +366,7 @@ ng-app="ourAngularJsApp"
           document.getElementById("searchResultDivTable_filter").setAttribute("class","hidden")
           $('#searchResultDivTable').DataTable().search(a.value).draw();
         
-      }
+    }
       function checkQuantity(input){
         var errorsDiv = $("#salesErrorDiv p")
         var tempError = "";

@@ -433,12 +433,12 @@ class HomeController extends Controller
     public function getItemsForSales(){
         $data = DB::table('salable_items')
             ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
-            ->select('products.product_id', 'description', 'wholesale_price' , 'retail_price' , 'quantity')
+            ->select('products.product_id', 'description' , 'retail_price' , 'quantity')
             ->where([['status' , '=' , 'available'],['quantity', '>', 0]]);
 
         return Datatables::of($data)
             ->addColumn('action',function($data){
-                return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)' onclick='addItemToCart(this)'><i class = 'fa fa-plus'></i>Add</button>";
+                return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)'><i class = 'fa fa-plus'></i>Add</button>";
             })
             ->make(true);
 

@@ -66,7 +66,7 @@ class="active"
             //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
               newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='Damaged'>Damaged</option><option class='form-control'  value='Damaged Saleable'>Damaged Saleable</option><option class='form-control' value='Lost'>Lost</option></select></td>";
 
-              newRow.insertCell(-1).innerHTML = "<td><input  class=' form-control  dp' id='damaged_price"+divElement.id+"' disabled  type='number' name='dprice[]' value='"+divElement.dataset.price+"' ></input></td>";
+              newRow.insertCell(-1).innerHTML = "<td><textarea name='remarks' cols='20' rows='3'></textarea></td>";
 
               newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
@@ -458,7 +458,7 @@ class="active"
                                         <th class="text-left">Item Name</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Status</th>
-                                        <th class="text-left">Price</th>                                        
+                                        <th class="text-left">Remarks</th>                                        
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>

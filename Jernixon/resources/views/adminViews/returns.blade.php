@@ -154,6 +154,7 @@ ng-app="ourAngularJsApp"
                  'ORNumber': div.firstChild.innerHTML,
             },        
             success: function(data){
+                console.log(data)
                 $("#returnItemTbody tr").remove();
                 $("#refundTbody tr").remove();
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
@@ -182,10 +183,17 @@ ng-app="ourAngularJsApp"
                 document.getElementById("Customer").value = data[0].customer_name;
                 document.getElementById("returnCustomerName").value = data[0].customer_name;
                 document.getElementById("ORdate").value = data[0].created_at;
-                console.log(data[0].created_at)
-                // document.getElementById("refundCustomer").value = data[0].customer_name;
-                // document.getElementById("refundCustomerName").value = data[0].customer_name;
-              
+                var today = new Date().toISOString().substr(0, 10);
+                var date1 = new Date("12/13/2010");
+                var date2 = new Date("12/15/2010");
+                var timeDiff = Math.abs( (new Date(today)).getTime() - (new Date(data[0].created_at)).getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                if( 7-parseInt(diffDays) <= 0 ){
+                    document.getElementById("remainingWarrantyDays").value = "0";
+                }else{
+                    document.getElementById("remainingWarrantyDays").value = 7-parseInt(diffDays);
+                }
+
 
                 
             }
@@ -980,7 +988,7 @@ function customer(){
                                             {{Form::label('OfficialReceiptDate', 'Official Receipt Date:')}}
                                         </div>
                                         <div class="col-md-9">
-                                <input type="datetime-local" name="Date" id="ORdate" class="form-control"/>    
+                                <input type="text" disabled id="ORdate" class="form-control"/>    
                                         </div>
                                     </div>
                                 </div>

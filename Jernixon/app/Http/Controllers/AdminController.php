@@ -376,8 +376,8 @@ public function createPurchasesFilter(Request $request){
             ->select('or_number')
             ->distinct()
             ->where('or_number','LIKE','%'.$ORNumber.'%')
-            ->where('created_at','>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 7 DAY)'))
-            ->where('created_at','<=', DB::raw('NOW()'))
+            // ->where('created_at','>=', DB::raw('DATE_SUB(CURDATE()'))
+            // ->where('created_at','<=', DB::raw('NOW()'))
             ->limit(5)
             ->get();
         return $data;

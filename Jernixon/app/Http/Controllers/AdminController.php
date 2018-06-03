@@ -11,6 +11,7 @@ use App\Physical_count_item;
 use App\Physical_count;
 use Datatables;
 use DB;
+use Auth;
 use Hash;
 use App\Notifications\ReorderNotification;
 use App\Notifications\StockAdjustmentNotification;
@@ -70,7 +71,8 @@ class AdminController extends Controller
     public function employees(){
         $data = [];
         $employees = User::all();
-        $admins = Admin::where('type','Admin')->get();
+        $user = Auth::user()->id;
+        $admins = Admin::where('id','!=',$user)->get();
 
         foreach( $employees as $employee){
             array_push($data, ['id'=>$employee->id,'name'=>$employee->name,'type'=>'Employee','email'=>$employee->email, 'contact'=>$employee->contact_number,'address'=>$employee->address,'status'=>$employee->status,'date'=>$employee->created_at]);

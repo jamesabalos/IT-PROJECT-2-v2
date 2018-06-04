@@ -11,7 +11,6 @@ onload="refresh()"
 ng-app="ourAngularJsApp"
 @endsection
 
-
 @section('headScript')
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
@@ -20,6 +19,7 @@ ng-app="ourAngularJsApp"
 
 <script src="{{asset('assets/js/angularJs.js')}}"></script>
 <script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
+
 <style type="text/css">
     @media print{
         /* @page{            
@@ -133,32 +133,32 @@ ng-app="ourAngularJsApp"
         color: #ffffff; 
     }
 
+    /* Popover */
+    /* .popover {
+        border: 2px dotted red;
+    } */
 
-     /* Popover */
-/* .popover {
-    border: 2px dotted red;
-} */
+    /* Popover Header */
+    .popover-title {
+        /* background-color: #73AD21;  */
+        color: red; 
+        /* font-size: 28px; */
+        text-align:center;
+    }
 
-/* Popover Header */
-.popover-title {
-    /* background-color: #73AD21;  */
-    color: red; 
-    /* font-size: 28px; */
-    text-align:center;
-}
+    /* Popover Body */
+    .popover-content {
+        /* background-color: coral; */
+        /* color: #FFFFFF; */
+        padding: 20px;
+    }
 
-/* Popover Body */
-.popover-content {
-    /* background-color: coral; */
-    /* color: #FFFFFF; */
-    padding: 20px;
-}
-
-/* Popover Arrow */
-.arrow {
-    border-right-color: red !important;
-}
+    /* Popover Arrow */
+    .arrow {
+        border-right-color: red !important;
+    }
 </style>
+
 <script>
     function printReceipt(){
         // var data = $("#formSales").serialize();   
@@ -249,6 +249,7 @@ ng-app="ourAngularJsApp"
         // document.body.appendChild(restorePage);
         
     }
+
     function addItemToCart(button){
         $(button).hide(500).delay(1000);
         //$(button).removeClass("btn-info").addClass("btn-danger");
@@ -263,8 +264,11 @@ ng-app="ourAngularJsApp"
         var newRow = thatTbody.insertRow(-1);
         newRow.insertCell(-1).innerHTML = button.parentNode.parentNode.firstChild.innerHTML;
         if( button.dataset.status === "damaged" ){
-        newRow.setAttribute("style","background-color:#ff8080");
+
+            newRow.setAttribute("style","background-color:#ff8080");
+
         }
+
         button.parentNode.parentNode.setAttribute("class","hidden");
 
         enablePrintButton();
@@ -303,6 +307,7 @@ ng-app="ourAngularJsApp"
     }
 
     function removeRowInCart(button){
+
         document.getElementById(button.getAttribute("data-item-id")).parentNode.parentNode.removeAttribute("class","hidden");
 
         //var i = a.parentNode.parentNode.rowIndex;
@@ -336,21 +341,25 @@ ng-app="ourAngularJsApp"
     function saveCustomerName(e){
         localStorage.setItem("customerName",e.value);       
     }
+
     function saveCustomerAddress(e){
         localStorage.setItem("customerAddress",e.value);       
     }
+
     function damaged(){
         $('#dsButton').addClass('active');
         $('#siButton').removeClass('active');
         $('#dsDiv').removeClass('hidden');
         $('#siDiv').addClass('hidden');
     }
+
     function salable(){
         $('#dsButton').removeClass('active');
         $('#siButton').addClass('active');
         $('#dsDiv').addClass('hidden');
         $('#siDiv').removeClass('hidden');
     }
+
     function searchItem(a){
         a.nextElementSibling.removeAttribute("class");
           if(a.value === ""){
@@ -360,6 +369,7 @@ ng-app="ourAngularJsApp"
           $('#searchResultDivTable').DataTable().search(a.value).draw();
         
     }
+
     function checkQuantity(input){
         var errorsDiv = $("#salesErrorDiv p")
         var tempError = "";
@@ -373,6 +383,7 @@ ng-app="ourAngularJsApp"
             $(input).popover('destroy');    
         }
       }
+
     $(document).ready(function(){
 
         let today = new Date().toISOString().substr(0, 10);
@@ -532,152 +543,147 @@ ng-app="ourAngularJsApp"
             // .done(function(data) {
             //          alert("success!!!!"); 
             // });
-
-
         })
-
-
     });
-
 
 </script>
         
-        @endsection
-        
-        @section('linkName')
-        <h3><i class="fa fa-dollar"></i> Sales</h3>
-        @endsection
-        
-        @section('right')
-        {{-- <div class="row" >
-            <div class="col-md-12" >
-                <div class="card" >
-                    <div class="header">
-                        <div class="row">
-                            <div id = "siDiv" style = "">
-                                <div class="content table-responsive table-full-width table-stripped">
-                                    <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
-                                            <tbody>
-                                                
-                                            </tbody>
-                                        </table>
-                                    </div>
-                            </div>
-                            <div id = "dsDiv" class="hidden">
-                                <div class="content table-responsive table-full-width table-stripped">
-                                    <table class="table table-hover table-bordered" style="width:100%" id="damageDatatable">
-                                        
-                                        <tbody>
+@endsection
 
-                                        </tbody>
-                                    </table>
-                                    </div>
-                                </div>
-                            </div>
+@section('linkName')
+<h3><i class="fa fa-dollar"></i> Sales</h3>
+@endsection
+
+@section('right')
+{{-- <div class="row" >
+<div class="col-md-12" >
+    <div class="card" >
+        <div class="header">
+            <div class="row">
+                <div id = "siDiv" style = "">
+                    <div class="content table-responsive table-full-width table-stripped">
+                        <table class="table table-hover table-bordered" style="width:100%" id="dashboardDatatable">
+                                <tbody>
+                                    
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
                 </div>
-            </div> --}}
-            
-            <div class="row" >
-                <div class="col-md-12" >
-                    <div class="card" >
-                        <div class="header"  id="printArea">
-                            {!! Form::open(['method'=>'post','id'=>'formSales']) !!}                                
-                            <h4 ng-bind="name">Customer Purchase</h4>
-                            <div class="row">
-                                <div class="col-md-3" >                        
-                                        {{Form::label('receiptNumber', 'Receipt Number:')}}
-                                        {{Form::number('receiptNumber','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveReceiptNumber(this)'])}}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-7" margin >
-                                        {{Form::label('customerName', 'Customer Name:')}}
-                                        {{Form::text('customerName','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerName(this)'])}}
-                                    </div>
-                                    <div class="col-md-4" margin >
-                                            {{Form::label('Date', 'Date:')}}
-                                            <input type="datetime-local" name="Date" id="today"  oninput="enablePrintButton(this)" class="form-control"/>    
-                                    </div>
-                                  
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-0" margin>
-                                        {{Form::label('address', 'Address:')}}
-                                        {{Form::text('address','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerAddress(this)'])}}
-                                        
-                                    </div>
-                                    {{-- <div class="col-md-2" margin>
-                                        <input type="date" name="Date" id="today"  class="form-control"/>
-            
-                                    </div> --}}
-                                </div>
-                            </div>
-                            <div class="autocomplete" style="width:100%;">        
-                                <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input empty" placeholder="&#xF002; Enter an item name">
-                                <div id="searchResultDiv" class="searchResultDiv hidden">
-                                    <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
-                                        <tbody>            
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                <div id = "dsDiv" class="hidden">
+                    <div class="content table-responsive table-full-width table-stripped">
+                        <table class="table table-hover table-bordered" style="width:100%" id="damageDatatable">
                             
-                            <div class="row"> 
-                                <div class="col-md-12 table-responsive">
-                                    <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
-                                        <thead>
-                                            <tr>
-                                                <th>Qty.</th>
-                                                <th>Unit</th>
-                                                <th>Description</th>
-                                                <th>Unit Price</th>
-                                                <th>Amount</th>
-                                                <th>Action</th>
-                                            </tr> 
-                                            
-                                        </thead>
-                                        <tbody id="cartTbody">
-                                            {{--  <td><input type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>  --}}
-                                            {{--  <tr ng-repeat="user in users">
-                                                <td ng-bind="$index + 1"></td>
-                                                <td ng-bind="user.fullname"></td>
-                                                <td ng-bind="user.email"></td>
-                                            </tr>  --}}
-                                        </tbody>
-                                    </table>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-9 text-right">
-                                                <label>Total Sales:</label>
-                                            </div>
-                                            <div class="col-md-3" id="totalSalesDiv">
-                                                <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
-                                            </div>
-                                            <div class="text-right">                                           
-                                                <div class="col-md-12">   
-                                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                                    <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
-                                                </div>
-                                            </div> 
-                                        </div>
-                                                <div class="alert alert-success text-center hidden" id="salesErrorDiv">
-                                                </div>
-                                    </div>
-                                </div> 
-                            </div>
- 
-                            {!! Form::close() !!}
-                            
+                            <tbody>
+
+                            </tbody>
+                        </table>
                         </div>
                     </div>
                 </div>
             </div>
-            @endsection
+        </div>
+    </div>
+</div> --}}
+
+<div class="row" >
+    <div class="col-md-12" >
+        <div class="card" >
+            <div class="header"  id="printArea">
+                {!! Form::open(['method'=>'post','id'=>'formSales']) !!}                                
+                <h4 ng-bind="name">Customer Purchase</h4>
+                <div class="row">
+                    <div class="col-md-3" >                        
+                            {{Form::label('receiptNumber', 'Receipt Number:')}}
+                            {{Form::number('receiptNumber','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveReceiptNumber(this)'])}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-7" margin >
+                            {{Form::label('customerName', 'Customer Name:')}}
+                            {{Form::text('customerName','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerName(this)'])}}
+                        </div>
+                        <div class="col-md-4" margin >
+                                {{Form::label('Date', 'Date:')}}
+                                <input type="datetime-local" name="Date" id="today"  oninput="enablePrintButton(this)" class="form-control"/>    
+                        </div>
+                      
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-0" margin>
+                            {{Form::label('address', 'Address:')}}
+                            {{Form::text('address','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerAddress(this)'])}}
+                            
+                        </div>
+                        {{-- <div class="col-md-2" margin>
+                            <input type="date" name="Date" id="today"  class="form-control"/>
+
+                        </div> --}}
+                    </div>
+                </div>
+                <div class="autocomplete" style="width:100%;">        
+                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002; Enter an item name">
+                    <div id="searchResultDiv" class="searchResultDiv hidden">
+                        <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
+                            <tbody>            
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="row"> 
+                    <div class="col-md-12 table-responsive">
+                        <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
+                            <thead>
+                                <tr>
+                                    <th>Qty.</th>
+                                    <th>Unit</th>
+                                    <th>Description</th>
+                                    <th>Unit Price</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr> 
+                                
+                            </thead>
+                            <tbody id="cartTbody">
+                                {{--  <td><input type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>  --}}
+                                {{--  <tr ng-repeat="user in users">
+                                    <td ng-bind="$index + 1"></td>
+                                    <td ng-bind="user.fullname"></td>
+                                    <td ng-bind="user.email"></td>
+                                </tr>  --}}
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-9 text-right">
+                                    <label>Total Sales:</label>
+                                </div>
+                                <div class="col-md-3" id="totalSalesDiv">
+                                    <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
+                                </div>
+                                <div class="text-right">                                           
+                                    <div class="col-md-12">   
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                        <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
+                                    </div>
+                                </div> 
+                            </div>
+                                    <div class="alert alert-success text-center hidden" id="salesErrorDiv">
+                                    </div>
+                        </div>
+                    </div> 
+                </div>
+
+                {!! Form::close() !!}
+                
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
             
 @section('jqueryScript')
 <script type="text/javascript">
@@ -1426,16 +1432,14 @@ var _this = this;
 
 
 </script>
-        {{--  <script src="{{asset('assets/js/angularJsControllers.js')}}"></script>  --}}
-        
-        @endsection
-                                                                
-    @section('js_link')
-    <!--   Core JS Files   -->
-    {{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>
-    
-    
-    @endsection
+{{--  <script src="{{asset('assets/js/angularJsControllers.js')}}"></script>  --}}
+
+@endsection
+                                                        
+@section('js_link')
+<!--   Core JS Files   -->
+{{--  <script src="{{asset('assets/js/jquery-1.10.2.js')}}"></script>  --}}
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>
+@endsection

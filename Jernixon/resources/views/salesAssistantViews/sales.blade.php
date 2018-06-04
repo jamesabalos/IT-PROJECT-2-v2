@@ -372,7 +372,30 @@ ng-app="ourAngularJsApp"
         }else{
             $(input).popover('destroy');    
         }
+
+        if( parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) < 0 && parseInt(document.getElementById("discountInput").value) >= 1 ){
+            $(document.getElementById("discountInput")).popover('show');
+        }else{
+            $(document.getElementById("discountInput")).popover('destroy');
+
+        }
+
       }
+
+    function checkDiscount(input){
+          if(input.value < 0){
+            input.setAttribute("data-content","Discount should be greater than or equal to 0");
+            $(input).popover('show');
+          }else{
+            if( parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) < 0 ){
+                input.setAttribute("data-content","wala na kayong kita!");
+                $(input).popover('show');            
+            }else{
+                $(input).popover('destroy');            
+            }
+          }
+    }
+
     $(document).ready(function(){
 
         let today = new Date().toISOString().substr(0, 10);
@@ -651,6 +674,16 @@ ng-app="ourAngularJsApp"
                                         </tbody>
                                     </table>
                                     <div class="form-group">
+                                            <div class="row">
+                                                    <div class="col-md-7">
+                                                        
+                                                    </div>
+                                                    <div class="col-md-2 text-right">
+                                                        <label>Discount:</label>
+                                                    </div>
+                                                    <div class="col-md-3" id="discountDiv">
+                                                    </div>
+                                            </div>
                                         <div class="row">
                                             <div class="col-md-9 text-right">
                                                 <label>Total Sales:</label>
@@ -1143,12 +1176,17 @@ var _this = this;
                     
                     //initialize totalSales
                     document.getElementById("totalSalesDiv").innerHTML="";
+                    document.getElementById("discountDiv").innerHTML="";
+
                     if(totalSalesNgBinds === ""){
-                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
+                        var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
                     }else{
-                        var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+                        var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number:2'></p></div>";
                     }
                     angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+
+                    var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input type='number' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";
+                    angular.element( discountDiv ).append( $compile(discountInput)($scope) );
 
 
                 }
@@ -1175,11 +1213,11 @@ var _this = this;
                  var itemDescription = event.currentTarget.parentNode.parentNode.firstChild.innerHTML;
                 var itemName = itemDescription.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
 
-                if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
-                    var inputNumber = "<input style='width: 100px;' type='number' ng-init='damaged" +itemName+ " =1' name='damagedQuantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='damaged" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
-                }else{
-                    var inputNumber = "<input style='width: 100px;' trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Lagpas na po sa " +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML + "!' type='number' ng-init='" +itemName+ " =1' name='quantity[]' oninput='checkQuantity(this)' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' data-max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
-                }
+                // if( event.currentTarget.dataset.status === "damaged" ){ //damaged item
+                //     var inputNumber = "<input style='width: 100px;' type='number' ng-init='damaged" +itemName+ " =1' name='damagedQuantity[]' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='damaged" +itemName + "' min='1' max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                // }else{
+                    var inputNumber = "<input style='width: 100px;' trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Lagpas na po sa " +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML + "!' type='number' ng-init='" +itemName+ " =1' name='quantity[]' onchange='checkQuantity(this)' class='form-control' ng-focus='$event = $event' ng-change='changing($event)' ng-model='" +itemName + "' data-max='" +event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML+ "' required></input>";
+                // }
                 var temp1 = $compile(inputNumber)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
@@ -1266,24 +1304,24 @@ var _this = this;
                 // angular.element( totalSalesDiv ).append( $compile(price)($scope) );
               
                 var totalSalesDiv = document.getElementById("totalSalesDiv");
-                var ngBindAttributes = totalSalesDiv.firstChild.getAttribute("ng-bind"); //get ng-bind attribute/s
+                var ngBindAttributes = (totalSalesDiv.firstChild.children[1].getAttribute("ng-bind")).replace("(",""); //get ng-bind attribute/s
                 totalSalesDiv.innerHTML =""; 
                 if(ngBindAttributes==""){
-                    if( event.currentTarget.dataset.status === "damaged" ){
-                        var newNgBinds = "damaged"+itemName+"SP";
-                    }else{
+                    // if( event.currentTarget.dataset.status === "damaged" ){
+                    //     var newNgBinds = "damaged"+itemName+"SP";
+                    // }else{
                         var newNgBinds = itemName+"SP";
-                    }
+                    // }
                 }else{
-                    if( event.currentTarget.dataset.status === "damaged" ){
-                        var newNgBinds = ngBindAttributes.split(" ")[0] + "+damaged" + itemName+"SP";
-                    }else{
+                    // if( event.currentTarget.dataset.status === "damaged" ){
+                    //     var newNgBinds = ngBindAttributes.split(" ")[0] + "+damaged" + itemName+"SP";
+                    // }else{
                         var newNgBinds = ngBindAttributes.split(" ")[0] + "+" + itemName+"SP";
-                    }
+                    // }
                 }
 
                 console.log("TScorrect: " + newNgBinds)
-                var price = "<p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
+                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "-discountValue |number:2'></p></div>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
@@ -1410,9 +1448,9 @@ var _this = this;
                             ngBindsWithoutFormat += "+" + thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
-                    var price = "<p class='form-control text-right' style='color:green' ng-bind='" +ngBindsWithoutFormat+ " |number:2'></p>";
+                    var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")-discountValue |number:2'></p></div>";
                 }else{
-                    var price = "<p class='form-control text-right' style='color:green' ng-bind></p>";
+                    var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind></p><div>";
                 }
                 // console.log("ngBinds: " + ngBinds)
                 // console.log("ngBindsWithoutFormat: "+ngBindsWithoutFormat)

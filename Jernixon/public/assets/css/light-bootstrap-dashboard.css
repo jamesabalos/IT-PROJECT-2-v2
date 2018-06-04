@@ -1045,6 +1045,13 @@ fieldset[disabled] .btn-neutral.active {
     color: #87CB16;
 }
 
+/*search icon*/
+input.search {
+        font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
+        text-decoration: inherit;
+    }
+/*end    */
+
 .input-group-addon {
     background-color: #727272;
     border: 1px solid #E3E3E3;

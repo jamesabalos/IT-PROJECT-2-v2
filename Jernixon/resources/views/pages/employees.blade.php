@@ -314,13 +314,13 @@
                     </a>
 
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-bordered table-striped" id="employeeTable">
+                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="employeeTable">
                             <thead>
                                 <tr>
                                     <th class="text-center hidden" style="width: 50px;">#</th>
                                     <th class="text-center">Name </th>
                                     <th class="text-center">Email</th>
-                                    <th class="text-center" style="width: 15%;">Contact Number</th>
+                                    <th class="text-center" style="width: 10%;">Contact Number</th>
                                     <th class="text-center" style="width: 10%;">Address</th>
                                     <th class="text-center" style="width: 10%;">Type of User</th>
                                     <th class="text-center" style="width: 10%;">Status</th>
@@ -435,7 +435,8 @@
                                     {{Form::label('Contact No', 'Contact No:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::number('Contact No','',['class'=>'form-control','placeholder'=>''])}}
+                                    <!-- {{Form::number('Contact No','',['class'=>'input form-control','placeholder'=>'', 'minlength'=>'11', 'maxlength'=>'11', 'type'=>'tel'])}} -->
+                                    <input class = "input form-control" type = "tel" name = "contact" minlegth = "11" maxlength = "11">  
                                 </div>
                             </div>
                         </div>

@@ -100,11 +100,6 @@ ng-app="ourAngularJsApp"
         }
     }
 
-    input.empty {
-        font-family: FontAwesome, "Open Sans", Verdana, sans-serif;
-        text-decoration: inherit;
-    }
-
 
 </style>
 <style>
@@ -665,7 +660,7 @@ ng-app="ourAngularJsApp"
                             {{-- {{Form::label('address', 'Address:')}} --}}
                             {{-- {{Form::text('searchItem','',['class'=>'form-control','onkeyup'=>'searchItem(this)'])}} --}}
                 <div class="autocomplete" style="width:100%;">        
-                    <input autocomplete="off" type="search" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input empty" placeholder="&#xF002; Enter an item name">
+                    <input autocomplete="off" type="search" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002; Enter an item name">
                     <div id="searchResultDiv" class="searchResultDiv hidden">
                         <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
                             <tbody>            

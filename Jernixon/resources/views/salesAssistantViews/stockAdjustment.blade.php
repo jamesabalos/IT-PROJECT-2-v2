@@ -9,316 +9,318 @@ class="active"
 <h3><i class="fa fa-adjust" style="margin-right: 10px"></i> Stock Adjustment</h3>
 @endsection
 
-
 @section('headScript')
-<!--jquery-->
-<script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
-{{--  plugin DataTable  --}}
-<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+<!-- comment out scripts -->
 {{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/ comment>  --}}
-
-<link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
-
 {{--  <script src="{{asset('assets/js/DataTables/dataTables.js')}}"></script comment>  --}}
-    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
-        {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
-         <script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
-         {{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/jszip.min.js')}}"></script>
-         {{--  pdf    --}}
-             <script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
-    {{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
-      <script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
-      <script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
-      <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
+{{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
+{{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
+<!-- end -->
+
+<script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
+<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+{{--  plugin DataTable  --}}
+<link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+{{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
+<script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
+
+<script src="{{asset('assets/js/jszip.min.js')}}"></script>
+{{--  pdf    --}}
+<script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
+<script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
 
 
-      <script>
-          function remove(button){
-          //var i = a.parentNode.parentNode.rowIndex;
-          //document.getElementById("cartTable").deleteRow(i);
-          var row = button.parentNode.parentNode; //row
-          $(row).hide(500,function(){
-              $(row).remove();
-          });
+<script>
+    function remove(button){
+    //var i = a.parentNode.parentNode.rowIndex;
+    //document.getElementById("cartTable").deleteRow(i);
+    var row = button.parentNode.parentNode; //row
+    $(row).hide(500,function(){
+        $(row).remove();
+    });
 
-          //remove item in local storage
-          var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
-          localStorage.removeItem(data[0].innerHTML);
+    //remove item in local storage
+    var data  = $(button.parentNode.parentNode.innerHTML).slice(0,2);
+    localStorage.removeItem(data[0].innerHTML);
 
-      }
+}
 
-      function addRow(divElement){
-          var items =[];
-          var thatTbody = $("#stockTable tr td:first-child");
+function addRow(divElement){
+    var items =[];
+    var thatTbody = $("#stockTable tr td:first-child");
 
-          for (var i = 0; i < thatTbody.length; i++) {
-              items[i] = thatTbody[i].innerHTML;
-          }        
+    for (var i = 0; i < thatTbody.length; i++) {
+        items[i] = thatTbody[i].innerHTML;
+    }        
 
-          if( items.indexOf(divElement.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
-              var thatTable = document.getElementById("stockTable");
-              var newRow = thatTable.insertRow(-1);
-              // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
-              newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='itemName[]' value='" +divElement.firstChild.innerHTML+ "'>"+divElement.firstChild.innerHTML+ "</td>";
-              newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
-            //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
-              newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='Damaged'>Damaged</option><option class='form-control'  value='Damaged Saleable'>Damaged Saleable</option><option class='form-control' value='Lost'>Lost</option></select></td>";
+    if( items.indexOf(divElement.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
+        var thatTable = document.getElementById("stockTable");
+        var newRow = thatTable.insertRow(-1);
+        // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='itemName[]' value='" +divElement.firstChild.innerHTML+ "'>"+divElement.firstChild.innerHTML+ "</td>";
+        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
+      //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
+        newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='Damaged'>Damaged</option><option class='form-control'  value='Damaged Saleable'>Damaged Saleable</option><option class='form-control' value='Lost'>Lost</option></select></td>";
 
-              newRow.insertCell(-1).innerHTML = "<td><textarea name='remarks' cols='20' rows='3'></textarea></td>";
+        newRow.insertCell(-1).innerHTML = "<td><textarea name='remarks' cols='20' rows='3'></textarea></td>";
 
-              newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
-          }
+    }
 
-          document.getElementById("searchItemInput").value = "";
-          document.getElementById("searchResultDiv").innerHTML = "";
+    document.getElementById("searchItemInput").value = "";
+    document.getElementById("searchResultDiv").innerHTML = "";
 
-      }
-      function getsalable(inm){
-        var name = $( "#foo"+inm).val();
-        
-        if(name == 'damaged salable'){
-          $('#damaged_price'+inm).removeClass('hidden');
-          $('#damaged_price'+inm).prop("disabled", false);
-        }else{
-          $('#damaged_price'+inm).prop("disabled", true);
+}
+
+function getsalable(inm){
+  var name = $( "#foo"+inm).val();
+  
+  if(name == 'damaged salable'){
+    $('#damaged_price'+inm).removeClass('hidden');
+    $('#damaged_price'+inm).prop("disabled", false);
+  }else{
+    $('#damaged_price'+inm).prop("disabled", true);
+  }
+}
+
+function searchItem(a){
+    if(a.value === ""){
+        document.getElementById("searchResultDiv").innerHTML ="";   
+    }
+    $.ajax({
+        method: 'get',
+        //url: 'items/' + document.getElementById("inputItem").value,
+        url: 'searchItem/' + a.value,
+        dataType: "json",
+        success: function(data){
+            //    console.log(data)
+            // <div>
+            //     <strong>Phi</strong>lippines
+            //     <input type="hidden" value="Philippines">
+            // </div>
+
+            var resultDiv = document.getElementById("searchResultDiv");
+            resultDiv.innerHTML = "";
+            for (var i = 0;  i< data.length; i++) {
+                var node = document.createElement("DIV");
+                node.setAttribute("id",data[i].product_id)
+              //   node.setAttribute("data-quantity",data[i].)
+                node.setAttribute("onclick","addRow(this)")
+                node.setAttribute("data-quantity",data[i].quantity)
+                node.setAttribute("data-price",data[i].retail_price)
+                var pElement = document.createElement("P");
+                var textNode = document.createTextNode(data[i].description);
+                pElement.appendChild(textNode);
+                node.appendChild(pElement);          
+                resultDiv.appendChild(node);  
+
+            }
         }
-      }
-      function searchItem(a){
-          if(a.value === ""){
-              document.getElementById("searchResultDiv").innerHTML ="";   
-          }
-          $.ajax({
-              method: 'get',
-              //url: 'items/' + document.getElementById("inputItem").value,
-              url: 'searchItem/' + a.value,
-              dataType: "json",
-              success: function(data){
-                  //    console.log(data)
-                  // <div>
-                  //     <strong>Phi</strong>lippines
-                  //     <input type="hidden" value="Philippines">
-                  // </div>
+    });
 
-                  var resultDiv = document.getElementById("searchResultDiv");
-                  resultDiv.innerHTML = "";
-                  for (var i = 0;  i< data.length; i++) {
-                      var node = document.createElement("DIV");
-                      node.setAttribute("id",data[i].product_id)
-                    //   node.setAttribute("data-quantity",data[i].)
-                      node.setAttribute("onclick","addRow(this)")
-                      node.setAttribute("data-quantity",data[i].quantity)
-                      node.setAttribute("data-price",data[i].retail_price)
-                      var pElement = document.createElement("P");
-                      var textNode = document.createTextNode(data[i].description);
-                      pElement.appendChild(textNode);
-                      node.appendChild(pElement);          
-                      resultDiv.appendChild(node);  
+}
 
+function createReport(button){
+  // var dateFrom = document.getElementById("from").value;
+  // var dateTo = document.getElementById("to").value;
+  var dateFrom = button.parentNode.children[1].value;
+  var dateTo = button.parentNode.children[3].value;
+  var newDateFrom = new Date(dateFrom);
+  newDateFrom.setDate(newDateFrom.getDate() - 1);
+  
+  var ddf = newDateFrom.getDate();
+  var mmf = newDateFrom.getMonth() + 1;
+  var yf = newDateFrom.getFullYear();
+
+  var newDateTo = new Date(dateTo);
+  newDateTo.setDate(newDateTo.getDate() + 1);
+
+  var ddt = newDateTo.getDate();
+  var mmt = newDateTo.getMonth() + 1;
+  var yt = newDateTo.getFullYear();
+
+  var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
+  var formattedDateTo = yt + '-' + mmt + '-' + ddt;
+  console.log(formattedDateFrom);
+  console.log(formattedDateTo);
+  $.ajax({
+      type:'GET',
+      url: "{{route('salesAssistant.validateDateRange')}}",
+      data: {
+          'dateFrom':dateFrom,
+          'dateTo':dateTo
+      },
+      success:function(data){
+          $(button.parentNode.parentNode.previousElementSibling).html("");    
+
+    $('#stockAdjustmentDataTable').DataTable({
+        "destroy": true,
+        "processing": true,
+        "serverSide": true,
+        "colReorder": true,  
+        "pagingType": "full_numbers",
+        "ajax":  {
+                  "url": "{{ route('salesAssistant.createStockAdjustmentFilter') }}",
+                  "data":{
+                      "dateFrom":formattedDateFrom,
+                      "dateTo":formattedDateTo
                   }
-              }
-          });
+              },
+        dom: 'Bfrtip',
+        "buttons": [
+                    {
+                        extend: 'collection',
+                        text: 'EXPORT',
+                        buttons: [
+                            {extend: 'copy', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
+                            {extend: 'excel', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
+                            {extend: 'csv', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
+                            {extend: 'pdf', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
+                            {extend: 'print', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'}
+                            
+                        ]
+                    }
+                  ],
 
+        "columns": [
+            {data: 'employee_name'},
+            {data: 'description', name: 'products.description'},
+            {data: 'quantity'},
+            {data: 'status'},
+            {data: 'created_at'},
+        ]
+    });
+              
+
+      },
+      error:function(data){
+          var response = data.responseJSON;
+          console.log(button.parentNode.parentNode.previousElementSibling);
+          $(button.parentNode.parentNode.previousElementSibling).hide(500);
+          $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
+          $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
+              $(button.parentNode.parentNode.previousElementSibling).html(function(){
+                    var addedHtml="";
+                    for (var key in response.errors) {
+                        addedHtml += "<p>"+response.errors[key]+"</p>";
+                    }
+                    return addedHtml;
+                });                
+          });
+          
+          // $("#errorDivReport").removeClass("hidden").addClass("alert-danger text-center");
+          // $("#errorDivReport").html(function(){
+          //           var addedHtml="";
+          //           for (var key in response.errors) {
+          //               addedHtml += "<p>"+response.errors[key]+"</p>";
+          //           }
+          //           return addedHtml;
+          //       });
       }
-      function createReport(button){
-        // var dateFrom = document.getElementById("from").value;
-        // var dateTo = document.getElementById("to").value;
-        var dateFrom = button.parentNode.children[1].value;
-        var dateTo = button.parentNode.children[3].value;
-        var newDateFrom = new Date(dateFrom);
-        newDateFrom.setDate(newDateFrom.getDate() - 1);
-        
-        var ddf = newDateFrom.getDate();
-        var mmf = newDateFrom.getMonth() + 1;
-        var yf = newDateFrom.getFullYear();
+  });
+}
 
-        var newDateTo = new Date(dateTo);
-        newDateTo.setDate(newDateTo.getDate() + 1);
+$(document).ready(function(){
+    let today = new Date().toISOString().substr(0, 10);
+    var d = new Date();
+    var hours = "";
+  var minutes = "";
+  if( parseInt(d.getHours()) < 10  ){
+      hours = "0"+d.getHours();
+  }else{
+      hours = d.getHours();
+  }
+  if( parseInt(d.getMinutes()) < 10){
+      minutes = "0"+d.getMinutes();
+  }else{
+      minutes = d.getMinutes();
+  }
+  document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+  var t = setInterval(function(){
+      var d = new Date();
+      var hours = "";
+      var minutes = "";
+      if( parseInt(d.getHours()) < 10  ){
+          hours = "0"+d.getHours();
+      }else{
+          hours = d.getHours();
+      }
+      if( parseInt(d.getMinutes()) < 10){
+          minutes = "0"+d.getMinutes();
+      }else{
+          minutes = d.getMinutes();
+      }
+      document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+  },60000)
 
-        var ddt = newDateTo.getDate();
-        var mmt = newDateTo.getMonth() + 1;
-        var yt = newDateTo.getFullYear();
+    $('#stockAdjustmentDataTable').DataTable({
+        "destroy": true,
+        "processing": true,
+        "serverSide": true,
+        "colReorder": true,  
+        //"autoWidth": true,
+        "pagingType": "full_numbers",
+        "ajax":  "{{ route('salesAssistant.getStockAdjustment') }}",
+        "columns": [
+            {data: 'employee_name'},
+            {data: 'description',name: 'products.description'},
+            {data: 'quantity'},
+            {data: 'status'},
+            {data: 'created_at'},
+        ]
+    });
 
-        var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
-        var formattedDateTo = yt + '-' + mmt + '-' + ddt;
-        console.log(formattedDateFrom);
-        console.log(formattedDateTo);
+    $('#formAdjustment').on('submit',function(e){
+        e.preventDefault();
+        var data = $(this).serialize();
+
         $.ajax({
-            type:'GET',
-            url: "{{route('salesAssistant.validateDateRange')}}",
-            data: {
-                'dateFrom':dateFrom,
-                'dateTo':dateTo
-            },
+            type:'POST',
+            url: "{{route('salesAssistant.createStockAdjustment')}}",
+            data: data,
+
             success:function(data){
-                $(button.parentNode.parentNode.previousElementSibling).html("");    
-
-          $('#stockAdjustmentDataTable').DataTable({
-              "destroy": true,
-              "processing": true,
-              "serverSide": true,
-              "colReorder": true,  
-              "pagingType": "full_numbers",
-              "ajax":  {
-                        "url": "{{ route('salesAssistant.createStockAdjustmentFilter') }}",
-                        "data":{
-                            "dateFrom":formattedDateFrom,
-                            "dateTo":formattedDateTo
-                        }
-                    },
-              dom: 'Bfrtip',
-              "buttons": [
-                            {
-                                extend: 'collection',
-                                text: 'EXPORT',
-                                buttons: [
-                                    {extend: 'copy', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
-                                    {extend: 'excel', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
-                                    {extend: 'csv', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
-                                    {extend: 'pdf', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'},
-                                    {extend: 'print', title: 'Jernixon Motorparts - Stock Adjustment Reports (From '+dateFrom+' to '+dateTo+')'}
-                                    
-                                ]
-                            }
-                        ],
-
-              "columns": [
-                  {data: 'employee_name'},
-                  {data: 'description', name: 'products.description'},
-                  {data: 'quantity'},
-                  {data: 'status'},
-                  {data: 'created_at'},
-              ]
-          });
-                    
+                //close modal
+                $('#adjustment').modal('hide')                    
+                //remove rows in purchase table
+                $("#stockTable tr").remove();
+                //prompt the message
+                $("#successDiv p").remove();
+                $("#successDiv").removeClass("hidden")
+                // .addClass("alert-success")
+                    .html("<h3>Stock Adjustment successful</h3>");
+                $("#successDiv").css("display:block");                             
+                $("#successDiv").slideDown("slow")
+                    .delay(1000)                        
+                    .hide(1500);
+                $("#errorDivCreateStockAdjustment").html("");
+                document.getElementById("formAdjustment").reset(); //reset the form
+                $("#stockAdjustmentDataTable").DataTable().ajax.reload();//reload the dataTables
+                $("#stockTable tr").remove();
+                
 
             },
             error:function(data){
                 var response = data.responseJSON;
-                console.log(button.parentNode.parentNode.previousElementSibling);
-                $(button.parentNode.parentNode.previousElementSibling).hide(500);
-                $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
-                $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
-                    $(button.parentNode.parentNode.previousElementSibling).html(function(){
-                          var addedHtml="";
-                          for (var key in response.errors) {
-                              addedHtml += "<p>"+response.errors[key]+"</p>";
-                          }
-                          return addedHtml;
-                      });                
+                $("#errorDivCreateStockAdjustment").removeClass("hidden").addClass("alert-danger text-center");
+                $("#errorDivCreateStockAdjustment").html(function(){
+                    var addedHtml="";
+                    for (var key in response.errors) {
+                        addedHtml += "<p>"+response.errors[key]+"</p>";
+                    }
+                    return addedHtml;
                 });
-                
-                // $("#errorDivReport").removeClass("hidden").addClass("alert-danger text-center");
-                // $("#errorDivReport").html(function(){
-                //           var addedHtml="";
-                //           for (var key in response.errors) {
-                //               addedHtml += "<p>"+response.errors[key]+"</p>";
-                //           }
-                //           return addedHtml;
-                //       });
             }
-        });
-    }
-
-      $(document).ready(function(){
-          let today = new Date().toISOString().substr(0, 10);
-          var d = new Date();
-          var hours = "";
-        var minutes = "";
-        if( parseInt(d.getHours()) < 10  ){
-            hours = "0"+d.getHours();
-        }else{
-            hours = d.getHours();
-        }
-        if( parseInt(d.getMinutes()) < 10){
-            minutes = "0"+d.getMinutes();
-        }else{
-            minutes = d.getMinutes();
-        }
-        document.querySelector("#today").value = today+"T"+hours +":"+minutes;
-        var t = setInterval(function(){
-            var d = new Date();
-            var hours = "";
-            var minutes = "";
-            if( parseInt(d.getHours()) < 10  ){
-                hours = "0"+d.getHours();
-            }else{
-                hours = d.getHours();
-            }
-            if( parseInt(d.getMinutes()) < 10){
-                minutes = "0"+d.getMinutes();
-            }else{
-                minutes = d.getMinutes();
-            }
-            document.querySelector("#today").value = today+"T"+hours +":"+minutes;
-        },60000)
-
-          $('#stockAdjustmentDataTable').DataTable({
-              "destroy": true,
-              "processing": true,
-              "serverSide": true,
-              "colReorder": true,  
-              //"autoWidth": true,
-              "pagingType": "full_numbers",
-              "ajax":  "{{ route('salesAssistant.getStockAdjustment') }}",
-              "columns": [
-                  {data: 'employee_name'},
-                  {data: 'description',name: 'products.description'},
-                  {data: 'quantity'},
-                  {data: 'status'},
-                  {data: 'created_at'},
-              ]
-          });
-
-          $('#formAdjustment').on('submit',function(e){
-              e.preventDefault();
-              var data = $(this).serialize();
-
-              $.ajax({
-                  type:'POST',
-                  url: "{{route('salesAssistant.createStockAdjustment')}}",
-                  data: data,
-
-                  success:function(data){
-                      //close modal
-                      $('#adjustment').modal('hide')                    
-                      //remove rows in purchase table
-                      $("#stockTable tr").remove();
-                      //prompt the message
-                      $("#successDiv p").remove();
-                      $("#successDiv").removeClass("hidden")
-                      // .addClass("alert-success")
-                          .html("<h3>Stock Adjustment successful</h3>");
-                      $("#successDiv").css("display:block");                             
-                      $("#successDiv").slideDown("slow")
-                          .delay(1000)                        
-                          .hide(1500);
-                      $("#errorDivCreateStockAdjustment").html("");
-                      document.getElementById("formAdjustment").reset(); //reset the form
-                      $("#stockAdjustmentDataTable").DataTable().ajax.reload();//reload the dataTables
-                      $("#stockTable tr").remove();
-                      
-
-                  },
-                  error:function(data){
-                      var response = data.responseJSON;
-                      $("#errorDivCreateStockAdjustment").removeClass("hidden").addClass("alert-danger text-center");
-                      $("#errorDivCreateStockAdjustment").html(function(){
-                          var addedHtml="";
-                          for (var key in response.errors) {
-                              addedHtml += "<p>"+response.errors[key]+"</p>";
-                          }
-                          return addedHtml;
-                      });
-                  }
-              })
-          })
+        })
+    })
 
 
-      })
-
+})
 </script>
 
 <style>
@@ -357,7 +359,6 @@ class="active"
 
 @endsection
 
-
 @section('right')
 <div class="container-fluid">
     <div class="row">
@@ -386,11 +387,12 @@ class="active"
                         <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="stockAdjustmentDataTable">
                             <thead>
                                 <tr>
-                                    <th class="text-left">Employee Name</th>
+                                    <th class="text-left">User Name</th>
+                                    <th class="text-left">Date of Adjustment</th>
                                     <th class="text-left">Item Name</th>
-                                    <th class="text-left">Quantity</th>
+                                    <th class="text-left">Qty</th>
                                     <th class="text-left">Status</th>
-                                    <th class="text-left">Date</th>
+                                    <th class="text-left">Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -407,7 +409,7 @@ class="active"
 
 @section('modals')
 <div id="adjustment" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
+    <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
 
             {!! Form::open(['method'=>'post','id'=>'formAdjustment']) !!}
@@ -449,8 +451,8 @@ class="active"
                         </strong>
                     </div>
                     <div class="modal-body">
-                        <div class="content table-responsive">
-                            <table class="table table-bordered table-striped" id="">
+                        <div class="content table-responsive table-full-width">
+                            <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="">
 
                                 <thead>
                                     <tr>
@@ -458,7 +460,7 @@ class="active"
                                         <th class="text-left">Item Name</th>
                                         <th class="text-left">Quantity</th>
                                         <th class="text-left">Status</th>
-                                        <th class="text-left">Remarks</th>                                        
+                                        <th class="text-left">Remarks</th>       
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
@@ -468,7 +470,7 @@ class="active"
                             </table>
                         </div>
                         <div class="autocomplete" style="width:100%;">
-                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002; Enter an item name">
                             <div id="searchResultDiv" class="searchResultDiv">
                             </div>
                         </div>
@@ -491,12 +493,9 @@ class="active"
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('js_link')
 
 <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-
-
 @endsection

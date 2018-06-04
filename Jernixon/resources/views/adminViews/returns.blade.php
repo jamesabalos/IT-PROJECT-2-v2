@@ -17,33 +17,31 @@ onload="refresh()"
 ng-app="ourAngularJsApp"
 @endsection  --}}
 
-
 @section('headScript')
+<!-- comment out scripts -->
 {{--  <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>  --}}
 {{--  <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>  --}}
+{{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/ comment>  --}}
+{{--  <script src="{{asset('assets/js/DataTables/dataTables.js')}}"></script comment>--}}
+{{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
+{{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
 
 <!--jquery-->
 <script src="{{asset('assets/js/jquery-1.12.4.js')}}" type="text/javascript"></script>
 {{--  plugin DataTable  --}}
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-{{--  <link href="{{asset('assets/css/jquery.dataTables.css')}}" rel="stylesheet"/ comment>  --}}
 
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
-
-{{--  <script src="{{asset('assets/js/DataTables/dataTables.js')}}"></script comment>  --}}
-    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
-        {{--  <script src="{{asset('assets/js/dataTables.buttons.min.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
-         <script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
-         {{--  <script src="{{asset('assets/js/DataTables/Buttons-1.5.1/js/buttons.html5.js')}}"></script>  --}}
-         <script src="{{asset('assets/js/jszip.min.js')}}"></script>
-         {{--  pdf    --}}
-             <script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
-    {{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
-      <script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
-      <script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
-      <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
-
+<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+<script src="{{asset('assets/js/bbccc/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('assets/js/jszip.min.js')}}"></script>
+{{--  pdf    --}}
+<script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
+<script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
+<script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
 
 <script>
 
@@ -233,6 +231,7 @@ ng-app="ourAngularJsApp"
 
         }
     }
+
     function toggleCheckboxRefund(button){
         if(button.checked){        
             button.nextElementSibling.removeAttribute("disabled");            
@@ -254,6 +253,7 @@ ng-app="ourAngularJsApp"
 
         }
     }
+
     function searchItem(a){
         if(a.value === ""){
             document.getElementById("searchResultDiv").innerHTML ="";   

@@ -1318,18 +1318,22 @@ var _this = this;
               
                 var totalSalesDiv = document.getElementById("totalSalesDiv");
                 var ngBindAttributes = (totalSalesDiv.firstChild.children[1].getAttribute("ng-bind")).replace("(",""); //get ng-bind attribute/s
+                console.log(ngBindAttributes)
                 totalSalesDiv.innerHTML =""; 
                 if(ngBindAttributes==""){
                     // if( event.currentTarget.dataset.status === "damaged" ){
                     //     var newNgBinds = "damaged"+itemName+"SP";
                     // }else{
-                        var newNgBinds = itemName+"SP";
+                        var newNgBindsTemp = itemName+"SP";
+                        var newNgBinds = "("+newNgBindsTemp+")";
+                        
                     // }
                 }else{
                     // if( event.currentTarget.dataset.status === "damaged" ){
                     //     var newNgBinds = ngBindAttributes.split(" ")[0] + "+damaged" + itemName+"SP";
                     // }else{
-                        var newNgBinds = ngBindAttributes.split(" ")[0] + "+" + itemName+"SP";
+                        var newNgBindsTemp = (ngBindAttributes.split(" ")[0]).replace(")-discountValue","") + "+" + itemName+"SP";
+                        var newNgBinds = "("+newNgBindsTemp+")";
                     // }
                 }
 

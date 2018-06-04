@@ -556,7 +556,7 @@
                 <!--/.nav-collapse -->
             </nav>
             
-            <div class="content" ng-controller="customerPurchase">
+            <div class="content" @yield('angularJsControllerName')>
                 <div class="linkName">@yield('linkName')</div>
                 @yield('right')
             </div>

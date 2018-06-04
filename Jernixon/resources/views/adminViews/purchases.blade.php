@@ -7,9 +7,12 @@ class="active"
 onload="refresh()"
 @endsection  --}}
 
-{{--  @section('ng-app')
+ @section('ng-app')
 ng-app="ourAngularJsApp"
-@endsection  --}}
+@endsection 
+@section('angularJsControllerName')
+ng-controller="ownerPurchase"
+@endsection
 @section('linkName')
 <div class="alert alert-success hidden" id="successDiv">
 
@@ -41,7 +44,32 @@ ng-app="ourAngularJsApp"
 <script src="{{asset('assets/js/pdfmake.min.js')}}"></script>
 {{--  <script src="{{asset('assets/js/DataTables/pdfmake-0.1.32/pdfmake.min.js')}}"></script comment>  --}}
 
-      <script type="text/javascript">
+{{-- AngularJS --}}
+<script src="{{asset('assets/js/angularJs.js')}}"></script>
+<script src="{{asset('assets/js/angular-datatables.min.js')}}"></script> 
+<style type="text/css">
+/* Popover Header */
+.popover-title {
+    /* background-color: #73AD21;  */
+    color: red; 
+    /* font-size: 28px; */
+    text-align:center;
+}
+
+/* Popover Body */
+.popover-content {
+    /* background-color: coral; */
+    /* color: #FFFFFF; */
+    padding: 20px;
+}
+
+
+/* Popover Arrow */
+.arrow {
+    border-right-color: red !important;
+}
+</style>
+<script type="text/javascript">
         function addRow(div){
           var items =[];
           var thatTbody = $("#purchasetable tr td:first-child");
@@ -227,6 +255,16 @@ ng-app="ourAngularJsApp"
             }
         });
     }
+    
+    function checkQuantity(input){
+          if(input.value <= 0){
+            input.setAttribute("data-content","Value should be greater than 0");
+            $(input).popover('show');
+          }else{
+                $(input).popover('destroy');            
+          }
+      }
+
 
       $(document).ready(function(){
 
@@ -428,7 +466,6 @@ ng-app="ourAngularJsApp"
                             </p>
                         </div>
 
-
                         <div class="text-right col-md-8" style="margin-top: 10px">
                             <label for="from">From</label>
                             <input type="date">
@@ -469,9 +506,117 @@ ng-app="ourAngularJsApp"
 
 @endsection
 
+@section('jqueryScript')
+<script type="text/javascript">
+    var ourAngularJsApp = angular.module("ourAngularJsApp", []); 
+    ourAngularJsApp.controller('ownerPurchase', ['$scope','$compile','$http',
+        function($scope, $compile,$http) {
+            var _this = this;
+
+            $scope.search = function(event) {
+                
+                var responsePromise = $http.get("searchItem/" + event.currentTarget.value);
+                responsePromise.success(function(data, status, headers, config) {
+                    var resultDiv = document.getElementById("searchResultDiv");
+                        resultDiv.innerHTML = "";
+                        for (var i = 0;  i< data.length; i++) {
+                            var node = document.createElement("DIV");
+                            node.setAttribute("id",data[i].product_id)
+                            node.setAttribute("ng-click","addRow($event)")
+                            node.setAttribute("data-price",data[i].wholesale_price)
+                            var pElement = document.createElement("P");
+                            var textNode = document.createTextNode(data[i].description);
+                            pElement.appendChild(textNode);
+                            node.appendChild(pElement);  
+                            resultDiv.appendChild(node);  
+                            $compile(node)($scope);
+                            // console.log(node)
+                        }
+
+                });
+                responsePromise.error(function(data, status, headers, config) {
+                    console.log("AJAX failed!");
+                });
+                
+            };
+
+            $scope.addRow = function (event){
+                var thatTbody = document.getElementById("purchaseTbody");
+                var newRow = thatTbody.insertRow(-1);
+                var thatTable = document.getElementById("purchaseTable");
+                var numberOfRows = thatTable.rows.length;
+                var lastRow = thatTable.rows[numberOfRows-1];
+
+                var itemDescription = event.currentTarget.firstChild.innerHTML;
+                var itemName = itemDescription.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
+
+                var quantity = "<input style='width: 100px;' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' ng-init='" +itemName+ "Q =1' name='quantity[]' class='form-control' ng-focus='$event = $event' onchange='checkQuantity(this)' ng-change='changingQuantity($event)' ng-model='" +itemName + "Q'  required></input>";
+                var temp1 = $compile(quantity)($scope);
+                angular.element( lastRow.insertCell(-1) ).append(temp1);
+
+                 var unit = "<select class='form-control' name='unit[]' > <option class='form-control'  value='pcs'>Pcs</option><option class='form-control'  value='sets'>Sets</option></select>";
+                angular.element( lastRow.insertCell(-1) ).append(unit);
+
+                 angular.element( lastRow.insertCell(-1) ).append(itemDescription);
+
+                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' onchange='checkQuantity(this)' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
+                var temp2 = $compile(unitPrice)($scope);
+                angular.element( lastRow.insertCell(-1) ).append(temp2);
+
+                var amount = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-bind='" +itemName+"Q"+"*"+itemName+ "UP |number:2'></p></div><input type='hidden' name='amount[]' value=''>";
+                // var amount = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input disabled name='amount[]' class='form-control text-right' style='color:green;' ng-model='"+itemName+"amount' ng-bind='" +itemName+"Q"+"*"+itemName+ "UP |number:2'></p></div><input type='hidden' name='amount[]' value=''>";
+                var temp3 = $compile(amount)($scope); 
+                angular.element( lastRow.insertCell(-1) ).append(temp3);
+
+                var removeButton = "<button type='button' class='btn btn-danger' ng-click='remove($event)'>Remove</button><input type='hidden' name='productIds[]' value='"+event.currentTarget.id+"'>";
+                var temp3 = $compile(removeButton)($scope);
+                angular.element( lastRow.insertCell(-1) ).append(temp3);
+
+                //initialize totalAmount
+                var totalAmountDiv = document.getElementById("totalAmountDiv");
+                console.log(totalAmountDiv.children[1])
+                var ngBindAttributes = (totalAmountDiv.children[1]).getAttribute("ng-bind") ; //get ng-bind attribute/s of totalAmount
+                totalAmountDiv.innerHTML =""; 
+                if(ngBindAttributes==""){
+                    var newNgBindsTemp = "("+itemName+"Q"+"*"+itemName+"UP"+")";
+                    var newNgBinds = newNgBindsTemp;
+                }else{
+                    var newNgBindsTemp = ngBindAttributes.split(" ")[0] + "+" + "("+itemName+"Q"+"*"+itemName+"UP"+")";
+                    var newNgBinds = newNgBindsTemp;
+                }
+
+                  var amount = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
+                angular.element( totalAmountDiv ).append( $compile(amount)($scope) );
+
+                //clear search input
+                console.log(  document.getElementById("searchItemInput") )
+                document.getElementById("searchItemInput").value = "";
+                
+            }
+
+            $scope.remove = function (event){
+                var ngBind = event.currentTarget.parentNode.previousElementSibling.firstChild.children[1].getAttribute("ng-bind");
+                var totalAmountNgBind = document.getElementById("totalAmountDiv").children[1].getAttribute("ng-bind").replace(ngBind.split(" ")[0],"0");
+                var newAmountNgBind = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +totalAmountNgBind+ " |number:2'></p>";
+                var totalAmountDiv = document.getElementById("totalAmountDiv");
+                totalAmountDiv.innerHTML="";
+                angular.element( totalAmountDiv ).append( $compile(newAmountNgBind)($scope) );
+
+                $(event.currentTarget.parentNode.parentNode).hide(500,function(){
+                    this.remove();  
+                });
+
+            }
+
+        }
+
+    ]);
+</script>
+@endsection
+
 @section('modals')
-<div id="purchase" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
+<div id="purchase"  ng-controller="ownerPurchase" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+    <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
 
             {!! Form::open(['method'=>'get','id'=>'formPurchaseOrder']) !!}
@@ -532,7 +677,7 @@ ng-app="ourAngularJsApp"
                         </div>
 
                         <div class="content table-responsive">
-                            <table class="table table-bordered table-striped" >
+                            <table class="table table-bordered table-striped" id="purchaseTable">
                                 <thead>
                                     <tr>
                                         <th class="text-left">Qty.</th>
@@ -540,21 +685,25 @@ ng-app="ourAngularJsApp"
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Unit Price</th>
                                         <th class="text-left">Amount</th>
-                                        <th class="text-left">Total Amount</th>
+                                        {{-- <th class="text-left">Total Amount</th> --}}
                                         <th class="text-left">Remove</th>
                                     </tr>
                                 </thead>
-                                <tbody id="purchasetable">
+                                <tbody id="purchaseTbody">
                                 </tbody>
                             </table>
-
-
+          
                         </div> 
                         <div class="autocomplete" style="width:100%;">
-                            <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
+                            {{-- <input autocomplete="off" type="text" id="searchItemInput" ng-model="testModel" ng-keyup="search()" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item"> --}}
+                            <input autocomplete="off" type="text" id="searchItemInput" ng-model="searchInput" ng-focus='$event = $event' ng-keyup="search($event)" class="form-control border-input" placeholder="Enter the name of the item">
                             <div id="searchResultDiv" class="searchResultDiv">
                             </div>
                         </div>
+                        <div class = "col-md-5 input-group" id="totalAmountDiv">
+                                <span class = 'input-group-addon'>&#8369</span>
+                                <p class="form-control" id="totalAmount" ng-bind="" ng-model="totalAmount" style="float: right;"></p>
+                            </div>  
                     </div>
                 </div>
                     <div id="errorDivCreatePurchase" class="hidden alert-danger text-center">
@@ -564,7 +713,7 @@ ng-app="ourAngularJsApp"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button disabled type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -577,7 +726,7 @@ ng-app="ourAngularJsApp"
     </div>
 </div>
 
-<div id="purchasesModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+{{-- <div id="purchasesModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
 
@@ -594,16 +743,13 @@ ng-app="ourAngularJsApp"
                         </strong>
                     </div>
                     <div class="panel-body">
-                        {{--  <input type="hidden" id="_token" value="{{ csrf_token() }}">  --}}
 
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{--  {{Form::label('Date', 'Date:')}}  --}}
                                     <label>Date:</label>
                                 </div>
                                 <div class="col-md-9">
-                                    {{--  {{Form::text('Date','',['class'=>'form-control','value'=>''])}}  --}}
                                     <p class="form-control" id="poDate"></p>                                    
                                 </div>
                             </div>
@@ -612,11 +758,9 @@ ng-app="ourAngularJsApp"
                         <div class="form-group">                                
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{--  {{Form::label('Official Receipt No:')}}  --}}
                                     <label>Official Receipt No:</label>
                                 </div>
                                 <div class="col-md-9">
-                                    {{--  {{ Form::text('Official Receipt No','',['class'=>'form-control']) }}  --}}
                                     <p class="form-control" id="officialReceiptNumber"></p>
                                 </div>
                             </div>
@@ -625,11 +769,11 @@ ng-app="ourAngularJsApp"
                         <div class="form-group">    
                             <div class="row">
                                 <div class="col-md-3 ">
-                                    {{--  {{Form::label('Supplier', 'Supplier:')}}  --}}
+    
                                     <label>Supplier</label>
                                 </div>
                                 <div class="col-md-9">
-                                    {{--  {{Form::text('Supplier','',['class'=>'form-control','value'=>''])}}  --}}
+
                                     <p class="form-control" id="supplierName"></p>
                                 </div>
                             </div>
@@ -660,7 +804,7 @@ ng-app="ourAngularJsApp"
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 @endsection
 
 

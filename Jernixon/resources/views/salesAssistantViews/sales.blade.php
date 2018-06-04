@@ -627,7 +627,7 @@ ng-app="ourAngularJsApp"
                         </div>
                         <div class="col-md-4" margin >
                                 {{Form::label('Date', 'Date:')}}
-                                <input type="datetime-local" name="Date" id="today"  oninput="enablePrintButton(this)" class="form-control"/>    
+                                <input type="datetime-local" name="Date" id="today"  oninput="enablePrintButton(this)"  class="form-control"/>    
                         </div>
                       
                     </div>
@@ -639,14 +639,15 @@ ng-app="ourAngularJsApp"
                             {{Form::text('address','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerAddress(this)'])}}
                             
                         </div>
-                        {{-- <div class="col-md-2" margin>
-                            <input type="date" name="Date" id="today"  class="form-control"/>
-
-                        </div> --}}
                     </div>
                 </div>
+                {{-- <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-0" margin> --}}
+                            {{-- {{Form::label('address', 'Address:')}} --}}
+                            {{-- {{Form::text('searchItem','',['class'=>'form-control','onkeyup'=>'searchItem(this)'])}} --}}
                 <div class="autocomplete" style="width:100%;">        
-                    <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002; Enter an item name">
+                    <input autocomplete="off" type="search" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002; Enter an item name">
                     <div id="searchResultDiv" class="searchResultDiv hidden">
                         <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
                             <tbody>            
@@ -654,8 +655,11 @@ ng-app="ourAngularJsApp"
                         </table>
                     </div>
                 </div>
+                        {{-- </div>
+                    </div>
+                </div> --}}
                 
-                <div class="row"> 
+                <div class="row" > 
                     <div class="col-md-12 table-responsive">
                         <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
                             <thead>
@@ -667,104 +671,48 @@ ng-app="ourAngularJsApp"
                                     <th>Amount</th>
                                     <th>Action</th>
                                 </tr> 
-                                
+
                             </thead>
-                            <tbody id="cartTbody">
+                            <tbody id="cartTbody" >
                                 {{--  <td><input type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>  --}}
                                 {{--  <tr ng-repeat="user in users">
-                                    <td ng-bind="$index + 1"></td>
-                                    <td ng-bind="user.fullname"></td>
-                                    <td ng-bind="user.email"></td>
+                                <td ng-bind="$index + 1"></td>
+                                <td ng-bind="user.fullname"></td>
+                                <td ng-bind="user.email"></td>
                                 </tr>  --}}
                             </tbody>
                         </table>
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-md-9 text-right">
-                                    <label>Total Sales:</label>
-                                </div>
-                                <div class="col-md-3" id="totalSalesDiv">
-                                    <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-0" margin>
-                                        {{Form::label('address', 'Address:')}}
-                                        {{Form::text('address','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerAddress(this)'])}}
+                                    <div class="col-md-7">
                                         
                                     </div>
-                                    {{-- <div class="col-md-2" margin>
-                                        <input type="date" name="Date" id="today"  class="form-control"/>
-            
-                                    </div> --}}
+                                    <div class="col-md-2 text-right">
+                                        <label>Discount:</label>
+                                    </div>
+                                    <div class="col-md-3" id="discountDiv">
+                                    </div>
+                                    
+                                </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    <label>Total Amount Due:</label>
+                                </div>
+                                <div class="col-md-3" id="totalSalesDiv">
+                                    <p class="form-control" id="totalSales" ng-bind="" style="float: right;"></p>
+                                </div>
+                                <div class="text-right">                                           
+                                    <div class="col-md-12">   
+                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                        <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="autocomplete" style="width:100%;">        
-                                <input autocomplete="off" type="text" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input empty" placeholder="&#xF002; Enter an item name">
-                                <div id="searchResultDiv" class="searchResultDiv hidden">
-                                    <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
-                                        <tbody>            
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="alert alert-danger text-center hidden" id="salesErrorDiv">
                             </div>
-                            
-                            <div class="row"> 
-                                <div class="col-md-12 table-responsive">
-                                    <table id="cartTable" class="table table-striped table-bordered"  datatable="ng" dt-options="dtOptions">
-                                        <thead>
-                                            <tr>
-                                                <th>Qty.</th>
-                                                <th>Unit</th>
-                                                <th>Description</th>
-                                                <th>Unit Price</th>
-                                                <th>Amount</th>
-                                                <th>Action</th>
-                                            </tr> 
-                                            
-                                        </thead>
-                                        <tbody id="cartTbody">
-                                            {{--  <td><input type='number' value='1' min='1' ng-model='newQuantity' ng-change='myFunction()'></td>  --}}
-                                            {{--  <tr ng-repeat="user in users">
-                                                <td ng-bind="$index + 1"></td>
-                                                <td ng-bind="user.fullname"></td>
-                                                <td ng-bind="user.email"></td>
-                                            </tr>  --}}
-                                        </tbody>
-                                    </table>
-                                    <div class="form-group">
-                                            <div class="row">
-                                                    <div class="col-md-7">
-                                                        
-                                                    </div>
-                                                    <div class="col-md-2 text-right">
-                                                        <label>Discount:</label>
-                                                    </div>
-                                                    <div class="col-md-3" id="discountDiv">
-                                                    </div>
-                                            </div>
-                                        <div class="row">
-                                            <div class="col-md-9 text-right">
-                                                <label>Total Sales:</label>
-                                            </div>
-                                            <div class="col-md-3" id="totalSalesDiv">
-                                                <p class="form-control" id="totalSales" ng-bind="" style="float: right"></p>
-                                            </div>
-                                            <div class="text-right">                                           
-                                                <div class="col-md-12">   
-                                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                                    <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
-                                                </div>
-                                            </div> 
-                                        </div>
-                                                <div class="alert alert-success text-center hidden" id="salesErrorDiv">
-                                                </div>
-                                    </div>
-                                </div> 
-                            </div>
-                                    <div class="alert alert-success text-center hidden" id="salesErrorDiv">
-                                    </div>
                         </div>
                     </div> 
                 </div>

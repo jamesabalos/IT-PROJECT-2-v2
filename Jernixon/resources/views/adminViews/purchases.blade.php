@@ -513,6 +513,12 @@ ng-controller="ownerPurchase"
         function($scope, $compile,$http) {
             var _this = this;
 
+            var totalAmountDiv = document.getElementById("totalAmountDiv");
+            totalAmountDiv.innerHTML = "";
+            var newTotalAmountDiv = "<span class = 'input-group-addon'>&#8369</span><p class='form-control' id='totalAmount' ng-bind='' style='float: right;color:green'>0.00</p>";
+            angular.element( totalAmountDiv ).append(newTotalAmountDiv);
+            
+    
             $scope.search = function(event) {
                 
                 var responsePromise = $http.get("searchItem/" + event.currentTarget.value);
@@ -541,11 +547,19 @@ ng-controller="ownerPurchase"
             };
 
             $scope.addRow = function (event){
+                
+                var items =[];
+                var thatTbody = $("#purchaseTbody tr td:nth-child(3)");
+                for (var i = 0; i < thatTbody.length; i++) {
+                    items[i] = thatTbody[i].innerHTML;
+                }
+                
+                if( items.indexOf(event.currentTarget.firstChild.innerHTML) != -1 ){ //if there is already in the table
+                    return true;
+                }
+
                 var thatTbody = document.getElementById("purchaseTbody");
-                var newRow = thatTbody.insertRow(-1);
-                var thatTable = document.getElementById("purchaseTable");
-                var numberOfRows = thatTable.rows.length;
-                var lastRow = thatTable.rows[numberOfRows-1];
+                var lastRow = thatTbody.insertRow(-1);
 
                 var itemDescription = event.currentTarget.firstChild.innerHTML;
                 var itemName = itemDescription.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
@@ -584,8 +598,8 @@ ng-controller="ownerPurchase"
                     var newNgBindsTemp = ngBindAttributes.split(" ")[0] + "+" + "("+itemName+"Q"+"*"+itemName+"UP"+")";
                     var newNgBinds = newNgBindsTemp;
                 }
-
-                  var amount = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p>";
+    
+                  var amount = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'>0.00</p>";
                 angular.element( totalAmountDiv ).append( $compile(amount)($scope) );
 
                 //clear search input
@@ -597,7 +611,7 @@ ng-controller="ownerPurchase"
             $scope.remove = function (event){
                 var ngBind = event.currentTarget.parentNode.previousElementSibling.firstChild.children[1].getAttribute("ng-bind");
                 var totalAmountNgBind = document.getElementById("totalAmountDiv").children[1].getAttribute("ng-bind").replace(ngBind.split(" ")[0],"0");
-                var newAmountNgBind = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +totalAmountNgBind+ " |number:2'></p>";
+                var newAmountNgBind = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +totalAmountNgBind+ "'></p>";
                 var totalAmountDiv = document.getElementById("totalAmountDiv");
                 totalAmountDiv.innerHTML="";
                 angular.element( totalAmountDiv ).append( $compile(newAmountNgBind)($scope) );
@@ -701,9 +715,8 @@ ng-controller="ownerPurchase"
                             </div>
                         </div>
                         <div class = "col-md-5 input-group" id="totalAmountDiv">
-                                <span class = 'input-group-addon'>&#8369</span>
-                                <p class="form-control" id="totalAmount" ng-bind="" ng-model="totalAmount" style="float: right;"></p>
-                            </div>  
+
+                        </div>  
                     </div>
                 </div>
                     <div id="errorDivCreatePurchase" class="hidden alert-danger text-center">

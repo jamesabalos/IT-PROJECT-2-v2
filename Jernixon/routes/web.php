@@ -162,4 +162,6 @@ Route::Post('admin/employees/resetPassword', 'AdminController@employeeResetPassw
 Route::get('admin/stockAjustment', 'AdminController@stockAdjustment')->name('admin.stockAdjustment');
 Route::get('admin/stockAjustment/getStockAdjustment', 'AdminController@getStockAdjustment')->name('stockAdjustment.getStockAdjustment');
 Route::Post('admin/stockAjustment/createStockAdjustment', 'AdminController@createStockAdjustment')->name('admin.createStockAdjustment');
+Route::PUT('admin/stockAjustment/updateStockAdjustment', 'AdminController@updateStockAdjustment')->name('admin.updateStockAdjustment');
+Route::get('admin/stockAjustment/getAdjustedItems', 'AdminController@getAdjustedItems')->name('admin.getAdjustedItems');
 Route::get('admin/stockAjustment/createStockAdjustmentFilter', 'AdminController@createStockAdjustmentFilter')->name('stockAdjustment.createStockAdjustmentFilter');

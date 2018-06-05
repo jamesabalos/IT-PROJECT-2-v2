@@ -660,7 +660,7 @@ public function createPurchasesFilter(Request $request){
     public function getStockAdjustment(){
         $data = DB::table('stock_adjustments')
             ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
-            ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at')
+            ->select('employee_name', 'stock_adjustments.created_at', 'description', 'quantity', 'stock_adjustments.type', 'stock_adjustments.status', 'stock_adjustments.remarks', 'stock_adjustments.stock_adjustments_id')
             ->latest();
         return Datatables::of($data)
             ->make(true);
@@ -680,6 +680,7 @@ public function createPurchasesFilter(Request $request){
             // 'productId' => 'required',
             'status' => 'required',
             'quantity' => 'required',
+            'remarks' => 'required',
             'Date' => 'required'
         ]);
 
@@ -687,7 +688,7 @@ public function createPurchasesFilter(Request $request){
         for($i = 0;$i<$arrayCount;$i++){
             if($request->status[$i] == "Damaged"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "damaged", 'status' => "accepted", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]
                 );
 
                 $data = DB::table('stock_adjustments')
@@ -752,12 +753,23 @@ public function createPurchasesFilter(Request $request){
             
             $admin = Admin::all();
                 foreach($admin as $admins){
-                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->quantity[$i],$request->status[$i],$request->authName));
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$data->stock_adjustments_id));
                 }
         }
         
         return $request->all();
     }
+    public function updateStockAdjustment(Request $request){
+
+        DB::table('stock_adjustments')
+            ->where('stock_adjustments_id',$request->stockid)
+            ->update(['status' => $request->status,'updated_at'=>now()]);
+            return $request->all();
+    }
+    public function getAdjustedItems(Request $request){
+        return $request->all();
+    }
+    
 
     public function getItemsForItems(){
 

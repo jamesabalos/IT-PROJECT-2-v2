@@ -17,17 +17,12 @@ class StockAdjustmentNotification extends Notification
      * @return void
      */
     protected $itemname;
-    protected $quantity;
-    protected $status;
-    protected $user;
-    public function __construct($itemname,$quantity,$status,$user)
+    protected $stock_id;
+    public function __construct($itemname,$stock_id)
     {
         //
         $this->itemname= $itemname;
-        $this->quantity= $quantity;
-        $this->status= $status;
-        $this->user= $user;
-
+        $this->stock_id= $stock_id;
     }
 
     /**
@@ -65,9 +60,7 @@ class StockAdjustmentNotification extends Notification
     {
         return [
             'itemname'=> $this->itemname,
-            'quantity'=>$this->quantity,
-            'status'=>$this->status,
-            'user'=>$this->user,
+            'stock_id'=>$this->stock_id,
         ];
     }
 }

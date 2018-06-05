@@ -6,7 +6,7 @@ class="active"
 @section('linkName')
 <div class="alert alert-success hidden" id="successDiv">
 </div>
-<h3><i class="fa fa-adjust" style="margin-right: 10px"></i> Stock Adjustment</h3>
+<h3><i class="fa fa-adjust" style="margin-right: 10px"></i>Stock Adjustment</h3>
 @endsection
 
 
@@ -67,7 +67,7 @@ function addRow(divElement){
       //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
         newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='Damaged'>Damaged</option><option class='form-control'  value='Damaged Saleable'>Damaged Saleable</option><option class='form-control' value='Lost'>Lost</option></select></td>";
 
-        newRow.insertCell(-1).innerHTML = "<td><textarea name='remarks' cols='20' rows='3'></textarea></td>";
+        newRow.insertCell(-1).innerHTML = "<td><div class='form-group'> <textarea class='form-control' rows='3' name='remarks[]' required></textarea></div></td>";
 
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
@@ -223,12 +223,35 @@ function createReport(button){
       }
   });
 }
+    function stockid (data, sta) {
+        $.ajax({
+            type:'PUT',
+            url: "admin/stockAjustment/updateStockAdjustment",
+            dataType:'json',
+            data:{
+                'stockid':data.stock_adjustments_id,
+                'status': sta,
+            },
+            success:function(data){
+                $("#stockAdjustmentDataTable").DataTable().ajax.reload();
+            },
+         
+        })
+           
+    }
+ 
 
 $(document).ready(function(){
     let today = new Date().toISOString().substr(0, 10);
     var d = new Date();
     var hours = "";
   var minutes = "";
+  $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+
+    });
   if( parseInt(d.getHours()) < 10  ){
       hours = "0"+d.getHours();
   }else{
@@ -257,7 +280,7 @@ $(document).ready(function(){
       }
       document.querySelector("#today").value = today+"T"+hours +":"+minutes;
   },60000)
-    $('#stockAdjustmentDataTable').DataTable({
+    var table=$('#stockAdjustmentDataTable').DataTable({
         "destroy": true,
         "processing": true,
         "serverSide": true,
@@ -267,12 +290,35 @@ $(document).ready(function(){
         "ajax":  "{{ route('stockAdjustment.getStockAdjustment') }}",
         "columns": [
             {data: 'employee_name'},
+            {data: 'created_at'},
             {data: 'description', name: 'products.description'},
             {data: 'quantity'},
-            {data: 'status'},
-            {data: 'created_at'},
+            {data: 'type'},
+            {data: 'status', class:'stat',render: function ( data, type, row ) {
+                    if (data == "Pending") {                        
+                         return '<button class="controll" value="Accepted" >Accept</button><button class="controll" value="Declined" >Decline</button>';
+                        }
+                    else {
+                        return data;
+                        }
+                    }
+            },
+            {data: 'remarks',
+            },
+            
         ]
+        
     });
+    $("#stockAdjustmentDataTable tbody").on( 'click','button.controll',function() {
+        
+        var button = $(this).val();
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+
+        stockid(row.data(),button);
+    });
+
+  
 
     $('#formAdjustment').on('submit',function(e){
         e.preventDefault();
@@ -392,15 +438,16 @@ $(document).ready(function(){
                         </div>  
                     </div>
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="stockAdjustmentDataTable">
+                        <table class="table table-striped table-bordered dt-responsive" style="width:100%" id="stockAdjustmentDataTable">
                             <thead>
                                 <tr>
                                     <th class="text-left">User Name</th>
                                     <th class="text-left">Date of Adjustment</th>
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Qty</th>
+                                    <th class="text-left">Type</th>
                                     <th class="text-left">Status</th>
-                                    <th class="text-left">Remarks</th>
+                                    <th class="text-left" style="width:25%;">Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -417,7 +464,7 @@ $(document).ready(function(){
 
 @section('modals')
 <div id="adjustment" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog modal-lg" style="width:65%;">
         <div class = "modal-content">
 
             {!! Form::open(['method'=>'post','id'=>'formAdjustment']) !!}
@@ -444,7 +491,7 @@ $(document).ready(function(){
                                     {{Form::label('Date', 'Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                        <input type="datetime-local" name="Date" id="today" class="form-control"/>    
+                                    <input type="datetime-local" name="Date" id="today" class="form-control"/>    
                                 </div>
                             </div>
                         </div>

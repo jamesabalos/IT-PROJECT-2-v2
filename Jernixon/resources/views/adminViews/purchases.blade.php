@@ -714,9 +714,13 @@ ng-controller="ownerPurchase"
                             <div id="searchResultDiv" class="searchResultDiv">
                             </div>
                         </div>
+                        <div class="col-md-5"></div>
+                        <div class="col-md-2">
+                            <label >Total Amount:</label>
+                        </div>
                         <div class = "col-md-5 input-group" id="totalAmountDiv">
 
-                        </div>  
+                        </div>   
                     </div>
                 </div>
                     <div id="errorDivCreatePurchase" class="hidden alert-danger text-center">

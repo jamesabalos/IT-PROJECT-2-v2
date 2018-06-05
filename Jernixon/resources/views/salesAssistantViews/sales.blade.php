@@ -11,6 +11,10 @@ onload="refresh()"
 ng-app="ourAngularJsApp"
 @endsection
 
+@section('angularJsControllerName')
+ng-controller="customerPurchase"
+@endsection
+
 @section('headScript')
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
@@ -100,44 +104,46 @@ ng-app="ourAngularJsApp"
             text-align: center;
         }
     }
-
-    .autocomplete {
-        /*the container must be positioned relative:*/
-        position: relative;
-        display: inline-block;
-    }
-    .searchResultDiv {
-        position: absolute;
-        border: 1px solid #d4d4d4;
-        border-bottom: none;
-        border-top: none;
-        z-index: 99;
-        /*position the autocomplete items to be the same width as the container:*/
-        top: 100%;
-        left: 0;
-        right: 0;
-    }
-    .searchResultDiv div {
-        padding: 10px;
-        cursor: pointer;
-        background-color: #fff; 
-        border-bottom: 1px solid #d4d4d4; 
-    }
-    .searchResultDiv div:hover {
-        /*when hovering an item:*/
-        background-color: #e9e9e9; 
-    }
-    .autocomplete-active {
-        /*when navigating through the items using the arrow keys:*/
-        background-color: DodgerBlue !important; 
-        color: #ffffff; 
-    }
-
-    /* Popover */
+</style>
+<style>
+        .autocomplete {
+            /*the container must be positioned relative:*/
+            position: relative;
+            display: inline-block;
+        }
+        .searchResultDiv {
+            position: absolute;
+            border: 1px solid #d4d4d4;
+            border-bottom: none;
+            border-top: none;
+            z-index: 99;
+            /*position the autocomplete items to be the same width as the container:*/
+            top: 100%;
+            left: 0;
+            right: 0;
+        }
+        .searchResultDiv div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff; 
+            border-bottom: 1px solid #d4d4d4; 
+        }
+        .searchResultDiv div:hover {
+            /*when hovering an item:*/
+            background-color: #e9e9e9; 
+        }
+        .autocomplete-active {
+            /*when navigating through the items using the arrow keys:*/
+            background-color: DodgerBlue !important; 
+            color: #ffffff; 
+        }
+    
+    
+         /* Popover */
     /* .popover {
         border: 2px dotted red;
     } */
-
+    
     /* Popover Header */
     .popover-title {
         /* background-color: #73AD21;  */
@@ -145,19 +151,20 @@ ng-app="ourAngularJsApp"
         /* font-size: 28px; */
         text-align:center;
     }
-
+    
     /* Popover Body */
     .popover-content {
         /* background-color: coral; */
         /* color: #FFFFFF; */
         padding: 20px;
     }
-
+    
+    
     /* Popover Arrow */
     .arrow {
         border-right-color: red !important;
     }
-</style>
+    </style>
 
 <script>
     function printReceipt(){
@@ -365,19 +372,19 @@ ng-app="ourAngularJsApp"
           if(a.value === ""){
               document.getElementById("searchResultDiv").setAttribute("class","hidden");   
           }
-          document.getElementById("searchResultDivTable_filter").setAttribute("class","hidden")
-          $('#searchResultDivTable').DataTable().search(a.value).draw();
+        //   document.getElementById("searchResultDivTable_filter").setAttribute("class","hidden")
+        //   $('#searchResultDivTable').DataTable().search(a.value).draw();
         
     }
 
-    function checkQuantity(input){
+      function checkQuantity(input){
         var errorsDiv = $("#salesErrorDiv p")
         var tempError = "";
         if( parseInt(input.value) > parseInt(input.dataset.max) ){
-            input.setAttribute("data-content","Lagpas na po sa "+input.dataset.max+"!");
+            input.setAttribute("data-content","Quantity exceeds the available stock on hand, quantity should not exceed "+input.dataset.max+"!");
             $(input).popover('show');
         }else if( parseInt(input.value) <= 0 ){
-            input.setAttribute("data-content","Quantity should be greater than 0!");
+            input.setAttribute("data-content","Quantity is not sufficient!");
             $(input).popover('show');
         }else{
             $(input).popover('destroy');    
@@ -389,7 +396,6 @@ ng-app="ourAngularJsApp"
             $(document.getElementById("discountInput")).popover('destroy');
 
         }
-
       }
 
     function checkDiscount(input){
@@ -646,15 +652,15 @@ ng-app="ourAngularJsApp"
                         <div class="col-md-0" margin> --}}
                             {{-- {{Form::label('address', 'Address:')}} --}}
                             {{-- {{Form::text('searchItem','',['class'=>'form-control','onkeyup'=>'searchItem(this)'])}} --}}
-                <div class="autocomplete" style="width:100%;">        
-                    <input autocomplete="off" type="search" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002; Enter an item name">
-                    <div id="searchResultDiv" class="searchResultDiv hidden">
-                        <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
-                            <tbody>            
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            <div class="autocomplete" style="width:100%;">        
+                                    <input autocomplete="off" type="search" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002 Enter an item name">
+                                    <div id="searchResultDiv" class="searchResultDiv hidden">
+                                        <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
+                                            <tbody>            
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                         {{-- </div>
                     </div>
                 </div> --}}
@@ -1194,11 +1200,13 @@ var _this = this;
                     if(totalSalesNgBinds === ""){
                         var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
                     }else{
-                        var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number:2'></p></div>";
+                        // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number:2'></p></div>";
+                        var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")- (("+totalSalesNgBinds+")*(discountValue/100)) |number:2'></p></div>";
                     }
                     angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
-                    var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input type='number' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";
+                    // var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input type='number' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";
+                    var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>%</span><input type='number' ng-init='discountValue =0' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";                    
                     angular.element( discountDiv ).append( $compile(discountInput)($scope) );
 
 
@@ -1317,7 +1325,8 @@ var _this = this;
                 // angular.element( totalSalesDiv ).append( $compile(price)($scope) );
               
                 var totalSalesDiv = document.getElementById("totalSalesDiv");
-                var ngBindAttributes = (totalSalesDiv.firstChild.children[1].getAttribute("ng-bind")).replace("(",""); //get ng-bind attribute/s
+                // var ngBindAttributes = (totalSalesDiv.firstChild.children[1].getAttribute("ng-bind")).replace("(",""); //get ng-bind attribute/s
+                var ngBindAttributes = totalSalesDiv.firstChild.children[1].getAttribute("ng-bind"); //get ng-bind attribute/s                
                 console.log(ngBindAttributes)
                 totalSalesDiv.innerHTML =""; 
                 if(ngBindAttributes==""){
@@ -1332,13 +1341,13 @@ var _this = this;
                     // if( event.currentTarget.dataset.status === "damaged" ){
                     //     var newNgBinds = ngBindAttributes.split(" ")[0] + "+damaged" + itemName+"SP";
                     // }else{
-                        var newNgBindsTemp = (ngBindAttributes.split(" ")[0]).replace(")-discountValue","") + "+" + itemName+"SP";
+                        var newNgBindsTemp = (ngBindAttributes.split("-")[0]).replace("(","").replace(")","") + "+" + itemName+"SP";
                         var newNgBinds = "("+newNgBindsTemp+")";
                     // }
                 }
 
                 console.log("TScorrect: " + newNgBinds)
-                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "-discountValue |number:2'></p></div>";
+                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "- ("+newNgBinds+"*(discountValue/100)) |number:2'></p></div>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
@@ -1465,7 +1474,7 @@ var _this = this;
                             ngBindsWithoutFormat += "+" + thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
-                    var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")-discountValue |number:2'></p></div>";
+                    var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")- (("+ngBindsWithoutFormat+")*(discountValue/100)) |number:2'></p></div>";
                 }else{
                     var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind></p><div>";
                 }

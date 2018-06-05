@@ -67,7 +67,11 @@ function addRow(divElement){
       //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
         newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='Damaged'>Damaged</option><option class='form-control'  value='Damaged Saleable'>Damaged Saleable</option><option class='form-control' value='Lost'>Lost</option></select></td>";
 
+<<<<<<< HEAD
         newRow.insertCell(-1).innerHTML = "<td><div class='form-group'> <textarea class='form-control' rows='3' name='remarks[]' required></textarea></div></td>";
+=======
+        newRow.insertCell(-1).innerHTML = "<td><textarea name='remarks[]' cols='20' rows='3'></textarea></td>";
+>>>>>>> 87fedc8bdcdd2342fc0e59c819751ff866073119
 
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
 
@@ -293,6 +297,7 @@ $(document).ready(function(){
             {data: 'created_at'},
             {data: 'description', name: 'products.description'},
             {data: 'quantity'},
+<<<<<<< HEAD
             {data: 'type'},
             {data: 'status', class:'stat',render: function ( data, type, row ) {
                     if (data == "Pending") {                        
@@ -306,6 +311,10 @@ $(document).ready(function(){
             {data: 'remarks',
             },
             
+=======
+            {data: 'status'},
+            {data: 'remarks'},
+>>>>>>> 87fedc8bdcdd2342fc0e59c819751ff866073119
         ]
         
     });

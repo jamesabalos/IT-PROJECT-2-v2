@@ -644,20 +644,50 @@ ng-controller="ownerPurchase"
             }
 
             $scope.remove = function (event){
-                var ngBind = event.currentTarget.parentNode.previousElementSibling.firstChild.children[1].getAttribute("ng-bind").split(" ")[0];
-                var toBeReplace = ngBind;
-                var pattern = /toBeReplace/i;
-                // var totalAmountNgBind = document.getElementById("totalAmountDiv").children[1].getAttribute("ng-bind").replace(/toBeReplace/,"0");
-                var totalAmountNgBind = document.getElementById("totalAmountDiv").children[1].getAttribute("ng-bind").replace(ngBind,"0");
+                // var ngBind = event.currentTarget.parentNode.previousElementSibling.firstChild.children[1].getAttribute("ng-bind").split(" ")[0];
+                // var toBeReplace = "(("+ngBind+"))";
+                // console.log(toBeReplace)
+                // var pattern = /toBeReplace/ig;  
+                // // var totalAmountNgBind = document.getElementById("totalAmountDiv").children[1].getAttribute("ng-bind").replace(/toBeReplace/,"0");
+                // var totalAmountNgBind = document.getElementById("totalAmountDiv").children[1].getAttribute("ng-bind").replace("("+ngBind+")","").replace(toBeReplace,"");
+                // var newAmountNgBind = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +totalAmountNgBind+ "'></p>";
+                // var totalAmountDiv = document.getElementById("totalAmountDiv");
+                // totalAmountDiv.innerHTML="";
+                // angular.element( totalAmountDiv ).append( $compile(newAmountNgBind)($scope) );
+    
+                //remove row in table
+                event.currentTarget.parentNode.parentNode.remove();
+                // $(event.currentTarget.parentNode.parentNode).hide(500,function(){
+                //     this.remove();  
+                // });
+                    
+                var thatTable = document.querySelectorAll('#purchaseTable > tbody > tr');
+                var numberOfRows = thatTable.length;
+                var ngBinds = "";
+                var ngBindsWithoutFormat="";                
 
-                var newAmountNgBind = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +totalAmountNgBind+ "'></p>";
-                var totalAmountDiv = document.getElementById("totalAmountDiv");
-                totalAmountDiv.innerHTML="";
-                angular.element( totalAmountDiv ).append( $compile(newAmountNgBind)($scope) );
+                if(numberOfRows > 0){
+                    for(var i=0; i < numberOfRows; i++){
+                        if(ngBinds==""){
+                            ngBinds += thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind");
+                            ngBindsWithoutFormat += "("+ ngBinds.split(" ")[0] +")";
+                        }else{
+                            ngBinds += " + " + thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind");
+                            ngBindsWithoutFormat += "+(" + thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind").split(" ")[0] +")";
+                        }
+                    }
+                    // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")-discountValue |number:2'></p></div>";
+                var newwTotalAmountDiv = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")- (("+ngBindsWithoutFormat+")*(discountValue/100)) |number:2'></p>";
+                document.getElementById("totalAmountDiv").innerHTML="";
+                angular.element( totalAmountDiv ).append( $compile(newwTotalAmountDiv)($scope) );
+                    
+                }else{                   
+                    var newwTotalAmountDiv = "<span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind>0.00</p>";
+                    document.getElementById("totalAmountDiv").innerHTML="";
+                    angular.element( totalAmountDiv ).append( newwTotalAmountDiv );
+                    
+                }
 
-                $(event.currentTarget.parentNode.parentNode).hide(500,function(){
-                    this.remove();  
-                });
 
             }
 

@@ -371,10 +371,10 @@ ng-controller="customerPurchase"
         var errorsDiv = $("#salesErrorDiv p")
         var tempError = "";
         if( parseInt(input.value) > parseInt(input.dataset.max) ){
-            input.setAttribute("data-content","Lagpas na po sa "+input.dataset.max+"!");
+            input.setAttribute("data-content","Quantity exceeds the available stock on hand, quantity should not exceed "+input.dataset.max+"!");
             $(input).popover('show');
         }else if( parseInt(input.value) <= 0 ){
-            input.setAttribute("data-content","Quantity should be greater than 0!");
+            input.setAttribute("data-content","Quantity is not sufficient!");
             $(input).popover('show');
         }else{
             $(input).popover('destroy');    
@@ -388,7 +388,7 @@ ng-controller="customerPurchase"
         }
       }
 
-      function checkDiscount(input){
+      function checkDiscount(input){    
           if(input.value < 0){
             input.setAttribute("data-content","Discount should be greater than or equal to 0");
             $(input).popover('show');
@@ -664,7 +664,7 @@ ng-controller="customerPurchase"
                             {{-- {{Form::label('address', 'Address:')}} --}}
                             {{-- {{Form::text('searchItem','',['class'=>'form-control','onkeyup'=>'searchItem(this)'])}} --}}
                 <div class="autocomplete" style="width:100%;">        
-                    <input autocomplete="off" type="search" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002; Enter an item name">
+                    <input autocomplete="off" type="search" id="searchItemInput" onkeyup="searchItem(this)" class="form-control border-input search" placeholder="&#xF002 Enter an item name">
                     <div id="searchResultDiv" class="searchResultDiv hidden">
                         <table class="table table-hover table-bordered" style="width:100%" id="searchResultDivTable">
                             <tbody>            
@@ -1070,11 +1070,13 @@ ng-controller="customerPurchase"
                     if(totalSalesNgBinds === ""){
                         var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
                     }else{
-                        var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number:2'></p></div>";
+                        // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number:2'></p></div>";
+                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")- (("+totalSalesNgBinds+")*(discountValue/100)) |number:2'></p></div>";
+                    
                     }
                     angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
-                    var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input type='number' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";
+                    var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>%</span><input type='number' name='discount' ng-init='discountValue =0' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";
                     angular.element( discountDiv ).append( $compile(discountInput)($scope) );
 
 
@@ -1336,7 +1338,8 @@ ng-controller="customerPurchase"
                 // angular.element( totalSalesDiv ).append( $compile(price)($scope) );
               
                 var totalSalesDiv = document.getElementById("totalSalesDiv");
-                var ngBindAttributes = (totalSalesDiv.firstChild.children[1].getAttribute("ng-bind")).replace("(",""); //get ng-bind attribute/s
+                // var ngBindAttributes = (totalSalesDiv.firstChild.children[1].getAttribute("ng-bind")).replace("(",""); //get ng-bind attribute/s
+                var ngBindAttributes = totalSalesDiv.firstChild.children[1].getAttribute("ng-bind"); //get ng-bind attribute/s
                 console.log(ngBindAttributes)
                 totalSalesDiv.innerHTML =""; 
                 if(ngBindAttributes==""){
@@ -1351,13 +1354,15 @@ ng-controller="customerPurchase"
                     // if( event.currentTarget.dataset.status === "damaged" ){
                     //     var newNgBinds = ngBindAttributes.split(" ")[0] + "+damaged" + itemName+"SP";
                     // }else{
-                        var newNgBindsTemp = (ngBindAttributes.split(" ")[0]).replace(")-discountValue","") + "+" + itemName+"SP";
+                        // var newNgBindsTemp = (ngBindAttributes.split(" ")[0]).replace(")-discountValue","") + "+" + itemName+"SP";
+                        var newNgBindsTemp = (ngBindAttributes.split("-")[0]).replace("(","").replace(")","") + "+" + itemName+"SP";
                         var newNgBinds = "("+newNgBindsTemp+")";
                     // }
                 }
 
                 console.log("TScorrect: " + newNgBinds)
-                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "-discountValue |number:2'></p></div>";
+                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "- ("+newNgBinds+"*(discountValue/100)) |number:2'></p></div>";
+                // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "-discountValue |number:2'></p></div>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
 
@@ -1481,7 +1486,9 @@ ng-controller="customerPurchase"
                             ngBindsWithoutFormat += "+" + thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
-                    var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")-discountValue |number:2'></p></div>";
+                    // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")-discountValue |number:2'></p></div>";
+                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")- (("+ngBindsWithoutFormat+")*(discountValue/100)) |number:2'></p></div>";
+                    
                 }else{
                     var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind></p><div>";
                 }

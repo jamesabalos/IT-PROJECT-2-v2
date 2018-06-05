@@ -352,16 +352,16 @@
                                         <button type="submit">Activate</button>
                                         @endif {!! Form::close() !!} --}}
                                          @if( $data[$i]['status'] == "active")
-                                            @if($data[$i]['type'] == 'Employee')
+                                            @if($data[$i]['type'] == 'Sales Assistant')
                                                 <button data-id="{{$data[$i]['id']}}" data-status="Inactive" data-status-reverse="active" data-button-reverse="Activate" class="formUpdateEmployeeAccount btn btn-danger"><i class="fa fa-times-circle"></i> Deactivate</button>
                                             <a href="#reset" data-toggle="modal">
-                                            @endif
+                                            @endif  
                                                 <button onclick="passEmployeeId(this.parentNode.parentNode.childNodes[1].getAttribute('data-id'))" type="button" class="btn btn-info">Reset Password</button>
                                             </a>
 
 
                                         @else
-                                            @if($data[$i]['type'] == 'Employee')
+                                            @if($data[$i]['type'] == 'Sales Assistant')
                                                 <button data-id="{{$data[$i]['id']}}" data-status="Active" data-status-reverse="inactive" data-button-reverse="Deactivate" class="formUpdateEmployeeAccount btn btn-success"><i class="fa fa-check"></i> Activate</button>
                                             @endif
                                             <a href="#reset" data-toggle="modal">

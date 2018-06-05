@@ -75,7 +75,7 @@ class AdminController extends Controller
         $admins = Admin::where('id','!=',$user)->get();
 
         foreach( $employees as $employee){
-            array_push($data, ['id'=>$employee->id,'name'=>$employee->name,'type'=>'Employee','email'=>$employee->email, 'contact'=>$employee->contact_number,'address'=>$employee->address,'status'=>$employee->status,'date'=>$employee->created_at]);
+            array_push($data, ['id'=>$employee->id,'name'=>$employee->name,'type'=>'Sales Assistant','email'=>$employee->email, 'contact'=>$employee->contact_number,'address'=>$employee->address,'status'=>$employee->status,'date'=>$employee->created_at]);
         };
         foreach( $admins as $admin){
             array_push($data, ['id'=>$admin->id,'name'=>$admin->name,'type'=>'Admin','email'=>$admin->email, 'contact'=>$admin->contact_number,'address'=>$admin->address,'status'=>$admin->status,'date'=>$admin->created_at]);
@@ -170,7 +170,7 @@ class AdminController extends Controller
         if($data->isEmpty()){
             for($i = 0;$i<$arrayCount;$i++){
                 $insert = DB::table('sales')->insert(
-                    ['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date]
+                    ['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date, 'unit' => $request->unit[$i], 'discount' => $request->discount]
                 );
                 DB::table('salable_items')
                     ->where('product_id', $request->productIds[$i])
@@ -311,7 +311,7 @@ public function createPurchasesFilter(Request $request){
 
     public function getPurchases(){
         $data = DB::table('purchases')
-            ->select('po_id', 'created_at')
+            ->select('po_id', 'created_at', 'supplier_name')
             ->orderBy('created_at', 'desc')
             ->distinct();
         return Datatables::of($data)
@@ -602,6 +602,13 @@ public function createPurchasesFilter(Request $request){
         return Datatables::of($data)
             ->make(true);
     }
+    public function getStockAdjustmentReport(){
+		$data = DB::table('stock_adjustments')
+             ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
+            ->select('stock_adjustments.employee_name','products.description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at', 'stock_adjustments.remarks');
+        return Datatables::of($data)
+            ->make(true);
+    }
 
     public function validateDateRange(Request $request){
         $this->validate($request,[
@@ -660,7 +667,7 @@ public function createPurchasesFilter(Request $request){
     public function getStockAdjustment(){
         $data = DB::table('stock_adjustments')
             ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
-            ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at')
+            ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at', 'stock_adjustments.remarks')
             ->latest();
         return Datatables::of($data)
             ->make(true);
@@ -687,7 +694,7 @@ public function createPurchasesFilter(Request $request){
         for($i = 0;$i<$arrayCount;$i++){
             if($request->status[$i] == "Damaged"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date, 'remarks' => $request->remarks[$i]]
                 );
 
                 $data = DB::table('stock_adjustments')
@@ -703,7 +710,7 @@ public function createPurchasesFilter(Request $request){
                         ->decrement('quantity', $request->quantity[$i]);
             }elseif($request->status[$i] == "Damaged Saleable"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date]
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date, 'remarks' => $request->remarks[$i]]
                 );
 
 
@@ -734,7 +741,7 @@ public function createPurchasesFilter(Request $request){
                 }
             }else{
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date, 'remarks' => $request->remarks[$i]]
                 );
 
                 $data = DB::table('stock_adjustments')

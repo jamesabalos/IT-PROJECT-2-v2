@@ -436,8 +436,42 @@ class="active"
           {data: 'created_at'},
         ]
         
+        });
     });
+
+    $("#stockAdjustmentButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";
+        $("div[style='display: block;']").slideUp("slow");
+        $("#stockAdjustmentDiv").slideDown("slow").removeClass('hidden');
+        
+        $("#soldButton").removeClass('active');
+        $("#damgaedButton").removeClass('active');
+        $("#lostButton").removeClass('active');
+        $("#stockAdjustmentButton").addClass('active');
+
+        $("#soldDiv").addClass("hidden");
+        $("#lostItemsDiv").addClass("hidden");
+        $("#damagedItemsDiv").addClass("hidden");
+        $('#stockAdjustmentTable').DataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "destroy": true,
+            "processing": true,
+            "serverSide": true,
+            "colReorder": true,  
+            "pagingType": "full_numbers",
+            "ajax":  "{{ route('reports.getStockAdjustmentReport') }}",
+            "columns": [
+            {data: 'employee_name'},
+            {data: 'description',name: 'products.description'},
+            {data: 'quantity'},
+            {data: 'status'},
+            {data: 'created_at'},
+            {data: 'remarks'},
+            ]
+            
+        });
     });
+        
 
   });
 
@@ -459,7 +493,7 @@ class="active"
                             <button type="button" id="soldButton" class="btn btn-basic active" style="width:24.5%;font-size: 20px">Sold Items</button>
                             <button type="button" id="damgaedButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Damaged Items</button>
                             <button type="button" id="lostButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Lost Items</button>
-                            <button type="button" id="lostButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Stock Adjustments</button>
+                            <button type="button" id="stockAdjustmentButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Stock Adjustments</button>
                         </div>
                         <div id="errorDateRangeReport" class="hidden alert-danger text-center" style = "margin-top: 10px">
                         </div>
@@ -545,6 +579,34 @@ class="active"
                                 </table>   
                             </div>
                         </div> 
+
+                        <div id="stockAdjustmentDiv" class="hidden">
+                            <!-- <h3>Lost Items</h3> -->
+                            <div class="row">
+                                <p class = "col-md-8">
+                                    <label for="from">From</label>
+                                    <input type="date">
+                                    <label for="to">to</label>
+                                    <input type="date">
+                                    <button id="li" onclick="createReport(this)">Filter</button>
+                                </p>  
+                            </div>
+                                <div class="content table-responsive table-full-width table-stripped">
+                                    <table id="stockAdjustmentTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                        <thead >
+                                            <tr>
+                                                <th>Employee name</th>
+                                                <th>Description</th>
+                                                <th>Quantity</th>
+                                                <th>Status</th>
+                                              <th>Date</th>
+                                              <th>Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>   
+                                </div>
+                            </div> 
 
                     </div>
                 </div>

@@ -665,8 +665,7 @@ public function createPurchasesFilter(Request $request){
     }
 
     public function getStockAdjustment(){
-        $data = DB::table('stock_adjustments')
-            ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
+        $data = DB::table('stock_adjustments')->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
             ->select('employee_name', 'stock_adjustments.created_at', 'description', 'quantity', 'stock_adjustments.type', 'stock_adjustments.status', 'stock_adjustments.remarks', 'stock_adjustments.stock_adjustments_id')
             ->latest();
         return Datatables::of($data)
@@ -774,7 +773,8 @@ public function createPurchasesFilter(Request $request){
             return $request->all();
     }
     public function getAdjustedItems(Request $request){
-        return $request->all();
+        $stocks = DB::table('stock_adjustments')->where('stock_adjustments_id',$request->stockid)->get();
+        return $stocks;
     }
     
 

@@ -200,10 +200,8 @@
         $('.unreadreturn').addClass('hidden');        
         $('.unreadreorder').removeClass('hidden');
         $('.readNotif').addClass('hidden');
-        
-
-
     }
+
     function returns(){
 
         $('.unreadstock').addClass('hidden');   
@@ -220,6 +218,7 @@
         $(".unreadreorder").addClass('hidden');
         $('#reorder').removeClass('active');
     }
+
     function oldNotif(){
         $(".unreadstock").addClass('hidden');
         $('.unreadreturn').addClass('hidden');        
@@ -227,6 +226,7 @@
         $('.readNotif').removeClass('hidden');
         $('#reorder').removeClass('active');
     }
+
     $(document).ready(function(){
 
     });
@@ -583,7 +583,7 @@
                             
                             <div id="errorDivChangePassword" class="hidden alert-danger text-center">
                             </div>
-                {!! Form::open(['method'=>'post','id'=>'formChangePassword']) !!}
+                                 {!! Form::open(['method'=>'post','id'=>'formChangePassword']) !!}
                             <div class="panel-body">
                                 <input type="hidden" value="{{ csrf_token() }}">
                                 <input type="hidden" name="authName" value=" {{ Auth::user()->name }}">
@@ -655,10 +655,10 @@
         <div id="notification" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
             <div class = "modal-dialog modal-md">
                 <div class = "modal-content">
-                    
-                    
+                
                     <div class="modal-header">
                         <button class="close" data-dismiss="modal">&times;</button>
+                        
                         <h3 class="modal-title"><i class="fa fa-bell" style="margin-right: 10px;"></i> Notifications</h3>
                     </div>
                     
@@ -682,7 +682,7 @@
                                         @endif
                                     </button>
                                     <button type = "button" id = "oldNotif" onclick = "oldNotif()" class = "btn btn-basic" style ="width: 25%">Old Notification</button>
-                                </div>
+                            </div>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -705,6 +705,7 @@
                                 </div>
                                 <div id="listOfNotif">
                                     <ul class="list-group">
+
                                         <!--  Stock Adjustment Notification -->
                                         @if(!empty(auth()->user()->unreadNotifications->where('type','App\Notifications\StockAdjustmentNotification')->where('read_at',Null)->count()))
 
@@ -732,7 +733,6 @@
                                         @endif
 
                                         <!-- Re Order Notification -->
-
                                         @if(!empty(auth()->user()->notifications->where('type','App\Notifications\ReorderNotification')->where('read_at',Null)->count()))
 
                                             <!-- for loop for Re Order NOtification and  include Reorder blade -->
@@ -745,8 +745,6 @@
                                             <li class="list-group-item unreadreorder">No Unread Re Order Item Notification</li>
                                         @endif
 
-
-                                            
                                         <!-- All Old Notification -->
                                         @if(empty(auth()->user()->readNotifications->where('type','App\Notifications\ReorderNotification')->count()))
                                             <li class="list-group-item hidden readNotif">No Read Notifications</li>
@@ -754,12 +752,24 @@
                                             @foreach (Auth::user()->readNotifications->take(40) as $notification)
                                                     @include('notifications.'.snake_case(class_basename($notification->type))) 
                                             @endforeach
-
-            
                                         @endif
-    
-                                           
-                                        
+
+                                        <!-- <ul class="pagination">
+                              <li class="active"><a href="#">1</a></li>
+                              <li><a href="#">2</a></li>
+                              <li><a href="#">3</a></li>
+                              <li><a href="#">4</a></li>
+                              <li><a href="#">5</a></li>
+                            </ul> -->
+
+                            <ul class="pager">
+                                 <li style = "float: left;">
+                                      <a href="#">&laquo; Previous</a>
+                                 </li>
+                                 <li style = "float: right;">
+                                      <a href="#">Next &raquo;</a>
+                                 </li>
+                            </ul>
 
                                     </ul>
                                 </div>
@@ -772,8 +782,43 @@
         </div>
     </div>
     @yield('jqueryScript')
+
 </body>
 
 @yield('js_link')
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        //var options = {
+        //    valueNames: ['einheit'],
+        //    page: 13,
+        //    plugins: [ListPagination({})]
+        //}
+
+        // var list = new List('listOfNotif', {
+        //     valueNames: ['oldNotif'],
+        //     page: 10,
+        //     plugins: [ListPagination({})]
+        // });
+
+        //  var i = 1;
+        //     $('.next').on('click', function(){
+        //         i++;
+        //         listObj.show(i, 3); 
+        //     })
+
+        //     $('.prev').on('click', function(){
+        //         i--;
+        //         listObj.show(i, 3); 
+        //     });
+         $('#listOfNotif').twbsPagination({
+        totalPages: 10,
+        visiblePages: 7,
+        onPageClick: function (event, page) {
+            $('#oldNotif').text('Page ' + page);
+        }
+    });
+    });
+</script>
 
 </html>

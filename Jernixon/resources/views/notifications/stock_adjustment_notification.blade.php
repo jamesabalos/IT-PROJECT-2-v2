@@ -13,7 +13,7 @@
                         <p><b>Type: </b>"+data[0].type+"</p>\
                         <p><b>Remarks: </b>"+data[0].remarks+"</p>";
                 if(data[0].status == "Pending"){
-                    $m = $m +"<button>Accept</button>";
+                    $m = $m +"<button>Accept</button><button>Decline</button>";
                 }else{
                     $m = $m +"<p><b>Status: </b>"+data[0].status+"</p>";
                 }

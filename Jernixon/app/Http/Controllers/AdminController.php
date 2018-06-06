@@ -339,9 +339,10 @@ public function createPurchasesFilter(Request $request){
 
     public function getReturns(){
         $data = DB::table('returns')
-            ->select('or_number', 'created_at')
-            ->orderBy('created_at', 'desc')
-            ->distinct();
+                ->join('sales','returns.or_number','=','sales.or_number')
+                ->select('returns.or_number', 'returns.created_at','returns.customer_name','address')
+                ->orderBy('returns.created_at', 'desc')
+                ->groupBy('or_number');
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
@@ -398,11 +399,10 @@ public function createPurchasesFilter(Request $request){
     public function getReturnedItems(Request $request){
 
         $data = DB::table('returns')
-            ->join('products', 'products.product_id', '=', 'returns.product_id')
-            ->select('returns.product_id','description', 'customer_name', 'damagedQuantity','undamagedQuantity','damagedSalableQuantity', 'price', 'returns.created_at')
-            ->where('or_number', '=',$request->ORNumber)
-            ->where('returns.created_at', '=',$request->Date)
-            ->get();
+                ->join('products','products.product_id','=','returns.product_id')
+                ->join('sales', 'sales.product_id', '=', 'returns.product_id')
+                ->select('sales.created_at','sales.quantity','sales.unit','returns.product_id','returns.customer_name','description', 'damagedQuantity','undamagedQuantity','damagedSalableQuantity', 'sales.price', 'returns.created_at','address')->where('returns.or_number', '=',$request->ORNumber)
+                ->get();
         return $data;
 
     }

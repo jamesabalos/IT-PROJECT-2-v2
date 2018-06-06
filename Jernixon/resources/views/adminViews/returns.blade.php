@@ -347,7 +347,6 @@ ng-app="ourAngularJsApp"
 			url: "{{route('admin.getReturnedItems')}}",
             data: {
                 'ORNumber': ORnumber,
-                'Date': date
             },
 
 			success:function(data){
@@ -355,15 +354,20 @@ ng-app="ourAngularJsApp"
                 var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
                 for(var i = 0; i < data.length; i++){
                     var newRow = returnedItemTable.insertRow(-1);
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
+                    
 
                 }
 
-                document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
+                document.getElementById("rDate").innerHTML= data[0].created_at;
+                document.getElementById("address").innerHTML= data[0].address;
                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
                 document.getElementById("customerName").innerHTML = data[0].customer_name;
                 {{-- document.getElementById("warrantyDay").value = data[0].created_at; --}}
@@ -676,8 +680,8 @@ ng-app="ourAngularJsApp"
               "ajax":  "{{ route('returns.getReturns') }}",
               "columns": [
                   {data: 'or_number'},
-                //   {data: 'price'},
-                  {data: 'created_at'},
+                  {data: 'customer_name'},
+                  {data: 'address'},
                   {data: 'action'},
               ]
           });
@@ -882,14 +886,8 @@ function customer(){
                                         <th class="text-left">Date Created</th>
                                         <th class="text-left">Action</th> -->
                                         <th>OR Number</th>
-                                        <th>Date of Transaction</th>
                                         <th>Sold to</th>
                                         <th>Address</th>
-                                        <th>Qty.</th>
-                                        <th>Unit</th>
-                                        <th>Description</th>
-                                        <th>Unit Price</th>
-                                        <th>Amount</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -1291,7 +1289,7 @@ function customer(){
 </div>
 
 <div id="viewReturn" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
+    <div class = "modal-dialog modal-lg" style= "width:65%;">
         <div class = "modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -1310,11 +1308,10 @@ function customer(){
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            {{Form::label('Date', 'Date:')}}
+                                            {{Form::label('Date', 'Sold Date:')}}
                                         </div>
-                                        <div class="col-md-9">
-                                            {{--  {{Form::text('Date','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
-                                            <p class="form-control" id="returnedDate"></p>   
+                                        <div class="col-md-9">                                          
+                                            <p class="form-control" id="rDate"></p>   
                                         </div>
                                     </div>
                                 </div>
@@ -1343,6 +1340,17 @@ function customer(){
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Customer', 'Address:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{--  {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
+                                        <p class="form-control" id="address"></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -1359,9 +1367,12 @@ function customer(){
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Qty.</th>
                                         {{-- <th class="text-left">Quantity</th> --}}
-                                        <th class="text-left">Selling Price</th>
+                                        <th class="text-left">Unit</th>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Unit Price</th>
+                                        <th class="text-left">Amount</th>
                                         <th class="text-left">Damaged</th>
                                         <th class="text-left">Undamaged</th>
                                         <th class="text-left">Damage Salable</th>

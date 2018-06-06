@@ -41,6 +41,7 @@
     @yield('headScript')
     <script type="text/javascript">
     var notifications = "";
+   
     //     function getNotifications(){
     //         $.ajax({
     //             method: 'get',

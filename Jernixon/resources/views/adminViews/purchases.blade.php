@@ -147,15 +147,23 @@ ng-controller="ownerPurchase"
                   $("#purchaseOrdertableTbody tr").remove();
 
                   var modalPurchaseTable = document.getElementById("purchaseOrdertableTbody");
+                  var totalAmount = "";
                   for(var i = 0; i < data.length; i++){
                       var newRow = modalPurchaseTable.insertRow(-1);
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].amount+ "</td>";
+                    totalAmount += parseInt(data[i].amount);
                   }
                   document.getElementById("supplierName").innerHTML = data[0].supplier_name;
                   document.getElementById("poDate").innerHTML = data[0].created_at;
                   document.getElementById("officialReceiptNumber").innerHTML = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+                  document.getElementById("discountDivView").innerHTML = data[0].discount;
+
+
+                  document.getElementById("totalAmountDivView").innerHTML = totalAmount;
 
               }
           });
@@ -367,7 +375,7 @@ ng-controller="ownerPurchase"
           $('#formPurchaseOrder').on('submit',function(e){
               e.preventDefault();
               var data = $(this).serialize();
-                if( $("#purchasetable tr").length == 0 ){
+                if( $("#purchaseTable tr").length == 0 ){
                     $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
                         $("#errorDivCreatePurchase").html("<h4>Please input item/s</h4>");
                     return true;
@@ -593,11 +601,11 @@ ng-controller="ownerPurchase"
 
                  angular.element( lastRow.insertCell(-1) ).append(itemDescription);
 
-                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' onchange='checkQuantity(this)' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
+                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' onchange='checkQuantity(this)' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
                 var temp2 = $compile(unitPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
-                var amount = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-bind='" +itemName+"Q"+"*"+itemName+ "UP |number:2'></p></div><input type='hidden' name='amount[]' value=''>";
+                var amount = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-bind='" +itemName+"Q"+"*"+itemName+ "UP |number:2'></p></div><input type='hidden' name='amount[]' ng-value='" +itemName+"Q"+"*"+itemName+ "UP'>";
                 // var amount = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input disabled name='amount[]' class='form-control text-right' style='color:green;' ng-model='"+itemName+"amount' ng-bind='" +itemName+"Q"+"*"+itemName+ "UP |number:2'></p></div><input type='hidden' name='amount[]' value=''>";
                 var temp3 = $compile(amount)($scope); 
                 angular.element( lastRow.insertCell(-1) ).append(temp3);
@@ -810,7 +818,7 @@ ng-controller="ownerPurchase"
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button disabled type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -881,8 +889,10 @@ ng-controller="ownerPurchase"
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
-                                        <th class="text-left">Quantity</th>
-                                        <th class="text-left">Purchase Price</th>
+                                        <th class="text-left">Unit</th>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Unit Price</th>
+                                        <th class="text-left">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody id="purchaseOrdertableTbody">
@@ -891,6 +901,19 @@ ng-controller="ownerPurchase"
                         </div>
                     </div>
                 </div>
+                <div class = 'input-group'>
+                    <span class = 'input-group-addon'>%</span>
+                    <p class="form-control text-right" style="color:green;" id="discountDivView">
+                    </p>
+                    </div>
+
+                <div class="col-md-2">
+                    <label >Total Amount:</label>
+                </div>
+                <div class = "col-md-5 input-group" >
+                        <span class = 'input-group-addon'>&#8369</span>
+                    <p id="totalAmountDivView"></p>
+                </div>   
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

@@ -988,8 +988,19 @@ ng-controller="customerPurchase"
                         }],
 
                 createdRow: function(row, data, dataIndex) {
+                    console.log(data)
+                    $(row).attr("style","background-color:red");
                     $compile(angular.element(row).contents())($scope);
+
                 },
+                // columnDefs : [
+                //         { targets : [1],
+                //         render : function (data, type, row) {
+                //             // return data == '8' ? 'free' : 'paid'
+                //             console.log(row)
+                //         }
+                //         }
+                // ],
 
                 //fetch the items in localStorage after the dataTables initialization
                 "initComplete": function(settings, json) {  

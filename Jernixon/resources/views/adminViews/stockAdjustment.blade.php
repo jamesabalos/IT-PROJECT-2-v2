@@ -299,7 +299,7 @@ $(document).ready(function(){
             {data: 'type'},
             {data: 'status', class:'stat',render: function ( data, type, row ) {
                     if (data == "Pending") {                        
-                         return '<button class="controll" value="Accepted" >Accept</button><button class="controll" value="Declined" >Decline</button>';
+                         return '<div class="text-center"><button class="controll btn btn-success" value="Accepted">Accept</button><button class="controll btn btn-danger" value="Declined" >Decline</button></div>';
                         }
                     else {
                         return data;

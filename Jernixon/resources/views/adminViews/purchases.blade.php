@@ -800,7 +800,7 @@ ng-controller="ownerPurchase"
                                     </div>
                                     
                                 </div>
-						                            <div class="row">
+						   <div class="row">
                             </div>
 							<br>
                         <div class="col-md-8 text-right">
@@ -901,19 +901,25 @@ ng-controller="ownerPurchase"
                         </div>
                     </div>
                 </div>
+
+				<div class="col-md-8 text-right">
+                    <label >Discount:</label>
+                </div>
                 <div class = 'input-group'>
                     <span class = 'input-group-addon'>%</span>
-                    <p class="form-control text-right" style="color:green;" id="discountDivView">
+                    <p class="form-control text-right" style="color:red;" id="discountDiv">
                     </p>
                     </div>
-
-                <div class="col-md-2">
+					<br>
+                <div class="col-md-8 text-right">
                     <label >Total Amount:</label>
                 </div>
-                <div class = "col-md-5 input-group" >
-                        <span class = 'input-group-addon'>&#8369</span>
-                    <p id="totalAmountDivView"></p>
-                </div>   
+				    <div class = 'input-group'>
+                    <span class = 'input-group-addon'>&#8369</span>
+                    <p class="form-control text-right" style="color:green;" id="totalAmountDivView">
+                    </p>
+                    </div>
+				<br>
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

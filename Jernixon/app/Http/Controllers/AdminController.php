@@ -121,12 +121,27 @@ class AdminController extends Controller
        
     }
     public function getItemsForSales(){
+        $allItems = [];
+        
         $data = DB::table('salable_items')
             ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
             ->select('products.product_id', 'description', 'wholesale_price' , 'retail_price' , 'quantity')
-            ->where([['status' , '=' , 'available'],['quantity', '>', 0]]);
+            ->where([['status' , '=' , 'available'],['quantity', '>', 0]])
+            ->get();
+            $arrayCount1 = count($data);
 
-        return Datatables::of($data)
+            // $data2 = DB::table('damaged_salable_items')
+            // ->join('products', 'products.product_id' , '=' , 'damaged_salable_items.product_id')
+            // ->join('salable_items', 'salable_items.product_id' , '=' , 'damaged_salable_items.product_id')
+            // ->select('products.product_id', 'description', 'retail_price' , 'wholesale_price' , 'damaged_salable_items.quantity')
+            // ->where([['status' , '=' , 'available'],['damaged_salable_items.quantity', '>', 0]]);
+
+            for($i = 0;$i<$arrayCount1;$i++){
+
+                array_push($allItems, ['status'=>'undamaged','description'=>$data[$i]->description, 'wholesale_price'=>$data[$i]->wholesale_price,'retail_price'=>$data[$i]->retail_price, 'quantity'=>$data[$i]->quantity]);
+            }
+            
+        return Datatables::of($allItems)
             ->addColumn('action',function($data){
                 return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)'><i class = 'fa fa-plus'></i>Add</button>";
             })
@@ -235,12 +250,12 @@ class AdminController extends Controller
             'Date' => 'required',
             'Official_Receipt_Number' => 'required',
             'Supplier' => 'required',
-            'price' => 'required',
+            // 'price' => 'required',
             // 'product_id' => 'required',
             'quantity' => 'required',
         ]);
 
-        $arrayCount = count($request->product_id);
+        $arrayCount = count($request->productIds);
         $successful = true;
 
         $data = DB::table('purchases')
@@ -251,33 +266,33 @@ class AdminController extends Controller
         if($data->isEmpty()){
             for($i = 0;$i<$arrayCount;$i++){
                 $insertPurchases = DB::table('purchases')->insert(
-                    ['po_id' => $request->Official_Receipt_Number, 'product_id' => $request->product_id[$i], 'supplier_name' => $request->Supplier, 'price' => $request->price[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date]
+                    ['po_id' => $request->Official_Receipt_Number, 'product_id' => $request->productIds[$i], 'supplier_name' => $request->Supplier, 'price' => $request->unitPrice[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date, 'discount' => $request->discount, 'amount'=>$request->amount[$i], 'unit' => $request->unit[$i]]
                 );
 
                 $prod_id = DB::table('salable_items')
                     ->select('product_id')
-                    ->where('product_id' , '=' , $request->product_id[$i])
+                    ->where('product_id' , '=' , $request->productIds[$i])
                     ->get();
 
                 if($prod_id->isEmpty()){
                     $insertSalableItems = DB::table('salable_items')->insert(
-                        ['product_id' => $request->product_id[$i], 'wholesale_price' => $request->price[$i], 'retail_price' => $request->price[$i], 'quantity' => $request->quantity[$i]]
+                        ['product_id' => $request->productIds[$i], 'wholesale_price' => $request->price[$i], 'retail_price' => $request->unitPrice[$i], 'quantity' => $request->quantity[$i]]
                     );
                 }else{
                     $price = DB::table('purchases')
                         ->select('price')
-                        ->where([['product_id' , '=' , $request->product_id[$i]], ['po_id' , '=',  $request->Official_Receipt_Number]])
+                        ->where([['product_id' , '=' , $request->productIds[$i]], ['po_id' , '=',  $request->Official_Receipt_Number]])
                         ->latest()
                         ->first();
 
                     $newPrice = $price->price;
 
                     DB::table('salable_items')
-                        ->where('product_id', $request->product_id[$i])
+                        ->where('product_id', $request->productIds[$i])
                         ->increment('quantity', $request->quantity[$i]);
 
                     DB::table('salable_items')
-                        ->where('product_id', $request->product_id[$i])
+                        ->where('product_id', $request->productIds[$i])
                         // ->update(['wholesale_price' => $newPrice, 'retail_price' => $newPrice]);
                         ->update(['wholesale_price' => $newPrice]);
                 }
@@ -331,7 +346,7 @@ public function createPurchasesFilter(Request $request){
     public function getPurchaseOrder($purchaseOrderId){
         $data = DB::table('purchases')
             ->join('products', 'products.product_id' , '=' , 'purchases.product_id')
-            ->select('description', 'supplier_name', 'quantity', 'price', 'purchases.created_at')
+            ->select('description', 'supplier_name', 'quantity', 'price', 'purchases.created_at','amount','discount', 'unit' )
             ->where('po_id', '=', $purchaseOrderId)
             ->get();
         return $data;

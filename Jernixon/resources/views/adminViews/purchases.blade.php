@@ -792,14 +792,21 @@ ng-controller="ownerPurchase"
                             </div>
                         </div>
 
-                              <div class="col-md-3" id="discountDiv">
+                            <div class="row">
+                                    <div class="col-md-8 text-right">
+                                        <label>Discount:</label>
+                                    </div>
+                                    <div class="col-md-4" id="discountDiv">
+                                    </div>
+                                    
                                 </div>
-
-                        <div class="col-md-5"></div>
-                        <div class="col-md-2">
-                            <label >Total Amount:</label>
+						                            <div class="row">
+                            </div>
+							<br>
+                        <div class="col-md-8 text-right">
+                            <label>Total Amount:</label>
                         </div>
-                        <div class = "col-md-5 input-group" id="totalAmountDiv">
+                        <div class = "col-md-4 input-group" id="totalAmountDiv">
 
                         </div>   
                     </div>

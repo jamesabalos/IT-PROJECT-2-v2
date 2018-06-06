@@ -23,5 +23,9 @@ class NotificationController extends Controller
 		
 		return back();      
      
-    }
+	}
+	public function nav($id){
+		$stocks = DB::table('stock_adjustments')->where('stock_adjustments_id',$id);
+		return ;
+	}
 }

@@ -598,6 +598,67 @@ ng-app="ourAngularJsApp"
                 
 
         });
+
+        $('#formsupplierReturnItem').on('submit',function(e){
+            e.preventDefault();
+            if( checkTotalQuantityOfCheckedBox() ){
+                console.log("ifff")
+            }else{
+                var data = $(this).serialize();     
+                var itemIds = [];    
+                for(var i=0; i < $("#returnTbody tr").length ;i++ ){
+                    if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
+                        itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
+                    }
+                }
+                $.ajax({
+                    type:'POST',
+                    // url:'admin/storeNewItem',
+                    url: "{{route('admin.createReturnItem')}}",
+                    // data:{
+                    //     'name': arrayOfData[1].value,
+                    // },
+
+                    // data:{data},
+                    data:data,
+                    //_token:$("#_token"),
+                    success:function(data){
+                        console.log(data)
+                        //close modal
+                        $('#return').modal('hide')                    
+                        //prompt the message
+                        $("#successDiv p").remove();    
+                        $("#successDiv").removeClass("hidden")
+                                .html("<h3>Return Item(s) successful</h3>");
+                        $("#successDiv").css("display:block");                             
+                        $("#successDiv").slideDown("slow")
+                            .delay(1000)                        
+                            .hide(1500);
+                        $("#errorDivCreateReturns").html("");
+                        $('#returnOrRefundPrompt').modal('show');
+                        $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
+                        // $('#formReturnItem').reset();
+                        $("#returnItemTbody tr").remove();
+
+
+                    },
+                    error:function(data){
+                        var response = data.responseJSON;
+                        $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreateReturns").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
+                    }
+                });
+
+            }
+                
+
+        });
         
         $('#formRefund').on('submit',function(e){
             e.preventDefault();
@@ -911,9 +972,10 @@ function customer(){
                             <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable2">
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Item</th>
+                                        <th class="text-left" style = "width: 20%;">Delivery Receipt No.</th>
+                                        <!-- <th class="text-left">Item</th> -->
                                         <th class="text-left">Supplier</th>
-                                        <th class="text-left">Date</th>
+                                        <th class="text-left">Address</th>
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>

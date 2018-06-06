@@ -907,7 +907,7 @@ ng-controller="ownerPurchase"
                 </div>
                 <div class = 'input-group'>
                     <span class = 'input-group-addon'>%</span>
-                    <p class="form-control text-right" style="color:red;" id="discountDiv">
+                    <p class="form-control text-right" style="color:red;" id="discountDivView">
                     </p>
                     </div>
 					<br>

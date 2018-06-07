@@ -813,7 +813,7 @@ public function createPurchasesFilter(Request $request){
                         ->decrement('quantity', $request->quantity[$i]);
             }elseif($request->status[$i] == "Damaged Saleable"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date, 'remarks' => $request->remarks[$i]]
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "damaged_salable", 'status' => "accepted", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]                    
                 );
 
 
@@ -844,7 +844,7 @@ public function createPurchasesFilter(Request $request){
                 }
             }else{
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date, 'remarks' => $request->remarks[$i]]
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "lost", 'status' => "accepted", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]                    
                 );
 
                 $data = DB::table('stock_adjustments')

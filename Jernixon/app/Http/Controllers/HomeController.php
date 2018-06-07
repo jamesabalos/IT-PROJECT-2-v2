@@ -196,9 +196,9 @@ class HomeController extends Controller
     }
 
     public function getStockAdjustment(){
-        $data = DB::table('stock_adjustments')
-            ->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
-            ->select('employee_name', 'description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at');
+        $data = DB::table('stock_adjustments')->join('products', 'products.product_id', '=', 'stock_adjustments.product_id')
+            ->select('employee_name', 'stock_adjustments.created_at', 'description', 'quantity', 'stock_adjustments.type', 'stock_adjustments.status', 'stock_adjustments.remarks', 'stock_adjustments.stock_adjustments_id')
+            ->latest();
         return Datatables::of($data)
             ->make(true);
     }
@@ -223,72 +223,34 @@ class HomeController extends Controller
         for($i = 0;$i<$arrayCount;$i++){
             if($request->status[$i] == "Damaged"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged", 'created_at' => $request->Date]
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "damaged", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]
                 );
-
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
                     ->latest()
                     ->first();
 
-                $insertDamagedItems = DB::table('damaged_items')->insert(
-                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
-                    
-                    DB::table('salable_items')
-                        ->where('product_id', $request->productId[$i])
-                        ->decrement('quantity', $request->quantity[$i]);
             }elseif($request->status[$i] == "Damaged Saleable"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "damaged_salable", 'created_at' => $request->Date]
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "damaged_salable", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]
                 );
-
-
-
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
                     ->latest()
                     ->first();
 
-                // $insertDamagedItems = DB::table('damaged_salable_items')->insert(
-                //     ['product_id' => $request->productId[$i],'damaged_selling_price'=>$request->dprice[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
-                    
-                //     DB::table('salable_items')
-                //         ->where('product_id', $request->productId[$i])
-                //         ->decrement('quantity', $request->quantity[$i]);
-                $data2 = DB::table('damaged_salable_items')
-                ->select('product_id')
-                ->where('product_id', $request->productId[$i])
-                ->get();
-
-                if( count($data2) > 0 ){
-                    $temp = DB::table('damaged_salable_items')
-                    ->where('product_id', $request->productId[$i])
-                    ->increment('quantity', $request->quantity[$i]);
-                }else{
-                    $insertDamagedItems = DB::table('damaged_salable_items')->insert(
-                    ['product_id' => $request->productId[$i],'damaged_selling_price'=>$request->dprice[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
-                }
             }else{
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
-                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'status' => "lost", 'created_at' => $request->Date]
-                );
-
+                    ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "lost", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]
+                );            
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
                     ->latest()
                     ->first();
-
-                $insertLostItems = DB::table('lost_items')->insert(
-                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
-                    DB::table('salable_items')
-                        ->where('product_id', $request->productId[$i])
-                        ->decrement('quantity', $request->quantity[$i]);
             }
-
-            
             $admin = Admin::all();
                 foreach($admin as $admins){
-                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->quantity[$i],$request->status[$i],$request->authName));
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$data->stock_adjustments_id));
                 }
         }
         

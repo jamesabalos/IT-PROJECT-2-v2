@@ -7,6 +7,7 @@ use App\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Auth;
+use DB;
 class NotificationController extends Controller
 {
     public function MarkAsRead($id){
@@ -24,8 +25,8 @@ class NotificationController extends Controller
 		return back();      
      
 	}
-	public function nav($id){
-		$stocks = DB::table('stock_adjustments')->where('stock_adjustments_id',$id);
-		return ;
+	public function stockStatus($id,$stat){		
+		$update = DB::table('stock_adjustments')->where('stock_adjustments_id',$id)->update(['status'=>$stat]);
+		return back();
 	}
 }

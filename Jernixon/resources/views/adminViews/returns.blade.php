@@ -1202,10 +1202,8 @@ function customer(){
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Description</th>
-                                                <th class="text-left">Supplier</th>
-                                                <th class="text-left">Type</th>
-                                                <th class="text-left">Quantity in inventory</th>
-                                                <th class="text-left">Quantity to be returned</th>
+                                                <th class="text-left">Damaged Quantity</th>
+                                                <th class="text-left">Damaged Salable Quantity</th>
                                             </tr>
                                         </thead>
 
@@ -1213,11 +1211,7 @@ function customer(){
                                         </tbody>
                                     </table>
                                 </div>
-                                        <div class="autocomplete" style="width:100%;">
-                                            <input autocomplete="off" type="text" id="searchItemInput2" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item">
-                                            {{-- <div id="searchResultDiv" class="searchResultDiv">
-                                            </div> --}}
-                                        </div>
+                                        
                             </div>
                         </div>
                     </div>

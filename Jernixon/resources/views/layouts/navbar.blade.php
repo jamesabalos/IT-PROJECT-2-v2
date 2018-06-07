@@ -789,7 +789,7 @@
 @yield('js_link')
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    {{-- $(document).ready(function() { --}}
         //var options = {
         //    valueNames: ['einheit'],
         //    page: 13,
@@ -812,14 +812,14 @@
         //         i--;
         //         listObj.show(i, 3); 
         //     });
-         $('#listOfNotif').twbsPagination({
+         {{-- $('#listOfNotif').twbsPagination({
         totalPages: 10,
         visiblePages: 7,
         onPageClick: function (event, page) {
             $('#oldNotif').text('Page ' + page);
         }
     });
-    });
+    }); --}}
 </script>
 
 </html>

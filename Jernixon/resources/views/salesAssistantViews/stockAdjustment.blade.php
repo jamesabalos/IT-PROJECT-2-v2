@@ -58,17 +58,18 @@ function addRow(divElement){
     }        
 
     if( items.indexOf(divElement.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
-        var thatTable = document.getElementById("stockTable");
+          var thatTable = document.getElementById("stockTable");
         var newRow = thatTable.insertRow(-1);
-        // newRow.insertCell(-1).innerHTML = "<td><input type='text' class='form-control' ></td>";
+       
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='itemName[]' value='" +divElement.firstChild.innerHTML+ "'>"+divElement.firstChild.innerHTML+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
-      //   newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' value='1' max='" +button.getAttribute('data-quantity')+ "' class='form-control' ></td>";
+      
         newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='Damaged'>Damaged</option><option class='form-control'  value='Damaged Saleable'>Damaged Saleable</option><option class='form-control' value='Lost'>Lost</option></select></td>";
 
-        newRow.insertCell(-1).innerHTML = "<td><textarea name='remarks' cols='20' rows='3'></textarea></td>";
+        newRow.insertCell(-1).innerHTML = "<td><div class='form-group'> <textarea class='form-control' rows='3' name='remarks[]' required></textarea></div></td>";
 
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
+
 
     }
 
@@ -268,10 +269,13 @@ $(document).ready(function(){
         "ajax":  "{{ route('salesAssistant.getStockAdjustment') }}",
         "columns": [
             {data: 'employee_name'},
-            {data: 'description',name: 'products.description'},
-            {data: 'quantity'},
-            {data: 'status'},
             {data: 'created_at'},
+            {data: 'description', name: 'products.description'},
+            {data: 'quantity'},
+            {data: 'type'},
+            {data: 'status', class:'stat'},
+            {data: 'remarks',
+            },
         ]
     });
 
@@ -391,8 +395,9 @@ $(document).ready(function(){
                                     <th class="text-left">Date of Adjustment</th>
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Qty</th>
+                                    <th class="text-left">Type</th>
                                     <th class="text-left">Status</th>
-                                    <th class="text-left">Remarks</th>
+                                    <th class="text-left" style="width:25%;">Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>

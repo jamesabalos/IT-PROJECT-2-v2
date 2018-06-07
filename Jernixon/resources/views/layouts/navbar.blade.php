@@ -263,10 +263,10 @@
             }
 
             //save file
-            $handle = fopen('inventory_jernixon_backup.sql','w+');
-            fwrite($handle,$return);
-            fclose($handle);
-            echo "console.log('backup successful!')";
+            // $handle = fopen('inventory_jernixon_backup.sql','w+');
+            // fwrite($handle,$return);
+            // fclose($handle);
+            // echo "console.log('backup successful!')";
 
 
             

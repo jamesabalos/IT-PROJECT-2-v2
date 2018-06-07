@@ -1218,28 +1218,12 @@ function customer(){
 
                                         <thead>
                                             <tr>
-<<<<<<< HEAD
                                                 <th class="text-left">Description</th>
                                                 <th class="text-left">Damaged Quantity</th>
                                                 <th class="text-left">Damaged Salable Quantity</th>
-=======
-                                                <!-- <th class="text-left">Description</th>
-                                                <th class="text-left">Supplier</th>
-                                                <th class="text-left">Type</th>
-                                                <th class="text-left">Quantity in inventory</th>
-                                                <th class="text-left">Quantity to be returned</th> -->
-                                                <th class="text-left">Qty</th>
-                                                <th class="text-left">Unit</th>
-                                                <th class="text-left">Description</th>
-                                                <th class="text-left">Unit Price</th>
-                                                <th class="text-left">Amount</th>
                                                 <th class="text-left">Check item to return</th>
-                                                <th class = "text-left">Damaged</th>
-                                                <th class = "text-left">Damaged Saleable</th>
                                                 <th class="text-left">Quantity in inventory</th>
                                                 <th class="text-left">Quantity to be returned</th> 
-
->>>>>>> d795c0d3db74a250b7ed38b418ccf9a8850b9a23
                                             </tr>
                                         </thead>
 

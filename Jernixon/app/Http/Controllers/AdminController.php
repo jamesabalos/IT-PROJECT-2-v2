@@ -11,6 +11,7 @@ use App\Physical_count_item;
 use App\Physical_count;
 use Datatables;
 use DB;
+use App\model;
 use Auth;
 use Hash;
 use App\Notifications\ReorderNotification;
@@ -125,10 +126,11 @@ class AdminController extends Controller
         
         $data = DB::table('salable_items')
             ->join('products', 'products.product_id' , '=' , 'salable_items.product_id')
-            ->select('products.product_id', 'description', 'wholesale_price' , 'retail_price' , 'quantity')
-            ->where([['status' , '=' , 'available'],['quantity', '>', 0]])
-            ->get();
-            $arrayCount1 = count($data);
+
+            ->select('products.product_id', 'description','products.modelname', 'wholesale_price' , 'retail_price' , 'quantity')
+            ->where([['status' , '=' , 'available'],['quantity', '>', 0]]);
+
+
 
             // $data2 = DB::table('damaged_salable_items')
             // ->join('products', 'products.product_id' , '=' , 'damaged_salable_items.product_id')
@@ -136,12 +138,12 @@ class AdminController extends Controller
             // ->select('products.product_id', 'description', 'retail_price' , 'wholesale_price' , 'damaged_salable_items.quantity')
             // ->where([['status' , '=' , 'available'],['damaged_salable_items.quantity', '>', 0]]);
 
-            for($i = 0;$i<$arrayCount1;$i++){
+            // for($i = 0;$i<$arrayCount1;$i++){
 
-                array_push($allItems, ['status'=>'undamaged','description'=>$data[$i]->description, 'wholesale_price'=>$data[$i]->wholesale_price,'retail_price'=>$data[$i]->retail_price, 'quantity'=>$data[$i]->quantity]);
-            }
+            //     array_push($allItems, ['status'=>'undamaged','description'=>$data[$i]->description, 'wholesale_price'=>$data[$i]->wholesale_price,'retail_price'=>$data[$i]->retail_price, 'quantity'=>$data[$i]->quantity]);
+            // }
             
-        return Datatables::of($allItems)
+        return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "<button class='btn btn-info' id='$data->product_id' ng-click='addButton(\$event)'><i class = 'fa fa-plus'></i>Add</button>";
             })
@@ -152,12 +154,13 @@ class AdminController extends Controller
         $data = DB::table('damaged_salable_items')
             ->join('products', 'products.product_id' , '=' , 'damaged_salable_items.product_id')
             ->join('salable_items', 'salable_items.product_id' , '=' , 'damaged_salable_items.product_id')
-            ->select('products.product_id', 'description', 'retail_price' , 'wholesale_price' , 'damaged_salable_items.quantity')
+            ->select('products.product_id', 'description','products.modelname', 'retail_price' , 'wholesale_price' , 'damaged_salable_items.quantity')
             ->where([['status' , '=' , 'available'],['damaged_salable_items.quantity', '>', 0]]);
 
         return Datatables::of($data)
             ->addColumn('action',function($data){
-                return "<button class='btn btn-info' id='".$data->product_id."_damaged' data-status='damaged' ng-click='addButton(\$event)' onclick='addItemToCart(this)'><i class = 'fa fa-plus'></i>Add</button>";
+                // return "<button class='btn btn-info' id='".$data->product_id."_damaged' data-status='damaged' ng-click='addButton(\$event)' onclick='addItemToCart(this)'><i class = 'fa fa-plus'></i>Add</button>";
+                return "<button class='btn btn-info' id='".$data->product_id."_damaged' data-status='damaged' ng-click='addButton(\$event)'><i class = 'fa fa-plus'></i>Add</button>";
             })
             ->make(true);
 
@@ -355,7 +358,8 @@ public function createPurchasesFilter(Request $request){
     public function getReturns(){
         $data = DB::table('returns')
                 ->join('sales','returns.or_number','=','sales.or_number')
-                ->select('returns.or_number', 'returns.created_at','returns.customer_name','address')
+                // ->select('returns.or_number', 'returns.created_at','returns.customer_name','address')
+                ->select('returns.or_number', 'returns.created_at','returns.customer_name')
                 ->orderBy('returns.created_at', 'desc')
                 ->groupBy('or_number');
         return Datatables::of($data)
@@ -417,7 +421,8 @@ public function createPurchasesFilter(Request $request){
         $data = DB::table('returns')
                 ->join('products','products.product_id','=','returns.product_id')
                 ->join('sales', 'sales.product_id', '=', 'returns.product_id')
-                ->select('sales.created_at','sales.quantity','sales.unit','returns.product_id','returns.customer_name','description', 'damagedQuantity','undamagedQuantity','damagedSalableQuantity', 'sales.price', 'returns.created_at','address')->where('returns.or_number', '=',$request->ORNumber)
+                // ->select('sales.created_at','sales.quantity','sales.unit','returns.product_id','returns.customer_name','description', 'damagedQuantity','undamagedQuantity','damagedSalableQuantity', 'sales.price', 'returns.created_at','address')->where('returns.or_number', '=',$request->ORNumber)
+                ->select('sales.created_at','sales.quantity','sales.unit','returns.product_id','returns.customer_name','description', 'damagedQuantity','undamagedQuantity','damagedSalableQuantity', 'sales.price', 'returns.created_at')->where('returns.or_number', '=',$request->ORNumber)
                 ->get();
         return $data;
 
@@ -880,12 +885,22 @@ public function createPurchasesFilter(Request $request){
         return $stocks;
     }
     
+    public function getModels($model){
+         $data = DB::table('model')
+            ->select('modelname')
+            ->where([['modelname','LIKE','%'.$model.'%']])
+            ->orderBy('modelname','asc')
+             ->limit(5)
+             ->get();
+        
+        return $data;
+    }
 
     public function getItemsForItems(){
 
         $data = DB::table('products')
             ->join('salable_items', 'products.product_id', '=', 'salable_items.product_id')
-            ->select('status','products.product_id','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'products.created_at', 'products.updated_at');
+            ->select('status','products.product_id','modelname','description', 'wholesale_price', 'retail_price', 'quantity', 'reorder_level', 'products.created_at', 'products.updated_at');
         // ->where('status','=','available');
         // $string = "";
         // if(true){
@@ -928,6 +943,7 @@ public function createPurchasesFilter(Request $request){
         //$item->quantityInStock = $request->input('quantityInStock');
         $item->reorder_level = $request->input('reorderLevel');
         //$item->retailPrice = $request->input('retailPrice');
+        $item->modelname = $request->input('model');
         $item->save();
 
         $prod_id = DB::table('products')
@@ -958,6 +974,14 @@ public function createPurchasesFilter(Request $request){
         return response($request->all());
         // return "success";
         // return redirect('/items')->with('success','Success adding item');
+    }
+    public function storeNewModel(Request $request){
+        $insert = DB::table('model')->insert(
+                    ['modelname' => $request->model]
+            );
+                return response($request->all());
+
+        
     }
     public function editItem(Request $request){
         $this->validate($request,[

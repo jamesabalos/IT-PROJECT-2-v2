@@ -268,6 +268,9 @@
             fclose($handle);
             echo "console.log('backup successful!')";
 
+
+            
+
         ?>
     }
     $(document).ready(function(){

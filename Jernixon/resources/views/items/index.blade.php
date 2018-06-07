@@ -27,7 +27,10 @@ class="active"
                     <div class = "content">
                         <a href = "#addNewItemModal" data-toggle="modal" >
                             <button type="button" class="btn btn-success"><i class = "fa fa-plus"></i> Add new Item</button>
-                        </a>        
+                        </a> 
+                        <a href = "#addNewModelModal" data-toggle="modal" >
+                            <button type="button" class="btn btn-success"><i class = "fa fa-plus"></i> Add new Model</button>
+                        </a> 
                         <!--
 <form class = "form-inline">
 <div class="row">
@@ -69,6 +72,7 @@ class="active"
                                 <thead>
                                     <tr>
                                         <th class="text-left">Description</th>
+                                        <th class="text-left">Model</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left" style="width: 5%">Purchase Price</th>
                                         <th class="text-left" style="width: 5%">Selling Price</th>
@@ -103,15 +107,93 @@ class="active"
 @endsection
 
 @section('jqueryScript')
+<style>
+    .autocomplete {
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
+    }
+    .searchResultDiv {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .searchResultDiv div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff; 
+        border-bottom: 1px solid #d4d4d4; 
+    }
+    .searchResultDiv div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9; 
+    }
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important; 
+        color: #ffffff; 
+    }
+</style>
 <script type="text/javascript">
+    function choseModel(div){
+        document.getElementById("searchModelInput").value = div.firstChild.innerHTML;
+        document.getElementById("searchModelDiv").innerHTML = "";
+    }
+    function searchModel(a){
+//        document.getElementById("errorDivCreateReturns").innerHTML= "";
+		var model = a.value;
+		var fullRoute = "/admin/items/getModels/"+model;
+        if(a.value === ""){
+            document.getElementById("searchModelDiv").innerHTML ="";
+//            $("#returnItemTbody tr").remove();
+        }else{
+            $.ajax({
+                method: 'get',
+                //url: 'items/' + document.getElementById("inputItem").value,
+                url: fullRoute,
+                
+                success: function(data){
+                    var searchModelDiv = document.getElementById("searchModelDiv");
+                    searchModelDiv.innerHTML = "";
 
+
+                    for (var i = 0;  i< data.length; i++) {
+                        var node = document.createElement("DIV");
+                        node.setAttribute("onclick","choseModel(this)")
+//                        node.setAttribute("data-modal",a.id)
+                        var pElement = document.createElement("P");
+                        //add the price
+                        //pElement.setAttribute("data-price" , data[i].) 
+                        var textNode = document.createTextNode(data[i].modelname);
+                        pElement.appendChild(textNode);
+                        node.appendChild(pElement);    
+                        // if(a.id === "searchORNumberInput"){
+                            searchModelDiv.appendChild(node);  
+                        // }else{
+                        //     refundORNumberDiv.appendChild(node);  
+                        // }
+                    }
+                    console.log(data)  
+                }
+            });
+
+        }
+        
+    }
     function insertDataToModal(button){
         var data  = $(button.parentNode.parentNode.parentNode.innerHTML).slice(0,-1);
         document.getElementById("itemDescription").value = data[0].innerHTML;
-        document.getElementById("itemQuantity").value = data[1].innerHTML;
-        document.getElementById("itemWholeSalePrice").value = data[2].innerHTML;
-        document.getElementById("itemRetailPrice").value = data[3].innerHTML;
-        document.getElementById("itemReorderLevel").value = data[4].innerHTML;
+        document.getElementById("itemModel").value = data[1].innerHTML; 
+        document.getElementById("itemQuantity").value = data[2].innerHTML;
+        document.getElementById("itemWholeSalePrice").value = data[3].innerHTML;
+        document.getElementById("itemRetailPrice").value = data[4].innerHTML;
+        document.getElementById("itemReorderLevel").value = data[5].innerHTML;
         document.getElementById("productId").value = button.parentNode.parentNode.lastChild.id;
 
         $("#errorDivEditItem").html("");
@@ -327,9 +409,13 @@ class="active"
             @endif
 
             "columns": [
-            // {data: 'product_id'},
-            {data: 'description', 
-            name: 'products.description'},
+
+                // {data: 'product_id'},
+                {data: 'description', 
+                name: 'products.description'},
+                {data: 'modelname', 
+                name: 'products.modelname'},
+
                 {data: 'quantity', 
                 name: 'salable_items.quantity'},
                 {data: 'wholesale_price', 
@@ -337,7 +423,9 @@ class="active"
                 {data: 'retail_price', 
                 name: 'salable_items.retail_price'},
                 {data: 'reorder_level'},
-                // {data: 'created_at'},j
+
+                // {data: 'created_at'},
+
                 // {data: 'updated_at'},
                 {data: 'action'},
                 ]
@@ -382,6 +470,60 @@ class="active"
                     $("#errorDivAddNewItem").slideDown("slow", function() {                    
                         var response = data.responseJSON;
                         $("#errorDivAddNewItem").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
+                    });
+                    // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
+                    //alert(Object.keys(error.errors).length)
+                    //console.log(error)
+
+                }
+            })
+
+        })
+        
+        $('#formAddNewModel').on('submit',function(e){
+            e.preventDefault(); //prevent the page to load when submitting form
+            //key value pair of form
+            var data = $(this).serialize();
+            $.ajax({
+                type:'POST',
+                // url:'admin/storeNewItem',
+                url: "{{route('admin.newModel')}}",
+                dataType:'json',
+                /*  data:{
+                        'description':'',
+                        'quantityInStock':4,
+                        'wholeSalePrice':10,
+                        'retailPrice':15,
+                    },
+                */
+                //data:{data},
+                data:data,
+                //_token:$("#_token"),
+                success:function(data){
+                    $("#errorDivAddNewModel p").remove();
+                    $("#errorDivAddNewModel").removeClass("alert-danger hidden")
+                        .addClass("alert-success")
+                        .html("<h1>Success</h1>");
+                    $("#errorDivAddNewModel").css("display:block");
+                    $("#errorDivAddNewModel").slideDown("slow",function(){
+                        document.getElementById("formAddNewModel").reset();
+                    })
+                        .delay(1000)                        
+                        .hide(1500);
+                    $("#tableItems").DataTable().ajax.reload();
+                },
+                error:function(data){   
+                    $("#errorDivAddNewModel").hide(500);
+                    $("#errorDivAddNewModel").removeClass("hidden");
+                    $("#errorDivAddNewModel").slideDown("slow", function() {                    
+                        var response = data.responseJSON;
+                        $("#errorDivAddNewModel").html(function(){
                             var addedHtml="";
                             for (var key in response.errors) {
                                 addedHtml += "<p>"+response.errors[key]+"</p>";
@@ -523,11 +665,77 @@ class="active"
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Model:')}}
+                                </div>
+                                <div class="autocomplete col-md-9" >
+                                   <input autocomplete="off" id="searchModelInput" type="text" onkeyup="searchModel(this)" name="model" class="form-control border-input" required>
+                                        <div id="searchModelDiv" class="searchResultDiv">
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
 
                         @include('inc.messages')
                     </div>
                 </div>
                 <div class="alert alert-danger hidden text-center" id="errorDivAddNewItem">
+                </div>
+                <div class="row">
+                    <div class="text-right">                                           
+                        <div class="col-md-12">   
+                            {{--  {{Form::submit('Submit',['class'=>'btn btn-primary'])}}  --}}
+                            <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addNewModelModal" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"><i class=" fa fa-plus" style="margin-right: 5px"></i> Add New Model</h3>
+            </div>
+            <div class = "modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-plus"></span>
+                            New Model
+                        </strong>
+                    </div>
+                    {!! Form::open(['method'=>'post','id'=>'formAddNewModel']) !!}
+                    <div class="panel-heading">
+                        <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                        <div class="form-group">
+                            <div class="row">
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('model', 'Model:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('model','',['class'=>'form-control','placeholder'=>'Modelname'])}}
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        @include('inc.messages')
+                    </div>
+                </div>
+                <div class="alert alert-danger hidden text-center" id="errorDivAddNewModel">
                 </div>
                 <div class="row">
                     <div class="text-right">                                           
@@ -585,6 +793,16 @@ class="active"
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('itemModel', 'Model:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('itemModel','',['class'=>'form-control','id'=>'itemModel','disabled'])}}
+                                    {{--  <input type="text" id="itemModel" class="form-control" disabled>  --}}
+                                </div>
+                        </div>
+                       
                         <div class="form-group">                                
                             <div class="row">
                                 <div class="col-md-3">

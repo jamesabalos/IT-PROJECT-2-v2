@@ -263,10 +263,13 @@
             }
 
             //save file
-            $handle = fopen('inventory_jernixon_backup.sql','w+');
-            fwrite($handle,$return);
-            fclose($handle);
-            echo "console.log('backup successful!')";
+            // $handle = fopen('inventory_jernixon_backup.sql','w+');
+            // fwrite($handle,$return);
+            // fclose($handle);
+            // echo "console.log('backup successful!')";
+
+
+            
 
         ?>
     }
@@ -409,7 +412,7 @@
                             <li class="dropdown">
                                 <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown" > <i class="fa fa-bell"></i>
                                 @if(auth()->user()->unreadnotifications->count())
-                                    <span class="badge badge-danger">{{auth()->user()->unreadnotifications->count()}}</span>
+                                    <span class="badge badge-danger" style="position:relative;top:-14px;left:-12px;">{{auth()->user()->unreadnotifications->count()}}</span>
                                 @endif
                                 </a>
                             </li>

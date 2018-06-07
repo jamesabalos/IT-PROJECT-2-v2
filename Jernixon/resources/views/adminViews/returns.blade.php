@@ -746,7 +746,7 @@ ng-app="ourAngularJsApp"
               "columns": [
                   {data: 'or_number'},
                   {data: 'customer_name'},
-                  {data: 'address'},
+                //   {data: 'address'},
                   {data: 'action'},
               ]
           });
@@ -952,7 +952,7 @@ function customer(){
                                         <th class="text-left">Action</th> -->
                                         <th>OR Number</th>
                                         <th>Sold to</th>
-                                        <th>Address</th>
+                                        {{-- <th>Address</th> --}}
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -977,7 +977,7 @@ function customer(){
                                         <th class="text-left" style = "width: 20%;">Delivery Receipt No.</th>
                                         <!-- <th class="text-left">Item</th> -->
                                         <th class="text-left">Supplier</th>
-                                        <th class="text-left">Address</th>
+                                        {{-- <th class="text-left">Address</th> --}}
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
@@ -1142,7 +1142,7 @@ function customer(){
                         </div> --}}
                     </div>
                     {!! Form::close() !!}
-
+{{-- 
                     {!! Form::open(['method'=>'post','id'=>'formsupplierReturnItem']) !!}
                     <div id = "supplierDiv" class = "hidden">
                         <div class="panel panel-default">
@@ -1153,19 +1153,6 @@ function customer(){
                                 </strong>
                             </div>
                             <div class="panel-body">
-
-                                {{-- <div class="form-group">                                
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            {{Form::label('Delivery Receipt No.:')}}
-                                        </div>
-                                        <div class="col-md-9">
-                                             <input autocomplete="off" id="searchDRNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="deliveryReceiptNumber" class="form-control border-input">
-                                            <div id="resultDRNumberDiv" class="searchResultDiv">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> --}}
                                 
                                 <div class="form-group">
                                     <div class="row">
@@ -1235,7 +1222,7 @@ function customer(){
                             </div>
                         </div>
                     </div>
-                    {!! Form::close() !!}
+                    {!! Form::close() !!} --}}
         
                 <div id="errorDivCreateReturns" class="hidden">
 

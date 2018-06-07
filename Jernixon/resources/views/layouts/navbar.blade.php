@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -227,7 +229,47 @@
         $('.readNotif').removeClass('hidden');
         $('#reorder').removeClass('active');
     }
+    function backUpDatabase(){
+        <?php
+            $connection = mysqli_connect('localhost','root','','inventory_jernixon');
+            
+            $tables = array();
+            $result = mysqli_query($connection,"SHOW TABLES");
+            while( $row = mysqli_fetch_row($result) ){
+                $tables[] = $row[0];
+            }
+            $return = '';
 
+            foreach($tables as $table){
+                $result = mysqli_query($connection,"SELECT * FROM ".$table);
+                $num_fields = mysqli_num_fields($result);
+
+                $return .= 'DROP TABLE '.$table.';';
+                $rows2 = mysqli_fetch_row(mysqli_query($connection,'SHOW CREATE TABLE '.$table));
+                $return .= "\n\n".$rows2[1].";\n\n";
+
+                for($i = 0; $i < $num_fields; $i++){
+                    while($row = mysqli_fetch_row($result)){
+                        $return .= 'INSERT INTO '.$table.' VALUES(';
+                        for( $j=0; $j < $num_fields; $j++ ){
+                            $row[$j] = addslashes($row[$j]);
+                            if( isset($row[$j]) ){ $return .= '"'.$row[$j].'"'; }else { $return .= '""'; }
+                            if( $j<$num_fields-1 ){ $return .= ',';}
+                        }
+                        $return .= ");\n";
+                    }
+                }
+                $return .= "\n\n\n";
+            }
+
+            //save file
+            $handle = fopen('inventory_jernixon_backup.sql','w+');
+            fwrite($handle,$return);
+            fclose($handle);
+            echo "console.log('backup successful!')";
+
+        ?>
+    }
     $(document).ready(function(){
 
     });
@@ -382,6 +424,12 @@
                                         
                                         <a href="#changePassword" data-toggle="modal">
                                             Change Password
+                                        </a>
+
+                                        <a href="#backUpDatabase"  data-toggle="modal">
+                                            {{--  onclick="event.preventDefault();  --}}
+                                            {{--  document.getElementById('logout-form').submit();">  --}}
+                                            Need backup
                                         </a>
                                         
                                         <a href="{{ route('admin.logout') }}" onclick="logoutRemoveCart()">
@@ -781,6 +829,32 @@
                 </div>
             </div>
         </div>
+
+        <div id="backUpDatabase" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+            <div class = "modal-dialog modal-md">
+                <div class = "modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <p></p>
+                    </div>
+                    <div class = "modal-body">
+                        <div class="text-center">
+                            <strong>
+                                <h3>Backup database?.</h3>
+                                {{-- <p>There are still <span id="itemQuantityLeft"></span> left. Do you want to continue?</p> --}}
+                            </strong>
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-center">
+                                <button id="statusAndId" type="button" onclick="backUpDatabase()" class="btn btn-success">Sales</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+    </div>
     </div>
     @yield('jqueryScript')
 

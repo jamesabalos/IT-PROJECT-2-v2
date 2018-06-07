@@ -62,7 +62,8 @@ ng-app="ourAngularJsApp"
             items[i] = thatTbody[i].childNodes[0].innerHTML;            
             // console.log(thatTbody[i].childNodes[0].value)
             // items[i] = thatTbody[i].childNodes[0].value;
-        }     
+        }
+
         if( items.indexOf(divElement.firstChild.innerHTML) == -1 ){ //if there is not yet in the table
             var thatTable = document.getElementById("inExchangeTbody");
             var newRow = thatTable.insertRow(-1);
@@ -107,6 +108,7 @@ ng-app="ourAngularJsApp"
                 document.getElementById("errorDivCreateReturns").innerHTML = "<h4>Please input the official receipt number first.</h4>";
                 return status;
             }
+
             for(var i=0; i < $("#returnItemTbody tr").length ;i++ ){
                 if( ($("#returnItemTbody tr td:nth-child(4)")[i].firstChild).checked && $("#returnItemTbody tr td:nth-child(4) :nth-child(4)")[i].value == 0 ){
                         $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
@@ -118,6 +120,7 @@ ng-app="ourAngularJsApp"
                         status = true;
                         return status;
                 }
+
                 if( !(($("#returnItemTbody tr td:nth-child(4)")[i].firstChild).checked) ) {
                     totalCheck++;
                 }
@@ -206,6 +209,7 @@ ng-app="ourAngularJsApp"
         }
 
     }
+    
     function toggleCheckbox(button){
         var data  = $(button.parentNode.parentNode.innerHTML).slice(0,-1);
         var itemName = data[0].innerHTML;
@@ -1186,6 +1190,19 @@ function customer(){
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">    
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Address', 'Address:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            {{Form::text('Address','',['class'=>'form-control','value'=>'','disabled'])}}
+                                            <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <div class="panel panel-default">
@@ -1201,9 +1218,28 @@ function customer(){
 
                                         <thead>
                                             <tr>
+<<<<<<< HEAD
                                                 <th class="text-left">Description</th>
                                                 <th class="text-left">Damaged Quantity</th>
                                                 <th class="text-left">Damaged Salable Quantity</th>
+=======
+                                                <!-- <th class="text-left">Description</th>
+                                                <th class="text-left">Supplier</th>
+                                                <th class="text-left">Type</th>
+                                                <th class="text-left">Quantity in inventory</th>
+                                                <th class="text-left">Quantity to be returned</th> -->
+                                                <th class="text-left">Qty</th>
+                                                <th class="text-left">Unit</th>
+                                                <th class="text-left">Description</th>
+                                                <th class="text-left">Unit Price</th>
+                                                <th class="text-left">Amount</th>
+                                                <th class="text-left">Check item to return</th>
+                                                <th class = "text-left">Damaged</th>
+                                                <th class = "text-left">Damaged Saleable</th>
+                                                <th class="text-left">Quantity in inventory</th>
+                                                <th class="text-left">Quantity to be returned</th> 
+
+>>>>>>> d795c0d3db74a250b7ed38b418ccf9a8850b9a23
                                             </tr>
                                         </thead>
 
@@ -1486,7 +1522,7 @@ function customer(){
         <div class = "modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Official Receipt Information</h3>
+                <h3 class="modal-title">Delivery Receipt Information</h3>
             </div>
             <div class="modal-body">
                 <div class="panel panel-default">
@@ -1527,6 +1563,11 @@ function customer(){
 
                             <thead>
                                 <tr>
+                                    <th class="text-left">Qty</th>
+                                    <th class="text-left">Unit</th>
+                                    <th class="text-left">Description</th>
+                                    <th class="text-left">Unit Price</th>
+                                    <th class="text-left">Amount</th>
                                     <th class="text-left">Type</th>
                                     <th class="text-left">Returned Quantity</th>
                                     <th class="text-left">Quantity Accepted</th>
@@ -1540,6 +1581,34 @@ function customer(){
                         </table>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-refresh"></span>
+                            Exchanged Item
+                        </strong>
+                    </div>
+                    <div class="modal-body">
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Returned Item</th>
+                                        <th class="text-left">New Item</th>
+                                        <th class="text-left">Quantity</th>
+                                        <!-- <th class="text-left">Purchase Price</th> -->
+                                    </tr>
+                                </thead>
+
+                                <tbody id="veiwReturnedItemTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
@@ -1554,32 +1623,31 @@ function customer(){
 
 
 <div id="returnOrRefundPrompt" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
-        <div class = "modal-dialog modal-md">
-            <div class = "modal-content">
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">&times;</button>
-                    <p></p>
-                </div>
-                <div class = "modal-body">
-                    <div class="text-center">
-                        <strong>
-                            <h3>If you want to exchange item/s, please click Sales.</h3>
-                            {{-- <p>There are still <span id="itemQuantityLeft"></span> left. Do you want to continue?</p> --}}
-                        </strong>
-                    </div>
-                    <div class="panel-body">
-                        <div class="text-center">
-    
-                            <button id="statusAndId" data-status="" data-item="" type="button" onclick="window.location.href='/admin/sales'" class="btn btn-success">Sales</button>
-                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-    
-                        </div>
-                    </div>
-                </div>    
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <p></p>
             </div>
-        </div>
-</div>
+            <div class = "modal-body">
+                <div class="text-center">
+                    <strong>
+                        <h3>If you want to exchange item/s, please click Sales.</h3>
+                        {{-- <p>There are still <span id="itemQuantityLeft"></span> left. Do you want to continue?</p> --}}
+                    </strong>
+                </div>
+                <div class="panel-body">
+                    <div class="text-center">
 
+                        <button id="statusAndId" data-status="" data-item="" type="button" onclick="window.location.href='/admin/sales'" class="btn btn-success">Sales</button>
+                        <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </div>
+</div>
 
 @endsection
 

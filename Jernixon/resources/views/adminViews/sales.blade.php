@@ -675,8 +675,12 @@ function changeToDamage(){
                         </div>
                     </div>
                 </div>
-                <button type="button" onclick="changeToUndamage()">Undamage</button>
-                <button type="button" onclick="changeToDamage()">Damage</button>
+				<form action="">
+						<input type="radio" name="status" onclick="changeToUndamage()"> Undamaged&nbsp;&nbsp;&nbsp; 
+  						<input type="radio" name="status" onclick="changeToDamage()" > Damaged 
+				</form>
+				<br>
+
                 {{-- <div class="form-group">
                     <div class="row">
                         <div class="col-md-0" margin> --}}

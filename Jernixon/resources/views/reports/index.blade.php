@@ -379,6 +379,8 @@ class="active"
             $("#damgaedButton").removeClass('active');
             $("#damagedItemsDiv").addClass('hidden');
             $("#lostItemsDiv").addClass("hidden");
+            $("#stockAdjustmentButton").removeClass('active');
+            $("#stockAdjustmentDiv").addClass('hidden');
     });
 
     
@@ -393,6 +395,8 @@ class="active"
         $("#damgaedButton").addClass('active');
         $("#lostItemsDiv").addClass("hidden");
         $("#soldDiv").addClass('hidden');
+        $("#stockAdjustmentButton").removeClass('active');
+        $("#stockAdjustmentDiv").addClass('hidden');
         $('#damagedItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -422,6 +426,8 @@ class="active"
         $("#lostButton").addClass('active');
         $("#damgaedButton").removeClass('active');
         $("#lostItemsDiv").removeClass("hidden");
+        $("#stockAdjustmentButton").removeClass('active');
+        $("#stockAdjustmentDiv").addClass('hidden');
         $('#lostItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -592,15 +598,15 @@ class="active"
                                 </p>  
                             </div>
                                 <div class="content table-responsive table-full-width table-stripped">
-                                    <table id="stockAdjustmentTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                    <table id="stockAdjustmentTable" class="table table-striped table-bordered dt-responsive" style="width:100%">
                                         <thead >
                                             <tr>
-                                                <th>Employee name</th>
+                                                <th>Adjusted By</th>
                                                 <th>Description</th>
                                                 <th>Quantity</th>
                                                 <th>Status</th>
-                                              <th>Date</th>
-                                              <th>Remarks</th>
+                                                <th>Date of Adjustment</th>
+                                                <th>Remarks</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

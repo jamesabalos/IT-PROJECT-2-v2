@@ -443,7 +443,7 @@ $(document).ready(function(){
                         <table class="table table-striped table-bordered dt-responsive" style="width:100%" id="stockAdjustmentDataTable">
                             <thead>
                                 <tr>
-                                    <th class="text-left">User Name</th>
+                                    <th class="text-left">Adjusted By</th>
                                     <th class="text-left">Date of Adjustment</th>
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Qty</th>

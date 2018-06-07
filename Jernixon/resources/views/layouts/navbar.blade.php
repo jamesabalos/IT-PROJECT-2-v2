@@ -811,14 +811,14 @@
                               <li><a href="#">5</a></li>
                             </ul> -->
 
-                            <ul class="pager">
+                            <!-- <ul class="pager">
                                  <li style = "float: left;">
                                       <a href="#">&laquo; Previous</a>
                                  </li>
                                  <li style = "float: right;">
                                       <a href="#">Next &raquo;</a>
                                  </li>
-                            </ul>
+                            </ul> -->
 
                                     </ul>
                                 </div>

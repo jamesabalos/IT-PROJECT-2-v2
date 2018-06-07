@@ -300,9 +300,8 @@ $(document).ready(function(){
             {data: 'status', class:'stat',render: function ( data, type, row ) {
                     if (data == "Pending") {                        
                          return '<div class="text-center"><button class="controll btn btn-success" value="Accepted">Accept</button><button class="controll btn btn-danger" value="Declined" >Decline</button></div>';
-                        }
-                    else {
-                        return data;
+                    }else {
+                         return data;
                         }
                     }
             },
@@ -319,8 +318,6 @@ $(document).ready(function(){
         var row = table.row(tr);
         stockid(row.data(),button);
     });
-
-  
 
     $('#formAdjustment').on('submit',function(e){
         e.preventDefault();
@@ -440,7 +437,7 @@ $(document).ready(function(){
                         </div>  
                     </div>
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-striped table-bordered dt-responsive" style="width:100%" id="stockAdjustmentDataTable">
+                        <table class="table table-striped table-bordered dt-responsive pre" style="width:100%" id="stockAdjustmentDataTable">
                             <thead>
                                 <tr>
                                     <th class="text-left">Adjusted By</th>

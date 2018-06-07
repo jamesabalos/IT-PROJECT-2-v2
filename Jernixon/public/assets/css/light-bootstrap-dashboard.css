@@ -112,6 +112,18 @@ p {
     line-height: 1.5;
 }
 
+.pre{
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.responsive-width {
+    font-size: 3vw;
+}
+
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
     color: #000;
     font-weight: 300;
@@ -1153,6 +1165,15 @@ input.search {
     top: 50%;
     margin-top: -15px;
 }
+
+/*reports button*/
+.btns{
+    width:24%;
+    font-size: 20px;
+    margin-bottom:4px;
+    white-space: normal;
+}
+/*end */
 
 .alert button.close {
     position: absolute;

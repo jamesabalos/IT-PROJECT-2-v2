@@ -388,7 +388,7 @@ $(document).ready(function(){
                         </div>
                     </div>
                     <div class="content table-responsive table-full-width">
-                        <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%" id="stockAdjustmentDataTable">
+                        <table class="table table-striped table-bordered dt-responsive pre" style="width:100%" id="stockAdjustmentDataTable">
                             <thead>
                                 <tr>
                                     <th class="text-left">User Name</th>

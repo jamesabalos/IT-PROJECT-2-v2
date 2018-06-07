@@ -1237,9 +1237,6 @@ function customer(){
                     </div>
                     {!! Form::close() !!}
         
-                
-
-                
                 <div id="errorDivCreateReturns" class="hidden">
 
                         </div>

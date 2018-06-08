@@ -1009,11 +1009,11 @@ function changeToDamage(){
                             },
                             {
                                 "title": "Purchase Price",
-                                "data": "wholesale_price"
+                                "data": "wholesale_price", className: 'text-right'
                             },
                             {
                                 "title": "Selling Price",
-                                "data": "retail_price"
+                                "data": "retail_price", className: 'text-right'
                             },
                             {
                                 "title": "Add Item",
@@ -1147,11 +1147,11 @@ function changeToDamage(){
                    },
                    {
                        "title": "Selling Price",
-                       "data": "retail_price"
+                       "data": "retail_price", className: 'text-right'
                    },
                    {
                        "title": "Damaged Item Selling Price",
-                       "data": "wholesale_price"
+                       "data": "wholesale_price", className: 'text-right'
                    },
                    {
                        "title": "Add Item",

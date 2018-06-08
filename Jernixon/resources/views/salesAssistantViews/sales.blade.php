@@ -1110,7 +1110,7 @@ var _this = this;
                             // },
                             {
                                 "title": "Selling Price",
-                                "data": "retail_price"
+                                "data": "retail_price", className: 'text-right'
                             },
                             {
                                 "title": "Add Item",

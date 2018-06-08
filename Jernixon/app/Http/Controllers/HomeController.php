@@ -153,10 +153,9 @@ class HomeController extends Controller
                ->where('or_number', $request->officialReceiptNumber)
                ->decrement('quantity', $request->totalQuantity[$i]);
         }
-
         return $request->all();
-
     }
+
     public function createReturnsFilter(Request $request){
         $data = DB::table('returns')
         ->select('or_number', 'created_at')
@@ -170,27 +169,29 @@ class HomeController extends Controller
             <a href = '#viewReturn' data-toggle='modal' >
                 <button onclick='getItems(this)' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
             </a>
-
             ";
-
-
         })
         ->make(true);
     }
     public function getReturns(){
         $data = DB::table('returns')
-            ->select('or_number', 'created_at')
-            ->distinct();
+                ->join('sales','returns.or_number','=','sales.or_number')
+                // ->select('returns.or_number', 'returns.created_at','returns.customer_name','address')
+                ->select('returns.or_number', 'returns.created_at','returns.customer_name')
+                ->orderBy('returns.created_at', 'desc')
+                ->groupBy('or_number');
+        // $data = DB::table('returns')
+        //     ->select('or_number', 'created_at')
+        //     ->distinct();
+            // ->select('or_number', 'created_at', 'customer_name')
+            // ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
                 <a href = '#viewReturn' data-toggle='modal' >
                     <button onclick='getItems(this)' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
                 </a>
-
                 ";
-
-
             })
             ->make(true);
     }
@@ -216,6 +217,7 @@ class HomeController extends Controller
             // 'productId' => 'required',
             'status' => 'required',
             'quantity' => 'required',
+            'remarks' => 'required',
             'Date' => 'required'
         ]);
 

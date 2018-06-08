@@ -363,7 +363,7 @@ class="active"
           {data: 'totalQuantity',name:'quantity'},
         //   {data: 'price'},
         //   {data: 'created_at'},
-          {data: 'totalPrice',name:'price'},
+          {data: 'totalPrice',name:'price', className: 'text-right'},
         ] 
     });
 
@@ -379,6 +379,8 @@ class="active"
             $("#damgaedButton").removeClass('active');
             $("#damagedItemsDiv").addClass('hidden');
             $("#lostItemsDiv").addClass("hidden");
+            $("#stockAdjustmentButton").removeClass('active');
+            $("#stockAdjustmentDiv").addClass('hidden');
     });
 
     
@@ -393,6 +395,8 @@ class="active"
         $("#damgaedButton").addClass('active');
         $("#lostItemsDiv").addClass("hidden");
         $("#soldDiv").addClass('hidden');
+        $("#stockAdjustmentButton").removeClass('active');
+        $("#stockAdjustmentDiv").addClass('hidden');
         $('#damagedItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -422,6 +426,8 @@ class="active"
         $("#lostButton").addClass('active');
         $("#damgaedButton").removeClass('active');
         $("#lostItemsDiv").removeClass("hidden");
+        $("#stockAdjustmentButton").removeClass('active');
+        $("#stockAdjustmentDiv").addClass('hidden');
         $('#lostItemsTable').DataTable({
         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
         "destroy": true,
@@ -483,17 +489,17 @@ class="active"
 @endsection
 
 @section('right')  
-<div class="container-fluid">
+<div class="container-fluid">;
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="header">
                     <div class = "content" >
                         <div id = "buttons">
-                            <button type="button" id="soldButton" class="btn btn-basic active" style="width:24.5%;font-size: 20px">Sold Items</button>
-                            <button type="button" id="damgaedButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Damaged Items</button>
-                            <button type="button" id="lostButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Lost Items</button>
-                            <button type="button" id="stockAdjustmentButton" class="btn btn-basic" style="width:24.5%; font-size: 20px">Stock Adjustments</button>
+                            <button type="button" id="soldButton" class="btn btn-basic active btn-xs btns" >Sold Items</button>
+                            <button type="button" id="damgaedButton" class="btn btn-basic btn-xs btns">Damaged Items</button>
+                            <button type="button" id="lostButton" class="btn btn-basic btn-xs btns">Lost Items</button>
+                            <button type="button" id="stockAdjustmentButton" class="btn btn-basic btn-xs btns">Stock Adjustments</button>
                         </div>
                         <div id="errorDateRangeReport" class="hidden alert-danger text-center" style = "margin-top: 10px">
                         </div>
@@ -510,15 +516,14 @@ class="active"
                             </p>  
                         </div>
 
-                        
                             <div class="content table-responsive table-full-width table-stripped">
-                                <table id="soldTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                <table id="soldTable" class="table table-striped table-bordered dt-responsive" style="width:100%">
                                     <thead >
                                         <tr>
                                           {{-- <th>OR Number</th> --}}
                                           <th>Item name</th>
                                           <th>Total Quantity</th>
-                                          <th>Total Price</th>
+                                          <th class = "text-right">Total Price</th>
                                           {{-- <th>Qty</th> --}}
                                           {{-- <th>Purchase Price</th> --}}
                                           {{-- <th>Date of Transaction</th> --}}
@@ -542,7 +547,7 @@ class="active"
                             </p>  
                         </div>
                             <div class="content table-responsive table-full-width table-stripped">
-                                <table id="damagedItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                <table id="damagedItemsTable" class="table table-striped table-bordered dt-responsive" style="width:100%">
                                     <thead >
                                         <tr>
                                           <th>Item Name</th>
@@ -567,7 +572,7 @@ class="active"
                             </p>  
                         </div>
                             <div class="content table-responsive table-full-width table-stripped">
-                                <table id="lostItemsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                <table id="lostItemsTable" class="table table-striped table-bordered dt-responsive" style="width:100%">
                                     <thead >
                                         <tr>
                                           <th>Item Name</th>
@@ -592,15 +597,15 @@ class="active"
                                 </p>  
                             </div>
                                 <div class="content table-responsive table-full-width table-stripped">
-                                    <table id="stockAdjustmentTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                    <table id="stockAdjustmentTable" class="table table-striped table-bordered dt-responsive pre" style="width:100%">
                                         <thead >
-                                            <tr>
-                                                <th>Employee name</th>
+                                            <tr class = "text-left">
+                                                <th>Adjusted By</th>
                                                 <th>Description</th>
                                                 <th>Quantity</th>
                                                 <th>Status</th>
-                                              <th>Date</th>
-                                              <th>Remarks</th>
+                                                <th>Date of Adjustment</th>
+                                                <th style="width:25%;">Remarks</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

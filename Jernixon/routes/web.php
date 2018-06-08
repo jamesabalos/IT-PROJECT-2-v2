@@ -59,10 +59,8 @@ Route::get('salesAssistant/returns/getReturns', 'HomeController@getReturns')->na
 Route::Post('salesAssistant/returns/createReturnItem', 'HomeController@createReturnItem')->name('salesAssistant.createReturnItem');
 Route::get('salesAssistant/returns/getORNumber/{ORNumber}', 'HomeController@getORNumber');
 Route::get('salesAssistant/returns/getORNumberItems', 'HomeController@getORNumberItems')->name('salesAssistant.getORNumberItems');
-Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@getReturnedItems');
+Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@getReturnedItems')->name('salesAssistant.getReturnedItems');
 Route::Post('salesAssistant/returns/createReturnsFilter', 'HomeController@createReturnsFilter')->name('salesAssistant.createReturnsFilter');
-
-
 Route::get('salesAssistant/stockAdjustment', 'HomeController@stockAdjustment')->name('salesAssistant.stockAdjustment');
 Route::get('salesAssistant/stockAjustment/getStockAdjustment', 'HomeController@getStockAdjustment')->name('salesAssistant.getStockAdjustment');
 Route::get('salesAssistant/stockAjustment/createStockAdjustmentFilter', 'HomeController@createStockAdjustmentFilter')->name('salesAssistant.createStockAdjustmentFilter');
@@ -105,6 +103,7 @@ Route::get('admin/dashboard/createSlowMovingItem', 'AdminController@createSlowMo
 
 Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('dashboard.getItems');
 Route::get('admin/sales/getDamaged', 'AdminController@getDamagedForSales')->name('dashboard.getDamaged');
+Route::get('admin/sales/getORNumberInSales/{ORNumber}', 'AdminController@getORNumberInSales');
 Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');
 Route::Post('admin/sales/createSales', 'AdminController@createSales')->name('admin.createSales');
 
@@ -129,6 +128,7 @@ Route::get('admin/returns/getORNumber/{ORNumber}', 'AdminController@getORNumber'
 Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')->name('admin.getORNumberItems');
 Route::get('admin/returns/getReturnedItems', 'AdminController@getReturnedItems')->name('admin.getReturnedItems');
 Route::get('admin/returns/getSupplierItems', 'AdminController@getSupplierItems')->name('admin.getSupplierItems');
+Route::get('admin/returns/getReturnedItemsExchanged', 'AdminController@getReturnedItemsExchanged')->name('admin.getReturnedItemsExchanged');
 // Route::get('admin/returns/getReturnedItems2', 'AdminController@getReturnedItems2')->name('admin.getReturnedItems2');
 Route::Post('admin/returns/createReturnsFilter', 'AdminController@createReturnsFilter')->name('returns.createReturnsFilter');
 
@@ -146,6 +146,10 @@ Route::Post('admin/items/addQuantity','AdminController@addQuantity');
 Route::Post('admin/items/subtractQuantity','AdminController@subtractQuantity');
 Route::Post('admin/items/returnItem','AdminController@returnItem');
 Route::get('admin/items/getItems', 'AdminController@getItemsForItems')->name('items.getItems');
+Route::post('admin/items/storeNewModel', 'AdminController@storeNewModel')->name('admin.newModel');
+Route::post('admin/items/storeNewCategory', 'AdminController@storeNewCategory')->name('admin.newCategory');
+Route::get('admin/items/getModels/{model}', 'AdminController@getModels');
+Route::get('admin/items/getCategory/{category}', 'AdminController@getCategory');
 Route::get('admin/items', 'AdminController@items')->name('admin.items');
 
 Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');

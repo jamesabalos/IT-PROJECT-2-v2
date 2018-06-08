@@ -175,8 +175,16 @@ class HomeController extends Controller
     }
     public function getReturns(){
         $data = DB::table('returns')
-            ->select('or_number', 'created_at', 'customer_name')
-            ->distinct();
+                ->join('sales','returns.or_number','=','sales.or_number')
+                // ->select('returns.or_number', 'returns.created_at','returns.customer_name','address')
+                ->select('returns.or_number', 'returns.created_at','returns.customer_name')
+                ->orderBy('returns.created_at', 'desc')
+                ->groupBy('or_number');
+        // $data = DB::table('returns')
+        //     ->select('or_number', 'created_at')
+        //     ->distinct();
+            // ->select('or_number', 'created_at', 'customer_name')
+            // ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "

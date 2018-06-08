@@ -31,6 +31,9 @@ class="active"
                         <a href = "#addNewModelModal" data-toggle="modal" >
                             <button type="button" class="btn btn-success"><i class = "fa fa-plus"></i> Add new Model</button>
                         </a> 
+                        <a href = "#addNewCategory" data-toggle="modal" >
+                            <button type="button" class="btn btn-success"><i class = "fa fa-plus"></i> Add new Category</button>
+                        </a> 
                         <!--
 <form class = "form-inline">
 <div class="row">
@@ -73,6 +76,7 @@ class="active"
                                     <tr>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Model</th>
+                                        <th class="text-left">Category</th>
                                         <th class="text-left">Qty</th>
                                         <th class="text-left" style="width: 5%">Purchase Price</th>
                                         <th class="text-left" style="width: 5%">Selling Price</th>
@@ -145,6 +149,10 @@ class="active"
         document.getElementById("searchModelInput").value = div.firstChild.innerHTML;
         document.getElementById("searchModelDiv").innerHTML = "";
     }
+    function choseCategory(div){
+        document.getElementById("searchCategoryInput").value = div.firstChild.innerHTML;
+        document.getElementById("searchCategoryDiv").innerHTML = "";
+    }
     function searchModel(a){
 //        document.getElementById("errorDivCreateReturns").innerHTML= "";
 		var model = a.value;
@@ -186,14 +194,56 @@ class="active"
         }
         
     }
+    function searchCategory(a){
+//        document.getElementById("errorDivCreateReturns").innerHTML= "";
+		var category = a.value;
+		var fullRoute = "/admin/items/getCategory/"+category;
+        if(a.value === ""){
+            document.getElementById("searchCategoryDiv").innerHTML ="";
+//            $("#returnItemTbody tr").remove();
+        }else{
+            $.ajax({
+                method: 'get',
+                //url: 'items/' + document.getElementById("inputItem").value,
+                url: fullRoute,
+                
+                success: function(data){
+                    var searchCategoryDiv = document.getElementById("searchCategoryDiv");
+                    searchCategoryDiv.innerHTML = "";
+
+
+                    for (var i = 0;  i< data.length; i++) {
+                        var node = document.createElement("DIV");
+                        node.setAttribute("onclick","choseCategory(this)")
+//                        node.setAttribute("data-modal",a.id)
+                        var pElement = document.createElement("P");
+                        //add the price
+                        //pElement.setAttribute("data-price" , data[i].) 
+                        var textNode = document.createTextNode(data[i].categoryname);
+                        pElement.appendChild(textNode);
+                        node.appendChild(pElement);    
+                        // if(a.id === "searchORNumberInput"){
+                            searchCategoryDiv.appendChild(node);  
+                        // }else{
+                        //     refundORNumberDiv.appendChild(node);  
+                        // }
+                    }
+                    console.log(data)  
+                }
+            });
+
+        }
+        
+    }
     function insertDataToModal(button){
         var data  = $(button.parentNode.parentNode.parentNode.innerHTML).slice(0,-1);
         document.getElementById("itemDescription").value = data[0].innerHTML;
         document.getElementById("itemModel").value = data[1].innerHTML; 
-        document.getElementById("itemQuantity").value = data[2].innerHTML;
-        document.getElementById("itemWholeSalePrice").value = data[3].innerHTML;
-        document.getElementById("itemRetailPrice").value = data[4].innerHTML;
-        document.getElementById("itemReorderLevel").value = data[5].innerHTML;
+        document.getElementById("itemCategory").value = data[2].innerHTML; 
+        document.getElementById("itemQuantity").value = data[3].innerHTML;
+        document.getElementById("itemWholeSalePrice").value = data[4].innerHTML;
+        document.getElementById("itemRetailPrice").value = data[5].innerHTML;
+        document.getElementById("itemReorderLevel").value = data[6].innerHTML;
         document.getElementById("productId").value = button.parentNode.parentNode.lastChild.id;
 
         $("#errorDivEditItem").html("");
@@ -415,7 +465,8 @@ class="active"
                 name: 'products.description'},
                 {data: 'modelname', 
                 name: 'products.modelname'},
-
+                {data: 'categoryname', 
+                name: 'products.categoryname'},
                 {data: 'quantity', 
                 name: 'salable_items.quantity'},
                 {data: 'wholesale_price', className: 'text-right',
@@ -524,6 +575,59 @@ class="active"
                     $("#errorDivAddNewModel").slideDown("slow", function() {                    
                         var response = data.responseJSON;
                         $("#errorDivAddNewModel").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
+                    });
+                    // document.getElementById("insertError").innerHTML = "<p>"+error.errors['description']+"</p>"
+                    //alert(Object.keys(error.errors).length)
+                    //console.log(error)
+
+                }
+            })
+
+        })
+        $('#formAddNewCategory').on('submit',function(e){
+            e.preventDefault(); //prevent the page to load when submitting form
+            //key value pair of form
+            var data = $(this).serialize();
+            $.ajax({
+                type:'POST',
+                // url:'admin/storeNewItem',
+                url: "{{route('admin.newCategory')}}",
+                dataType:'json',
+                /*  data:{
+                        'description':'',
+                        'quantityInStock':4,
+                        'wholeSalePrice':10,
+                        'retailPrice':15,
+                    },
+                */
+                //data:{data},
+                data:data,
+                //_token:$("#_token"),
+                success:function(data){
+                    $("#errorDivAddNewCategory p").remove();
+                    $("#errorDivAddNewCategory").removeClass("alert-danger hidden")
+                        .addClass("alert-success")
+                        .html("<h1>Success</h1>");
+                    $("#errorDivAddNewCategory").css("display:block");
+                    $("#errorDivAddNewCategory").slideDown("slow",function(){
+                        document.getElementById("formAddNewCategory").reset();
+                    })
+                        .delay(1000)                        
+                        .hide(1500);
+                    $("#tableItems").DataTable().ajax.reload();
+                },
+                error:function(data){   
+                    $("#errorDivAddNewCategory").hide(500);
+                    $("#errorDivAddNewCategory").removeClass("hidden");
+                    $("#errorDivAddNewCategory").slideDown("slow", function() {                    
+                        var response = data.responseJSON;
+                        $("#errorDivAddNewCategory").html(function(){
                             var addedHtml="";
                             for (var key in response.errors) {
                                 addedHtml += "<p>"+response.errors[key]+"</p>";
@@ -677,6 +781,19 @@ class="active"
                                 </div>
                             </div>
                         </div>
+                        {{-- category --}}
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Category:')}}
+                                </div>
+                                <div class="autocomplete col-md-9" >
+                                   <input autocomplete="off" id="searchCategoryInput" type="text" onkeyup="searchCategory(this)" name="category" class="form-control border-input" required>
+                                        <div id="searchCategoryDiv" class="searchResultDiv">
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
 
                         @include('inc.messages')
                     </div>
@@ -726,7 +843,7 @@ class="active"
                                     {{Form::label('model', 'Model:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{Form::text('model','',['class'=>'form-control','placeholder'=>'Modelname'])}}
+                                    {{Form::text('model','',['class'=>'form-control','placeholder'=>'Modelname','required'])}}
                                 </div>
                             </div>
                         </div>
@@ -741,7 +858,61 @@ class="active"
                     <div class="text-right">                                           
                         <div class="col-md-12">   
                             {{--  {{Form::submit('Submit',['class'=>'btn btn-primary'])}}  --}}
-                            <button id="submitNewItems" type="submit" class="btn btn-success">Save</button>
+                            <button id="submitNewModel" type="submit" class="btn btn-success">Save</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addNewCategory" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+    <div class = "modal-dialog modal-md">
+        <div class = "modal-content">
+            <div class = "modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title"><i class=" fa fa-plus" style="margin-right: 5px"></i> Add New Category</h3>
+            </div>
+            <div class = "modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-plus"></span>
+                            New Category
+                        </strong>
+                    </div>
+                    {!! Form::open(['method'=>'post','id'=>'formAddNewCategory']) !!}
+                    <div class="panel-heading">
+                        <input type="hidden" id="_token" value="{{ csrf_token() }}">
+                        <div class="form-group">
+                            <div class="row">
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('category', 'Category:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('category','',['class'=>'form-control','placeholder'=>'Category name','required'])}}
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        @include('inc.messages')
+                    </div>
+                </div>
+                <div class="alert alert-danger hidden text-center" id="errorDivAddNewCategory">
+                </div>
+                <div class="row">
+                    <div class="text-right">                                           
+                        <div class="col-md-12">   
+                            {{--  {{Form::submit('Submit',['class'=>'btn btn-primary'])}}  --}}
+                            <button id="submitNewCategory" type="submit" class="btn btn-success">Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -799,6 +970,15 @@ class="active"
                                 </div>
                                 <div class="col-md-9">
                                     {{Form::text('itemModel','',['class'=>'form-control','id'=>'itemModel','disabled'])}}
+                                    {{--  <input type="text" id="itemModel" class="form-control" disabled>  --}}
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('itemCategory', 'Category:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{Form::text('itemCategory','',['class'=>'form-control','id'=>'itemCategory','disabled'])}}
                                     {{--  <input type="text" id="itemModel" class="form-control" disabled>  --}}
                                 </div>
                         </div>

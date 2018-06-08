@@ -103,6 +103,7 @@ Route::get('admin/dashboard/createSlowMovingItem', 'AdminController@createSlowMo
 
 Route::get('admin/sales/getItems', 'AdminController@getItemsForSales')->name('dashboard.getItems');
 Route::get('admin/sales/getDamaged', 'AdminController@getDamagedForSales')->name('dashboard.getDamaged');
+Route::get('admin/sales/getORNumberInSales/{ORNumber}', 'AdminController@getORNumberInSales');
 Route::get('admin/sales', 'AdminController@sales')->name('admin.sales');
 Route::Post('admin/sales/createSales', 'AdminController@createSales')->name('admin.createSales');
 
@@ -123,6 +124,7 @@ Route::Post('admin/returns/createRefund', 'AdminController@createRefund')->name(
 Route::get('admin/returns/getORNumber/{ORNumber}', 'AdminController@getORNumber');
 Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')->name('admin.getORNumberItems');
 Route::get('admin/returns/getReturnedItems', 'AdminController@getReturnedItems')->name('admin.getReturnedItems');
+Route::get('admin/returns/getReturnedItemsExchanged', 'AdminController@getReturnedItemsExchanged')->name('admin.getReturnedItemsExchanged');
 // Route::get('admin/returns/getReturnedItems2', 'AdminController@getReturnedItems2')->name('admin.getReturnedItems2');
 Route::Post('admin/returns/createReturnsFilter', 'AdminController@createReturnsFilter')->name('returns.createReturnsFilter');
 
@@ -140,8 +142,10 @@ Route::Post('admin/items/addQuantity','AdminController@addQuantity');
 Route::Post('admin/items/subtractQuantity','AdminController@subtractQuantity');
 Route::Post('admin/items/returnItem','AdminController@returnItem');
 Route::get('admin/items/getItems', 'AdminController@getItemsForItems')->name('items.getItems');
-Route::get('admin/items/storeNewModel', 'AdminController@storeNewModel')->name('admin.newModel');
+Route::post('admin/items/storeNewModel', 'AdminController@storeNewModel')->name('admin.newModel');
+Route::post('admin/items/storeNewCategory', 'AdminController@storeNewCategory')->name('admin.newCategory');
 Route::get('admin/items/getModels/{model}', 'AdminController@getModels');
+Route::get('admin/items/getCategory/{category}', 'AdminController@getCategory');
 Route::get('admin/items', 'AdminController@items')->name('admin.items');
 
 Route::get('admin/reports', 'AdminController@reports')->name('admin.reports');

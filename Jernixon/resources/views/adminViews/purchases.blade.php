@@ -601,7 +601,7 @@ ng-controller="ownerPurchase"
 
                  angular.element( lastRow.insertCell(-1) ).append(itemDescription);
 
-                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' onchange='checkQuantity(this)' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
+                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' onchange='checkQuantity(this)' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control text-right' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
                 var temp2 = $compile(unitPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
@@ -832,7 +832,7 @@ ng-controller="ownerPurchase"
 </div>
 
 <div id="purchasesModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
+    <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
 
             <div class="modal-header">

@@ -661,6 +661,7 @@ INSERT INTO purchases VALUES("200","153","honda","50","","40.00","2018-05-31 16:
 INSERT INTO purchases VALUES("1011","154","yamaha","10","","50.00","2018-05-31 16:31:00","","0","");
 INSERT INTO purchases VALUES("1234","154","Honda","5","","50.00","2018-05-31 16:37:00","","0","");
 INSERT INTO purchases VALUES("234432","108","Motorstar","1","pcs","53.00","2018-06-07 14:06:00","","53","2");
+INSERT INTO purchases VALUES("0678","34","honda","1","pcs","120.00","2018-06-08 23:43:00","","120","0");
 
 
 
@@ -773,7 +774,7 @@ INSERT INTO salable_items VALUES("30","120.00","150.00","17","2018-03-31 00:00:0
 INSERT INTO salable_items VALUES("31","120.00","150.00","45","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("32","120.00","150.00","15","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("33","120.00","150.00","21","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("34","120.00","150.00","9","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("34","120.00","150.00","10","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("35","120.00","150.00","10","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("36","120.00","150.00","38","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("37","155.00","185.00","34","2018-03-31 00:00:00","");

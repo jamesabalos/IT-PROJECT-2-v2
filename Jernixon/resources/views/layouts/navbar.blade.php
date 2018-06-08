@@ -263,18 +263,15 @@
             }
 
             //save file
-            // $handle = fopen('inventory_jernixon_backup.sql','w+');
-            // fwrite($handle,$return);
-            // fclose($handle);
-            // echo "console.log('backup successful!')";
-
-
-            
+            $handle = fopen('inventory_jernixon_backup.sql','w+');
+            fwrite($handle,$return);
+            fclose($handle);
+            echo "console.log('backup successful!')";
 
         ?>
     }
     $(document).ready(function(){
-
+		
     });
 </script>
 <style>
@@ -412,7 +409,7 @@
                             <li class="dropdown">
                                 <a class="badge1" href="#notification" data-toggle="modal" data-toggle="dropdown" > <i class="fa fa-bell"></i>
                                 @if(auth()->user()->unreadnotifications->count())
-                                    <span class="badge badge-danger" style="position:relative;top:-14px;left:-12px;">{{auth()->user()->unreadnotifications->count()}}</span>
+                                    <span class="badge badge-danger">{{auth()->user()->unreadnotifications->count()}}</span>
                                 @endif
                                 </a>
                             </li>
@@ -433,6 +430,12 @@
                                             {{--  onclick="event.preventDefault();  --}}
                                             {{--  document.getElementById('logout-form').submit();">  --}}
                                             Need backup
+                                        </a>
+										
+										<a href="#importDB"  data-toggle="modal">
+                                            {{--  onclick="event.preventDefault();  --}}
+                                            {{--  document.getElementById('logout-form').submit();">  --}}
+                                            Import
                                         </a>
                                         
                                         <a href="{{ route('admin.logout') }}" onclick="logoutRemoveCart()">
@@ -814,14 +817,14 @@
                               <li><a href="#">5</a></li>
                             </ul> -->
 
-                            <!-- <ul class="pager">
+                            <ul class="pager">
                                  <li style = "float: left;">
                                       <a href="#">&laquo; Previous</a>
                                  </li>
                                  <li style = "float: right;">
                                       <a href="#">Next &raquo;</a>
                                  </li>
-                            </ul> -->
+                            </ul>
 
                                     </ul>
                                 </div>
@@ -843,21 +846,51 @@
                     <div class = "modal-body">
                         <div class="text-center">
                             <strong>
-                                <h3>Backup database?.</h3>
+                                <h3>Do you want to backup the database?</h3>
                                 {{-- <p>There are still <span id="itemQuantityLeft"></span> left. Do you want to continue?</p> --}}
                             </strong>
                         </div>
                         <div class="panel-body">
                             <div class="text-center">
-                                <button id="statusAndId" type="button" onclick="backUpDatabase()" class="btn btn-success">Sales</button>
-                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                <button id="statusAndId" type="button" onclick="backUpDatabase()" class="btn btn-success" data-dismiss="modal">Yes</button>
+                                <button class="btn btn-danger" data-dismiss="modal">No</button>
         
                             </div>
                         </div>
                     </div>    
                 </div>
             </div>
-    </div>
+		</div>
+		
+		<div id="importDB" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
+            <div class = "modal-dialog modal-md">
+                <div class = "modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <p></p>
+                    </div>
+                    <div class = "modal-body">
+                        <div class="text-center">
+                            <strong>
+                                <h3>Do you want to import the database?</h3>
+                                {{-- <p>There are still <span id="itemQuantityLeft"></span> left. Do you want to continue?</p> --}}
+                            </strong>
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-center">
+								<a class="btn btn-success" type="button" href="http://localhost/phpmyadmin/server_import.php?db=&token=9205fd5e554468c1c83afb8f04638695" target="http://localhost/phpmyadmin/server_import.php?db=&token=9205fd5e554468c1c83afb8f04638695" onclick="<?php
+								$connection = mysqli_connect('localhost','root','','inventory_jernixon');
+								// $drop = mysqli_query($connection,"DROP SCHEMA inventory_jernixon");
+								// $drop = "DROP SCHEMA inventory_jernixon";
+								?>">Yes</a>
+                                <button class="btn btn-danger" data-dismiss="modal">No</button>
+        
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+		</div>
     </div>
     @yield('jqueryScript')
 
@@ -866,7 +899,7 @@
 @yield('js_link')
 
 <script type="text/javascript">
-    {{-- $(document).ready(function() { --}}
+    $(document).ready(function() {
         //var options = {
         //    valueNames: ['einheit'],
         //    page: 13,
@@ -889,14 +922,14 @@
         //         i--;
         //         listObj.show(i, 3); 
         //     });
-         {{-- $('#listOfNotif').twbsPagination({
+         $('#listOfNotif').twbsPagination({
         totalPages: 10,
         visiblePages: 7,
         onPageClick: function (event, page) {
             $('#oldNotif').text('Page ' + page);
         }
     });
-    }); --}}
+    });
 </script>
 
 </html>

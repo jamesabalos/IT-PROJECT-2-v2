@@ -59,10 +59,8 @@ Route::get('salesAssistant/returns/getReturns', 'HomeController@getReturns')->na
 Route::Post('salesAssistant/returns/createReturnItem', 'HomeController@createReturnItem')->name('salesAssistant.createReturnItem');
 Route::get('salesAssistant/returns/getORNumber/{ORNumber}', 'HomeController@getORNumber');
 Route::get('salesAssistant/returns/getORNumberItems', 'HomeController@getORNumberItems')->name('salesAssistant.getORNumberItems');
-Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@getReturnedItems');
+Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@getReturnedItems')->name('salesAssistant.getReturnedItems');
 Route::Post('salesAssistant/returns/createReturnsFilter', 'HomeController@createReturnsFilter')->name('salesAssistant.createReturnsFilter');
-
-
 Route::get('salesAssistant/stockAdjustment', 'HomeController@stockAdjustment')->name('salesAssistant.stockAdjustment');
 Route::get('salesAssistant/stockAjustment/getStockAdjustment', 'HomeController@getStockAdjustment')->name('salesAssistant.getStockAdjustment');
 Route::get('salesAssistant/stockAjustment/createStockAdjustmentFilter', 'HomeController@createStockAdjustmentFilter')->name('salesAssistant.createStockAdjustmentFilter');

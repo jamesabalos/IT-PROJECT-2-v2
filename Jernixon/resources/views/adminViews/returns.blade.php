@@ -18,6 +18,66 @@ ng-app="ourAngularJsApp"
 @endsection  --}}
 
 @section('headScript')
+<style>
+    .autocomplete {
+        /*the container must be positioned relative:*/
+        position: relative;
+        display: inline-block;
+    }
+    .searchResultDiv {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .searchResultDiv div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff; 
+        border-bottom: 1px solid #d4d4d4; 
+    }
+    .searchResultDiv div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9; 
+    }
+    .autocomplete-active {
+        /*when navigating through the items using the arrow keys:*/
+        background-color: DodgerBlue !important; 
+        color: #ffffff; 
+    }
+
+
+     /* Popover */
+/* .popover {
+    border: 2px dotted red;
+} */
+
+/* Popover Header */
+.popover-title {
+    /* background-color: #73AD21;  */
+    color: red; 
+    /* font-size: 28px; */
+    text-align:center;
+}
+
+/* Popover Body */
+.popover-content {
+    /* background-color: coral; */
+    /* color: #FFFFFF; */
+    padding: 20px;
+}
+
+
+/* Popover Arrow */
+.arrow {
+    border-right-color: red !important;
+}
+</style>
 <!-- comment out scripts -->
 {{--  <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>  --}}
 {{--  <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>  --}}
@@ -354,15 +414,16 @@ ng-app="ourAngularJsApp"
             },
 
 			success:function(data){
+                // console.log(data)        
                 $("#veiwReturnedItemTbody tr").remove();
                 var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
                 for(var i = 0; i < data.length; i++){
                     var newRow = returnedItemTable.insertRow(-1);
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
+                    // newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                    // newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    // newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
@@ -374,10 +435,31 @@ ng-app="ourAngularJsApp"
                 document.getElementById("address").innerHTML= data[0].address;
                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
                 document.getElementById("customerName").innerHTML = data[0].customer_name;
-                {{-- document.getElementById("warrantyDay").value = data[0].created_at; --}}
+                // {{-- document.getElementById("warrantyDay").value = data[0].created_at; --}}
 
 			}
 		});
+         $.ajax({
+            type:'GET',
+            url: "{{route('admin.getReturnedItemsExchanged')}}",
+            data: {
+                'ORNumber': ORnumber,
+            },
+            success:function(data){
+                var exchangeTbody = document.getElementById("veiwExchangedItemTbody");
+                for(var i = 0; i <data.length; i++){
+                    var newRow = exchangeTbody.insertRow(-1);
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price*data[i].quantity+ "</td>";
+                }
+            },
+            error:function(data){
+
+            }
+        });
 
 	
 	}
@@ -553,6 +635,7 @@ ng-app="ourAngularJsApp"
             }else{
                 var data = $(this).serialize();     
                 var itemIds = [];    
+                console.log(data)
                 for(var i=0; i < $("#returnTbody tr").length ;i++ ){
                     if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
                         itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
@@ -607,66 +690,66 @@ ng-app="ourAngularJsApp"
 
         });
 
-        $('#formsupplierReturnItem').on('submit',function(e){
-            e.preventDefault();
-            if( checkTotalQuantityOfCheckedBox() ){
-                console.log("ifff")
-            }else{
-                var data = $(this).serialize();     
-                var itemIds = [];    
-                for(var i=0; i < $("#returnTbody tr").length ;i++ ){
-                    if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
-                        itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
-                    }
-                }
-                $.ajax({
-                    type:'POST',
-                    // url:'admin/storeNewItem',
-                    url: "{{route('admin.createReturnItem')}}",
-                    // data:{
-                    //     'name': arrayOfData[1].value,
-                    // },
+        // $('#formsupplierReturnItem').on('submit',function(e){
+        //     e.preventDefault();
+        //     if( checkTotalQuantityOfCheckedBox() ){
+        //         console.log("ifff")
+        //     }else{
+        //         var data = $(this).serialize();     
+        //         var itemIds = [];    
+        //         for(var i=0; i < $("#returnTbody tr").length ;i++ ){
+        //             if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
+        //                 itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
+        //             }
+        //         }
+        //         $.ajax({
+        //             type:'POST',
+        //             // url:'admin/storeNewItem',
+        //             url: "{{route('admin.createReturnItem')}}",
+        //             // data:{
+        //             //     'name': arrayOfData[1].value,
+        //             // },
 
-                    // data:{data},
-                    data:data,
-                    //_token:$("#_token"),
-                    success:function(data){
-                        console.log(data)
-                        //close modal
-                        $('#return').modal('hide')                    
-                        //prompt the message
-                        $("#successDiv p").remove();    
-                        $("#successDiv").removeClass("hidden")
-                                .html("<h3>Return Item(s) successful</h3>");
-                        $("#successDiv").css("display:block");                             
-                        $("#successDiv").slideDown("slow")
-                            .delay(1000)                        
-                            .hide(1500);
-                        $("#errorDivCreateReturns").html("");
-                        $('#returnOrRefundPrompt').modal('show');
-                        $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
-                        // $('#formReturnItem').reset();
-                        $("#returnItemTbody tr").remove();
+        //             // data:{data},
+        //             data:data,
+        //             //_token:$("#_token"),
+        //             success:function(data){
+        //                 console.log(data)
+        //                 //close modal
+        //                 $('#return').modal('hide')                    
+        //                 //prompt the message
+        //                 $("#successDiv p").remove();    
+        //                 $("#successDiv").removeClass("hidden")
+        //                         .html("<h3>Return Item(s) successful</h3>");
+        //                 $("#successDiv").css("display:block");                             
+        //                 $("#successDiv").slideDown("slow")
+        //                     .delay(1000)                        
+        //                     .hide(1500);
+        //                 $("#errorDivCreateReturns").html("");
+        //                 $('#returnOrRefundPrompt').modal('show');
+        //                 $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
+        //                 // $('#formReturnItem').reset();
+        //                 $("#returnItemTbody tr").remove();
 
 
-                    },
-                    error:function(data){
-                        var response = data.responseJSON;
-                        $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
-                        $("#errorDivCreateReturns").html(function(){
-                            var addedHtml="";
-                            for (var key in response.errors) {
-                                addedHtml += "<p>"+response.errors[key]+"</p>";
-                            }
-                            return addedHtml;
-                        });
-                    }
-                });
+        //             },
+        //             error:function(data){
+        //                 var response = data.responseJSON;
+        //                 $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
+        //                 $("#errorDivCreateReturns").html(function(){
+        //                     var addedHtml="";
+        //                     for (var key in response.errors) {
+        //                         addedHtml += "<p>"+response.errors[key]+"</p>";
+        //                     }
+        //                     return addedHtml;
+        //                 });
+        //             }
+        //         });
 
-            }
+        //     }
                 
 
-        });
+        // });
         
         $('#formRefund').on('submit',function(e){
             e.preventDefault();
@@ -1111,7 +1194,7 @@ function customer(){
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="panel panel-default">
+                        <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
                                     <span class="glyphicon glyphicon-refresh"></span>
@@ -1139,7 +1222,7 @@ function customer(){
                                     </div>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
                     </div>
                     {!! Form::close() !!}
 {{-- 
@@ -1234,7 +1317,7 @@ function customer(){
                     <div class="text-right">                                           
                         <div class="col-md-12">   
                             <button type="submit" id="returnSaveButton" class="btn btn-success" form='formReturnItem'>Save</button>
-                            <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
+                            {{-- <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button> --}}
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -1430,12 +1513,12 @@ function customer(){
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Qty.</th>
+                                        {{-- <th class="text-left">Qty.</th> --}}
                                         {{-- <th class="text-left">Quantity</th> --}}
-                                        <th class="text-left">Unit</th>
+                                        {{-- <th class="text-left">Unit</th> --}}
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Unit Price</th>
-                                        <th class="text-left">Amount</th>
+                                        {{-- <th class="text-left">Amount</th> --}}
                                         <th class="text-left">Damaged</th>
                                         <th class="text-left">Undamaged</th>
                                         <th class="text-left">Damage Salable</th>
@@ -1449,7 +1532,7 @@ function customer(){
                     </div>
                 </div>
 
-                <div class="panel panel-default">
+                <div class="panel panel-default">   
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-refresh"></span>
@@ -1462,14 +1545,15 @@ function customer(){
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Returned Item</th>
-                                        <th class="text-left">New Item</th>
-                                        <th class="text-left">Quantity</th>
-                                        <!-- <th class="text-left">Purchase Price</th> -->
+                                        <th class="text-left">Qty.</th>
+                                        <th class="text-left">Unit</th>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Unit Price</th>
+                                        <th class="text-left">Amount</th>
                                     </tr>
                                 </thead>
 
-                                <tbody id="veiwReturnedItemTbody">
+                                <tbody id="veiwExchangedItemTbody">
                                 </tbody>
                             </table>
                         </div>

@@ -150,7 +150,7 @@ ng-controller="ownerPurchase"
                   var totalAmount = "";
                   for(var i = 0; i < data.length; i++){
                       var newRow = modalPurchaseTable.insertRow(-1);
-                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
@@ -888,7 +888,7 @@ ng-controller="ownerPurchase"
                             <table class="table table-bordered table-striped" >
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Qty.</th>
                                         <th class="text-left">Unit</th>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Unit Price</th>

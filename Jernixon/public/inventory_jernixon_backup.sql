@@ -13,7 +13,7 @@ CREATE TABLE `admins` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO admins VALUES("1","ADMIN","admin@gmail.com","$2y$10$HpGuCVm2xV4cuj62m0dVaekc4xbDxazwNdHwUCq3XE2R2mBbfFvOW","ACxKDXgg2nSwmsjLNi2rKKKirNMZiFZmnDZysEHtuVAJRe5J58QeMZpDyK6Z","2018-02-25 05:39:36","2018-02-25 05:39:36");
+INSERT INTO admins VALUES("1","ADMIN","admin@gmail.com","$2y$10$HpGuCVm2xV4cuj62m0dVaekc4xbDxazwNdHwUCq3XE2R2mBbfFvOW","LpaBgs3mR6i9caNRzDYAQGyx4VDUA1Fqh6vXCN0fUI7HO7WzLElrSqbZPuAs","2018-02-25 05:39:36","2018-02-25 05:39:36");
 
 
 
@@ -178,10 +178,13 @@ CREATE TABLE `notifications` (
   KEY `notifications_notifiable_id_notifiable_type_index` (`notifiable_id`,`notifiable_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+INSERT INTO notifications VALUES("04542c01-edee-4a89-bb7d-d7ccd8e77a76","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":3,\"description\":\"Brake Master Repair Kit Shogun\"}","","2018-06-09 01:33:44","2018-06-09 01:33:44");
+INSERT INTO notifications VALUES("059a6881-0c1e-46d8-881c-5c55581bef6c","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":3,\"description\":\"Brake Master Repair Kit Shogun\"}","","2018-06-09 01:33:43","2018-06-09 01:33:43");
 INSERT INTO notifications VALUES("05c4c92c-1fcc-493a-a0fa-96802d1f82b3","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMXCDI\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:37:11","2018-06-08 10:37:11");
 INSERT INTO notifications VALUES("08dc25b1-6df9-4ed9-8596-eccaef5812a3","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":5,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 04:48:04","2018-06-08 04:48:04");
 INSERT INTO notifications VALUES("0e2d16cd-e5ad-4c66-8de1-a7832ad460e1","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit GLPRO\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 07:06:04","2018-06-08 07:06:04");
 INSERT INTO notifications VALUES("102302b6-63a2-4a51-9b3a-28e5611ee1b2","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"c1\"}","","2018-06-08 09:38:39","2018-06-08 09:38:39");
+INSERT INTO notifications VALUES("13e2d065-6b7e-4d42-87f4-45311c208452","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":3,\"description\":\"Brake Master Repair Kit Shogun\"}","","2018-06-09 01:33:43","2018-06-09 01:33:43");
 INSERT INTO notifications VALUES("14cf2045-8971-4062-bdcd-a2955c3234ce","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":3,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 06:12:23","2018-06-08 06:12:23");
 INSERT INTO notifications VALUES("18eafbd6-8bd7-4d59-bac3-95a793085cd5","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMX CPT.\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"aaa\"}","","2018-06-08 10:26:35","2018-06-08 10:26:35");
 INSERT INTO notifications VALUES("1a98022f-ac64-45e7-afee-fdc28092ef53","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":5,\"description\":\"Connecting Rod KitSTX\"}","","2018-06-08 08:24:50","2018-06-08 08:24:50");
@@ -193,7 +196,10 @@ INSERT INTO notifications VALUES("38cb90c7-f923-4335-b71a-9303db0244b4","App\\No
 INSERT INTO notifications VALUES("3a52ed9c-159c-4840-854b-70d6e57d4314","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":5,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:07:07","2018-06-08 10:07:07");
 INSERT INTO notifications VALUES("3d9df6ad-0d6a-48a9-88ad-619357e06277","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":3,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:36:53","2018-06-08 10:36:53");
 INSERT INTO notifications VALUES("3dc9ebff-aca2-46c8-a1be-ad5d1f018fe6","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit GLPRO\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"James\"}","","2018-06-08 07:57:50","2018-06-08 07:57:50");
+INSERT INTO notifications VALUES("42b071ed-cc43-482a-b288-ea35e55b3df9","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":1,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-09 01:33:43","2018-06-09 01:33:43");
+INSERT INTO notifications VALUES("47c2e38d-be71-451b-9c7c-de011b063f54","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":1,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-09 01:33:43","2018-06-09 01:33:43");
 INSERT INTO notifications VALUES("4f32c6f0-cc17-4135-bc3f-8beba2334cf2","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-07 07:29:20","2018-06-07 07:29:20");
+INSERT INTO notifications VALUES("54507cf0-87c0-4d98-88d9-54e007db404d","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":1,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-09 01:33:43","2018-06-09 01:33:43");
 INSERT INTO notifications VALUES("556d6556-9008-4e95-92a3-effce1a91ae0","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":2,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:47:30","2018-06-08 10:47:30");
 INSERT INTO notifications VALUES("5b2bea59-40d1-49d6-a969-7a96bf9e8bf8","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":5,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:07:07","2018-06-08 10:07:07");
 INSERT INTO notifications VALUES("620f7de2-06f8-4f66-aca1-d35403a187bd","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMXCDI\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"aaa\"}","","2018-06-08 09:49:04","2018-06-08 09:49:04");
@@ -848,10 +854,10 @@ INSERT INTO salable_items VALUES("104","375.00","405.00","42","2018-03-31 00:00:
 INSERT INTO salable_items VALUES("105","375.00","405.00","34","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("106","53.00","83.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("107","53.00","83.00","3","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("108","53.00","83.00","3","2018-03-31 00:00:00","2018-05-26 07:38:54");
+INSERT INTO salable_items VALUES("108","53.00","83.00","1","2018-03-31 00:00:00","2018-05-26 07:38:54");
 INSERT INTO salable_items VALUES("109","53.00","83.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("110","53.00","83.00","1","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("111","20.00","83.00","8","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("111","20.00","83.00","3","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("112","53.00","83.00","19","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("113","53.00","83.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("114","53.00","83.00","0","2018-03-31 00:00:00","");
@@ -928,6 +934,8 @@ INSERT INTO sales VALUES("5","112","Jake James","83.00","1","2018-06-08 18:59:00
 INSERT INTO sales VALUES("6","149","aaa","75.00","1","2018-06-08 20:43:00","","","","","");
 INSERT INTO sales VALUES("7","151","Jake James","150.00","1","2018-06-08 20:51:00","","","","3","");
 INSERT INTO sales VALUES("8","149","Customer two","75.00","2","2018-06-08 20:52:00","","pcs","","7","");
+INSERT INTO sales VALUES("4567","108","ertyui","83.00","2","2018-06-08 01:33:00","","","","","");
+INSERT INTO sales VALUES("4567","111","ertyui","83.00","5","2018-06-08 01:33:00","","","","","");
 
 
 
@@ -972,7 +980,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO users VALUES("1","Juan Dela Cruz","12345678910","juan@gmail.com","Baguio City","$2y$10$KfNeDs7yyjq.6llgi7kNkOtEboPlArbW2jwsgVAvlw82MCHVR61Ja","h2uj1dEMhbmKhduCWijCxhE0V0gYROVEAA6WeGN9N8T5Rlypz2PIGb2mrjus","2018-04-02 12:36:26","2018-05-30 10:43:49","active");
+INSERT INTO users VALUES("1","Juan Dela Cruz","12345678910","juan@gmail.com","Baguio City","$2y$10$KfNeDs7yyjq.6llgi7kNkOtEboPlArbW2jwsgVAvlw82MCHVR61Ja","1N5ThdTBG5cFSkvOh1Ka41CqsOETxZxMXS5vqkVWrOrWEkkh2cGYQwdIuPVC","2018-04-02 12:36:26","2018-05-30 10:43:49","active");
 INSERT INTO users VALUES("4","jaramel","9876372718","jaramel@gmail.com","Loakan","$2y$10$kaTX2Yv1HO5lRfo.MIfMGODDYBiCj40nTx8AWsP4DIaO88P0Wd6BW","","2018-05-31 07:23:28","2018-05-31 07:23:28","active");
 
 

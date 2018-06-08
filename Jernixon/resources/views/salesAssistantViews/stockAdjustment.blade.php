@@ -70,7 +70,7 @@ function addRow(divElement){
 
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
     }
-    
+
     document.getElementById("searchItemInput").value = "";
     document.getElementById("searchResultDiv").innerHTML = "";
 
@@ -271,7 +271,7 @@ $(document).ready(function(){
             {data: 'description', name: 'products.description'},
             {data: 'quantity'},
             {data: 'type'},
-            {data: 'status', class:'stat'},
+            {data: 'status', class:'stat', className: 'text-center'},
             {data: 'remarks',
             },
         ]

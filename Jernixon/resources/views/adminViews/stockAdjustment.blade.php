@@ -299,14 +299,13 @@ $(document).ready(function(){
             {data: 'type'},
             {data: 'status', class:'stat',render: function ( data, type, row ) {
                     if (data == "Pending") {                        
-                         return '<div class="text-center"><button class="controll btn btn-success" value="Accepted">Accept</button><button class="controll btn btn-danger" value="Declined" >Decline</button></div>';
+                         return '<div class="text-center"><p><button class="controll btn btn-success" value="Accepted">Accept</button></p><button class="controll btn btn-danger" value="Declined" >Decline</button></div>';
                     }else {
-                         return data;
+                         return '<div class = "text-center">'+ data + '</div>';
                         }
                     }
             },
-            {data: 'remarks',
-            },
+            {data: 'remarks'},
             
         ]
         

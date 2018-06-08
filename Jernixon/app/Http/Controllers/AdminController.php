@@ -347,14 +347,18 @@ public function createPurchasesFilter(Request $request){
     }
 
     public function getPurchaseOrder($purchaseOrderId){
-        $data = DB::table('purchases')
-            ->join('products', 'products.product_id' , '=' , 'purchases.product_id')
+        $data = DB::table('purchases')->join('products', 'products.product_id' , '=' , 'purchases.product_id')
             ->select('description', 'supplier_name', 'quantity', 'price', 'purchases.created_at','amount','discount', 'unit' )
             ->where('po_id', '=', $purchaseOrderId)
             ->get();
         return $data;
     }
 
+    public function searchSupplier($supplier){
+        $s = DB::table('purchases')->select('supplier_name')->where('supplier_name','LIKE','%'.$supplier.'%')->groupBy('supplier_name')->get();
+        return $s; 
+
+    }
     public function getReturns(){
         $data = DB::table('returns')
                 ->join('sales','returns.or_number','=','sales.or_number')
@@ -377,14 +381,15 @@ public function createPurchasesFilter(Request $request){
     }
 
     public function getReturns2(){
-        $data = DB::table('purchases')
-            ->select('po_id', 'supplier_name')
-            ->orderBy('created_at', 'desc')
-            ->distinct();
+        $data = DB::table('returns_supplier_info')
+        ->join('returns_supplier','returns_supplier.returns_s_id','=','returns_supplier_info.returns_s_id')
+        ->select('damagedQty_return','damaged_salableQty_return','return_status','product_id','returns_supplier.created_at')
+        ->groupBy('returns_supplier.returns_s_id');
+
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
-                <a href = '#viewReturn1' data-toggle='modal' >
+                <a href = '#viewReturn2' data-toggle='modal' >
                     <button onclick='getItems2(this)' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
                 </a>
 
@@ -448,6 +453,33 @@ public function createPurchasesFilter(Request $request){
                     ->where('sales.exchangeor', '=',$request->ORNumber)
                     ->get();
         return $data;
+
+    }
+    public function getSupplierItems(Request $request){
+
+        $items =[];
+        $data = DB::table('purchases')
+                ->join('products','products.product_id','=','purchases.product_id')
+                ->select('purchase_id','purchases.product_id','supplier_name','description')
+                ->where('supplier_name',$request->supplier)
+                ->get();
+        $datacount = count($data);
+        for($i = 0; $i<$datacount;$i++){
+            $damagedquantity = DB::table('damaged_items')->where('product_id',$data[$i]->product_id)->sum('quantity');
+            $damagedsalablequantity = DB::table('damaged_salable_items')->where('product_id',$data[$i]->product_id)->sum('quantity');
+            if($damagedquantity >0 || $damagedsalablequantity > 0){
+                array_push($items,['product_id'=>$data[$i]->product_id,'supplier_name'=>$data[$i]->supplier_name,'description'=>$data[$i]->description,'damaged_quantity'=>$damagedquantity,'damaged_salable_quantity'=>$damagedsalablequantity]);
+            }
+            
+        }
+        if(!empty($items)){
+            foreach ($items as $key => $row){
+                $desc[$key] = $row['description'];
+                // $edition[$key] = $row['edition'];
+            }
+            array_multisort($desc, SORT_DESC, $items);
+        }
+        return $items;
 
     }
     // public function getReturnedItems2(Request $request){
@@ -551,91 +583,17 @@ public function createPurchasesFilter(Request $request){
 
     }
 
-    // public function createReturnItem1(Request $request){
-    //     $this->validate($request,[
-    //         'deliveryReceiptNumber' => 'required',
-    //         // 'price' => 'required',
-    //         // 'exchangeQuantity' => 'required',
-    //         'supplierName' => 'required',
-    //         'productId' => 'required'
-    //     ]);
+    public function createSupplierReturnItem(Request $request){
+        $arrayCount = count($request->product_id);
+        $createS =  DB::table('returns_supplier')->insert(["supplier_name"=>$request->supplierName,'address'=>$request->address]);
+        $getS = DB::table('returns_supplier')->latest()->first();
+        for($i=0;$i<$arrayCount;$i++){
+            $createSreturn = DB::table('returns_supplier_info')->insert(['product_id'=>$request->product_id[$i],'returns_s_id'=>$getS->returns_s_id,'damagedQty_return'=>$request->damaged[$i],'damaged_salableQty_return'=>$request->damagedsalable[$i]]);
+        }
+        return $request->all();
 
-    //     $arrayCount = count($request->productId);
-    //     for($i = 0;$i<$arrayCount;$i++){    
+    }
 
-    //      $insertReturns = DB::table('returns')->insert(
-    //            ['po_id' => $request->deliveryReceiptNumber, 'product_id' => $request->productId[$i], 'supplier_name' => $request->supplierName, 'price' => $request->price[$i],'damagedQuantity' => $request->quantityDamage[$i],
-    //            'undamagedQuantity' => $request->quantityUndamage[$i], 'damagedSalableQuantity' => $request->quantityDamageSalable[$i]]
-    //         );
-
-    //      $pname = DB::table('products')->where('product_id',$request->productId[$i])->first();
-
-    //         // DB::table('salable_items')
-    //         //     ->where('product_id', $request->productId[$i])
-    //         //     ->decrement('quantity', $request->exchangeQuantity[$i]);
-
-    //         // $insertDamagedItems = DB::table('damaged_items')->insert(
-    //         //     ['product_id' => $request->productId[$i], 'quantity' => $request->exchangeQuantity[$i], 'created_at' => date('Y-m-d H:i:s')]
-    //         // );
-
-    //         // DB::table('damaged_items')
-    //         // ->where('product_id', $request->productId[$i])
-    //         // ->increment(['quantity' => $request->quantity[$i]]);
-
-    //         if( $request->quantityDamage[$i] > 0 ){
-    //              $insertDamagedItems = DB::table('damaged_items')->insert(
-    //                      ['product_id' => $request->productId[$i], 'quantity' => $request->quantityDamage[$i], 'created_at' => date('Y-m-d H:i:s')]);
-    //               $admin = Admin::all();
-    //             foreach($admin as $admins){
-    //                 $admins->notify(new ReturnNotification($pname->description,$request->quantityDamage[$i],'Damaged Items',$request->supplierName));
-    //             }
-    //         }
-    //           if( $request->quantityUndamage[$i] > 0 ){
-    //             $data = DB::table('salable_items')
-    //             ->select('product_id')
-    //             ->where('product_id', $request->productId[$i]);
-    //             if( count($data) > 0 ){
-    //                 $temp = DB::table('salable_items')
-    //                 ->where('product_id', $request->productId[$i])
-    //                 ->increment('quantity', $request->quantityUndamage[$i]);
-    //             }
-    //              $admin = Admin::all();
-    //             foreach($admin as $admins){
-    //                 $admins->notify(new ReturnNotification($pname->description,$request->quantityUndamage[$i],'Undamaged Item',$request->supplierName));
-    //             }
-    //           }
-    //          if( $request->quantityDamageSalable[$i] > 0 ){
-
-    //             $data2 = DB::table('damaged_salable_items')
-    //                 ->select('product_id')
-    //                 ->where('product_id', $request->productId[$i])
-    //                 ->get();
-    //             if( count($data2) > 0 ){
-    //                 $temp = DB::table('damaged_salable_items')
-    //                 ->where('product_id', $request->productId[$i])
-    //                 ->increment('quantity', $request->quantityDamageSalable[$i]);
-    //             }else{
-    //                 $insertDamagedSalableItems = DB::table('damaged_salable_items')->insert(
-    //                 ['product_id' => $request->productId[$i],'damaged_selling_price' => $request->price[$i],  'quantity' => $request->quantityDamageSalable[$i], 'created_at' => date('Y-m-d H:i:s')]);
-    //             }
-    //              $admin = Admin::all();
-    //             foreach($admin as $admins){
-    //                 $admins->notify(new ReturnNotification($pname->description,$request->quantityDamageSalable[$i],'Damaged Salable Items',$request->customerName));
-    //             }
-
-
-    //         }
-    //         $data = DB::table('sales')
-    //         ->select('product_id')
-    //         ->where('product_id', $request->productId[$i])
-    //         ->where('po_id', $request->deliveryReceiptNumber)
-    //         ->decrement('quantity', $request->totalQuantity[$i]);
-
-    //     }
-
-    //     return $request->all();
-
-    // }
 
     public function createRefund(Request $request){
         $this->validate($request,[
@@ -832,9 +790,17 @@ public function createPurchasesFilter(Request $request){
                     ->select('stock_adjustments_id')
                     ->latest()
                     ->first();
+                
 
-                $insertDamagedItems = DB::table('damaged_items')->insert(
-                    ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                $damagedcount = DB::table('damaged_items')->where('product_id',$request->productId[$i])->count();
+                if($damagedcount == 0 ){
+                    $insertDamagedItems = DB::table('damaged_items')->insert(['product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
+                }else{
+                    $updateDamagedIted = DB::table('damaged_items')
+                                        ->where('product_id', $request->productId[$i])
+                                        ->increment('quantity', $request->quantity[$i]);
+                }
+                
                     
                     DB::table('salable_items')
                         ->where('product_id', $request->productId[$i])

@@ -69,10 +69,8 @@ function addRow(divElement){
         newRow.insertCell(-1).innerHTML = "<td><div class='form-group'> <textarea class='form-control' rows='3' name='remarks[]' required></textarea></div></td>";
 
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='productId[]' value='"+divElement.getAttribute('id')+"'><button type='button' class='btn btn-danger form-control' data-item-id='"+divElement.getAttribute('id')+ "' onclick='remove(this)'><i class='glyphicon glyphicon-remove'></i></button></td>";
-
-
     }
-
+    
     document.getElementById("searchItemInput").value = "";
     document.getElementById("searchResultDiv").innerHTML = "";
 
@@ -391,7 +389,7 @@ $(document).ready(function(){
                         <table class="table table-striped table-bordered dt-responsive pre" style="width:100%" id="stockAdjustmentDataTable">
                             <thead>
                                 <tr>
-                                    <th class="text-left">User Name</th>
+                                    <th class="text-left">Adjusted By</th>
                                     <th class="text-left">Date of Adjustment</th>
                                     <th class="text-left">Item Name</th>
                                     <th class="text-left">Qty</th>

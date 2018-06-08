@@ -216,6 +216,7 @@ class HomeController extends Controller
             // 'productId' => 'required',
             'status' => 'required',
             'quantity' => 'required',
+            'remarks' => 'required',
             'Date' => 'required'
         ]);
 

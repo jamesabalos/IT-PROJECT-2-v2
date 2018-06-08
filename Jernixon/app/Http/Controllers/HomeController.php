@@ -153,10 +153,9 @@ class HomeController extends Controller
                ->where('or_number', $request->officialReceiptNumber)
                ->decrement('quantity', $request->totalQuantity[$i]);
         }
-
         return $request->all();
-
     }
+
     public function createReturnsFilter(Request $request){
         $data = DB::table('returns')
         ->select('or_number', 'created_at')
@@ -170,10 +169,7 @@ class HomeController extends Controller
             <a href = '#viewReturn' data-toggle='modal' >
                 <button onclick='getItems(this)' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
             </a>
-
             ";
-
-
         })
         ->make(true);
     }
@@ -187,16 +183,15 @@ class HomeController extends Controller
         // $data = DB::table('returns')
         //     ->select('or_number', 'created_at')
         //     ->distinct();
+            // ->select('or_number', 'created_at', 'customer_name')
+            // ->distinct();
         return Datatables::of($data)
             ->addColumn('action',function($data){
                 return "
                 <a href = '#viewReturn' data-toggle='modal' >
                     <button onclick='getItems(this)' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
                 </a>
-
                 ";
-
-
             })
             ->make(true);
     }
@@ -222,6 +217,7 @@ class HomeController extends Controller
             // 'productId' => 'required',
             'status' => 'required',
             'quantity' => 'required',
+            'remarks' => 'required',
             'Date' => 'required'
         ]);
 

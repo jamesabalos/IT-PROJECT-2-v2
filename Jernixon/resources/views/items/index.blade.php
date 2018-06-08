@@ -469,9 +469,9 @@ class="active"
                 name: 'products.categoryname'},
                 {data: 'quantity', 
                 name: 'salable_items.quantity'},
-                {data: 'wholesale_price', 
+                {data: 'wholesale_price', className: 'text-right',
                 name: 'salable_items.wholesale_price'},
-                {data: 'retail_price', 
+                {data: 'retail_price', className: 'text-right',
                 name: 'salable_items.retail_price'},
                 {data: 'reorder_level'},
 

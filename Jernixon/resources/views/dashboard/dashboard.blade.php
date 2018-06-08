@@ -9,20 +9,17 @@ ng-app="ourAngularJsApp"
 @endsection
 
 @section('headScript')
+<!-- DataTables -->
+<link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
+<link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
 
-    <!-- DataTables -->
+<!-- Chart -->
+<link href="{{asset('assets/css/morris.css')}}" rel="stylesheet"/>
 
-    <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
-    <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
-
-    <!-- Chart -->
-    <link href="{{asset('assets/css/morris.css')}}" rel="stylesheet"/>
-
-    <!-- Chart JS -->
-    <script src="{{asset('assets/js/raphael2.1.0.js')}}"></script>
-    <script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
-    <script src="{{asset('assets/js/morrisv05.js')}}"></script>
-
+<!-- Chart JS -->
+<script src="{{asset('assets/js/raphael2.1.0.js')}}"></script>
+<script src="{{asset('assets/js/jqueryv1.8.2.js')}}"></script>
+<script src="{{asset('assets/js/morrisv05.js')}}"></script>
 
 <script>
 
@@ -88,9 +85,9 @@ ng-app="ourAngularJsApp"
         });
         
     }
-    $(document).ready(function(){
-        $('#some').DataTable();
-    });
+    // $(document).ready(function(){
+    //     $('#some').DataTable();
+    // });
 
 </script>
 
@@ -317,166 +314,7 @@ ng-app="ourAngularJsApp"
 
 @endsection     
 
-
-
-@section('js_link')
-<!--   Core JS Files   -->
-<script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>
-<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-<!-- Chart -->
-<script src="{{asset('assets/js/morris.min.js')}}"></script>
-<script src="{{asset('assets/js/morris.js')}}"></script>
-
-
-<script type="text/javascript">
-$(document).ready(function() {
-  barChartTopItems();
-  barChartLeastItems();
-  $(window).resize(function() {
-    window.barChartTopItems.redraw();
-    window.barChartLeastItems.redraw();
-  });
-});
-function createSlowFastMovingItem(button){
-        var smiORfmi = button.id;
-        // var dateFrom = document.getElementById("from").value;
-        // var dateTo = document.getElementById("to").value;
-        var dateFrom = button.parentNode.children[1].value;
-        var dateTo = button.parentNode.children[3].value;
-
-        var newDateFrom = new Date(dateFrom);
-        newDateFrom.setDate(newDateFrom.getDate() - 1);
-        
-        var ddf = newDateFrom.getDate();
-        var mmf = newDateFrom.getMonth() + 1;
-        var yf = newDateFrom.getFullYear();
-
-        var newDateTo = new Date(dateTo);
-        newDateTo.setDate(newDateTo.getDate() + 1);
-
-        var ddt = newDateTo.getDate();
-        var mmt = newDateTo.getMonth() + 1;
-        var yt = newDateTo.getFullYear();
-
-        var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
-        var formattedDateTo = yt + '-' + mmt + '-' + ddt;
-
-         $.ajax({
-            type:'GET',
-            url: "{{route('reports.validateDateRange')}}",
-            data: {
-                'dateFrom':dateFrom,
-                'dateTo':dateTo,
-            },
-            success:function(data){
-                var url1 = "{{ route('admin.dashboard.createFastMovingItem') }}";
-                var url2 = "{{ route('admin.dashboard.createSlowMovingItem') }}";
-                
-                $.ajax({
-                    type: 'GET',
-                    url: ( smiORfmi === "FMI" ? url1 : url2),
-                    data: {
-                        "dateFrom":formattedDateFrom,
-                        "dateTo":formattedDateTo
-                        
-                    },
-                    success: function(response)
-                    {
-                        if(response.length == 0){
-                            $(button.parentNode.parentNode.previousElementSibling).hide(500);
-                            $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
-                            $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
-                            $(button.parentNode.parentNode.previousElementSibling).html(function(){
-                                return "no result";
-                            });
-
-                            });
-                        }else{
-                            $(button.parentNode.parentNode.previousElementSibling).hide(1000);
-                            if(smiORfmi === "FMI"){
-                                $('#bar-chart-top-items').empty(); //reinitialize chart
-                                    window.barChartTopItems = Morris.Bar({
-                                    element: 'bar-chart-top-items',
-                                    data: response,
-                                    xkey: 'name',
-                                    ykeys: ['quantity'],
-                                    labels: ['Qty sold'],
-                                    lineColors: ['#1e88e5'],
-                                    lineWidth: '3px',
-                                    resize: true,
-                                    redraw: true
-                                });
-                            }else{
-                                $('#bar-chart-least-items').empty(); //reinitialize chart
-                                    window.barChartLeastItems = Morris.Bar({
-                                    element: 'bar-chart-least-items',
-                                    data: response,
-                                    xkey: 'name',
-                                    ykeys: ['quantity'],
-                                    labels: ['Qty sold'],
-                                    lineColors: ['#1e88e5'],
-                                    lineWidth: '3px',
-                                    resize: true,
-                                    redraw: true
-                                });
-                            }  
-                        }
-                    },
-                    error: function(response){
-                        console.log("errorr!");
-                    }
-                });
-            },
-            error:function(data){
-                var response = data.responseJSON;
-                console.log(response);
-                $(button.parentNode.parentNode.previousElementSibling).hide(500);
-                $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
-                $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
-                    $(button.parentNode.parentNode.previousElementSibling).html(function(){
-                        var addedHtml="";
-                        for (var key in response.errors) {
-                            addedHtml += "<p>"+response.errors[key]+"</p>";
-                        }
-                        return addedHtml;
-                    });
-
-                });
-            }
-         });
-}
-
-function barChartTopItems() {
-  window.barChartTopItems = Morris.Bar({
-    element: 'bar-chart-top-items',
-    data: [<?php echo $chart_data_top_items; ?>],
-    xkey: 'name',
-    ykeys: ['quantity'],
-    labels: ['Qty sold'],
-    lineColors: ['#1e88e5'],
-    lineWidth: '3px',
-    resize: true,
-    redraw: true
-  });
-  console.log(<?php echo $chart_data_top_items; ?>)
-}
-  
-function barChartLeastItems() {
-  window.barChartLeastItems = Morris.Bar({
-    element: 'bar-chart-least-items',
-    data: [<?php echo $chart_data_least_items; ?>],
-    xkey: 'name',
-    ykeys: ['quantity'],
-    labels: ['Qty sold'],
-    lineColors: ['#1e88e5'],
-    lineWidth: '3px',
-    resize: true,
-    redraw: true
-  });
-}
-
-</script>
-
+@section('modals')
 <div id="reorder" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
         <div class = "modal-dialog modal-md">
             <div class = "modal-content">
@@ -513,4 +351,165 @@ function barChartLeastItems() {
             </div>
         </div>
     </div>
+
+@endsection
+
+@section('js_link')
+<!--   Core JS Files   -->
+<script src="{{asset('assets/js/jquery-1.12.4.js')}}"></script>
+<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+<!-- Chart -->
+<script src="{{asset('assets/js/morris.min.js')}}"></script>
+<script src="{{asset('assets/js/morris.js')}}"></script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  barChartTopItems();
+  barChartLeastItems();
+  $(window).resize(function() {
+    window.barChartTopItems.redraw();
+    window.barChartLeastItems.redraw();
+  });
+});
+
+function createSlowFastMovingItem(button){
+var smiORfmi = button.id;
+// var dateFrom = document.getElementById("from").value;
+// var dateTo = document.getElementById("to").value;
+var dateFrom = button.parentNode.children[1].value;
+var dateTo = button.parentNode.children[3].value;
+
+var newDateFrom = new Date(dateFrom);
+newDateFrom.setDate(newDateFrom.getDate() - 1);
+
+var ddf = newDateFrom.getDate();
+var mmf = newDateFrom.getMonth() + 1;
+var yf = newDateFrom.getFullYear();
+
+var newDateTo = new Date(dateTo);
+newDateTo.setDate(newDateTo.getDate() + 1);
+
+var ddt = newDateTo.getDate();
+var mmt = newDateTo.getMonth() + 1;
+var yt = newDateTo.getFullYear();
+
+var formattedDateFrom = yf + '-' + mmf + '-' + ddf;
+var formattedDateTo = yt + '-' + mmt + '-' + ddt;
+
+ $.ajax({
+    type:'GET',
+    url: "{{route('reports.validateDateRange')}}",
+    data: {
+        'dateFrom':dateFrom,
+        'dateTo':dateTo,
+    },
+    success:function(data){
+        var url1 = "{{ route('admin.dashboard.createFastMovingItem') }}";
+        var url2 = "{{ route('admin.dashboard.createSlowMovingItem') }}";
+        
+        $.ajax({
+            type: 'GET',
+            url: ( smiORfmi === "FMI" ? url1 : url2),
+            data: {
+                "dateFrom":formattedDateFrom,
+                "dateTo":formattedDateTo
+                
+            },
+            success: function(response){
+                if(response.length == 0){
+                    $(button.parentNode.parentNode.previousElementSibling).hide(500);
+                    $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
+                    $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
+                    $(button.parentNode.parentNode.previousElementSibling).html(function(){
+                        return "no result";
+                    });
+
+                    });
+                }else{
+                    $(button.parentNode.parentNode.previousElementSibling).hide(1000);
+                    if(smiORfmi === "FMI"){
+                        $('#bar-chart-top-items').empty(); //reinitialize chart
+                            window.barChartTopItems = Morris.Bar({
+                            element: 'bar-chart-top-items',
+                            data: response,
+                            xkey: 'name',
+                            ykeys: ['quantity'],
+                            labels: ['Qty sold'],
+                            lineColors: ['#1e88e5'],
+                            lineWidth: '3px',
+                            resize: true,
+                            redraw: true
+                        });
+                    }else{
+                        $('#bar-chart-least-items').empty(); //reinitialize chart
+                            window.barChartLeastItems = Morris.Bar({
+                            element: 'bar-chart-least-items',
+                            data: response,
+                            xkey: 'name',
+                            ykeys: ['quantity'],
+                            labels: ['Qty sold'],
+                            lineColors: ['#1e88e5'],
+                            lineWidth: '3px',
+                            resize: true,
+                            redraw: true
+                        });
+                    }  
+                }
+            },
+            error: function(response){
+                console.log("errorr!");
+            }
+        });
+    },
+
+    error:function(data){
+        var response = data.responseJSON;
+        console.log(response);
+        $(button.parentNode.parentNode.previousElementSibling).hide(500);
+        $(button.parentNode.parentNode.previousElementSibling).removeClass("hidden");
+        $(button.parentNode.parentNode.previousElementSibling).slideDown("slow", function() {
+            $(button.parentNode.parentNode.previousElementSibling).html(function(){
+                var addedHtml="";
+                for (var key in response.errors) {
+                    addedHtml += "<p>"+response.errors[key]+"</p>";
+                }
+                return addedHtml;
+            });
+
+        });
+    }
+ });
+}
+
+function barChartTopItems() {
+  window.barChartTopItems = Morris.Bar({
+    element: 'bar-chart-top-items',
+    data: [<?php echo $chart_data_top_items; ?>],
+    xkey: 'name',
+    ykeys: ['quantity'],
+    labels: ['Qty sold'],
+    lineColors: ['#1e88e5'],
+    lineWidth: '3px',
+    resize: true,
+    redraw: true
+  });
+  console.log(<?php echo $chart_data_top_items; ?>)
+}
+  
+function barChartLeastItems() {
+  window.barChartLeastItems = Morris.Bar({
+    element: 'bar-chart-least-items',
+    data: [<?php echo $chart_data_least_items; ?>],
+    xkey: 'name',
+    ykeys: ['quantity'],
+    labels: ['Qty sold'],
+    lineColors: ['#1e88e5'],
+    lineWidth: '3px',
+    resize: true,
+    redraw: true
+  });
+}
+
+</script>
 @endsection

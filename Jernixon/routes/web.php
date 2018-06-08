@@ -115,16 +115,20 @@ Route::get('admin/purchaes/createPurchasesFilter', 'AdminController@createPurcha
 Route::Get('admin/purchases/getPurchaseOrder/{poid}', 'AdminController@getPurchaseOrder');
 
 Route::get('admin/searchItem/{itemName}', 'AdminController@searchItem');
+Route::get('admin/searchSupplier/{supplier}', 'AdminController@searchSupplier');
 
 Route::get('admin/returns', 'AdminController@returns')->name('admin.returns');
 Route::get('admin/returns/getReturns', 'AdminController@getReturns')->name('returns.getReturns');
 Route::get('admin/returns/getReturns2', 'AdminController@getReturns2')->name('returns.getReturns2');
+
 Route::Post('admin/returns/createReturnItem', 'AdminController@createReturnItem')->name('admin.createReturnItem');
 Route::Post('admin/returns/createReturnItem1', 'AdminController@createReturnItem1')->name('admin.createReturnItem1');
+Route::Post('admin/returns/createSupplierReturnItem', 'AdminController@createSupplierReturnItem')->name('admin.createSupplierReturnItem');
 Route::Post('admin/returns/createRefund', 'AdminController@createRefund')->name('admin.createRefund');
 Route::get('admin/returns/getORNumber/{ORNumber}', 'AdminController@getORNumber');
 Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')->name('admin.getORNumberItems');
 Route::get('admin/returns/getReturnedItems', 'AdminController@getReturnedItems')->name('admin.getReturnedItems');
+Route::get('admin/returns/getSupplierItems', 'AdminController@getSupplierItems')->name('admin.getSupplierItems');
 // Route::get('admin/returns/getReturnedItems2', 'AdminController@getReturnedItems2')->name('admin.getReturnedItems2');
 Route::Post('admin/returns/createReturnsFilter', 'AdminController@createReturnsFilter')->name('returns.createReturnsFilter');
 

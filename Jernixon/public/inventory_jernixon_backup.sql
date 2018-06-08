@@ -13,7 +13,7 @@ CREATE TABLE `admins` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO admins VALUES("1","ADMIN","admin@gmail.com","$2y$10$HpGuCVm2xV4cuj62m0dVaekc4xbDxazwNdHwUCq3XE2R2mBbfFvOW","5lPtI5GQoN85EMZ04pGc3TmwnMrk7ncPLdCrvlaMPr4bhKnrLoP7ZHPIiCYG","2018-02-25 05:39:36","2018-02-25 05:39:36");
+INSERT INTO admins VALUES("1","ADMIN","admin@gmail.com","$2y$10$HpGuCVm2xV4cuj62m0dVaekc4xbDxazwNdHwUCq3XE2R2mBbfFvOW","RGWpxkA5spOOJggTSxW3lC1rEqRaTTkNpknqZPdibCnXOyyxlT95lJvnTfe2","2018-02-25 05:39:36","2018-02-25 05:39:36");
 
 
 
@@ -55,24 +55,15 @@ INSERT INTO damaged_items VALUES("13","80","1","2018-06-05 04:05:00","");
 INSERT INTO damaged_items VALUES("28","126","1","2018-06-05 04:07:00","");
 INSERT INTO damaged_items VALUES("29","80","1","2018-06-06 11:08:00","");
 INSERT INTO damaged_items VALUES("30","83","1","2018-06-06 11:10:00","");
-INSERT INTO damaged_items VALUES("31","86","1","2018-06-06 14:24:00","");
-INSERT INTO damaged_items VALUES("32","126","1","2018-06-06 14:32:00","");
-INSERT INTO damaged_items VALUES("32","2","1","2018-06-06 14:32:00","");
-INSERT INTO damaged_items VALUES("32","118","1","2018-06-06 14:32:00","");
-INSERT INTO damaged_items VALUES("35","40","1","2018-06-06 14:36:00","");
-INSERT INTO damaged_items VALUES("36","116","1","2018-06-06 14:36:00","");
-INSERT INTO damaged_items VALUES("37","83","1","2018-06-06 14:38:00","");
-INSERT INTO damaged_items VALUES("38","115","1","2018-06-06 14:38:00","");
-INSERT INTO damaged_items VALUES("39","118","1","2018-06-06 14:38:00","");
-INSERT INTO damaged_items VALUES("40","115","1","2018-06-06 14:42:00","");
-INSERT INTO damaged_items VALUES("","152","1","2018-06-06 10:48:09","");
-INSERT INTO damaged_items VALUES("","81","1","2018-06-06 16:36:48","");
-INSERT INTO damaged_items VALUES("35","111","1","2018-06-06 00:36:00","");
-INSERT INTO damaged_items VALUES("42","79","1","2018-06-07 09:52:00","");
-INSERT INTO damaged_items VALUES("42","126","1","2018-06-07 10:02:00","");
-INSERT INTO damaged_items VALUES("44","130","1","2018-06-07 10:05:00","");
-INSERT INTO damaged_items VALUES("50","80","1","2018-06-07 10:27:00","");
-INSERT INTO damaged_items VALUES("51","109","1","2018-06-07 12:40:00","");
+INSERT INTO damaged_items VALUES("","112","1","2018-06-07 07:16:41","");
+INSERT INTO damaged_items VALUES("","108","1","2018-06-07 07:20:04","");
+INSERT INTO damaged_items VALUES("","151","1","2018-06-07 07:29:20","");
+INSERT INTO damaged_items VALUES("","153","1","2018-06-07 07:33:15","");
+INSERT INTO damaged_items VALUES("","6","1","2018-06-08 12:02:27","");
+INSERT INTO damaged_items VALUES("","104","1","2018-06-08 12:03:22","");
+INSERT INTO damaged_items VALUES("","114","1","2018-06-08 17:04:54","");
+INSERT INTO damaged_items VALUES("","112","4","2018-06-08 17:11:24","");
+INSERT INTO damaged_items VALUES("","81","3","2018-06-08 17:11:24","");
 
 
 
@@ -143,6 +134,42 @@ INSERT INTO migrations VALUES("11","2018_05_19_155942_create_notifications_table
 
 
 
+DROP TABLE model;
+
+CREATE TABLE `model` (
+  `modelname` varchar(45) NOT NULL,
+  PRIMARY KEY (`modelname`),
+  UNIQUE KEY `modelname_UNIQUE` (`modelname`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO model VALUES("Aura");
+INSERT INTO model VALUES("Bajaj");
+INSERT INTO model VALUES("Barako");
+INSERT INTO model VALUES("BC175");
+INSERT INTO model VALUES("C100");
+INSERT INTO model VALUES("Crypton");
+INSERT INTO model VALUES("CT100");
+INSERT INTO model VALUES("Fury");
+INSERT INTO model VALUES("Generic");
+INSERT INTO model VALUES("GP125");
+INSERT INTO model VALUES("Lifan");
+INSERT INTO model VALUES("Mio");
+INSERT INTO model VALUES("Motor Star");
+INSERT INTO model VALUES("Raider");
+INSERT INTO model VALUES("RS100");
+INSERT INTO model VALUES("Rusi");
+INSERT INTO model VALUES("Shogun");
+INSERT INTO model VALUES("Smash");
+INSERT INTO model VALUES("Sniper");
+INSERT INTO model VALUES("STX");
+INSERT INTO model VALUES("TMX");
+INSERT INTO model VALUES("Wave");
+INSERT INTO model VALUES("Wind");
+INSERT INTO model VALUES("XLR");
+INSERT INTO model VALUES("XRM");
+
+
+
 DROP TABLE notifications;
 
 CREATE TABLE `notifications` (
@@ -158,9 +185,12 @@ CREATE TABLE `notifications` (
   KEY `notifications_notifiable_id_notifiable_type_index` (`notifiable_id`,`notifiable_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO notifications VALUES("c8420ab2-028e-4113-a764-ed2eb7e60218","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Primary Coil CT00\",\"stock_id\":53}","","2018-06-07 04:43:41","2018-06-07 04:43:41");
-INSERT INTO notifications VALUES("e69b3fad-6150-48a2-975e-6831beca8960","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Primary Coil TMX-CDI\",\"stock_id\":52}","","2018-06-07 04:43:41","2018-06-07 04:43:41");
-INSERT INTO notifications VALUES("f1d69415-4ece-46c4-9c0b-249e98c8f7f5","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit Mio\",\"stock_id\":51}","","2018-06-07 04:41:22","2018-06-07 04:41:22");
+INSERT INTO notifications VALUES("3c2b1e91-17a7-4899-ae66-e5730adf5fc0","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Mio\",\"quantity\":\"1\",\"type\":\"Undamaged Item\",\"Customer\":\"Jake James Manzon\"}","","2018-06-08 17:04:54","2018-06-08 17:04:54");
+INSERT INTO notifications VALUES("5891f5c5-5792-4b47-a073-e5bacee8bcad","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Smash\",\"quantity\":\"3\",\"type\":\"Damaged Items\",\"Customer\":\"Marinel\"}","","2018-06-08 17:11:24","2018-06-08 17:11:24");
+INSERT INTO notifications VALUES("5b30c49e-95de-4140-85d7-8773037c9ee1","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit Trinity\",\"quantity\":\"4\",\"type\":\"Damaged Items\",\"Customer\":\"Marinel\"}","","2018-06-08 17:11:24","2018-06-08 17:11:24");
+INSERT INTO notifications VALUES("d18325c1-7a18-42ae-bda3-96d7cb0a7e97","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Wire Harness XRM\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James Manzon\"}","","2018-06-08 12:03:23","2018-06-08 12:03:23");
+INSERT INTO notifications VALUES("dbc6cefb-f681-416b-b0b4-d6b8684d5147","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Connecting Rod KitSTX\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James Manzon\"}","","2018-06-08 12:02:28","2018-06-08 12:02:28");
+INSERT INTO notifications VALUES("f517db8e-a93d-485f-bfd5-f48783c1b5f8","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit Smash\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James Manzon\"}","","2018-06-08 17:04:54","2018-06-08 17:04:54");
 
 
 
@@ -339,6 +369,7 @@ INSERT INTO physical_count_items VALUES("151","0");
 INSERT INTO physical_count_items VALUES("152","0");
 INSERT INTO physical_count_items VALUES("153","0");
 INSERT INTO physical_count_items VALUES("154","0");
+INSERT INTO physical_count_items VALUES("157","0");
 
 
 
@@ -357,204 +388,213 @@ DROP TABLE products;
 
 CREATE TABLE `products` (
   `product_id` int(11) NOT NULL AUTO_INCREMENT,
-  `description` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` enum('available','unavailable') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'available',
+  `description` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` enum('available','unavailable') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'available',
   `reorder_level` int(11) NOT NULL DEFAULT '5',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `modelname` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`product_id`),
   UNIQUE KEY `products_product_id_unique` (`product_id`),
-  UNIQUE KEY `products_description_unique` (`description`)
-) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  KEY `model_idx` (`modelname`),
+  CONSTRAINT `model` FOREIGN KEY (`modelname`) REFERENCES `model` (`modelname`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=latin1;
 
-INSERT INTO products VALUES("1","Connecting Rod KitXRM110","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("2","Connecting Rod KitBILP/HD3","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("3","Connecting Rod KitSMASH","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("4","Connecting Rod KitXLR","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("5","Connecting Rod KitBARAKO 175","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("6","Connecting Rod KitSTX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("7","Connecting Rod KitDT125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("8","Connecting Rod KitSHOGUN","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("9","Connecting Rod KitRUSI 150","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("10","Connecting Rod KitX4/GP125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("11","Stator Assy.STX 8 COILS","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("12","Stator Assy.STX 16 COILS","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("13","Stator Assy.LIFAN125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("14","Stator Assy.BC175","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("15","Stator Assy.C100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("16","Stator Assy.TMX-CP","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("17","Stator Assy.XLR 200/GS185/150","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("18","Stator Assy.MOTOR STAR","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("19","Stator Assy.WAVE125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("20","Stator Assy.LIFAN150","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("21","Stator Assy.XRM110","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("22","Stator Assy.TMX-CDI W/BASE","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("23","Clutch LiningLIFAN110","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("24","Clutch LiningXRM110","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("25","Clutch LiningTMX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("26","Clutch LiningWAVE125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("27","Clutch LiningCRYPTON","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("28","Clutch LiningRS100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("29","Clutch LiningSTX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("30","Clutch LiningHD3/B1LP","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("31","Clutch LiningBS175","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("32","Clutch LiningAURA","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("33","Clutch LiningWIND125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("34","Clutch LiningCT100/BAJAJ","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("35","Clutch LiningX4/GP125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("36","Clutch LiningB120/SMASH","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("37","Clutch LiningG7S","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("38","CDI UnitTMX155","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("39","CDI UnitC100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("40","CDI UnitWAVE125-CDI 5 Pins","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("41","CDI UnitXRM110 5 Pins","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("42","CDI UnitCRYPTON","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("43","Pulser CoilCT100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("44","Pulser CoilBC175","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("45","Pulser CoilCRYPTON","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("46","Pulser CoilLifan100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("47","Pulser CoilLifan150","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("48","Pulser CoilTMX-CDI TYPE","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("49","Regulator 4 Wires","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("50","Regulator 5 Wires","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("51","Regulator Raider J","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("52","Regulator Rectifier Barako","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("53","Regulator Rectifier Crypton","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("54","Regulator Rectifier CT100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("55","Regulator Rectifier GS125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("56","Regulator Rectifier Mio","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("57","Regulator Rectifier RS100 12v WWII","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("58","Regulator Rectifier  Smash","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("59","Regulator Rectifier Wave100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("60","Regulator Rectifier Wave110/XRM","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("61","Regulator Rectifier Wind125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("62","Regulator Rectifier Rusi/TC125 4+1 WII","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("63","Regulator Rectifier C100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("64","Regulator Rectifier TMX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("65","Fuel Cock B1LP/HD3","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("66","Fuel Cock BC175","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("67","Fuel Cock C100/Dream/XRM","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("68","Fuel Cock CG125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("69","Fuel Cock Crypton","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("70","Fuel Cock G75","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("71","Fuel Cock GP125/X4/X120","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("72","Magneto Kit TMX Silicon Gray","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("73","Magneto Kit XRM Silicon-Red","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("74","Magneto Kit C100 Silcon-Red","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("75","Magneto Kit TMX BLK","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("76","Magneto Kit C100 BLK","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("77","Magneto Kit Rusi125/110 BLK","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("78","Magneto Kit Rusi125/110 Silicon-Red","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("79","Carbon Brush Mio","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("80","Carbon Brush Shogun","available","5","2018-03-01 00:00:00","2018-05-30 15:39:00");
-INSERT INTO products VALUES("81","Carbon Brush Smash","available","5","2018-03-01 00:00:00","2018-05-30 16:10:39");
-INSERT INTO products VALUES("82","Carbon Brush XRM","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("83","Carbon Brush Sniper","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("84","Carbon Brush With Housing","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("85","Carbon Brush Wave125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("86","Carbon Brush Crypton","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("87","Rocker Arm W/tappet Screw XM","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("88","Rocker Arm W/tappet Screw TMX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("89","Rocker Arm W/tappet Screw Barako","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("90","Rocker Arm W/tappet Screw Mio","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("91","Rocker Arm W/tappet Screw STX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("92","Rocker Arm W/tappet Screw Shogun","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("93","Rocker Arm W/tappet Screw Smash","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("94","Rocker Arm W/tappet Screw Fury","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("95","Rocker Arm Wave125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("96","Cylinder Head Packing-Red TMX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("97","Cylinder Head Packing-Silicon TMX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("98","Cylinder Head Packing-BLK TMX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("99","Wire Harness RS100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("100","Wire Harness TMX/CPT1","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("101","Wire Harness TMX/CPT","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("102","Wire Harness HD3/CDI","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("103","Wire Harness HD3","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("104","Wire Harness XRM","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("105","Wire Harness STX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("106","Brake Master Repair Kit Raider150","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("107","Brake Master Repair Kit Wave125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("108","Brake Master Repair Kit GLPRO","available","6","2018-03-01 00:00:00","2018-05-26 07:38:53");
-INSERT INTO products VALUES("109","Brake Master Repair Kit Mio","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("110","Brake Master Repair Kit XRM110/W110","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("111","Brake Master Repair Kit Shogun","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("112","Brake Master Repair Kit Trinity","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("113","Brake Master Repair Kit Raider110","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("114","Brake Master Repair Kit Smash","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("115","Primary Coil C100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("116","Primary Coil CT00","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("117","Primary Coil TMX-CDI1","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("118","Primary Coil TMX-CDI","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("119","Fulser Coil Lifan150","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("120","Fulser Coil BC175","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("121","Fulser Coil CT100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("122","Fulser Coil Crypton","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("123","Fulser Coil MSX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("124","Fulser Coil TMX/CDI","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("125","Carburador Insulator GY6125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("126","Carburador Insulator CG125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("127","Carburador Insulator CT100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("128","Carburador Insulator GS125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("129","Carburador Insulator XRM","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("130","Carburador Insulator BC175","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("131","Carburador Insulator TMX Fibra","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("132","Carburador Insulator TMX Alloy","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("133","Carburador Insulator TMX Rubberize","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("134","Handle Switch Assy. BC175 L/H","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("135","Handle Switch Assy. DT125 R/H","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("136","Handle Switch Assy. DT125 L/H","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("137","Handle Switch Assy. RS100 L/H","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("138","Handle Switch Assy. XRM-Old L/H","available","5","2018-03-01 00:00:00","2018-06-02 13:11:55");
-INSERT INTO products VALUES("139","Handle Switch Assy. XRM-New L/H","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("140","Handle Switch Assy. RM-Neww R/H","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("141","Neutral Switch Indicator Crypton","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("142","Neutral Switch Indicator C100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("143","Neutral Switch Indicator Wave125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("144","Neutral Switch Indicator XRM","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("145","Neutral Switch Indicator STX","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("146","Neutral Switch Indicator CT100","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("147","Valve Guide Set CG125","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("148","Valve Guide Set TMX CPT.","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("149","Valve Guide Set TMXCDI","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("150","Valve Guide Set XRM","available","5","2018-03-01 00:00:00","");
-INSERT INTO products VALUES("151","Item 100","available","5","2018-05-31 06:56:20","2018-05-31 06:58:53");
-INSERT INTO products VALUES("152","item3","available","4","2018-05-31 07:27:54","2018-05-31 07:31:26");
-INSERT INTO products VALUES("153","Item 40","available","5","2018-05-31 08:13:30","2018-05-31 08:15:22");
-INSERT INTO products VALUES("154","item 101","available","5","2018-05-31 08:29:59","2018-05-31 08:32:20");
+INSERT INTO products VALUES("1","Connecting Rod KitXRM110","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("2","Connecting Rod KitBILP/HD3","available","5","2018-03-01 00:00:00","","Barako");
+INSERT INTO products VALUES("3","Connecting Rod KitSMASH","available","5","2018-03-01 00:00:00","","Smash");
+INSERT INTO products VALUES("4","Connecting Rod KitXLR","available","5","2018-03-01 00:00:00","","XLR");
+INSERT INTO products VALUES("5","Connecting Rod KitBARAKO 175","available","5","2018-03-01 00:00:00","","Barako");
+INSERT INTO products VALUES("6","Connecting Rod KitSTX","available","5","2018-03-01 00:00:00","","STX");
+INSERT INTO products VALUES("7","Connecting Rod KitDT125","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("8","Connecting Rod KitSHOGUN","available","5","2018-03-01 00:00:00","","Shogun");
+INSERT INTO products VALUES("9","Connecting Rod KitRUSI 150","available","5","2018-03-01 00:00:00","","Rusi");
+INSERT INTO products VALUES("10","Connecting Rod KitX4/GP125","available","5","2018-03-01 00:00:00","","GP125");
+INSERT INTO products VALUES("11","Stator Assy.STX 8 COILS","available","5","2018-03-01 00:00:00","","STX");
+INSERT INTO products VALUES("12","Stator Assy.STX 16 COILS","available","5","2018-03-01 00:00:00","","STX");
+INSERT INTO products VALUES("13","Stator Assy.LIFAN125","available","5","2018-03-01 00:00:00","","Lifan");
+INSERT INTO products VALUES("14","Stator Assy.BC175","available","5","2018-03-01 00:00:00","","BC175");
+INSERT INTO products VALUES("15","Stator Assy.C100","available","5","2018-03-01 00:00:00","","C100");
+INSERT INTO products VALUES("16","Stator Assy.TMX-CP","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("17","Stator Assy.XLR 200/GS185/150","available","5","2018-03-01 00:00:00","","XLR");
+INSERT INTO products VALUES("18","Stator Assy.MOTOR STAR","available","5","2018-03-01 00:00:00","","Motor Star");
+INSERT INTO products VALUES("19","Stator Assy.WAVE125","available","5","2018-03-01 00:00:00","","Wave");
+INSERT INTO products VALUES("20","Stator Assy.LIFAN150","available","5","2018-03-01 00:00:00","","Lifan");
+INSERT INTO products VALUES("21","Stator Assy.XRM110","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("22","Stator Assy.TMX-CDI W/BASE","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("23","Clutch LiningLIFAN110","available","5","2018-03-01 00:00:00","","Lifan");
+INSERT INTO products VALUES("24","Clutch LiningXRM110","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("25","Clutch LiningTMX","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("26","Clutch LiningWAVE125","available","5","2018-03-01 00:00:00","","Wave");
+INSERT INTO products VALUES("27","Clutch LiningCRYPTON","available","5","2018-03-01 00:00:00","","Crypton");
+INSERT INTO products VALUES("28","Clutch LiningRS100","available","5","2018-03-01 00:00:00","","RS100");
+INSERT INTO products VALUES("29","Clutch LiningSTX","available","5","2018-03-01 00:00:00","","STX");
+INSERT INTO products VALUES("30","Clutch LiningHD3/B1LP","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("31","Clutch LiningBS175","available","5","2018-03-01 00:00:00","","Generic");
+INSERT INTO products VALUES("32","Clutch LiningAURA","available","5","2018-03-01 00:00:00","","Aura");
+INSERT INTO products VALUES("33","Clutch LiningWIND125","available","5","2018-03-01 00:00:00","","Wind");
+INSERT INTO products VALUES("34","Clutch LiningCT100/BAJAJ","available","5","2018-03-01 00:00:00","","CT100");
+INSERT INTO products VALUES("35","Clutch LiningX4/GP125","available","5","2018-03-01 00:00:00","","GP125");
+INSERT INTO products VALUES("36","Clutch LiningB120/SMASH","available","5","2018-03-01 00:00:00","","Smash");
+INSERT INTO products VALUES("37","Clutch LiningG7S","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("38","CDI UnitTMX155","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("39","CDI UnitC100","available","5","2018-03-01 00:00:00","","C100");
+INSERT INTO products VALUES("40","CDI UnitWAVE125-CDI 5 Pins","available","5","2018-03-01 00:00:00","","Wave");
+INSERT INTO products VALUES("41","CDI UnitXRM110 5 Pins","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("42","CDI UnitCRYPTON","available","5","2018-03-01 00:00:00","","Crypton");
+INSERT INTO products VALUES("43","Pulser CoilCT100","available","5","2018-03-01 00:00:00","","CT100");
+INSERT INTO products VALUES("44","Pulser CoilBC175","available","5","2018-03-01 00:00:00","","BC175");
+INSERT INTO products VALUES("45","Pulser CoilCRYPTON","available","5","2018-03-01 00:00:00","","Crypton");
+INSERT INTO products VALUES("46","Pulser CoilLifan100","available","5","2018-03-01 00:00:00","","Lifan");
+INSERT INTO products VALUES("47","Pulser CoilLifan150","available","5","2018-03-01 00:00:00","","Lifan");
+INSERT INTO products VALUES("48","Pulser CoilTMX-CDI TYPE","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("49","Regulator 4 Wires","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("50","Regulator 5 Wires","available","5","2018-03-01 00:00:00","","Generic");
+INSERT INTO products VALUES("51","Regulator Raider J","available","5","2018-03-01 00:00:00","","Raider");
+INSERT INTO products VALUES("52","Regulator Rectifier Barako","available","5","2018-03-01 00:00:00","","Barako");
+INSERT INTO products VALUES("53","Regulator Rectifier Crypton","available","5","2018-03-01 00:00:00","","Crypton");
+INSERT INTO products VALUES("54","Regulator Rectifier CT100","available","5","2018-03-01 00:00:00","","CT100");
+INSERT INTO products VALUES("55","Regulator Rectifier GS125","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("56","Regulator Rectifier Mio","available","5","2018-03-01 00:00:00","","Mio");
+INSERT INTO products VALUES("57","Regulator Rectifier RS100 12v WWII","available","5","2018-03-01 00:00:00","","RS100");
+INSERT INTO products VALUES("58","Regulator Rectifier  Smash","available","5","2018-03-01 00:00:00","","Smash");
+INSERT INTO products VALUES("59","Regulator Rectifier Wave100","available","5","2018-03-01 00:00:00","","Wave");
+INSERT INTO products VALUES("60","Regulator Rectifier Wave110/XRM","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("61","Regulator Rectifier Wind125","available","5","2018-03-01 00:00:00","","Wind");
+INSERT INTO products VALUES("62","Regulator Rectifier Rusi/TC125 4+1 WII","available","5","2018-03-01 00:00:00","","Rusi");
+INSERT INTO products VALUES("63","Regulator Rectifier C100","available","5","2018-03-01 00:00:00","","C100");
+INSERT INTO products VALUES("64","Regulator Rectifier TMX","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("65","Fuel Cock B1LP/HD3","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("66","Fuel Cock BC175","available","5","2018-03-01 00:00:00","","BC175");
+INSERT INTO products VALUES("67","Fuel Cock C100/Dream/XRM","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("68","Fuel Cock CG125","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("69","Fuel Cock Crypton","available","5","2018-03-01 00:00:00","","Crypton");
+INSERT INTO products VALUES("70","Fuel Cock G75","available","5","2018-03-01 00:00:00","","Generic");
+INSERT INTO products VALUES("71","Fuel Cock GP125/X4/X120","available","5","2018-03-01 00:00:00","","GP125");
+INSERT INTO products VALUES("72","Magneto Kit TMX Silicon Gray","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("73","Magneto Kit XRM Silicon-Red","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("74","Magneto Kit C100 Silcon-Red","available","5","2018-03-01 00:00:00","","C100");
+INSERT INTO products VALUES("75","Magneto Kit TMX BLK","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("76","Magneto Kit C100 BLK","available","5","2018-03-01 00:00:00","","C100");
+INSERT INTO products VALUES("77","Magneto Kit Rusi125/110 BLK","available","5","2018-03-01 00:00:00","","Rusi");
+INSERT INTO products VALUES("78","Magneto Kit Rusi125/110 Silicon-Red","available","5","2018-03-01 00:00:00","","Rusi");
+INSERT INTO products VALUES("79","Carbon Brush Mio","available","5","2018-03-01 00:00:00","","Mio");
+INSERT INTO products VALUES("80","Carbon Brush Shogun","available","5","2018-03-01 00:00:00","2018-05-30 15:39:00","Shogun");
+INSERT INTO products VALUES("81","Carbon Brush Smash","available","5","2018-03-01 00:00:00","2018-05-30 16:10:39","Smash");
+INSERT INTO products VALUES("82","Carbon Brush XRM","available","5","2018-03-01 00:00:00","","Generic");
+INSERT INTO products VALUES("83","Carbon Brush Sniper","available","5","2018-03-01 00:00:00","","Sniper");
+INSERT INTO products VALUES("84","Carbon Brush With Housing","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("85","Carbon Brush Wave125","available","5","2018-03-01 00:00:00","","Wave");
+INSERT INTO products VALUES("86","Carbon Brush Crypton","available","5","2018-03-01 00:00:00","","Crypton");
+INSERT INTO products VALUES("87","Rocker Arm W/tappet Screw XM","available","5","2018-03-01 00:00:00","","Generic");
+INSERT INTO products VALUES("88","Rocker Arm W/tappet Screw TMX","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("89","Rocker Arm W/tappet Screw Barako","available","5","2018-03-01 00:00:00","","Barako");
+INSERT INTO products VALUES("90","Rocker Arm W/tappet Screw Mio","available","5","2018-03-01 00:00:00","","Mio");
+INSERT INTO products VALUES("91","Rocker Arm W/tappet Screw STX","available","5","2018-03-01 00:00:00","","STX");
+INSERT INTO products VALUES("92","Rocker Arm W/tappet Screw Shogun","available","5","2018-03-01 00:00:00","","Shogun");
+INSERT INTO products VALUES("93","Rocker Arm W/tappet Screw Smash","available","5","2018-03-01 00:00:00","","Smash");
+INSERT INTO products VALUES("94","Rocker Arm W/tappet Screw Fury","available","5","2018-03-01 00:00:00","","Fury");
+INSERT INTO products VALUES("95","Rocker Arm Wave125","available","5","2018-03-01 00:00:00","","Wave");
+INSERT INTO products VALUES("96","Cylinder Head Packing-Red TMX","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("97","Cylinder Head Packing-Silicon TMX","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("98","Cylinder Head Packing-BLK TMX","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("99","Wire Harness RS100","available","5","2018-03-01 00:00:00","","RS100");
+INSERT INTO products VALUES("100","Wire Harness TMX/CPT1","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("101","Wire Harness TMX/CPT","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("102","Wire Harness HD3/CDI","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("103","Wire Harness HD3","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("104","Wire Harness XRM","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("105","Wire Harness STX","available","5","2018-03-01 00:00:00","","STX");
+INSERT INTO products VALUES("106","Brake Master Repair Kit Raider150","available","5","2018-03-01 00:00:00","","Raider");
+INSERT INTO products VALUES("107","Brake Master Repair Kit Wave125","available","5","2018-03-01 00:00:00","","Wave");
+INSERT INTO products VALUES("108","Brake Master Repair Kit GLPRO","available","6","2018-03-01 00:00:00","2018-05-26 07:38:53","");
+INSERT INTO products VALUES("109","Brake Master Repair Kit Mio","available","5","2018-03-01 00:00:00","","Mio");
+INSERT INTO products VALUES("110","Brake Master Repair Kit XRM110/W110","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("111","Brake Master Repair Kit Shogun","available","5","2018-03-01 00:00:00","","Shogun");
+INSERT INTO products VALUES("112","Brake Master Repair Kit Trinity","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("113","Brake Master Repair Kit Raider110","available","5","2018-03-01 00:00:00","","Raider");
+INSERT INTO products VALUES("114","Brake Master Repair Kit Smash","available","5","2018-03-01 00:00:00","","Smash");
+INSERT INTO products VALUES("115","Primary Coil C100","available","5","2018-03-01 00:00:00","","C100");
+INSERT INTO products VALUES("116","Primary Coil CT00","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("117","Primary Coil TMX-CDI1","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("118","Primary Coil TMX-CDI","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("119","Fulser Coil Lifan150","available","5","2018-03-01 00:00:00","","Lifan");
+INSERT INTO products VALUES("120","Fulser Coil BC175","available","5","2018-03-01 00:00:00","","BC175");
+INSERT INTO products VALUES("121","Fulser Coil CT100","available","5","2018-03-01 00:00:00","","CT100");
+INSERT INTO products VALUES("122","Fulser Coil Crypton","available","5","2018-03-01 00:00:00","","Crypton");
+INSERT INTO products VALUES("123","Fulser Coil MSX","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("124","Fulser Coil TMX/CDI","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("125","Carburador Insulator GY6125","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("126","Carburador Insulator CG125","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("127","Carburador Insulator CT100","available","5","2018-03-01 00:00:00","","CT100");
+INSERT INTO products VALUES("128","Carburador Insulator GS125","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("129","Carburador Insulator XRM","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("130","Carburador Insulator BC175","available","5","2018-03-01 00:00:00","","BC175");
+INSERT INTO products VALUES("131","Carburador Insulator TMX Fibra","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("132","Carburador Insulator TMX Alloy","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("133","Carburador Insulator TMX Rubberize","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("134","Handle Switch Assy. BC175 L/H","available","5","2018-03-01 00:00:00","","BC175");
+INSERT INTO products VALUES("135","Handle Switch Assy. DT125 R/H","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("136","Handle Switch Assy. DT125 L/H","available","5","2018-03-01 00:00:00","","Generic");
+INSERT INTO products VALUES("137","Handle Switch Assy. RS100 L/H","available","5","2018-03-01 00:00:00","","RS100");
+INSERT INTO products VALUES("138","Handle Switch Assy. XRM-Old L/H","available","5","2018-03-01 00:00:00","2018-06-02 13:11:55","XRM");
+INSERT INTO products VALUES("139","Handle Switch Assy. XRM-New L/H","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("140","Handle Switch Assy. RM-Neww R/H","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("141","Neutral Switch Indicator Crypton","available","5","2018-03-01 00:00:00","","Crypton");
+INSERT INTO products VALUES("142","Neutral Switch Indicator C100","available","5","2018-03-01 00:00:00","","C100");
+INSERT INTO products VALUES("143","Neutral Switch Indicator Wave125","available","5","2018-03-01 00:00:00","","Wave");
+INSERT INTO products VALUES("144","Neutral Switch Indicator XRM","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("145","Neutral Switch Indicator STX","available","5","2018-03-01 00:00:00","","STX");
+INSERT INTO products VALUES("146","Neutral Switch Indicator CT100","available","5","2018-03-01 00:00:00","","CT100");
+INSERT INTO products VALUES("147","Valve Guide Set CG125","available","5","2018-03-01 00:00:00","","");
+INSERT INTO products VALUES("148","Valve Guide Set TMX CPT.","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("149","Valve Guide Set TMXCDI","available","5","2018-03-01 00:00:00","","TMX");
+INSERT INTO products VALUES("150","Valve Guide Set XRM","available","5","2018-03-01 00:00:00","","XRM");
+INSERT INTO products VALUES("151","Item 100","available","5","2018-05-31 06:56:20","2018-05-31 06:58:53","Generic");
+INSERT INTO products VALUES("152","item3","available","4","2018-05-31 07:27:54","2018-05-31 07:31:26","Generic");
+INSERT INTO products VALUES("153","Item 40","available","5","2018-05-31 08:13:30","2018-05-31 08:15:22","Generic");
+INSERT INTO products VALUES("154","item 101","available","5","2018-05-31 08:29:59","2018-05-31 08:32:20","Generic");
+INSERT INTO products VALUES("157","aaa","available","5","2018-06-07 06:03:06","2018-06-07 06:03:06","Raider");
 
 
 
 DROP TABLE purchases;
 
 CREATE TABLE `purchases` (
+  `purchase_id` int(11) NOT NULL AUTO_INCREMENT,
   `po_id` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `product_id` int(11) NOT NULL,
   `supplier_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `unit` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` decimal(7,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `amount` int(45) NOT NULL,
+  `discount` int(45) DEFAULT NULL,
+  PRIMARY KEY (`purchase_id`),
   KEY `purchases_product_id_foreign` (`product_id`),
   CONSTRAINT `purchases_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO purchases VALUES("1","82","Honda","5","","1.00","2018-04-06 00:00:00","");
-INSERT INTO purchases VALUES("1","19","Honda","7","","1.00","2018-04-06 00:00:00","");
-INSERT INTO purchases VALUES("1","147","Honda","7","","1.00","2018-04-06 00:00:00","");
-INSERT INTO purchases VALUES("909090","111","lol","2","","5.00","2018-05-30 18:17:00","");
-INSERT INTO purchases VALUES("90901","111","lla","1","","10.00","2018-05-30 18:20:00","");
-INSERT INTO purchases VALUES("90902","111","aa","2","","10.00","2018-05-30 18:21:00","");
-INSERT INTO purchases VALUES("90903","111","aaae","5","","15.00","2018-05-30 18:22:00","");
-INSERT INTO purchases VALUES("90904","111","aaa","2","","20.00","2018-05-30 18:39:00","");
-INSERT INTO purchases VALUES("1001","108","Yamaha","25","","53.00","2018-05-30 18:52:00","");
-INSERT INTO purchases VALUES("1001","112","Yamaha","35","","53.00","2018-05-30 18:52:00","");
-INSERT INTO purchases VALUES("1001","109","Yamaha","28","","53.00","2018-05-30 18:52:00","");
-INSERT INTO purchases VALUES("445","151","Honda","100","","150.00","2018-05-31 14:58:00","");
-INSERT INTO purchases VALUES("12312","152","nm","100","","50.00","2018-05-31 15:29:00","");
-INSERT INTO purchases VALUES("200","153","honda","50","","40.00","2018-05-31 16:13:00","");
-INSERT INTO purchases VALUES("1011","154","yamaha","10","","50.00","2018-05-31 16:31:00","");
-INSERT INTO purchases VALUES("1234","154","Honda","5","","50.00","2018-05-31 16:37:00","");
+INSERT INTO purchases VALUES("1","1","82","Honda","","5","","1.00","2018-04-06 00:00:00","","0","");
+INSERT INTO purchases VALUES("2","1","19","Honda","","7","","1.00","2018-04-06 00:00:00","","0","");
+INSERT INTO purchases VALUES("3","1","147","Honda","","7","","1.00","2018-04-06 00:00:00","","0","");
+INSERT INTO purchases VALUES("4","909090","111","lol","","2","","5.00","2018-05-30 18:17:00","","0","");
+INSERT INTO purchases VALUES("5","90901","111","lla","","1","","10.00","2018-05-30 18:20:00","","0","");
+INSERT INTO purchases VALUES("6","90902","111","aa","","2","","10.00","2018-05-30 18:21:00","","0","");
+INSERT INTO purchases VALUES("7","90903","111","aaae","","5","","15.00","2018-05-30 18:22:00","","0","");
+INSERT INTO purchases VALUES("8","90904","111","aaa","","2","","20.00","2018-05-30 18:39:00","","0","");
+INSERT INTO purchases VALUES("9","1001","108","Yamaha","","25","","53.00","2018-05-30 18:52:00","","0","");
+INSERT INTO purchases VALUES("10","1001","112","Yamaha","","35","","53.00","2018-05-30 18:52:00","","0","");
+INSERT INTO purchases VALUES("11","1001","109","Yamaha","","28","","53.00","2018-05-30 18:52:00","","0","");
+INSERT INTO purchases VALUES("12","445","151","Honda","","100","","150.00","2018-05-31 14:58:00","","0","");
+INSERT INTO purchases VALUES("13","12312","152","nm","","100","","50.00","2018-05-31 15:29:00","","0","");
+INSERT INTO purchases VALUES("14","200","153","honda","","50","","40.00","2018-05-31 16:13:00","","0","");
+INSERT INTO purchases VALUES("15","1011","154","yamaha","","10","","50.00","2018-05-31 16:31:00","","0","");
+INSERT INTO purchases VALUES("16","1234","154","Honda","","5","","50.00","2018-05-31 16:37:00","","0","");
+INSERT INTO purchases VALUES("17","234432","108","Motorstar","","1","pcs","53.00","2018-06-07 14:06:00","","53","2");
 
 
 
@@ -588,8 +628,69 @@ INSERT INTO returns VALUES("778","151","Jake James","200.00","1","1","1","2018-0
 INSERT INTO returns VALUES("1234","152","Ban","70.00","2","1","2","2018-05-31 15:41:30","");
 INSERT INTO returns VALUES("1234","152","Ban","70.00","1","0","1","2018-05-31 16:19:07","");
 INSERT INTO returns VALUES("1234","152","Ban","70.00","1","0","0","2018-05-31 17:47:33","");
-INSERT INTO returns VALUES("1234","152","Ban","70.00","1","0","0","2018-06-06 18:48:09","");
-INSERT INTO returns VALUES("100001","81","James Abalos","60.00","1","0","0","2018-06-07 00:36:48","");
+INSERT INTO returns VALUES("1004","112","Marinel","83.00","1","0","0","2018-06-07 15:16:41","");
+INSERT INTO returns VALUES("8796","108","Jake James","83.00","1","0","0","2018-06-07 15:20:04","");
+INSERT INTO returns VALUES("778","151","Jake James","200.00","1","0","0","2018-06-07 15:29:20","");
+INSERT INTO returns VALUES("12345","153","James","50.00","1","0","0","2018-06-07 15:33:15","");
+INSERT INTO returns VALUES("1001","6","Jake James Manzon","180.00","1","0","0","2018-06-08 12:02:27","");
+INSERT INTO returns VALUES("1001","104","Jake James Manzon","405.00","1","0","0","2018-06-08 12:03:22","");
+INSERT INTO returns VALUES("1001","79","Jake James Manzon","65.00","0","1","0","2018-06-08 17:04:53","");
+INSERT INTO returns VALUES("1001","114","Jake James Manzon","83.00","1","0","0","2018-06-08 17:04:54","");
+INSERT INTO returns VALUES("1004","112","Marinel","83.00","4","0","0","2018-06-08 17:11:24","");
+INSERT INTO returns VALUES("1004","81","Marinel","65.00","3","0","0","2018-06-08 17:11:24","");
+
+
+
+DROP TABLE returns_supplier;
+
+CREATE TABLE `returns_supplier` (
+  `returns_s_id` int(11) NOT NULL AUTO_INCREMENT,
+  `address` varchar(45) DEFAULT NULL,
+  `supplier_name` varchar(45) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`returns_s_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+INSERT INTO returns_supplier VALUES("5","","honda","2018-06-08 21:56:14","");
+INSERT INTO returns_supplier VALUES("4","","honda","2018-06-08 21:54:45","");
+INSERT INTO returns_supplier VALUES("6","","honda","2018-06-08 22:00:00","");
+INSERT INTO returns_supplier VALUES("7","","honda","2018-06-08 22:01:30","");
+INSERT INTO returns_supplier VALUES("8","","honda","2018-06-08 22:01:30","");
+INSERT INTO returns_supplier VALUES("9","","honda","2018-06-08 22:01:38","");
+INSERT INTO returns_supplier VALUES("10","","honda","2018-06-08 22:01:38","");
+INSERT INTO returns_supplier VALUES("11","","honda","2018-06-08 22:02:19","");
+INSERT INTO returns_supplier VALUES("12","","honda","2018-06-08 22:02:38","");
+INSERT INTO returns_supplier VALUES("13","","honda","2018-06-08 22:02:38","");
+
+
+
+DROP TABLE returns_supplier_info;
+
+CREATE TABLE `returns_supplier_info` (
+  `return_supplier_id` int(11) NOT NULL AUTO_INCREMENT,
+  `returns_s_id` int(11) NOT NULL,
+  `dr_number` int(11) DEFAULT NULL,
+  `product_id` int(11) NOT NULL,
+  `damagedQty_return` int(11) NOT NULL,
+  `damaged_salableQty_return` int(11) NOT NULL,
+  `damaged_item_accepted` int(11) DEFAULT '0',
+  `damaged_salable_accepted` int(11) DEFAULT '0',
+  `return_status` enum('Pending','Accepted','Rejected') DEFAULT 'Pending',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`return_supplier_id`),
+  KEY `prod_id_returns_idx` (`product_id`),
+  KEY `returns_s_id_idx` (`returns_s_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+
+INSERT INTO returns_supplier_info VALUES("25","7","","153","5","0","0","0","Pending","2018-06-08 22:01:30","");
+INSERT INTO returns_supplier_info VALUES("26","7","","151","5","0","0","0","Pending","2018-06-08 22:01:30","");
+INSERT INTO returns_supplier_info VALUES("27","9","","153","5","0","0","0","Pending","2018-06-08 22:01:38","");
+INSERT INTO returns_supplier_info VALUES("28","10","","151","5","0","0","0","Pending","2018-06-08 22:01:38","");
+INSERT INTO returns_supplier_info VALUES("29","11","","153","5","0","0","0","Pending","2018-06-08 22:02:19","");
+INSERT INTO returns_supplier_info VALUES("30","12","","153","5","0","0","0","Pending","2018-06-08 22:02:38","");
+INSERT INTO returns_supplier_info VALUES("31","13","","151","5","0","0","0","Pending","2018-06-08 22:02:38","");
 
 
 
@@ -607,7 +708,7 @@ CREATE TABLE `salable_items` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO salable_items VALUES("1","150.00","180.00","28","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("2","150.00","180.00","36","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("2","150.00","180.00","37","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("3","150.00","180.00","35","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("4","150.00","180.00","12","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("5","150.00","180.00","23","2018-03-31 00:00:00","");
@@ -645,7 +746,7 @@ INSERT INTO salable_items VALUES("36","120.00","150.00","38","2018-03-31 00:00:0
 INSERT INTO salable_items VALUES("37","155.00","185.00","34","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("38","155.00","185.00","24","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("39","155.00","185.00","48","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("40","155.00","185.00","40","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("40","155.00","185.00","41","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("41","155.00","185.00","10","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("42","155.00","185.00","30","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("43","155.00","185.00","37","2018-03-31 00:00:00","");
@@ -684,14 +785,14 @@ INSERT INTO salable_items VALUES("75","85.00","115.00","47","2018-03-31 00:00:00
 INSERT INTO salable_items VALUES("76","85.00","115.00","45","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("77","85.00","115.00","20","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("78","125.00","155.00","6","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("79","35.00","65.00","10","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("80","35.00","70.00","2","2018-03-31 00:00:00","2018-05-30 15:39:00");
+INSERT INTO salable_items VALUES("79","35.00","65.00","12","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("80","35.00","70.00","3","2018-03-31 00:00:00","2018-05-30 15:39:00");
 INSERT INTO salable_items VALUES("81","35.00","70.00","12","2018-03-31 00:00:00","2018-05-30 16:10:39");
 INSERT INTO salable_items VALUES("82","1.00","1.00","4","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("83","35.00","65.00","5","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("83","35.00","65.00","6","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("84","90.00","120.00","35","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("85","35.00","65.00","37","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("86","35.00","65.00","0","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("86","35.00","65.00","1","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("87","195.00","225.00","6","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("88","403.00","433.00","7","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("89","225.00","255.00","37","2018-03-31 00:00:00","");
@@ -713,17 +814,17 @@ INSERT INTO salable_items VALUES("104","375.00","405.00","42","2018-03-31 00:00:
 INSERT INTO salable_items VALUES("105","375.00","405.00","34","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("106","53.00","83.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("107","53.00","83.00","3","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("108","53.00","83.00","5","2018-03-31 00:00:00","2018-05-26 07:38:54");
-INSERT INTO salable_items VALUES("109","53.00","83.00","0","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("108","53.00","83.00","6","2018-03-31 00:00:00","2018-05-26 07:38:54");
+INSERT INTO salable_items VALUES("109","53.00","83.00","1","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("110","53.00","83.00","1","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("111","20.00","83.00","7","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("111","20.00","83.00","8","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("112","53.00","83.00","20","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("113","53.00","83.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("114","53.00","83.00","0","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("115","150.00","180.00","2","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("116","150.00","180.00","31","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("115","150.00","180.00","4","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("116","150.00","180.00","32","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("117","150.00","180.00","18","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("118","150.00","180.00","29","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("118","150.00","180.00","31","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("119","95.00","125.00","8","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("120","135.00","165.00","6","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("121","125.00","155.00","9","2018-03-31 00:00:00","");
@@ -731,11 +832,11 @@ INSERT INTO salable_items VALUES("122","107.00","137.00","15","2018-03-31 00:00:
 INSERT INTO salable_items VALUES("123","180.00","210.00","44","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("124","160.00","190.00","16","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("125","55.00","85.00","13","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("126","38.00","68.00","13","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("126","38.00","68.00","15","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("127","45.00","75.00","31","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("128","75.00","105.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("129","19.50","49.50","7","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("130","32.00","62.00","6","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("130","32.00","62.00","7","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("131","19.50","49.50","46","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("132","98.00","128.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("133","89.00","119.00","29","2018-03-31 00:00:00","");
@@ -760,6 +861,7 @@ INSERT INTO salable_items VALUES("151","150.00","200.00","61","2018-05-31 06:56:
 INSERT INTO salable_items VALUES("152","50.00","70.00","81","2018-05-31 07:27:54","2018-05-31 07:31:26");
 INSERT INTO salable_items VALUES("153","40.00","50.00","20","2018-05-31 08:13:30","2018-05-31 08:15:22");
 INSERT INTO salable_items VALUES("154","50.00","70.00","14","2018-05-31 08:29:59","2018-05-31 08:32:20");
+INSERT INTO salable_items VALUES("157","0.00","0.00","0","2018-06-07 06:03:06","2018-06-07 06:03:06");
 
 
 
@@ -769,41 +871,41 @@ CREATE TABLE `sales` (
   `or_number` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `customer_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` decimal(7,2) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `unit` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `discount` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `unit` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `discount` int(11) DEFAULT NULL,
+  `address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   KEY `sales_product_id_foreign` (`product_id`),
   CONSTRAINT `sales_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO sales VALUES("1001","79","Jake James Manzon","","65.00","1","","","2018-05-30 19:19:00","");
-INSERT INTO sales VALUES("1001","6","Jake James Manzon","","180.00","1","","","2018-05-30 19:19:00","");
-INSERT INTO sales VALUES("1001","104","Jake James Manzon","","405.00","1","","","2018-05-30 19:19:00","");
-INSERT INTO sales VALUES("1001","114","Jake James Manzon","","83.00","1","","","2018-05-30 19:19:00","");
-INSERT INTO sales VALUES("1002","70","Caesar Romero","","155.00","0","","","2018-05-30 19:20:00","");
-INSERT INTO sales VALUES("1002","39","Caesar Romero","","185.00","0","","","2018-05-30 19:20:00","");
-INSERT INTO sales VALUES("1002","53","Caesar Romero","","220.00","0","","","2018-05-30 19:20:00","");
-INSERT INTO sales VALUES("1002","145","Caesar Romero","","330.00","0","","","2018-05-30 19:20:00","");
-INSERT INTO sales VALUES("1003","76","Nonito Cabilar","","115.00","0","","","2018-05-30 19:21:00","");
-INSERT INTO sales VALUES("1003","97","Nonito Cabilar","","69.00","1","","","2018-05-30 19:21:00","");
-INSERT INTO sales VALUES("1004","112","Marinel","","83.00","13","","","2018-05-30 19:29:00","");
-INSERT INTO sales VALUES("1004","81","Marinel","","65.00","9","","","2018-05-30 19:29:00","");
-INSERT INTO sales VALUES("1004","10","Marinel","","180.00","2","","","2018-05-30 19:29:00","");
-INSERT INTO sales VALUES("1004","50","Marinel","","205.00","1","","","2018-05-30 19:29:00","");
-INSERT INTO sales VALUES("100001","81","James Abalos","","60.00","0","","","2018-05-30 23:35:00","");
-INSERT INTO sales VALUES("1000002","81","Marinellll","","75.00","3","","","2018-05-30 23:59:00","");
-INSERT INTO sales VALUES("778","151","Jake James","","200.00","7","","","2018-05-31 15:02:00","");
-INSERT INTO sales VALUES("1234","152","Ban","asda","70.00","1","","","2018-05-31 15:35:00","");
-INSERT INTO sales VALUES("123","109","lan","","83.00","10","","","2018-05-31 15:52:00","");
-INSERT INTO sales VALUES("12345","153","James","","50.00","10","","","2018-05-31 16:17:00","");
-INSERT INTO sales VALUES("99990","138","Jake James","","260.00","1","","","2018-05-25 15:33:00","");
-INSERT INTO sales VALUES("8796","108","Jake James","","83.00","10","","","2018-06-05 12:00:00","");
-INSERT INTO sales VALUES("246246","108","James","","83.00","2","pcs","5","2018-06-05 15:16:00","");
-INSERT INTO sales VALUES("246246","109","James","","83.00","2","pcs","5","2018-06-05 15:16:00","");
+INSERT INTO sales VALUES("1001","79","Jake James Manzon","65.00","0","2018-05-30 19:19:00","","","","");
+INSERT INTO sales VALUES("1001","6","Jake James Manzon","180.00","0","2018-05-30 19:19:00","","","","");
+INSERT INTO sales VALUES("1001","104","Jake James Manzon","405.00","0","2018-05-30 19:19:00","","","","");
+INSERT INTO sales VALUES("1001","114","Jake James Manzon","83.00","0","2018-05-30 19:19:00","","","","");
+INSERT INTO sales VALUES("1002","70","Caesar Romero","155.00","0","2018-05-30 19:20:00","","","","");
+INSERT INTO sales VALUES("1002","39","Caesar Romero","185.00","0","2018-05-30 19:20:00","","","","");
+INSERT INTO sales VALUES("1002","53","Caesar Romero","220.00","0","2018-05-30 19:20:00","","","","");
+INSERT INTO sales VALUES("1002","145","Caesar Romero","330.00","0","2018-05-30 19:20:00","","","","");
+INSERT INTO sales VALUES("1003","76","Nonito Cabilar","115.00","0","2018-05-30 19:21:00","","","","");
+INSERT INTO sales VALUES("1003","97","Nonito Cabilar","69.00","1","2018-05-30 19:21:00","","","","");
+INSERT INTO sales VALUES("1004","112","Marinel","83.00","8","2018-05-30 19:29:00","","","","");
+INSERT INTO sales VALUES("1004","81","Marinel","65.00","6","2018-05-30 19:29:00","","","","");
+INSERT INTO sales VALUES("1004","10","Marinel","180.00","2","2018-05-30 19:29:00","","","","");
+INSERT INTO sales VALUES("1004","50","Marinel","205.00","1","2018-05-30 19:29:00","","","","");
+INSERT INTO sales VALUES("100001","81","James Abalos","60.00","1","2018-05-30 23:35:00","","","","");
+INSERT INTO sales VALUES("1000002","81","Marinellll","75.00","3","2018-05-30 23:59:00","","","","");
+INSERT INTO sales VALUES("778","151","Jake James","200.00","6","2018-05-31 15:02:00","","","","");
+INSERT INTO sales VALUES("1234","152","Ban","70.00","2","2018-05-31 15:35:00","","","","");
+INSERT INTO sales VALUES("123","109","lan","83.00","10","2018-05-31 15:52:00","","","","");
+INSERT INTO sales VALUES("12345","153","James","50.00","9","2018-05-31 16:17:00","","","","");
+INSERT INTO sales VALUES("99990","138","Jake James","260.00","1","2018-05-25 15:33:00","","","","");
+INSERT INTO sales VALUES("8796","108","Jake James","83.00","9","2018-06-05 12:00:00","","","","");
+INSERT INTO sales VALUES("246246","108","James","83.00","2","2018-06-05 15:16:00","","pcs","5","");
+INSERT INTO sales VALUES("246246","109","James","83.00","2","2018-06-05 15:16:00","","pcs","5","");
 
 
 
@@ -823,11 +925,11 @@ CREATE TABLE `stock_adjustments` (
   UNIQUE KEY `stock_adjustments_id_UNIQUE` (`stock_adjustments_id`),
   KEY `sa_product_id_idx` (`product_id`),
   CONSTRAINT `sa_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
-INSERT INTO stock_adjustments VALUES("51","ADMIN","109","1","damaged","Accepted","dasdasda","2018-06-07 12:40:00","");
-INSERT INTO stock_adjustments VALUES("52","Juan Dela Cruz","118","1","damaged","Pending","e","2018-06-07 12:43:00","");
-INSERT INTO stock_adjustments VALUES("53","Juan Dela Cruz","116","1","damaged","Accepted","t","2018-06-07 12:54:12","");
+INSERT INTO stock_adjustments VALUES("28","ADMIN","126","1","damaged","Accepted","damaged by rats","2018-06-05 04:07:00","");
+INSERT INTO stock_adjustments VALUES("29","ADMIN","80","1","damaged","Accepted","adsada","2018-06-06 11:08:00","");
+INSERT INTO stock_adjustments VALUES("30","ADMIN","83","1","damaged","Accepted","asdsad","2018-06-06 11:10:00","");
 
 
 
@@ -848,7 +950,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO users VALUES("1","Juan Dela Cruz","12345678910","juan@gmail.com","Baguio City","$2y$10$KfNeDs7yyjq.6llgi7kNkOtEboPlArbW2jwsgVAvlw82MCHVR61Ja","BULPLKELp8JWcotXTedDU7s32dTMjdABzCOFi71LTUvlpJIhoCI3rkRD7z9i","2018-04-02 12:36:26","2018-05-30 10:43:49","active");
+INSERT INTO users VALUES("1","Juan Dela Cruz","12345678910","juan@gmail.com","Baguio City","$2y$10$KfNeDs7yyjq.6llgi7kNkOtEboPlArbW2jwsgVAvlw82MCHVR61Ja","arJhTWioUCjwwiHJKRknTyk0YIChcrUwyKaRDR3DkJ5AUwY0bfCMFh0zn0hv","2018-04-02 12:36:26","2018-05-30 10:43:49","active");
 INSERT INTO users VALUES("4","jaramel","9876372718","jaramel@gmail.com","Loakan","$2y$10$kaTX2Yv1HO5lRfo.MIfMGODDYBiCj40nTx8AWsP4DIaO88P0Wd6BW","","2018-05-31 07:23:28","2018-05-31 07:23:28","active");
 
 

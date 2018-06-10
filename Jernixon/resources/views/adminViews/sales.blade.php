@@ -187,22 +187,22 @@ ng-controller="customerPurchase"
         for(var i = 0; i < rows.length; i++){  
             if(m<7){
                 items += "<tr>\
-                            <td class='quantity nl'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td class='unit nl'></td>\
-                            <td class='desc nl'>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td class='unitp nl'>"+rows[i].cells[1].innerText+"</td>\
-                            <td class='amount nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='quantity nl'>"+rows[i].cells[0].lastChild.value+"</td>\
+                            <td class='unit nl'>"+rows[i].cells[1].firstChild.value+"</td>\
+                            <td class='desc nl'>"+rows[i].cells[2].innerHTML+"</td>\
+                            <td class='unitp nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='amount nl'>"+rows[i].cells[4].innerText+"</td>\
                         <tr>\
                         ";
                 m++;
                 
             }else{
                 items += "<tr>\
-                            <td class='quantity nl'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td class='unit nl'></td>\
-                            <td class='desc nl'>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td class='unitp nl'>"+rows[i].cells[1].innerText+"</td>\
-                            <td class='amount nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='quantity nl'>"+rows[i].cells[0].lastChild.value+"</td>\
+                            <td class='unit nl'>"+rows[i].cells[1].innerHTML+"</td>\
+                            <td class='desc nl'>"+rows[i].cells[2].innerHTML+"</td>\
+                            <td class='unitp nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='amount nl'>"+rows[i].cells[4].innerText+"</td>\
                             <tr>\
                         ";
                 m=0;
@@ -227,13 +227,13 @@ ng-controller="customerPurchase"
                     <div class='top'>\           \
                     <div class='des'>\
                         <div class='blank'></div>\
-                        <div id='custname'>"+arrayOfData[2]['value']+"</div>\
+                        <div id='custname'>"+arrayOfData[3]['value']+"</div>\
                         <div class='blank'></div>\
-                        <div id='rdate' class = 'text-right col-md-4'>"+arrayOfData[3]['value']+"</div>\
+                        <div id='rdate' class = 'text-right col-md-4'>"+arrayOfData[4]['value']+"</div>\
                     </div>\
                     <div class='des'>\
                         <div class='blank'></div>\
-                        <div id='address'>"+arrayOfData[4]['value']+"</div>\
+                        <div id='address'>"+arrayOfData[5]['value']+"</div>\
                     </div>\
                         <div class='content table-responsive table-striped table-full-width clear'>\
                             <table>\
@@ -503,11 +503,7 @@ ng-controller="customerPurchase"
             e.preventDefault();
             var data = $(this).serialize();   
             var arrayOfData = $(this).serializeArray();      
-            console.log(arrayOfData);
-            // return true;
-            // console.log(arrayOfData)
-            // return true;
-            // return true;
+
             var thatTbody = $("#cartTbody tr td:first-child");
 
             if(thatTbody.length == 0){
@@ -735,10 +731,10 @@ function changeToDamage(){
                         </div>
                     </div>
                 </div>
-				<form action="">
+				{{-- <form action=""> --}}
 						<input type="radio" name="status" onclick="changeToUndamage()"> Undamaged&nbsp;&nbsp;&nbsp; 
   						<input type="radio" name="status" onclick="changeToDamage()" > Damaged 
-				</form>
+				{{-- </form> --}}
 				<br>
 
                 {{-- <div class="form-group">
@@ -812,7 +808,7 @@ function changeToDamage(){
                                 </div>
                                 <div class="text-right">                                           
                                     <div class="col-md-12">   
-                                        <button class="btn btn-primary" type="submit">Submit</button>
+                                        <button class="btn btn-primary" form='formSales' type="submit">Submit</button>
                                         <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
                                     </div>
                                 </div>

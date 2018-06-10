@@ -198,6 +198,7 @@ function createReport(button){
 
       },
       error:function(data){
+          conole.log(data);
           var response = data.responseJSON;
           console.log(button.parentNode.parentNode.previousElementSibling);
           $(button.parentNode.parentNode.previousElementSibling).hide(500);
@@ -329,6 +330,7 @@ $(document).ready(function(){
             data: data,
 
             success:function(data){
+                console.log(data);
                 //close modal
                 $('#adjustment').modal('hide')                    
                 //remove rows in purchase table

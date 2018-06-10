@@ -429,13 +429,13 @@
                                         <a href="#backUpDatabase"  data-toggle="modal">
                                             {{--  onclick="event.preventDefault();  --}}
                                             {{--  document.getElementById('logout-form').submit();">  --}}
-                                            Need backup
+                                            Backup database
                                         </a>
 										
 										<a href="#importDB"  data-toggle="modal">
                                             {{--  onclick="event.preventDefault();  --}}
                                             {{--  document.getElementById('logout-form').submit();">  --}}
-                                            Import
+                                            Import database
                                         </a>
                                         
                                         <a href="{{ route('admin.logout') }}" onclick="logoutRemoveCart()">
@@ -922,13 +922,13 @@
         //         i--;
         //         listObj.show(i, 3); 
         //     });
-         $('#listOfNotif').twbsPagination({
-        totalPages: 10,
-        visiblePages: 7,
-        onPageClick: function (event, page) {
-            $('#oldNotif').text('Page ' + page);
-        }
-    });
+    //      $('#listOfNotif').twbsPagination({
+    //     totalPages: 10,
+    //     visiblePages: 7,
+    //     onPageClick: function (event, page) {
+    //         $('#oldNotif').text('Page ' + page);
+    //     }
+    // });
     });
 </script>
 

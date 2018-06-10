@@ -820,9 +820,10 @@ public function createPurchasesFilter(Request $request){
             'remarks' => 'required',
             'Date' => 'required'
         ]);
-
-        $arrayCount = count($request->productId);
+        
+        $arrayCount = count($request);
         for($i = 0;$i<$arrayCount;$i++){
+            $data = '';
             if($request->status[$i] == "Damaged"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "damaged", 'status' => "accepted", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]

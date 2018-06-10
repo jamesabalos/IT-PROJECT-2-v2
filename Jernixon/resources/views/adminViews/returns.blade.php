@@ -157,6 +157,25 @@ ng-app="ourAngularJsApp"
 
     }
 
+    function checkQuantity(input){
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Quantity exceeds the available stock on hand, quantity should not exceed "+input.dataset.max+"!");
+            $(input).popover('show');
+        }else if( parseInt(input.value) <= 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
+
+        if( parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) < 0 && parseInt(document.getElementById("discountInput").value) >= 1 ){
+            $(document.getElementById("discountInput")).popover('show');
+        }else{
+            $(document.getElementById("discountInput")).popover('destroy');
+
+        }
+    }
+
     function checkTotalQuantityOfCheckedBox(){
         //get total quantity for every raw then check if the total Quantity == 0, if 0, then disabled save button
             var errorMessages = "";
@@ -221,24 +240,17 @@ ng-app="ourAngularJsApp"
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
                 var modalRefundTbody = document.getElementById("refundTbody");
                 for(var i = 0; i < data.length; i++){
-                    // if(div.dataset.modal === "searchORNumberInput"){
-                    //     var newRow = modalReturnItemTbody.insertRow(-1);
-                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
-                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                    //     newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' onchange='toggleCheckbox(this)' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'></td>";
-                    // }else{
                         var newRow = modalReturnItemTbody.insertRow(-1);
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
                         // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  max='" +data[i].quantity+ "'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  data-max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' data-max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' data-max='" +data[i].quantity+ "'></td>";
                         
-                    // }
+
                 }
 
                 document.getElementById("Customer").value = data[0].customer_name;
@@ -447,6 +459,7 @@ ng-app="ourAngularJsApp"
             },
             success:function(data){
                 var exchangeTbody = document.getElementById("veiwExchangedItemTbody");
+                $("#veiwExchangedItemTbody tr").remove();
                 for(var i = 0; i <data.length; i++){
                     var newRow = exchangeTbody.insertRow(-1);
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
@@ -1194,7 +1207,7 @@ function customer(){
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default">
+                        {{-- <div class="panel panel-default">
                             <div class="panel-heading">
                                 <strong>
                                     <span class="glyphicon glyphicon-refresh"></span>
@@ -1222,7 +1235,7 @@ function customer(){
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     {!! Form::close() !!}
 {{-- 
@@ -1510,12 +1523,8 @@ function customer(){
 
                                 <thead>
                                     <tr>
-                                        {{-- <th class="text-left">Qty.</th> --}}
-                                        {{-- <th class="text-left">Quantity</th> --}}
-                                        {{-- <th class="text-left">Unit</th> --}}
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Unit Price</th>
-                                        {{-- <th class="text-left">Amount</th> --}}
                                         <th class="text-left">Damaged</th>
                                         <th class="text-left">Undamaged</th>
                                         <th class="text-left">Damage Salable</th>

@@ -287,6 +287,7 @@ $(document).ready(function(){
             data: data,
 
             success:function(data){
+                console.log(data);
                 //close modal
                 $('#adjustment').modal('hide')                    
                 //remove rows in purchase table

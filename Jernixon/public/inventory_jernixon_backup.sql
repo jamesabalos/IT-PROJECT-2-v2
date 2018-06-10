@@ -144,6 +144,7 @@ INSERT INTO model VALUES("Crypton");
 INSERT INTO model VALUES("CT100");
 INSERT INTO model VALUES("Fury");
 INSERT INTO model VALUES("Generic");
+INSERT INTO model VALUES("ghj");
 INSERT INTO model VALUES("GP125");
 INSERT INTO model VALUES("Lifan");
 INSERT INTO model VALUES("Mio");

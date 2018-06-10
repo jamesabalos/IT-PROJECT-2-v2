@@ -138,6 +138,41 @@ ng-app="ourAngularJsApp"
         document.getElementById("searchResultDiv").innerHTML = "";
 
     }
+        function addSupplierRow(div){
+            document.getElementById("searchSupplierResultDiv").innerHTML = "";
+        var items =[];
+        var thatTbody = $("#returnSupplierItemTbody tr td:first-child");
+        
+         $.ajax({
+            method: 'get',
+            url: "{{route('admin.getSupplierItems')}}",
+            data:{
+                 'supplier': div.firstChild.innerHTML,
+            },        
+            success: function(data){
+                console.log(data);
+                $("#returnSupplierItemTbody tr").remove();
+                var modalReturnItemTbody = document.getElementById("returnSupplierItemTbody");
+                for(var i = 0; i < data.length; i++){
+                        var newRow = modalReturnItemTbody.insertRow(-1);
+                        
+                        newRow.insertCell(-1).innerHTML = "<td>"+data[i].description+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].damaged_quantity+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].damaged_salable_quantity+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='damaged"+data[i].product_id+"' type='number' min='0' max='" +data[i].damaged_quantity+"' name='damaged[]' value='0' ></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='salable"+data[i].product_id+" ' type='number' min='0' max='"+data[i].damaged_salable_quantity+"' name='damagedsalable[]' value='0' ></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxSupplier(this)' type='checkbox' class='form-control'><input class='form-control' type='hidden' disabled name='product_id[]' value='" +data[i].product_id+ "'></td>";
+                    
+                }
+            }
+
+        });
+
+        if(div.dataset.modal === "searchORNumberInput"){
+            document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
+        }
+
+    }
 
     function inputDamageUndamageDamageSaleble(input){
         var total = parseInt( $(input).closest("tr")[0].children[4].firstElementChild.value ) + parseInt($(input).closest("tr")[0].children[5].firstElementChild.value) + parseInt($(input).closest("tr")[0].children[6].firstElementChild.value)
@@ -253,7 +288,7 @@ ng-app="ourAngularJsApp"
 
                 }
 
-                document.getElementById("Customer").value = data[0].customer_name;
+                {{-- document.getElementById("Customer").value = data[0].customer_name; --}}
                 document.getElementById("returnCustomerName").value = data[0].customer_name;
                 document.getElementById("ORdate").value = data[0].created_at;
                 var today = new Date().toISOString().substr(0, 10);
@@ -329,6 +364,31 @@ ng-app="ourAngularJsApp"
 
         }
     }
+    function toggleCheckboxSupplier(button){
+        if(button.checked){        
+            button.parentNode.previousElementSibling.firstChild.removeAttribute("disabled");            
+            button.parentNode.previousElementSibling.previousElementSibling.firstChild.removeAttribute("disabled");
+            button.nextElementSibling.removeAttribute("disabled");
+
+            //button.nextElementSibling.nextElementSibling.nextElementSibling.removeAttribute("disabled");
+            //button.parentNode.nextElementSibling.firstElementChild.removeAttribute("disabled");
+            //button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
+            //button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
+        }else{
+            //button.parentNode.nextElementSibling.firstElementChild.setAttribute("max",12);
+            //button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
+            //button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
+            //button.nextElementSibling.setAttribute("disabled",true);                      
+           // button.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
+            //button.nextElementSibling.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
+            //button.parentNode.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+            button.parentNode.previousElementSibling.firstChild.setAttribute("disabled",true);
+            button.parentNode.previousElementSibling.previousElementSibling.firstChild.setAttribute("disabled",true);
+            button.nextElementSibling.setAttribute("disabled",true);
+            
+
+        }
+    }
 
     function searchItem(a){
         if(a.value === ""){
@@ -385,8 +445,6 @@ ng-app="ourAngularJsApp"
                 success: function(data){
                     var resultORNumberDiv = document.getElementById("resultORNumberDiv");
                     resultORNumberDiv.innerHTML = "";
-                    var refundORNumberDiv = document.getElementById("refundORNumberDiv");
-                    refundORNumberDiv.innerHTML = "";
 
                     for (var i = 0;  i< data.length; i++) {
                         var node = document.createElement("DIV");
@@ -411,7 +469,35 @@ ng-app="ourAngularJsApp"
         }
         
     }
-    	
+function searchSupplier(a){
+    if(a.value === ""){
+        document.getElementById("searchSupplierResultDiv").innerHTML ="";   
+    }
+    $.ajax({
+        method: 'get',
+        //url: 'items/' + document.getElementById("inputItem").value,
+        url: 'searchSupplier/' + a.value,
+        dataType: "json",
+        success: function(data){
+            var resultDiv = document.getElementById("searchSupplierResultDiv");
+            resultDiv.innerHTML = "";
+            for (var i = 0;  i< data.length; i++) {
+                var node = document.createElement("DIV");
+                node.setAttribute("id",data[i].supplier_name)
+              //   node.setAttribute("data-quantity",data[i].)
+                node.setAttribute("onclick","addSupplierRow(this)")
+                node.setAttribute("data-supplier",data[i].supplier_name)
+                var pElement = document.createElement("P");
+                var textNode = document.createTextNode(data[i].supplier_name);
+                pElement.appendChild(textNode);
+                node.appendChild(pElement);          
+                resultDiv.appendChild(node);  
+
+            }
+        }
+    });
+
+}    	
 	function getItems(button){
 		
 		var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
@@ -476,40 +562,38 @@ ng-app="ourAngularJsApp"
 
 	
 	}
-	// function getItems2(button){
+	 function getItems2(button){
 		
-	// 	var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
-	// 	var date = button.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
+	 	var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+	 	var date = button.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
 
-	// 	$.ajax({
-	// 		type:'GET',
-	// 		url: "{{route('admin.getReturnedItems')}}",
-    //         data: {
-    //             'ORNumber': ORnumber,
-    //             'Date': date
-    //         },
+	 	$.ajax({
+	 		type:'GET',
+	 		url: "{{route('admin.getReturnedItems')}}",
+             data: {
+                 'ORNumber': ORnumber,
+                 'Date': date
+             },
+     		success:function(data){
+                 $("#veiwReturnedItemTbody2 tr").remove();
+                 var returnedItemTable = document.getElementById("veiwReturnedItemTbody2");
+                 for(var i = 0; i < data.length; i++){
+                     var newRow = returnedItemTable.insertRow(-1);
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
 
-	// 		success:function(data){
-    //             $("#veiwReturnedItemTbody2 tr").remove();
-    //             var returnedItemTable = document.getElementById("veiwReturnedItemTbody2");
-    //             for(var i = 0; i < data.length; i++){
-    //                 var newRow = returnedItemTable.insertRow(-1);
-    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
-    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
-    //                 newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
+                 }
 
-    //             }
+                 document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
+                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
+                 document.getElementById("customerName").innerHTML = data[0].customer_name;
+     		}
+	 	});
 
-    //             document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
-    //             document.getElementById("returnedORNumber").innerHTML = ORnumber;
-    //             document.getElementById("customerName").innerHTML = data[0].customer_name;
-
-	// 		}
-	// 	});
-
-	
+     }
 	// }
     function createReport(button){
         // var dateFrom = document.getElementById("from").value;
@@ -617,6 +701,7 @@ ng-app="ourAngularJsApp"
             minutes = d.getMinutes();
         }   
         document.querySelector("#today").value = today+"T"+hours +":"+minutes;
+        document.querySelector("#suppliertoday").value = today+"T"+hours +":"+minutes;
 
         var t = setInterval(function(){
             var d = new Date();
@@ -703,66 +788,24 @@ ng-app="ourAngularJsApp"
 
         });
 
-        // $('#formsupplierReturnItem').on('submit',function(e){
-        //     e.preventDefault();
-        //     if( checkTotalQuantityOfCheckedBox() ){
-        //         console.log("ifff")
-        //     }else{
-        //         var data = $(this).serialize();     
-        //         var itemIds = [];    
-        //         for(var i=0; i < $("#returnTbody tr").length ;i++ ){
-        //             if( ($("#refundTbody tr td:nth-child(4)")[i].firstChild).checked ){
-        //                 itemIds.push( $("#refundTbody tr td:nth-child(4)")[i].firstChild.dataset.productid );
-        //             }
-        //         }
-        //         $.ajax({
-        //             type:'POST',
-        //             // url:'admin/storeNewItem',
-        //             url: "{{route('admin.createReturnItem')}}",
-        //             // data:{
-        //             //     'name': arrayOfData[1].value,
-        //             // },
+        $('#formsupplierReturnItem').on('submit',function(e){
+            e.preventDefault();
+            var data = $(this).serialize();     
+            var supplierret = []; 
+                $.ajax({
+                    type:'POST',
+                    url: "{{route('admin.createSupplierReturnItem')}}",
+                    data:data,
+                    success:function(data){
+                       console.log(data);
 
-        //             // data:{data},
-        //             data:data,
-        //             //_token:$("#_token"),
-        //             success:function(data){
-        //                 console.log(data)
-        //                 //close modal
-        //                 $('#return').modal('hide')                    
-        //                 //prompt the message
-        //                 $("#successDiv p").remove();    
-        //                 $("#successDiv").removeClass("hidden")
-        //                         .html("<h3>Return Item(s) successful</h3>");
-        //                 $("#successDiv").css("display:block");                             
-        //                 $("#successDiv").slideDown("slow")
-        //                     .delay(1000)                        
-        //                     .hide(1500);
-        //                 $("#errorDivCreateReturns").html("");
-        //                 $('#returnOrRefundPrompt').modal('show');
-        //                 $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
-        //                 // $('#formReturnItem').reset();
-        //                 $("#returnItemTbody tr").remove();
+                    },
+                    error:function(data){
+                  
+                    }
+                });
 
-
-        //             },
-        //             error:function(data){
-        //                 var response = data.responseJSON;
-        //                 $("#errorDivCreateReturns").removeClass("hidden").addClass("alert-danger text-center");
-        //                 $("#errorDivCreateReturns").html(function(){
-        //                     var addedHtml="";
-        //                     for (var key in response.errors) {
-        //                         addedHtml += "<p>"+response.errors[key]+"</p>";
-        //                     }
-        //                     return addedHtml;
-        //                 });
-        //             }
-        //         });
-
-        //     }
-                
-
-        // });
+        });
         
         $('#formRefund').on('submit',function(e){
             e.preventDefault();
@@ -888,56 +931,24 @@ ng-app="ourAngularJsApp"
             $("#supButton").removeClass('active');
             $("#supReturnDiv").addClass('hidden');
     });
-        //  $('#returnsDataTable2').DataTable({
-        //       "destroy": true,
-        //       "processing": true,
-        //       "serverSide": true,
-        //       "colReorder": true,  
-        //       //"autoWidth": true,
-        //       "pagingType": "full_numbers",
-        //     //   dom: 'Bfrtip',
-        //     //   "buttons": [
-        //     //       {
-        //     //           extend: 'collection',
-        //     //           text: 'EXPORT',
-        //     //           buttons: [
-        //     //              {extend: 'copy', title: 'Jernixon Motorparts - Returns'},
-        //     //               {extend: 'excel', title: 'Jernixon Motorparts - Returns'},
-        //     //               {extend: 'csv', title: 'Jernixon Motorparts - Returns'},
-        //     //               {extend: 'pdf', title: 'Jernixon Motorparts - Returns'},
-        //     //               {extend: 'print', title: 'Jernixon Motorparts - Returns'}
-        //     //           ]
-        //     //       }
-        //     //   ],
+         $('#returnsDataTable2').DataTable({
+              "destroy": true,
+               "processing": true,
+               "serverSide": true,
+               "colReorder": true,  
+               //"autoWidth": true,
+              "pagingType": "full_numbers",
 
-        //       "ajax":  "{{ route('returns.getReturns') }}",
-        //       "columns": [
-        //           {data: 'or_number'},
-        //         //   {data: 'price'},
-        //           {data: 'created_at'},
-        //           {data: 'action'},
-        //       ]
-        //   });
+               "ajax":  "{{ route('returns.getReturns2') }}",
+               "columns": [
+                  {data: 'created_at'},
+                   {data: 'damagedQty_return'},
+                   {data: 'damaged_salableQty_return'},
+                   {data: 'return_status'},
+                   {data: 'action'},
+               ]
+           });
 
-    
-    function supplier(){
-        $('#supplierDiv').removeClass('hidden');
-        $('#supplierreturnbutton').removeClass('hidden');
-        $('#returnSaveButton').addClass('hidden');
-        $('#customerDiv').addClass('hidden');
-        $('#customerButton').removeClass('active');
-        $('#supplierButton').addClass('active');
-    }
-    function customer(){
-        $('#supplierreturnbutton').addClass('hidden');
-        $('#returnSaveButton').removeClass('hidden');
-        $('#supplierDiv').addClass('hidden');
-        $('#customerDiv').removeClass('hidden');        
-        $('#customerButton').addClass('active');
-        $('#supplierButton').removeClass('active');
-    }
-
-    
 
     $("#supButton").click(function(){
         document.getElementById("errorDateRangeReport").innerHTML ="";
@@ -951,18 +962,27 @@ ng-app="ourAngularJsApp"
 
 }); 
 
-function supplier(){
-    $('#supplierDiv').removeClass('hidden');
-    $('#customerDiv').addClass('hidden');
-    $('#customerButton').removeClass('active');
-    $('#supplierButton').addClass('active');
-}
-function customer(){
-    $('#supplierDiv').addClass('hidden');
-    $('#customerDiv').removeClass('hidden');        
-    $('#customerButton').addClass('active');
-    $('#supplierButton').removeClass('active');
-}
+
+    
+    
+    function supplier(){
+        $('#supplierDiv').removeClass('hidden');
+        $('#customerDiv').addClass('hidden');
+        $('#customerButton').removeClass('active');
+        $('#supplierButton').addClass('active');
+        
+        $('#supplierreturnbutton').removeClass('hidden');
+        $('#returnSaveButton').addClass('hidden');
+    }
+    function customer(){
+        $('#supplierDiv').addClass('hidden');
+        $('#customerDiv').removeClass('hidden');        
+        $('#customerButton').addClass('active');
+        $('#supplierButton').removeClass('active');
+        
+        $('#supplierreturnbutton').addClass('hidden');
+        $('#returnSaveButton').removeClass('hidden');
+    }
 
 </script>
 
@@ -997,6 +1017,27 @@ function customer(){
         /*when navigating through the items using the arrow keys:*/
         background-color: DodgerBlue !important; 
         color: #ffffff; 
+    }
+    .searchSupplierResultDivs {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+    .searchSupplierResultDivs div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff; 
+        border-bottom: 1px solid #d4d4d4; 
+    }
+    .searchSupplierResultDivs div:hover {
+        /*when hovering an item:*/
+        background-color: #e9e9e9; 
     }
 </style>
 
@@ -1070,10 +1111,13 @@ function customer(){
                             <table class="table table-bordered table-striped" style="width:100%" id="returnsDataTable2">
                                 <thead>
                                     <tr>
-                                        <th class="text-left" style = "width: 20%;">Delivery Receipt No.</th>
+                                        <th class="text-left" style = "width: 20%;">Date</th>
                                         <!-- <th class="text-left">Item</th> -->
                                         <th class="text-left">Supplier</th>
-                                        {{-- <th class="text-left">Address</th> --}}
+                                        <th class="text-left">Address</th>
+                                        <th class="text-left">Damaged Quantity Return</th>
+                                        <th class="text-left">Damaged Salable Quantity Return</th>
+                                        <th class="text-left">Status</th>
                                         <th class="text-left">Action</th>
                                     </tr>
                                 </thead>
@@ -1124,7 +1168,7 @@ function customer(){
                                         </div>
                                         <div class="col-md-9">
                                           {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
-                                <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
+                                            <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
                                              <div id="resultORNumberDiv" class="searchResultDiv">
                                     </div>
                                         </div>
@@ -1137,7 +1181,7 @@ function customer(){
                                             {{Form::label('Date', 'Date:')}}
                                         </div>
                                         <div class="col-md-9">
-                                <input type="datetime-local" name="Date" id="today" class="form-control"/>    
+                                            <input type="datetime-local" name="Date" id="today" class="form-control"/>    
                                         </div>
                                     </div>
                                 </div>
@@ -1159,8 +1203,8 @@ function customer(){
                                             {{Form::label('Customer', 'Customer:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}}
-                                <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
+                                            {{-- {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}} --}}
+                                            <input id="returnCustomerName" name="customerName" id="customerName" class="form-control border-input" >
                                         </div>
                                     </div>
                                 </div>
@@ -1249,14 +1293,13 @@ function customer(){
                                 </strong>
                             </div>
                             <div class="panel-body">
-                                
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-3">
                                             {{Form::label('Date', 'Date:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::date('Date','',['class'=>'form-control','id' =>'suppliertoday','value'=>''])}}
+                                            <input type="datetime-local" name="SDate" id="suppliertoday" class="form-control"/>    
                                         </div>
                                     </div>
                                 </div>
@@ -1268,12 +1311,17 @@ function customer(){
                                             {{Form::label('Supplier', 'Supplier:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{Form::text('Supplier','',['class'=>'form-control','value'=>''])}}
-                                            <input id="returnSupplierName" type="hidden" name="supplierName" class="form-control border-input" >
+                                           <div class="autocomplete" style="width:100%;">
+                                            {{-- <input autocomplete="off" type="text" id="searchItemInput" ng-model="testModel" ng-keyup="search()" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item"> --}}
+                                            <input autocomplete="off" type="text" id="searchSupplierName" name="supplierName" onkeyup="searchSupplier(this)" class="form-control border-input" placeholder="Enter the name of the supplier">
+                                            <div id="searchSupplierResultDiv" class="searchSupplierResultDivs">
+                                            </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
 
+                        
                                 <div class="form-group">    
                                     <div class="row">
                                         <div class="col-md-3">
@@ -1281,7 +1329,7 @@ function customer(){
                                         </div>
                                         <div class="col-md-9">
                                             {{Form::text('Address','',['class'=>'form-control','value'=>'','disabled'])}}
-                                            <input id="returnCustomerName" type="hidden" name="customerName" class="form-control border-input" >
+                                            <input id="supplier_address" type="hidden" name="sadddress" class="form-control border-input" >
                                         </div>
                                     </div>
                                 </div>
@@ -1297,20 +1345,20 @@ function customer(){
                             </div>
                             <div class="modal-body">
                                 <div class="content table-responsive">
-                                    <table class="table table-bordered table-striped">
+                                    <table class="table table-bordered table-striped" style='width:100%;'>
 
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Description</th>
+                                                <th class="text-left">Damaged Quantity in Inventory</th>
+                                                <th class="text-left">Damaged Salable Quantity in Inventory</th>
                                                 <th class="text-left">Damaged Quantity</th>
                                                 <th class="text-left">Damaged Salable Quantity</th>
                                                 <th class="text-left">Check item to return</th>
-                                                <th class="text-left">Quantity in inventory</th>
-                                                <th class="text-left">Quantity to be returned</th> 
                                             </tr>
                                         </thead>
 
-                                        <tbody>
+                                        <tbody id="returnSupplierItemTbody">
                                         </tbody>
                                     </table>
                                 </div>
@@ -1333,112 +1381,6 @@ function customer(){
                     </div>
                 </div>
                 
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="refund" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
-        <div class = "modal-content">
-
-            {!! Form::open(['method'=>'post','id'=>'formRefund']) !!}
-
-            <div class="modal-header">
-                <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title"><i class=" fa fa-reply" style="margin-right: 10px"></i> Refund</h3>
-            </div>
-            <div class = "modal-body">  
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>
-                            <span class="glyphicon glyphicon-info-sign"></span>
-                             Information
-                        </strong>
-                    </div>
-                    <div class="panel-body">
-
-                        <div class="form-group">                                
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Official Receipt No:')}}
-                                </div>
-                                <div class="col-md-9">
-                                  {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
-                        <input autocomplete="off" id="refundSearchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input" required>
-                                     <div id="refundORNumberDiv" class="searchResultDiv">
-                            </div>
-                                </div>
-                            </div>
-                        </div>
-						
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Date', 'Date:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{Form::date('Date','',['class'=>'form-control','id' =>'rtoday','value'=>'','required'])}}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">    
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('refundCustomer', 'Customer:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{Form::text('refundCustomer','',['class'=>'form-control','value'=>'','disabled'])}}
-                        <input id="refundCustomerName" type="hidden" name="customerName" class="form-control border-input" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>
-                            <span class="fa fa-reply"></span>
-                            Return Item
-                        </strong>
-                    </div>
-                    <div class="modal-body">
-                        <div class="content table-responsive">
-                            <table class="table table-bordered table-striped">
-
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">Description</th>
-                                        <th class="text-left">Qty</th>
-                                        <th class="text-left">Price</th>
-                                        <th class="text-left">Check</th>
-                                        {{-- <th class="text-left">Status</th> --}}
-                                        <th class="text-left">Damaged</th>
-                                        <th class="text-left">Undamaged</th>
-                                        <th class="text-left">Damage Salable</th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody id="refundTbody">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div id="errorDivCreateRefund" class="hidden">
-
-                    </div>
-                <div class="row">
-                    <div class="text-right">                                           
-                        <div class="col-md-12">   
-                            <button id="refundSubmitButton" type="submit" class="btn btn-success">Save</button>
-                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>
@@ -1578,12 +1520,12 @@ function customer(){
     </div>
 </div>
 
-<div id="viewReturn1" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
+<div id="viewReturn2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+    <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Delivery Receipt Information</h3>
+                <h3 class="modal-title">Return to Supplier Information</h3>
             </div>
             <div class="modal-body">
                 <div class="panel panel-default">
@@ -1598,11 +1540,10 @@ function customer(){
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
-                                    {{Form::label('Item Name', 'Item Name:')}}
+                                    {{Form::label('Supplier Name', 'Supplier Name:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{--  {{Form::text('Item Name','',['class'=>'form-control','value'=>'','disabled'])}}  --}}
-                                    <p class="form-control" id="returnedDate"></p>   
+                                    <p class="form-control" id="returnedSupplierName"></p>   
                                 </div>
                             </div>
                         </div>
@@ -1619,35 +1560,30 @@ function customer(){
                                 </div>
                             </div>
                         </div>
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped no-wrap" style="width:100%;">
 
-                        <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Damaged Quantity Returned</th>
+                                        <th class="text-left">Damaged Salable Quantity Returned </th>
+                                        <th class="text-left">Status</th>
+                                        <th class="text-left">Edit</th>
+                                    </tr>
+                                </thead>
 
-                            <thead>
-                                <tr>
-                                    <th class="text-left">Qty</th>
-                                    <th class="text-left">Unit</th>
-                                    <th class="text-left">Description</th>
-                                    <th class="text-left">Unit Price</th>
-                                    <th class="text-left">Amount</th>
-                                    <th class="text-left">Type</th>
-                                    <th class="text-left">Returned Quantity</th>
-                                    <th class="text-left">Quantity Accepted</th>
-                                    <th class="text-left">Status</th>
-                                    <th class="text-left">Edit</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="veiwReturnedItemTbody2">
-                            </tbody>
-                        </table>
+                                <tbody id="veiwReturnedItemTbody2">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
                             <span class="glyphicon glyphicon-refresh"></span>
-                            Exchanged Item
+                            Supplier Exchanged Item
                         </strong>
                     </div>
                     <div class="modal-body">
@@ -1656,9 +1592,12 @@ function customer(){
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Returned Item</th>
-                                        <th class="text-left">New Item</th>
-                                        <th class="text-left">Quantity</th>
+                                        <th class="text-left">Qty</th>
+                                        <th class="text-left">Unit</th>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Unit Price</th>
+                                        <th class="text-left">Amount</th>
+                                        <th class="text-left">Type</th>
                                         <!-- <th class="text-left">Purchase Price</th> -->
                                     </tr>
                                 </thead>
@@ -1669,7 +1608,6 @@ function customer(){
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   

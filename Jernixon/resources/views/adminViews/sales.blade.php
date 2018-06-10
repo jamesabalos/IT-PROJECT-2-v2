@@ -785,17 +785,17 @@ function changeToDamage(){
                             </tbody>
                         </table>
                         <div class="form-group">
-                            <div class="row">
-                                    <div class="col-md-7">
-                                        
-                                    </div>
-                                    <div class="col-md-2 text-right">
-                                        <label>Discount:</label>
-                                    </div>
-                                    <div class="col-md-3" id="discountDiv">
-                                    </div>
+                            <div class="row" style = "margin-bottom: 10px;">
+                                <div class="col-md-7">
                                     
                                 </div>
+                                <div class="col-md-2 text-right">
+                                    <label>Discount:</label>
+                                </div>
+                                <div class="col-md-3" id="discountDiv">
+                                </div>
+                                    
+                            </div>
                             <div class="row">
                                 <div class="col-md-7">
                                     
@@ -807,8 +807,8 @@ function changeToDamage(){
                                     <p class="form-control" id="totalSales" ng-bind="" style="float: right;"></p>
                                 </div>
                                 <div class="text-right">                                           
-                                    <div class="col-md-12">   
-                                        <button class="btn btn-primary" form='formSales' type="submit">Submit</button>
+                                    <div class="col-md-12" style = "margin-top: 10px;">   
+                                        <button class="btn btn-primary" type="submit">Submit</button>
                                         <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
                                     </div>
                                 </div>
@@ -1069,11 +1069,11 @@ function changeToDamage(){
                             },
                             {
                                 "title": "Purchase Price",
-                                "data": "wholesale_price"
+                                "data": "wholesale_price", className: 'text-right'
                             },
                             {
                                 "title": "Selling Price",
-                                "data": "retail_price"
+                                "data": "retail_price", className: 'text-right'
                             },
                             {
                                 "title": "Add Item",
@@ -1211,11 +1211,11 @@ function changeToDamage(){
                    },
                    {
                        "title": "Selling Price",
-                       "data": "retail_price"
+                       "data": "retail_price", className: 'text-right'
                    },
                    {
                        "title": "Damaged Item Selling Price",
-                       "data": "wholesale_price"
+                       "data": "wholesale_price", className: 'text-right'
                    },
                    {
                        "title": "Add Item",
@@ -1224,7 +1224,7 @@ function changeToDamage(){
                    ],
 
                createdRow: function(row, data, dataIndex) {
-                    $(row).attr("style","background-color:red");                   
+                    $(row).attr("style","background-color:#f78f8f");                   
                    $compile(angular.element(row).contents())($scope);
                },
                "initComplete": function(settings, json) {

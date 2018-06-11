@@ -229,6 +229,14 @@
         $('.readNotif').removeClass('hidden');
         $('#reorder').removeClass('active');
     }
+    function triggeredKey(e){
+        var keycode;
+        if (window.event) keycode = window.event.keyCode;
+        if (window.event.keyCode == 13 ){
+        //  return false;
+            event.preventDefault();
+        }    
+    }
     function backUpDatabase(){
         <?php
             $connection = mysqli_connect('localhost','root','','inventory_jernixon');
@@ -296,7 +304,7 @@
 </style>
 </head>
 
-<body @yield('ng-app')>
+<body @yield('ng-app') onkeydown="triggeredKey(this)">
     
     {{--  <script>
         $(document).ready(function(){

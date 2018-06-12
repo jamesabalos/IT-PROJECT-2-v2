@@ -161,9 +161,13 @@ ng-app="ourAngularJsApp"
                             
                             newRow.insertCell(-1).innerHTML = "<td>"+data[i].description+ "</td>";
                             newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='damaged"+data[i].product_id+"' type='number' min='0' max='" +data[i].damaged_quantity+"' name='damaged[]' value='0' ></td>";
-                            newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='salable"+data[i].product_id+" ' type='number' min='0' max='"+data[i].damaged_salable_quantity+"' name='damagedsalable[]' value='0' ></td>";                            
-                            newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxSupplier(this)' type='checkbox' class='form-control'><input class='form-control' type='hidden' disabled name='product_id[]' value='" +data[i].product_id+ "'><input class='form-control' type='hidden' disabled name='po_id[]' value='" +data[i].po_id+ "'></td>";
+                            newRow.insertCell(-1).innerHTML = "<td><input class='form-control' oninput='inputDamageDamageSalableQuantity(this)' disabled id='damaged"+data[i].product_id+"' type='number' min='0' max='" +data[i].damaged_quantity+"' name='damaged[]' value='0' ></td>";
+                            newRow.insertCell(-1).innerHTML = "<td><input class='form-control' oninput='inputDamageDamageSalableQuantity(this)' disabled id='salable"+data[i].product_id+" ' type='number' min='0' max='"+data[i].damaged_salable_quantity+"' name='damagedsalable[]' value='0' ></td>";                            
+                            if( data[i].quantity <= 0 ){
+                                newRow.insertCell(-1).innerHTML = "<td><input disabled data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxSupplier(this)' type='checkbox' class='form-control'><input class='form-control' type='hidden' disabled name='product_id[]' value='" +data[i].product_id+ "'><input class='form-control' type='hidden' disabled name='po_id[]' value='" +data[i].po_id+ "'><input type='hidden' value='0' data-name='totalQuantity'></td>";
+                            }else{
+                                newRow.insertCell(-1).innerHTML = "<td><input  data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxSupplier(this)' type='checkbox' class='form-control'><input class='form-control' type='hidden' disabled name='product_id[]' value='" +data[i].product_id+ "'><input class='form-control' type='hidden' disabled name='po_id[]' value='" +data[i].po_id+ "'><input type='hidden' value='0' data-name='totalQuantity'></td>";
+                            }
                         
                     }
 
@@ -192,7 +196,24 @@ ng-app="ourAngularJsApp"
         }
         $(input).closest("tr")[0].children[3].children[3].setAttribute("value",total);
         
+    }
+    function inputDamageDamageSalableQuantity(input){
+        
+        var total = parseInt( $(input).closest("tr")[0].children[2].firstElementChild.value ) + parseInt($(input).closest("tr")[0].children[3].firstElementChild.value)
+        console.log(total)
+        if( total > parseInt( $(input).closest("tr")[0].children[1].innerHTML ) ){
+            $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");
+            $("#errorDivCreateReturnsSupplier").html(function(){
+                var addedHtml="";
+                    addedHtml += "<h4>Total quantity return for "+ $(input).closest("tr")[0].children[0].innerHTML +" exceeded.</h4>";
+                return addedHtml;
+            });
+        }else{          
+            $("#errorDivCreateReturnsSupplier").html("");
 
+        }
+        $(input).closest("tr")[0].children[4].children[3].setAttribute("value",total);
+        
     }
 
     function checkQuantity(input){
@@ -260,6 +281,44 @@ ng-app="ourAngularJsApp"
             // }
 
     }
+    function checkTotalQuantityOfCheckedBoxSupplier(){
+        //get total quantity for every raw then check if the total Quantity == 0, if 0, then disabled save button
+            var errorMessages = "";
+            var status = false;
+            var totalCheck = 0;
+            if(document.getElementById("searchDRreceipt").value === ""){
+                status = true;
+                $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");                
+                document.getElementById("errorDivCreateReturnsSupplier").innerHTML = "<h4>Please input the delivery receipt number first.</h4>";
+                return status;
+            }
+
+            for(var i=0; i < $("#returnSupplierItemTbody tr").length ;i++ ){
+                
+                if( ($("#returnSupplierItemTbody tr td:nth-child(5)")[i].firstChild).checked && ($("#returnSupplierItemTbody tr td:nth-child(5) :nth-child(4)")[i]).value == 0 ){
+                        $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreateReturnsSupplier").html(function(){
+                            var addedHtml = errorMessages+"<h4>Quantity return for " + ($("#returnSupplierItemTbody tr td:nth-child(1)")[i]).innerHTML + " must be atleast 1</h4>";
+                            return addedHtml;
+                        });
+                        errorMessages += document.getElementById("errorDivCreateReturnsSupplier").innerHTML;
+                        status = true;
+                        return status;
+                }
+
+                if( !(($("#returnSupplierItemTbody tr td:nth-child(4)")[i].firstChild).checked) ) {
+                    totalCheck++;
+                }
+
+                if(totalCheck == $("#returnSupplierItemTbody tr").length ){
+                    status = true;
+                    $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");                
+                    document.getElementById("errorDivCreateReturnsSupplier").innerHTML = "<h4>Check an item to be return.</h4>";   
+                    return status;
+                }
+            }
+            
+    }
         
     function addReturnItem(div){
         var items =[];
@@ -302,7 +361,12 @@ ng-app="ourAngularJsApp"
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
+                        if( data[i].quantity <= 0 ){
+                            newRow.insertCell(-1).innerHTML = "<td><input disabled data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";  
+                        }else{
+                            newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";  
+                        }
+                        // newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
                         // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
                         newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  data-max='" +data[i].quantity+ "'></td>";
                         newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' data-max='" +data[i].quantity+ "'></td>";
@@ -356,50 +420,39 @@ ng-app="ourAngularJsApp"
     }
 
     function toggleCheckboxRefund(button){
-        if(button.checked){        
-            button.nextElementSibling.removeAttribute("disabled");            
-            button.nextElementSibling.nextElementSibling.removeAttribute("disabled");
-            button.nextElementSibling.nextElementSibling.nextElementSibling.removeAttribute("disabled");
-            button.parentNode.nextElementSibling.firstElementChild.removeAttribute("disabled");
-            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
-            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
-        }else{
-            button.parentNode.nextElementSibling.firstElementChild.setAttribute("max",12);
-            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
-            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
-            button.nextElementSibling.setAttribute("disabled",true);                      
-            button.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
-            button.nextElementSibling.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
-            button.parentNode.nextElementSibling.firstElementChild.setAttribute("disabled",true);
-            button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
-            button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
 
-        }
+            if(button.checked){        
+                button.nextElementSibling.removeAttribute("disabled");            
+                button.nextElementSibling.nextElementSibling.removeAttribute("disabled");
+                button.nextElementSibling.nextElementSibling.nextElementSibling.removeAttribute("disabled");
+                button.parentNode.nextElementSibling.firstElementChild.removeAttribute("disabled");
+                button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
+                button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
+            }else{
+                button.parentNode.nextElementSibling.firstElementChild.setAttribute("max",12);
+                button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
+                button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
+                button.nextElementSibling.setAttribute("disabled",true);                      
+                button.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
+                button.nextElementSibling.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
+                button.parentNode.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+                button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+                button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("disabled",true);
+
+            }
+        
     }
     function toggleCheckboxSupplier(button){
-        if(button.checked){        
-            button.parentNode.previousElementSibling.firstChild.removeAttribute("disabled");            
-            button.parentNode.previousElementSibling.previousElementSibling.firstChild.removeAttribute("disabled");
-            button.nextElementSibling.removeAttribute("disabled");
+            if(button.checked){        
+                button.parentNode.previousElementSibling.firstChild.removeAttribute("disabled");            
+                button.parentNode.previousElementSibling.previousElementSibling.firstChild.removeAttribute("disabled");
+                button.nextElementSibling.removeAttribute("disabled");
 
-            //button.nextElementSibling.nextElementSibling.nextElementSibling.removeAttribute("disabled");
-            //button.parentNode.nextElementSibling.firstElementChild.removeAttribute("disabled");
-            //button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
-            //button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.removeAttribute("disabled");
-        }else{
-            //button.parentNode.nextElementSibling.firstElementChild.setAttribute("max",12);
-            //button.parentNode.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
-            //button.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstElementChild.setAttribute("max",12);
-            //button.nextElementSibling.setAttribute("disabled",true);                      
-           // button.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
-            //button.nextElementSibling.nextElementSibling.nextElementSibling.setAttribute("disabled",true);
-            //button.parentNode.nextElementSibling.firstElementChild.setAttribute("disabled",true);
-            button.parentNode.previousElementSibling.firstChild.setAttribute("disabled",true);
-            button.parentNode.previousElementSibling.previousElementSibling.firstChild.setAttribute("disabled",true);
-            button.nextElementSibling.setAttribute("disabled",true);
-            
-
-        }
+            }else{
+                button.parentNode.previousElementSibling.firstChild.setAttribute("disabled",true);
+                button.parentNode.previousElementSibling.previousElementSibling.firstChild.setAttribute("disabled",true);
+                button.nextElementSibling.setAttribute("disabled",true);
+            }
     }
 
     function searchItem(a){
@@ -924,11 +977,12 @@ function searchSupplier(a){
 
         $('#formsupplierReturnItem').on('submit',function(e){
             e.preventDefault();
-            var data = $(this).serialize(); 
-        var arrayOfData = $("#formsupplierReturnItem").serializeArray();  
-                
- 
-            var supplierret = []; 
+            if( checkTotalQuantityOfCheckedBoxSupplier() ){
+                console.log("ifff")
+            }else{
+                var data = $(this).serialize(); 
+                var arrayOfData = $("#formsupplierReturnItem").serializeArray();  
+                var supplierret = []; 
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.createSupplierReturnItem')}}",
@@ -939,9 +993,11 @@ function searchSupplier(a){
                         location.reload(true);
                     },
                     error:function(data){
-                  
+                
                     }
                 });
+
+            }
 
         });
         
@@ -1500,6 +1556,9 @@ function searchSupplier(a){
                                         
                             </div>
                         </div>
+                        <div id="errorDivCreateReturnsSupplier" class="hidden">
+
+                            </div>
                         <div class="row">
                         <div class="text-right">                                           
                             <div class="col-md-12">   

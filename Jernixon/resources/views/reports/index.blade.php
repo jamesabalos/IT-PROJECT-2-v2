@@ -415,7 +415,7 @@ class="active"
           {data: 'created_at'},
         ]
         
-    });
+        });
     });
 
     
@@ -630,8 +630,7 @@ class="active"
                         </div> 
 
                         <div id="stockAdjustmentDiv" class="hidden">
-                            <!-- <h3>Lost Items</h3> -->
-                            <div class="row">
+                            {{-- <div class="row">
                                 <p class = "col-md-8">
                                     <label for="from">From</label>
                                     <input type="date">
@@ -639,7 +638,7 @@ class="active"
                                     <input type="date">
                                     <button id="li" onclick="createReport(this)">Filter</button>
                                 </p>  
-                            </div>
+                            </div> --}}
                                 <div class="content table-responsive table-full-width table-stripped">
                                     <table id="stockAdjustmentTable" class="table table-striped table-bordered dt-responsive pre" style="width:100%">
                                         <thead >
@@ -659,8 +658,7 @@ class="active"
                         </div>
 
                         <div id="purchasedItemDiv" class="hidden">
-                            <!-- <h3>Lost Items</h3> -->
-                            <div class="row">
+                            {{-- <div class="row">
                                 <p class = "col-md-8">
                                     <label for="from">From</label>
                                     <input type="date">
@@ -668,7 +666,7 @@ class="active"
                                     <input type="date">
                                     <button id="li" onclick="createReport(this)">Filter</button>
                                 </p>  
-                            </div>
+                            </div> --}}
                                 <div class="content table-responsive table-full-width table-stripped">
                                     <table id="purchasedTable" class="table table-striped table-bordered dt-responsive pre" style="width:100%">
                                         <thead >
@@ -684,8 +682,8 @@ class="active"
                                         <tbody></tbody>
                                     </table>   
                                 </div>
-                            </div>  
-                        </div>
+                        </div>  
+                    </div>
                 </div>
             </div>
         </div>

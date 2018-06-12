@@ -109,7 +109,6 @@ ng-app="ourAngularJsApp"
         $(a.parentNode.parentNode).hide(500,function(){
             this.remove();  
         });
-        // a.parentNode.parentNode.remove();
 
     }
 
@@ -175,9 +174,9 @@ ng-app="ourAngularJsApp"
 
         });
 
-        if(div.dataset.modal === "searchORNumberInput"){
-            document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
-        }
+        // if(div.dataset.modal === "searchORNumberInput"){
+            document.getElementById("searchDRreceipt").value = div.firstChild.innerHTML ;
+        // }
 
     }
 
@@ -294,7 +293,7 @@ ng-app="ourAngularJsApp"
             }
 
             for(var i=0; i < $("#returnSupplierItemTbody tr").length ;i++ ){
-                
+                //if first row's checkbox is checked and its  4th child element's value == 0
                 if( ($("#returnSupplierItemTbody tr td:nth-child(5)")[i].firstChild).checked && ($("#returnSupplierItemTbody tr td:nth-child(5) :nth-child(4)")[i]).value == 0 ){
                         $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");
                         $("#errorDivCreateReturnsSupplier").html(function(){
@@ -306,8 +305,15 @@ ng-app="ourAngularJsApp"
                         return status;
                 }
 
-                if( !(($("#returnSupplierItemTbody tr td:nth-child(4)")[i].firstChild).checked) ) {
+                if( !(($("#returnSupplierItemTbody tr td:nth-child(5)")[i].firstChild).checked) ) {
                     totalCheck++;
+                }
+
+                if( ($("#returnSupplierItemTbody tr td:nth-child(5) :nth-child(4)")[i]).value > parseInt( ($("#returnSupplierItemTbody tr td:nth-child(2)")[i]).innerHTML) ){
+                    status = true;
+                    $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");                
+                    document.getElementById("errorDivCreateReturnsSupplier").innerHTML = "<h4>Total quantity return for " +($("#returnSupplierItemTbody tr td:nth-child(1)")[i]).innerHTML+ " exceeded.</h4>";   
+                    return status;
                 }
 
                 if(totalCheck == $("#returnSupplierItemTbody tr").length ){
@@ -641,20 +647,38 @@ function searchSupplier(a){
                     });
             }
         }
+        document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
     }
     function computeAmount(input){
         input.parentNode.parentNode.childNodes[5].firstChild.value = (parseInt( input.value )+parseInt(input.parentNode.nextElementSibling.firstChild.value))*parseInt(input.dataset.unitprice);
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Damage quantity exceeded.");
+            $(input).popover('show');
+        }else if( parseInt(input.value) < 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
     }
     function computeAmount2(input){
-         
         input.parentNode.parentNode.childNodes[5].firstChild.value = (parseInt( input.value )+parseInt(input.parentNode.previousElementSibling.firstChild.value))*parseInt(input.dataset.unitprice);
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Damage salable quantity exceeded.");
+            $(input).popover('show');
+        }else if( parseInt(input.value) < 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
     }
     function Accept(button){
         var tbody = document.getElementById("supplierExchangeTbody");
         var newRow = tbody.insertRow(-1);
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' class='form-control' name='productid[]' value="+button.dataset.product_id+"><input type='hidden' class='form-control' name='returnsid[]' value="+button.dataset.returnsid+"><input type='hidden' class='form-control' name='Supplier' value="+button.dataset.suppname+"><input type='hidden' class='form-control' name='id[]' value="+button.dataset.id+"><input type='hidden' class='form-control' name='unitprice[]' value="+button.dataset.unitprice+"><p>" +button.dataset.description+ "</p></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input onchange='computeAmount(this)' class='form-control' value='"+button.dataset.damaged_qty+"' data-unitprice='"+button.dataset.unitprice+"' type='number' min='0' max='"+button.dataset.damaged_qty+"' name='damagedQuantityAccepted[]'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input onchange='computeAmount2(this)' class='form-control' value='"+button.dataset.damagedsal_qty+"' data-unitprice='"+button.dataset.unitprice+"' type='number' min='0' max='"+button.dataset.damagedsal_qty+"' name='damagedSalableAccepted[]'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Exceeded' onchange='computeAmount(this)' class='form-control' value='0' data-unitprice='"+button.dataset.unitprice+"' type='number' data-max='"+button.dataset.damaged_qty+"' name='damagedQuantityAccepted[]'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Exceeded' onchange='computeAmount2(this)' class='form-control' value='0' data-unitprice='"+button.dataset.unitprice+"' type='number' data-max='"+button.dataset.damagedsal_qty+"' name='damagedSalableAccepted[]'></td>";
         newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='unit[]' > <option class='form-control'  value='pcs'>Pcs</option><option class='form-control'  value='sets'>Sets</option></select>"+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td>"+button.dataset.unitprice+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' disabled name='amount[]'></td>";
@@ -662,12 +686,16 @@ function searchSupplier(a){
     
         $id =  button.dataset.id;
         document.getElementById('stat'+$id).innerHTML = "Accepted";
+        document.getElementById("saveSupplierExchangeItemButton").removeAttribute("disabled")
 
     }
     function Rejected(button){
         document.getElementById('stat'+$id).innerHTML = "Rejected";
     }
 	 function getItems2(button){
+        $("#supplierExchangeTbody tr").remove(); 
+        document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
+                
 		var rowId = button.dataset.id;
 	 	$.ajax({
 	 		type:'GET',
@@ -893,7 +921,6 @@ function searchSupplier(a){
             e.preventDefault();
                 var data = $(this).serialize();  
             var arrayOfData = $(this).serializeArray();      
-     
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.supplierExchange')}}",
@@ -978,9 +1005,11 @@ function searchSupplier(a){
 
         $('#formsupplierReturnItem').on('submit',function(e){   
             e.preventDefault();
-            // if( checkTotalQuantityOfCheckedBoxSupplier() ){
-            //     console.log("ifff")
-            // }else{
+            if( checkTotalQuantityOfCheckedBoxSupplier() ){
+                console.log("error occured")
+            }else{
+                console.log("ready")
+                // return true;
                 var data = $(this).serialize(); 
                 var arrayOfData = $("#formsupplierReturnItem").serializeArray();  
                 var supplierret = []; 
@@ -997,7 +1026,7 @@ function searchSupplier(a){
                 
                     }
                 });
-
+        }
       
 
         });
@@ -1847,7 +1876,7 @@ function searchSupplier(a){
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" class="btn btn-success" form='supplierexchange'>Save</button>
+                            <button type="submit" id="saveSupplierExchangeItemButton" disabled class="btn btn-success" form='supplierexchange'>Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Close</button>
                         </div>
                     </div>

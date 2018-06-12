@@ -381,6 +381,8 @@ class="active"
             $("#lostItemsDiv").addClass("hidden");
             $("#stockAdjustmentButton").removeClass('active');
             $("#stockAdjustmentDiv").addClass('hidden');
+            $("#purchasedButton").removeClass('active');
+            $("#purchasedItemDiv").addClass('hidden');
     });
 
     
@@ -392,8 +394,10 @@ class="active"
         
         $("#soldButton").removeClass('active');
         $("#lostButton").removeClass('active');
+        $("#purchasedButton").removeClass('active');
         $("#damgaedButton").addClass('active');
         $("#lostItemsDiv").addClass("hidden");
+        $("#purchasedItemDiv").addClass("hidden");
         $("#soldDiv").addClass('hidden');
         $("#stockAdjustmentButton").removeClass('active');
         $("#stockAdjustmentDiv").addClass('hidden');
@@ -426,6 +430,8 @@ class="active"
         $("#lostButton").addClass('active');
         $("#damgaedButton").removeClass('active');
         $("#lostItemsDiv").removeClass("hidden");
+        $("#purchasedButton").removeClass('active');
+        $("#purchasedItemDiv").removeClass("hidden");
         $("#stockAdjustmentButton").removeClass('active');
         $("#stockAdjustmentDiv").addClass('hidden');
         $('#lostItemsTable').DataTable({
@@ -453,12 +459,49 @@ class="active"
         $("#soldButton").removeClass('active');
         $("#damgaedButton").removeClass('active');
         $("#lostButton").removeClass('active');
+        $("#purchasedButton").removeClass('active');
         $("#stockAdjustmentButton").addClass('active');
 
         $("#soldDiv").addClass("hidden");
         $("#lostItemsDiv").addClass("hidden");
         $("#damagedItemsDiv").addClass("hidden");
+        $("#purchasedItemDiv").addClass("hidden");
         $('#stockAdjustmentTable').DataTable({
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "destroy": true,
+            "processing": true,
+            "serverSide": true,
+            "colReorder": true,  
+            "pagingType": "full_numbers",
+            "ajax":  "{{ route('reports.getStockAdjustmentReport') }}",
+            "columns": [
+            {data: 'employee_name'},
+            {data: 'description',name: 'products.description'},
+            {data: 'quantity'},
+            {data: 'status'},
+            {data: 'created_at'},
+            {data: 'remarks'},
+            ]
+            
+        });
+    });
+
+    $("#purchasedButton").click(function(){
+        document.getElementById("errorDateRangeReport").innerHTML ="";
+        $("div[style='display: block;']").slideUp("slow");
+        $("#purchasedItemDiv").slideDown("slow").removeClass('hidden');
+        
+        $("#soldButton").removeClass('active');
+        $("#damgaedButton").removeClass('active');
+        $("#lostButton").removeClass('active');
+        $("#stockAdjustmentButton").removeClass('active');
+        $("#purchasedButton").addClass('active');
+
+        $("#soldDiv").addClass("hidden");
+        $("#lostItemsDiv").addClass("hidden");
+        $("#damagedItemsDiv").addClass("hidden");
+         $("#stockAdjustmentDiv").addClass("hidden");
+        $('#purchasedTable').DataTable({
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "destroy": true,
             "processing": true,
@@ -500,6 +543,7 @@ class="active"
                             <button type="button" id="damgaedButton" class="btn btn-basic btn-xs btns">Damaged Items</button>
                             <button type="button" id="lostButton" class="btn btn-basic btn-xs btns">Lost Items</button>
                             <button type="button" id="stockAdjustmentButton" class="btn btn-basic btn-xs btns">Stock Adjustments</button>
+                            <button type="button" id="purchasedButton" class="btn btn-basic btn-xs btns">Purchased Items</button>
                         </div>
                         <div id="errorDateRangeReport" class="hidden alert-danger text-center" style = "margin-top: 10px">
                         </div>
@@ -611,9 +655,37 @@ class="active"
                                         <tbody></tbody>
                                     </table>   
                                 </div>
-                            </div> 
+                            </div>  
+                        </div>
 
-                    </div>
+                        <div id="purchasedItemDiv" class="hidden">
+                            <!-- <h3>Lost Items</h3> -->
+                            <div class="row">
+                                <p class = "col-md-8">
+                                    <label for="from">From</label>
+                                    <input type="date">
+                                    <label for="to">to</label>
+                                    <input type="date">
+                                    <button id="li" onclick="createReport(this)">Filter</button>
+                                </p>  
+                            </div>
+                                <div class="content table-responsive table-full-width table-stripped">
+                                    <table id="purchasedTable" class="table table-striped table-bordered dt-responsive pre" style="width:100%">
+                                        <thead >
+                                            <tr class = "text-left">
+                                                <th>Date Delivered</th>
+                                                <th>Supplier</th>
+                                                <th>Quantity</th>
+                                                <th>Status</th>
+                                                <th>Date of Adjustment</th>
+                                                <th style="width:25%;">Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>   
+                                </div>
+                            </div>  
+                        </div>
                 </div>
             </div>
         </div>

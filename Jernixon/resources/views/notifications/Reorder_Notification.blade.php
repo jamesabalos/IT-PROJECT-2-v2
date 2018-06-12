@@ -1,8 +1,6 @@
 @if(!empty($notification->read_at) )
     <li class='list-group-item list-group-item-success hidden readNotif'>
         <h6><b>Reorder Item:</b>  {{$notification->data['description']}}</h6>
-        <h6><b>Item Name:</b>  {{$notification->type}}</h6>            
-        
         <h6><b>Remaining Quantity:</b> {{$notification->data['quantity']}}
         </h6>         
     </li>

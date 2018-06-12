@@ -18,6 +18,11 @@ class StockAdjustmentNotification extends Notification
      */
     protected $itemname;
     protected $stock_id;
+    protected $stock_adjusted;
+    protected $stock_quantity;
+    protected $stock_type;
+    protected $stock_remarks;
+
     public function __construct($itemname,$stock_id)
     {
         //

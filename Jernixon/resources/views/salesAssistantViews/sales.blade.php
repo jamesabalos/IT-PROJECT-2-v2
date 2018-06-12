@@ -372,8 +372,8 @@ ng-controller="customerPurchase"
           if(a.value === ""){
               document.getElementById("searchResultDiv").setAttribute("class","hidden");   
           }
-        //   document.getElementById("searchResultDivTable_filter").setAttribute("class","hidden")
-        //   $('#searchResultDivTable').DataTable().search(a.value).draw();
+          document.getElementById("searchResultDivTable_filter").setAttribute("class","hidden")
+          $('#searchResultDivTable').DataTable().search(a.value).draw();
         
     }
 
@@ -398,23 +398,37 @@ ng-controller="customerPurchase"
         }
       }
 
-    function checkDiscount(input){
+      function checkDiscount(input){
           if(input.value < 0){
             input.setAttribute("data-content","Discount should be greater than or equal to 0");
             $(input).popover('show');
+          }else if(input.value >10){
+            input.setAttribute("data-content","Discount exceeded!");
+            $(input).popover('show');  
+
           }else{
-            if( parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) < 0 ){
-                input.setAttribute("data-content","wala na kayong kita!");
-                $(input).popover('show');            
-            }else{
                 $(input).popover('destroy');            
-            }
           }
-    }
+      }
     function inputORValue(div){
         document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML;
         document.getElementById("resultORNumberDiv").innerHTML = "";
 
+    }
+    function toggleCheckboxWarranty(checkbox){
+        if(checkbox.checked){        
+            checkbox.setAttribute("name","warranty[]");
+            var date = new Date();
+            date.setDate(date.getDate() + 1);
+
+            // var newDate = date.getDate()+'-'+ (date.getMonth()+1) +'-'+date.getFullYear();
+            var newDate = date.getFullYear() +'-'+ (date.getMonth()+1) +'-'+ date.getDate();
+            console.log(newDate);
+            checkbox.setAttribute("value",newDate);
+
+        }else{
+            checkbox.removeAttribute("name");
+        }
     }
     function searchOfficialReceipt(a){
         // document.getElementById("errorDivCreateReturns").innerHTML= "";
@@ -722,6 +736,8 @@ ng-controller="customerPurchase"
                                     <th>Unit Price</th>
                                     <th>Amount</th>
                                     <th>Action</th>
+                                    <th>Warranty </th>
+                                    
                                 </tr> 
 
                             </thead>
@@ -735,6 +751,17 @@ ng-controller="customerPurchase"
                             </tbody>
                         </table>
                         <div class="form-group">
+                                <div class="row" style = "margin-bottom: 10px;">
+                                        <div class="col-md-7">
+                                            
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            <label>Original amount:</label>
+                                        </div>
+                                        <div class="col-md-3" id="originalAmountDiv">
+                                        </div>
+                                            
+                                    </div>
                             <div class="row">
                                     <div class="col-md-7">
                                         
@@ -1221,6 +1248,9 @@ var _this = this;
 
                                 angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
 
+                                angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.warranty)($scope) );
+                                
+
                                 var temp = document.createElement('div');
                                 temp.innerHTML = myItemJSON.salesPrice;  
                                 // console.log(temp)
@@ -1246,13 +1276,18 @@ var _this = this;
                     //initialize totalSales
                     document.getElementById("totalSalesDiv").innerHTML="";
                     document.getElementById("discountDiv").innerHTML="";
+                    document.getElementById("originalAmountDiv").innerHTML="";                    
 
                     if(totalSalesNgBinds === ""){
                         var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
+                        var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
                     }else{
                         // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number:2'></p></div>";
                         var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")- (("+totalSalesNgBinds+")*(discountValue/100)) |number:2'></p></div>";
+                        var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ") |number:2'></p></div>";                   
                     }
+                    angular.element( originalAmountDiv ).append( $compile(originalPrice)($scope) );
+                    
                     angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
                     // var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input type='number' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";
@@ -1300,6 +1335,10 @@ var _this = this;
                 var temp3 = $compile(removeButton)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp3);
 
+                var warrantyInput = "<input type='checkbox' class='form-control' onchange='toggleCheckboxWarranty(this)'>"
+                angular.element( lastRow.insertCell(-1) ).append(warrantyInput);
+
+
                 //store in localStorage
                 var tds  = $(lastRow.innerHTML).slice(0);   
                 // console.log(tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML)  
@@ -1316,7 +1355,8 @@ var _this = this;
                     action: $(event.currentTarget).closest("tr")[0]['cells'][5].innerHTML,
                     unit: tds[1].firstChild.outerHTML,
                     model: event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML,
-                    category: event.currentTarget.parentNode.parentNode.childNodes[2].innerHTML
+                    category: event.currentTarget.parentNode.parentNode.childNodes[2].innerHTML,
+                    warranty:  tds[6].firstChild.outerHTML               
                 };
 
                 var jsonObject = JSON.stringify(itemObject);
@@ -1324,10 +1364,12 @@ var _this = this;
 
               
                 var totalSalesDiv = document.getElementById("totalSalesDiv");
+                var originalAmountDiv = document.getElementById("originalAmountDiv");                
                 // var ngBindAttributes = (totalSalesDiv.firstChild.children[1].getAttribute("ng-bind")).replace("(",""); //get ng-bind attribute/s
                 var ngBindAttributes = totalSalesDiv.firstChild.children[1].getAttribute("ng-bind"); //get ng-bind attribute/s
                 console.log(ngBindAttributes)
                 totalSalesDiv.innerHTML =""; 
+                originalAmountDiv.innerHTML ="";                 
                 if(ngBindAttributes==""){
                     if( event.currentTarget.dataset.status === "damaged" ){//if damaged
                         var newNgBindsTemp = "damaged"+itemName+"SP";
@@ -1354,6 +1396,8 @@ var _this = this;
                 // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "-discountValue |number:2'></p></div>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
+                var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p></div>";
+                angular.element( originalAmountDiv ).append( $compile(originalPrice)($scope) );
 
                 //remove the row dataTable
                 var row = $(event.currentTarget).closest("tr");
@@ -1438,13 +1482,19 @@ var _this = this;
                             ngBindsWithoutFormat += "+" + thatTable[i].childNodes[4].firstChild.childNodes[1].getAttribute("ng-bind").split(" ")[0];
                         }
                     }
-                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")- (("+ngBindsWithoutFormat+")*(discountValue/100)) |number:2'></p></div>";        
-                }else{
+                    var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")- (("+ngBindsWithoutFormat+")*(discountValue/100)) |number:2'></p></div>";        
+                    var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ") |number:2'></p></div>";               
+               
+               }else{
                     var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind></p><div>";
+                    var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind></p><div>";                
                 }
 
                 document.getElementById("totalSalesDiv").innerHTML="";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+
+                document.getElementById("originalAmountDiv").innerHTML="";
+                angular.element( originalAmountDiv ).append( $compile(originalPrice)($scope) );
             }
 
         }

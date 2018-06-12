@@ -133,8 +133,11 @@ Route::get('admin/returns/getORNumberItems', 'AdminController@getORNumberItems')
 Route::get('admin/returns/getReturnedItems', 'AdminController@getReturnedItems')->name('admin.getReturnedItems');
 Route::get('admin/returns/getSupplierItems', 'AdminController@getSupplierItems')->name('admin.getSupplierItems');
 Route::get('admin/returns/getReturnedItemsExchanged', 'AdminController@getReturnedItemsExchanged')->name('admin.getReturnedItemsExchanged');
-// Route::get('admin/returns/getReturnedItems2', 'AdminController@getReturnedItems2')->name('admin.getReturnedItems2');
+Route::get('admin/returns/getSupplierReturnedItems', 'AdminController@getSupplierReturnedItems')->name('admin.getSupplierReturnedItems');
+Route::get('admin/returns/getSupplierReturnedItems2', 'AdminController@getSupplierReturnedItems2')->name('admin.getSupplierReturnedItems2');
+Route::get('admin/returns/getReturnedSItem', 'AdminController@getReturnedSItem')->name('admin.getReturnedSItem');
 Route::Post('admin/returns/createReturnsFilter', 'AdminController@createReturnsFilter')->name('returns.createReturnsFilter');
+Route::Post('admin/returns/supplierExchange', 'AdminController@supplierExchange')->name('admin.supplierExchange');
 
 Route::get('admin/physicalCount', 'AdminController@physicalCount')->name('admin.physicalCount');
 Route::get('admin/physicalCount/getPhysicalCount', 'AdminController@getPhysicalCount')->name('admin.getPhysicalCount');

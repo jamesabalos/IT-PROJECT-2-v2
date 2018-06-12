@@ -475,7 +475,7 @@ public function createPurchasesFilter(Request $request){
     
     public function supplierExchange(Request $request){
         
-
+        
         $data = DB::table('purchases')
             ->select('po_id')
             ->where('po_id' , '=' , $request->Official_Receipt_Number)

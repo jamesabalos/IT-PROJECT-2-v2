@@ -263,7 +263,7 @@ class HomeController extends Controller
 
         $arrayCount = count($request->productId);
         $data='';
-        
+        $admin = Admin::all();
         for($i = 0;$i<$arrayCount;$i++){
            
             if($request->status[$i] == "Damaged"){

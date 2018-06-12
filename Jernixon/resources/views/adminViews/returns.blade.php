@@ -343,8 +343,6 @@ ng-app="ourAngularJsApp"
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
                 var modalRefundTbody = document.getElementById("refundTbody");
                 var today = new Date().toISOString().substr(0, 10);
-                // var date1 = new Date("12/13/2010");
-                // var date2 = new Date("12/15/2010");
                 if(data[0].warranty == null){
                     var remainingDays = "No warranty";                    
                 }else{

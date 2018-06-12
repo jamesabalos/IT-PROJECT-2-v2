@@ -9,7 +9,7 @@
         </h6>         
     </li>
 @else       
-        <li class='list-group-item list-group-item-danger unreadreturn'>
+        <li class='list-group-item list-group-item-danger hidden unreadreturn'>
             <h6><b>Return Item:</b>  {{$notification->data['itemname']}}</h6>
             
             <h6><b>Returned by :</b> {{$notification->data['Customer']}}

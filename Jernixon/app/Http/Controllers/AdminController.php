@@ -188,7 +188,7 @@ class AdminController extends Controller
         if($data->isEmpty()){
             for($i = 0;$i<$arrayCount;$i++){
                 $insert = DB::table('sales')->insert(
-                    ['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date, 'unit' => $request->unit[$i], 'discount' => $request->discount, 'exchangeor' => $request->oldORNumber]
+                    ['or_number' => $request->receiptNumber, 'product_id' => $request->productIds[$i], 'customer_name' => $request->customerName, 'price' => $request->retailPrices[$i],'quantity' => $request->quantity[$i],'created_at' => $request->Date, 'unit' => $request->unit[$i], 'discount' => $request->discount, 'exchangeor' => $request->oldORNumber, 'address'=>$request->address,'warranty'=>$request->warranty[$i]]
                 );
                 DB::table('salable_items')
                     ->where('product_id', $request->productIds[$i])
@@ -213,7 +213,7 @@ class AdminController extends Controller
             for($i = 0; $i < $arrayCount2; $i++){
 
                 $insert = DB::table('sales')->insert(
-                ['or_number' => $request->receiptNumber, 'product_id' => $request->damagedProductIds[$i], 'customer_name' => $request->customerName, 'price' => $request->damagedRetailPrices[$i],'quantity' => $request->damagedQuantity[$i],'created_at' => $request->Date, 'exchangeor' => $request->oldORNumber, 'unit' => $request->unit[$i]]
+                ['or_number' => $request->receiptNumber, 'product_id' => $request->damagedProductIds[$i], 'customer_name' => $request->customerName, 'price' => $request->damagedRetailPrices[$i],'quantity' => $request->damagedQuantity[$i],'created_at' => $request->Date, 'exchangeor' => $request->oldORNumber, 'unit' => $request->unit[$i],'address'=>$request->address,'warranty'=>$request->warranty[$i]]
                 );
                 DB::table('damaged_salable_items')
                 //->select('product_id')
@@ -437,7 +437,7 @@ public function createPurchasesFilter(Request $request){
 
         $data = DB::table('sales')
             ->join('products', 'products.product_id', '=', 'sales.product_id')
-            ->select('sales.product_id','description', 'customer_name', 'quantity', 'price', 'sales.created_at')
+            ->select('sales.product_id','description', 'customer_name', 'quantity', 'price', 'sales.created_at','warranty')
             ->where('or_number', '=', $request->ORNumber)
             ->get();
         return $data;
@@ -771,7 +771,8 @@ public function createPurchasesFilter(Request $request){
             ->join('products', 'products.product_id', '=', 'sales.product_id')
             // ->select('or_number', 'description', 'customer_name', 'quantity', 'price', 'sales.created_at');
             ->select('products.description',DB::raw('sum(quantity) as totalQuantity'),DB::raw('sum(quantity*price) as totalPrice') )
-            ->groupBy('products.description');
+            ->groupBy('products.description')
+            ->having(DB::raw('sum(quantity)'),'>', '0');
         return Datatables::of($data)
 
             ->make(true);
@@ -877,9 +878,10 @@ public function createPurchasesFilter(Request $request){
             'remarks' => 'required',
             'Date' => 'required'
         ]);
-
-        $arrayCount = count($request->productId);
+        
+        $arrayCount = count($request);
         for($i = 0;$i<$arrayCount;$i++){
+            $data = '';
             if($request->status[$i] == "Damaged"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "damaged", 'status' => "accepted", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]

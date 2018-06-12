@@ -141,60 +141,63 @@ function checkTotalQuantityOfCheckedBox(){
 
 }
 function addReturnItem(div){
-  var items =[];
-  var thatTbody = $("#returnItemTbody tr td:first-child");
-  
-   $.ajax({
-      method: 'get',
-      url: "{{route('admin.getORNumberItems')}}",
-      data:{
-           'ORNumber': div.firstChild.innerHTML,
-      },        
-      success: function(data){
-          $("#returnItemTbody tr").remove();
-          $("#refundTbody tr").remove();
-          var modalReturnItemTbody = document.getElementById("returnItemTbody");
-          var modalRefundTbody = document.getElementById("refundTbody");
-          for(var i = 0; i < data.length; i++){
-                  var newRow = modalReturnItemTbody.insertRow(-1);
-                  newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                  newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
-                  newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                  newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
-                  // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
-                  newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  max='" +data[i].quantity+ "'></td>";
-                  newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
-                  newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
-          }
-
-          document.getElementById("Customer").value = data[0].customer_name;
-          document.getElementById("returnCustomerName").value = data[0].customer_name;
-          document.getElementById("ORdate").value = data[0].created_at;
-          var today = new Date().toISOString().substr(0, 10);
-          var date1 = new Date("12/13/2010");
-          var date2 = new Date("12/15/2010");
-          var timeDiff = Math.abs( (new Date(today)).getTime() - (new Date(data[0].created_at)).getTime());
-          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-          if( 7-parseInt(diffDays) <= 0 ){
-              document.getElementById("remainingWarrantyDays").value = "0";
-          }else{
-              document.getElementById("remainingWarrantyDays").value = 7-parseInt(diffDays);
-          }
+        var items =[];
+        var thatTbody = $("#returnItemTbody tr td:first-child");
         
+         $.ajax({
+            method: 'get',
+            url: "{{route('admin.getORNumberItems')}}",
+            data:{
+                 'ORNumber': div.firstChild.innerHTML,
+            },        
+            success: function(data){
+                console.log(data)
+                $("#returnItemTbody tr").remove();
+                $("#refundTbody tr").remove();
+                var modalReturnItemTbody = document.getElementById("returnItemTbody");
+                var modalRefundTbody = document.getElementById("refundTbody");
+                for(var i = 0; i < data.length; i++){
+                        var newRow = modalReturnItemTbody.insertRow(-1);
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
+                        // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
+                        
 
-          
-      }
-      });
+                }
 
-  // if(div.dataset.modal === "searchORNumberInput"){
-      document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
-      document.getElementById("resultORNumberDiv").innerHTML = "";
-  // }else{
-  //     document.getElementById("refundSearchORNumberInput").value = div.firstChild.innerHTML ;
-  //     document.getElementById("refundORNumberDiv").innerHTML = "";
-  // }
+                document.getElementById("Customer").value = data[0].customer_name;
+                document.getElementById("returnCustomerName").value = data[0].customer_name;
+                document.getElementById("ORdate").value = data[0].created_at;
+                var today = new Date().toISOString().substr(0, 10);
+                var date1 = new Date("12/13/2010");
+                var date2 = new Date("12/15/2010");
+                var timeDiff = Math.abs( (new Date(today)).getTime() - (new Date(data[0].created_at)).getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                if( 7-parseInt(diffDays) <= 0 ){
+                    document.getElementById("remainingWarrantyDays").value = "0";
+                }else{
+                    document.getElementById("remainingWarrantyDays").value = 7-parseInt(diffDays);
+                }
 
-}
+
+                
+            }
+            });
+
+        if(div.dataset.modal === "searchORNumberInput"){
+            document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
+            document.getElementById("resultORNumberDiv").innerHTML = "";
+        }else{
+            document.getElementById("refundSearchORNumberInput").value = div.firstChild.innerHTML ;
+            document.getElementById("refundORNumberDiv").innerHTML = "";
+        }
+
+    }
 function toggleCheckbox(button){
     var data  = $(button.parentNode.parentNode.innerHTML).slice(0,-1);
     var itemName = data[0].innerHTML;
@@ -312,29 +315,30 @@ function searchOfficialReceipt(a){
 
 }
 
-  function getItems(button){
-    
-    var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
-    var date = button.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
-    // console.log(itemId);
-    // var fullRoute = "/admin/returns/getReturnedItems/"+ORnumber;
-    $.ajax({
-      type:'GET',
-      url: "{{route('admin.getReturnedItems')}}",
+	function getItems(button){
+		
+		var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
+		var date = button.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
+		// console.log(itemId);
+		// var fullRoute = "/admin/returns/getReturnedItems/"+ORnumber;
+		$.ajax({
+			type:'GET',
+			url: "{{route('salesAssistant.getReturnedItems')}}",
             data: {
                 'ORNumber': ORnumber,
             },
 
-      success:function(data){
+			success:function(data){
+                // console.log(data)        
                 $("#veiwReturnedItemTbody tr").remove();
                 var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
                 for(var i = 0; i < data.length; i++){
                     var newRow = returnedItemTable.insertRow(-1);
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
+                    // newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                    // newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    // newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
@@ -346,11 +350,35 @@ function searchOfficialReceipt(a){
                 document.getElementById("address").innerHTML= data[0].address;
                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
                 document.getElementById("customerName").innerHTML = data[0].customer_name;
-                {{-- document.getElementById("warrantyDay").value = data[0].created_at; --}}
+                // {{-- document.getElementById("warrantyDay").value = data[0].created_at; --}}
 
-      }
-    });
-  }
+			}
+		});
+         $.ajax({
+            type:'GET',
+            url: "{{route('salesAssistant.getReturnedItemsExchanged')}}",
+            data: {
+                'ORNumber': ORnumber,
+            },
+            success:function(data){
+                var exchangeTbody = document.getElementById("veiwExchangedItemTbody");
+                $("#veiwExchangedItemTbody tr").remove();                
+                for(var i = 0; i <data.length; i++){
+                    var newRow = exchangeTbody.insertRow(-1);
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
+                    newRow.insertCell(-1).innerHTML = "<td>" +data[i].price*data[i].quantity+ "</td>";
+                }
+            },
+            error:function(data){
+
+            }
+        });
+
+	
+	}
 
 function createReport(button){
   // var dateFrom = document.getElementById("from").value;
@@ -949,12 +977,8 @@ function custReturn(){
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Qty.</th>
-                                        {{-- <th class="text-left">Quantity</th> --}}
-                                        <th class="text-left">Unit</th>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Unit Price</th>
-                                        <th class="text-left">Amount</th>
                                         <th class="text-left">Damaged</th>
                                         <th class="text-left">Undamaged</th>
                                         <th class="text-left">Damage Salable</th>
@@ -981,14 +1005,15 @@ function custReturn(){
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Returned Item</th>
-                                        <th class="text-left">New Item</th>
-                                        <th class="text-left">Quantity</th>
-                                        <!-- <th class="text-left">Purchase Price</th> -->
+                                        <th class="text-left">Qty.</th>
+                                        <th class="text-left">Unit</th>
+                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Unit Price</th>
+                                        <th class="text-left">Amount</th>
                                     </tr>
                                 </thead>
-
-                                <tbody id="veiwReturnedItemTbody">
+                                
+                                <tbody id="veiwExchangedItemTbody">
                                 </tbody>
                             </table>
                         </div>

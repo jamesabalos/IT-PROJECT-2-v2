@@ -187,22 +187,22 @@ ng-controller="customerPurchase"
         for(var i = 0; i < rows.length; i++){  
             if(m<7){
                 items += "<tr>\
-                            <td class='quantity nl'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td class='unit nl'></td>\
-                            <td class='desc nl'>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td class='unitp nl'>"+rows[i].cells[1].innerText+"</td>\
-                            <td class='amount nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='quantity nl'>"+rows[i].cells[0].lastChild.value+"</td>\
+                            <td class='unit nl'>"+rows[i].cells[1].firstChild.value+"</td>\
+                            <td class='desc nl'>"+rows[i].cells[2].innerHTML+"</td>\
+                            <td class='unitp nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='amount nl'>"+rows[i].cells[4].innerText+"</td>\
                         <tr>\
                         ";
                 m++;
                 
             }else{
                 items += "<tr>\
-                            <td class='quantity nl'>"+rows[i].cells[2].lastChild.value+"</td>\
-                            <td class='unit nl'></td>\
-                            <td class='desc nl'>"+rows[i].cells[0].innerHTML+"</td>\
-                            <td class='unitp nl'>"+rows[i].cells[1].innerText+"</td>\
-                            <td class='amount nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='quantity nl'>"+rows[i].cells[0].lastChild.value+"</td>\
+                            <td class='unit nl'>"+rows[i].cells[1].innerHTML+"</td>\
+                            <td class='desc nl'>"+rows[i].cells[2].innerHTML+"</td>\
+                            <td class='unitp nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='amount nl'>"+rows[i].cells[4].innerText+"</td>\
                             <tr>\
                         ";
                 m=0;
@@ -227,13 +227,13 @@ ng-controller="customerPurchase"
                     <div class='top'>\           \
                     <div class='des'>\
                         <div class='blank'></div>\
-                        <div id='custname'>"+arrayOfData[2]['value']+"</div>\
+                        <div id='custname'>"+arrayOfData[3]['value']+"</div>\
                         <div class='blank'></div>\
-                        <div id='rdate' class = 'text-right col-md-4'>"+arrayOfData[3]['value']+"</div>\
+                        <div id='rdate' class = 'text-right col-md-4'>"+arrayOfData[4]['value']+"</div>\
                     </div>\
                     <div class='des'>\
                         <div class='blank'></div>\
-                        <div id='address'>"+arrayOfData[4]['value']+"</div>\
+                        <div id='address'>"+arrayOfData[5]['value']+"</div>\
                     </div>\
                         <div class='content table-responsive table-striped table-full-width clear'>\
                             <table>\
@@ -448,16 +448,34 @@ ng-controller="customerPurchase"
           if(input.value < 0){
             input.setAttribute("data-content","Discount should be greater than or equal to 0");
             $(input).popover('show');
+          }else if(input.value >10){
+            input.setAttribute("data-content","Discount exceeded!");
+            $(input).popover('show');  
+            // if(parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) <= 10 ){
+            //     input.setAttribute("data-content","Discount exceeded!");
+            //     $(input).popover('show');            
+            // }else{
+            //     $(input).popover('destroy');            
+            // }
           }else{
-            if( parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) < 0 ){
-                input.setAttribute("data-content","wala na kayong kita!");
-                $(input).popover('show');            
-            }else{
                 $(input).popover('destroy');            
-            }
           }
       }
+    function toggleCheckboxWarranty(checkbox){
+        if(checkbox.checked){        
+            checkbox.setAttribute("name","warranty[]");
+            var date = new Date();
+            date.setDate(date.getDate() + 1);
 
+            // var newDate = date.getDate()+'-'+ (date.getMonth()+1) +'-'+date.getFullYear();
+            var newDate = date.getFullYear() +'-'+ (date.getMonth()+1) +'-'+ date.getDate();
+            console.log(newDate);
+            checkbox.setAttribute("value",newDate);
+
+        }else{
+            checkbox.removeAttribute("name");
+        }
+    }
     $(document).ready(function(){
         $('[data-toggle="popover"]').popover();
         let today = new Date().toISOString().substr(0, 10);
@@ -503,10 +521,7 @@ ng-controller="customerPurchase"
             e.preventDefault();
             var data = $(this).serialize();   
             var arrayOfData = $(this).serializeArray();      
-            console.log(arrayOfData);
-            // return true;
             // console.log(arrayOfData)
-            // return true;
             // return true;
             var thatTbody = $("#cartTbody tr td:first-child");
 
@@ -730,15 +745,15 @@ function changeToDamage(){
                     <div class="row">
                         <div class="col-md-0" margin>
                             {{Form::label('address', 'Address:')}}
-                            {{Form::text('address','',['class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerAddress(this)'])}}
+                            {{Form::text('address','',['name'=>'address','class'=>'form-control','oninput'=>'enablePrintButton(this)','onchange'=>'saveCustomerAddress(this)'])}}
                             
                         </div>
                     </div>
                 </div>
-				<form action="">
+				{{-- <form action=""> --}}
 						<input type="radio" name="status" onclick="changeToUndamage()"> Undamaged&nbsp;&nbsp;&nbsp; 
   						<input type="radio" name="status" onclick="changeToDamage()" > Damaged 
-				</form>
+				{{-- </form> --}}
 				<br>
 
                 {{-- <div class="form-group">
@@ -776,6 +791,7 @@ function changeToDamage(){
                                     <th>Unit Price</th>
                                     <th>Amount</th>
                                     <th>Action</th>
+                                    <th>Warranty </th>
                                 </tr> 
 
                             </thead>
@@ -789,17 +805,28 @@ function changeToDamage(){
                             </tbody>
                         </table>
                         <div class="form-group">
-                            <div class="row">
-                                    <div class="col-md-7">
-                                        
-                                    </div>
-                                    <div class="col-md-2 text-right">
-                                        <label>Discount:</label>
-                                    </div>
-                                    <div class="col-md-3" id="discountDiv">
-                                    </div>
+                            <div class="row" style = "margin-bottom: 10px;">
+                                <div class="col-md-7">
                                     
                                 </div>
+                                <div class="col-md-2 text-right">
+                                    <label>Original amount:</label>
+                                </div>
+                                <div class="col-md-3" id="originalAmountDiv">
+                                </div>
+                                    
+                            </div>
+                            <div class="row" style = "margin-bottom: 10px;">
+                                <div class="col-md-7">
+                                    
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    <label>Discount:</label>
+                                </div>
+                                <div class="col-md-3" id="discountDiv">
+                                </div>
+                                    
+                            </div>
                             <div class="row">
                                 <div class="col-md-7">
                                     
@@ -811,7 +838,7 @@ function changeToDamage(){
                                     <p class="form-control" id="totalSales" ng-bind="" style="float: right;"></p>
                                 </div>
                                 <div class="text-right">                                           
-                                    <div class="col-md-12">   
+                                    <div class="col-md-12" style = "margin-top: 10px;">   
                                         <button class="btn btn-primary" type="submit">Submit</button>
                                         <button id="printButton" class="btn btn-success" type="button" onclick="printReceipt()" disabled> Print</button>
                                     </div>
@@ -1149,6 +1176,8 @@ function changeToDamage(){
 
                                 angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
 
+                                angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.warranty)($scope) );
+
                                 var temp = document.createElement('div');
                                 temp.innerHTML = myItemJSON.salesPrice;  
                                 // console.log(temp)
@@ -1228,7 +1257,7 @@ function changeToDamage(){
                    ],
 
                createdRow: function(row, data, dataIndex) {
-                    $(row).attr("style","background-color:red");                   
+                    $(row).attr("style","background-color:#f78f8f");                   
                    $compile(angular.element(row).contents())($scope);
                },
                "initComplete": function(settings, json) {
@@ -1293,6 +1322,8 @@ function changeToDamage(){
                                 angular.element( newRow.insertCell(-1) ).append( $compile(tempSalesPrice[0].outerHTML + ($.parseHTML(myItemJSON.salesPrice))[1].outerHTML)($scope) ); 
 
                                 angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.removeButton)($scope) );
+
+                                angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.warranty)($scope) );
                                //////////////////////////////////////
                             //    angular.element( newRow.insertCell(-1) ).append( $compile(myItemJSON.salesPrice)($scope) );
 
@@ -1361,17 +1392,22 @@ function changeToDamage(){
                      //initialize totalSales && discount
                     document.getElementById("totalSalesDiv").innerHTML="";
                     document.getElementById("discountDiv").innerHTML="";
+                    document.getElementById("originalAmountDiv").innerHTML="";
 
                     if(totalSalesNgBinds === ""){
                         var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
+                        var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
                     }else{
                         // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number:2'></p></div>";
-                var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")- (("+totalSalesNgBinds+")*(discountValue/100)) |number:2'></p></div>";
+                        var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")- (("+totalSalesNgBinds+")*(discountValue/100)) |number:2'></p></div>";
+                        var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ") |number:2'></p></div>";
                     
                     }
+                    angular.element( originalAmountDiv ).append( $compile(originalPrice)($scope) );
+
                     angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
-                    var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>%</span><input type='number' name='discount' ng-init='discountValue =0' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";
+                    var discountInput = "<div class = 'input-group'><span class = 'input-group-addon'>%</span><input type='number' trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Exceeded' name='discount' ng-init='discountValue =0' onchange='checkDiscount(this)' trigger='manual' id='discountInput' data-toggle='popover'  placement='top' title='Error' data-content='wala na pong kita.' style='color:red' ng-model='discountValue' class='form-control'></div>";
                     angular.element( discountDiv ).append( $compile(discountInput)($scope) );
 
 
@@ -1450,6 +1486,9 @@ function changeToDamage(){
                 }
                 var temp3 = $compile(removeButton)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp3);
+
+                var warrantyInput = "<input type='checkbox' class='form-control' onchange='toggleCheckboxWarranty(this)'>"
+                angular.element( lastRow.insertCell(-1) ).append(warrantyInput);
                 
                 
 
@@ -1469,7 +1508,8 @@ function changeToDamage(){
                     action: $(event.currentTarget).closest("tr")[0]['cells'][6].innerHTML,
                     unit: tds[1].firstChild.outerHTML,
                     model: event.currentTarget.parentNode.parentNode.childNodes[1].innerHTML,
-                    category: event.currentTarget.parentNode.parentNode.childNodes[2].innerHTML
+                    category: event.currentTarget.parentNode.parentNode.childNodes[2].innerHTML,
+                    warranty:  tds[6].firstChild.outerHTML
                 };
 
                 var jsonObject = JSON.stringify(itemObject);
@@ -1503,10 +1543,12 @@ function changeToDamage(){
                 // angular.element( totalSalesDiv ).append( $compile(price)($scope) );
               
                 var totalSalesDiv = document.getElementById("totalSalesDiv");
+                var originalAmountDiv = document.getElementById("originalAmountDiv");
                 // var ngBindAttributes = (totalSalesDiv.firstChild.children[1].getAttribute("ng-bind")).replace("(",""); //get ng-bind attribute/s
                 var ngBindAttributes = totalSalesDiv.firstChild.children[1].getAttribute("ng-bind"); //get ng-bind attribute/s
                 console.log(ngBindAttributes)
                 totalSalesDiv.innerHTML =""; 
+                originalAmountDiv.innerHTML =""; 
                 if(ngBindAttributes==""){
                     if( event.currentTarget.dataset.status === "damaged" ){//if damaged
                         var newNgBindsTemp = "damaged"+itemName+"SP";
@@ -1530,8 +1572,10 @@ function changeToDamage(){
 
                 console.log("TScorrect: " + newNgBinds)
                 var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "- ("+newNgBinds+"*(discountValue/100)) |number:2'></p></div>";
-                // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "-discountValue |number:2'></p></div>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+               
+                var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p></div>";
+                angular.element( originalAmountDiv ).append( $compile(originalPrice)($scope) );
 
 
                 //remove the row dataTable
@@ -1669,15 +1713,20 @@ function changeToDamage(){
                     }
                     // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")-discountValue |number:2'></p></div>";
                 var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ")- (("+ngBindsWithoutFormat+")*(discountValue/100)) |number:2'></p></div>";
+                var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +ngBindsWithoutFormat+ ") |number:2'></p></div>";
                     
                 }else{
                     var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind></p><div>";
+                    var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind></p><div>";
                 }
                 // console.log("ngBinds: " + ngBinds)
                 // console.log("ngBindsWithoutFormat: "+ngBindsWithoutFormat)
-                //update total sales price
+                //update total sales price and orignal price
                 document.getElementById("totalSalesDiv").innerHTML="";
-                angular.element( totalSalesDiv ).append( $compile(price)($scope) );
+                angular.element( totalSalesDiv ).append( $compile(originalPrice)($scope) );
+
+                document.getElementById("originalAmountDiv").innerHTML="";
+                angular.element( originalAmountDiv ).append( $compile(price)($scope) );
             }
 
         }

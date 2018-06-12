@@ -150,7 +150,7 @@ ng-controller="ownerPurchase"
                   var totalAmount = "";
                   for(var i = 0; i < data.length; i++){
                       var newRow = modalPurchaseTable.insertRow(-1);
-                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].unit+ "</td>";
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
@@ -264,13 +264,23 @@ ng-controller="ownerPurchase"
         });
     }
     
-    function checkQuantity(input){
-          if(input.value <= 0){
-            input.setAttribute("data-content","Value should be greater than 0");
+      function checkQuantity(input){
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Quantity exceeds the available stock on hand, quantity should not exceed "+input.dataset.max+"!");
             $(input).popover('show');
-          }else{
-                $(input).popover('destroy');            
-          }
+        }else if( parseInt(input.value) <= 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
+
+        if( parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) < 0 && parseInt(document.getElementById("discountInput").value) >= 1 ){
+            $(document.getElementById("discountInput")).popover('show');
+        }else{
+            $(document.getElementById("discountInput")).popover('destroy');
+
+        }
       }
 
       function checkDiscount(input){
@@ -558,6 +568,7 @@ ng-controller="ownerPurchase"
                             node.setAttribute("id",data[i].product_id)
                             node.setAttribute("ng-click","addRow($event)")
                             node.setAttribute("data-price",data[i].wholesale_price)
+                            node.setAttribute("data-max",data[i].quantity)
                             var pElement = document.createElement("P");
                             var textNode = document.createTextNode(data[i].description);
                             pElement.appendChild(textNode);
@@ -592,7 +603,7 @@ ng-controller="ownerPurchase"
                 var itemDescription = event.currentTarget.firstChild.innerHTML;
                 var itemName = itemDescription.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
 
-                var quantity = "<input style='width: 100px;' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' ng-init='" +itemName+ "Q =1' name='quantity[]' class='form-control' ng-focus='$event = $event' onchange='checkQuantity(this)' ng-change='changingQuantity($event)' ng-model='" +itemName + "Q'  required></input>";
+                var quantity = "<input style='width: 100px;' data-max='"+event.currentTarget.dataset.max+"' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' ng-init='" +itemName+ "Q =1' name='quantity[]' class='form-control' ng-focus='$event = $event' onchange='checkQuantity(this)' ng-change='changingQuantity($event)' ng-model='" +itemName + "Q'  required></input>";
                 var temp1 = $compile(quantity)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
@@ -601,7 +612,7 @@ ng-controller="ownerPurchase"
 
                  angular.element( lastRow.insertCell(-1) ).append(itemDescription);
 
-                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' onchange='checkQuantity(this)' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
+                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' onchange='checkQuantity(this)' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control text-right' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
                 var temp2 = $compile(unitPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
@@ -832,7 +843,7 @@ ng-controller="ownerPurchase"
 </div>
 
 <div id="purchasesModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-md">
+    <div class = "modal-dialog modal-lg">
         <div class = "modal-content">
 
             <div class="modal-header">
@@ -888,7 +899,7 @@ ng-controller="ownerPurchase"
                             <table class="table table-bordered table-striped" >
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Description</th>
+                                        <th class="text-left">Qty.</th>
                                         <th class="text-left">Unit</th>
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Unit Price</th>

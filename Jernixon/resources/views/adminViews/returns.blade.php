@@ -195,6 +195,25 @@ ng-app="ourAngularJsApp"
 
     }
 
+    function checkQuantity(input){
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Quantity exceeds the available stock on hand, quantity should not exceed "+input.dataset.max+"!");
+            $(input).popover('show');
+        }else if( parseInt(input.value) <= 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
+
+        if( parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) < 0 && parseInt(document.getElementById("discountInput").value) >= 1 ){
+            $(document.getElementById("discountInput")).popover('show');
+        }else{
+            $(document.getElementById("discountInput")).popover('destroy');
+
+        }
+    }
+
     function checkTotalQuantityOfCheckedBox(){
         //get total quantity for every raw then check if the total Quantity == 0, if 0, then disabled save button
             var errorMessages = "";
@@ -258,43 +277,45 @@ ng-app="ourAngularJsApp"
                 $("#refundTbody tr").remove();
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
                 var modalRefundTbody = document.getElementById("refundTbody");
+                var today = new Date().toISOString().substr(0, 10);
+                // var date1 = new Date("12/13/2010");
+                // var date2 = new Date("12/15/2010");
+                if(data[0].warranty == null){
+                    var remainingDays = "No warranty";                    
+                }else{
+                    var timeDiff = Math.abs( (new Date(data[0].warranty)).getTime() - (new Date(data[0].created_at)).getTime());
+                    var remainingDaysTemp = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                    var remainingDays = "";
+                    if(remainingDaysTemp <= 0){
+                        remainingDays = "0";
+                    }else{
+                        remainingDays = remainingDaysTemp;
+                    }
+                }
+                // if( 7-parseInt(diffDays) <= 0 ){
+                //     document.getElementById("remainingWarrantyDays").value = "0";
+                // }else{
+                //     document.getElementById("remainingWarrantyDays").value = 7-parseInt(remainingDays);
+                // }
                 for(var i = 0; i < data.length; i++){
-                    // if(div.dataset.modal === "searchORNumberInput"){
-                    //     var newRow = modalReturnItemTbody.insertRow(-1);
-                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
-                    //     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                    //     newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' type='checkbox' onchange='toggleCheckbox(this)' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'></td>";
-                    // }else{
                         var newRow = modalReturnItemTbody.insertRow(-1);
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
                         // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  max='" +data[i].quantity+ "'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  data-max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' data-max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' data-max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +remainingDays+ "</td>";
                         
-                    // }
+
                 }
 
-                {{-- document.getElementById("Customer").value = data[0].customer_name; --}}
+                // {{-- document.getElementById("Customer").value = data[0].customer_name; --}}
                 document.getElementById("returnCustomerName").value = data[0].customer_name;
                 document.getElementById("ORdate").value = data[0].created_at;
-                var today = new Date().toISOString().substr(0, 10);
-                var date1 = new Date("12/13/2010");
-                var date2 = new Date("12/15/2010");
-                var timeDiff = Math.abs( (new Date(today)).getTime() - (new Date(data[0].created_at)).getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                if( 7-parseInt(diffDays) <= 0 ){
-                    document.getElementById("remainingWarrantyDays").value = "0";
-                }else{
-                    document.getElementById("remainingWarrantyDays").value = 7-parseInt(diffDays);
-                }
 
-
-                
             }
             });
 
@@ -536,6 +557,7 @@ function searchSupplier(a){
             },
             success:function(data){
                 var exchangeTbody = document.getElementById("veiwExchangedItemTbody");
+                $("#veiwExchangedItemTbody tr").remove();
                 for(var i = 0; i <data.length; i++){
                     var newRow = exchangeTbody.insertRow(-1);
                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
@@ -1286,7 +1308,7 @@ function searchSupplier(a){
                                             {{Form::label('Official Receipt No:')}}
                                         </div>
                                         <div class="col-md-9">
-                                          {{--  {{ Form::number('Official Receipt No','',['class'=>'form-control','min'=>'1']) }}  --}}
+                                         
                                             <input autocomplete="off" id="searchORNumberInput" type="number" onkeyup="searchOfficialReceipt(this)" name="officialReceiptNumber" class="form-control border-input">
                                              <div id="resultORNumberDiv" class="searchResultDiv">
                                     </div>
@@ -1322,13 +1344,13 @@ function searchSupplier(a){
                                             {{Form::label('Customer', 'Customer:')}}
                                         </div>
                                         <div class="col-md-9">
-                                            {{-- {{Form::text('Customer','',['class'=>'form-control','value'=>'','disabled'])}} --}}
+                                           
                                             <input id="returnCustomerName" name="customerName" id="customerName" class="form-control border-input" >
                                         </div>
                                     </div>
                                 </div>
 
-                          <div class="form-group">    
+                                {{-- <div class="form-group">    
                                     <div class="row">
                                         <div class="col-md-3">
                                             {{Form::label('remainingWarrantyDays', 'Remaining warranty day/s:')}}
@@ -1337,7 +1359,7 @@ function searchSupplier(a){
                                             {{Form::text('remainingWarrantyDays','',['class'=>'form-control','value'=>'','disabled'])}}
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </div>
@@ -1361,12 +1383,26 @@ function searchSupplier(a){
                                                 <th class="text-left">Damaged</th>
                                                 <th class="text-left">Undamaged</th>
                                                 <th class="text-left">Damage Salable</th>
+                                                <th class="text-left">Remaining warranty day/s</th>
                                             </tr>
                                         </thead>
 
                                         <tbody id="returnItemTbody">
                                         </tbody>
                                     </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="errorDivCreateReturns" class="hidden">
+
+                        </div>
+                        <div class="row">
+                            <div class="text-right">                                           
+                                <div class="col-md-12">   
+                                    <button type="submit" id="returnSaveButton" class="btn btn-success" form='formReturnItem'>Save</button>
+                                    {{-- <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button> --}}
+                                    <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -1468,7 +1504,6 @@ function searchSupplier(a){
                     </div>
                     {!! Form::close() !!}
         
-                <div id="errorDivCreateReturns" class="hidden">
 
                         </div>
                 <div class="row">

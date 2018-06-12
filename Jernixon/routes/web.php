@@ -53,14 +53,18 @@ Route::get('salesAssistant/sales/getItemsSales', 'HomeController@getItemsForSale
 Route::get('salesAssistant/sales/getDamaged', 'HomeController@getDamagedForSales')->name('salesAssistant.dashboard.getDamaged');
 Route::get('salesAssistant/sales', 'HomeController@sales')->name('salesAssistant.sales');
 Route::Post('salesAssistant/sales/createSales', 'HomeController@createSales')->name('salesAssistant.createSales');
+Route::get('salesAssistant/sales/getORNumberInSales/{ORNumber}', 'HomeController@getORNumberInSales');
+
 
 Route::get('salesAssistant/return', 'HomeController@return')->name('salesAssistant.return');
 Route::get('salesAssistant/returns/getReturns', 'HomeController@getReturns')->name('salesAssistant.returns.getReturns');
 Route::Post('salesAssistant/returns/createReturnItem', 'HomeController@createReturnItem')->name('salesAssistant.createReturnItem');
 Route::get('salesAssistant/returns/getORNumber/{ORNumber}', 'HomeController@getORNumber');
 Route::get('salesAssistant/returns/getORNumberItems', 'HomeController@getORNumberItems')->name('salesAssistant.getORNumberItems');
-Route::get('salesAssistant/returns/getReturnedItems/{ORNumber}', 'HomeController@getReturnedItems')->name('salesAssistant.getReturnedItems');
+Route::get('salesAssistant/returns/getReturnedItems', 'HomeController@getReturnedItems')->name('salesAssistant.getReturnedItems');
+Route::get('salesAssistant/returns/getReturnedItemsExchanged', 'HomeController@getReturnedItemsExchanged')->name('salesAssistant.getReturnedItemsExchanged');
 Route::Post('salesAssistant/returns/createReturnsFilter', 'HomeController@createReturnsFilter')->name('salesAssistant.createReturnsFilter');
+
 Route::get('salesAssistant/stockAdjustment', 'HomeController@stockAdjustment')->name('salesAssistant.stockAdjustment');
 Route::get('salesAssistant/stockAjustment/getStockAdjustment', 'HomeController@getStockAdjustment')->name('salesAssistant.getStockAdjustment');
 Route::get('salesAssistant/stockAjustment/createStockAdjustmentFilter', 'HomeController@createStockAdjustmentFilter')->name('salesAssistant.createStockAdjustmentFilter');

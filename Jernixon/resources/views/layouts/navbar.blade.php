@@ -229,6 +229,14 @@
         $('.readNotif').removeClass('hidden');
         $('#reorder').removeClass('active');
     }
+    function triggeredKey(e){
+        var keycode;
+        if (window.event) keycode = window.event.keyCode;
+        if (window.event.keyCode == 13 ){
+        //  return false;
+            event.preventDefault();
+        }    
+    }
     function backUpDatabase(){
         <?php
             $connection = mysqli_connect('localhost','root','','inventory_jernixon');
@@ -296,7 +304,7 @@
 </style>
 </head>
 
-<body @yield('ng-app')>
+<body @yield('ng-app') onkeydown="triggeredKey(this)">
     
     {{--  <script>
         $(document).ready(function(){
@@ -429,13 +437,13 @@
                                         <a href="#backUpDatabase"  data-toggle="modal">
                                             {{--  onclick="event.preventDefault();  --}}
                                             {{--  document.getElementById('logout-form').submit();">  --}}
-                                            Need backup
+                                            Backup database
                                         </a>
 										
 										<a href="#importDB"  data-toggle="modal">
                                             {{--  onclick="event.preventDefault();  --}}
                                             {{--  document.getElementById('logout-form').submit();">  --}}
-                                            Import
+                                            Import database
                                         </a>
                                         
                                         <a href="{{ route('admin.logout') }}" onclick="logoutRemoveCart()">
@@ -897,39 +905,6 @@
 </body>
 
 @yield('js_link')
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        //var options = {
-        //    valueNames: ['einheit'],
-        //    page: 13,
-        //    plugins: [ListPagination({})]
-        //}
-
-        // var list = new List('listOfNotif', {
-        //     valueNames: ['oldNotif'],
-        //     page: 10,
-        //     plugins: [ListPagination({})]
-        // });
-
-        //  var i = 1;
-        //     $('.next').on('click', function(){
-        //         i++;
-        //         listObj.show(i, 3); 
-        //     })
-
-        //     $('.prev').on('click', function(){
-        //         i--;
-        //         listObj.show(i, 3); 
-        //     });
-         $('#listOfNotif').twbsPagination({
-        totalPages: 10,
-        visiblePages: 7,
-        onPageClick: function (event, page) {
-            $('#oldNotif').text('Page ' + page);
-        }
-    });
-    });
 </script>
 
 </html>

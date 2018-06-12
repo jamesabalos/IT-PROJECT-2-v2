@@ -140,30 +140,33 @@ ng-app="ourAngularJsApp"
     }
         function addSupplierRow(div){
             document.getElementById("searchSupplierResultDiv").innerHTML = "";
-        var items =[];
-        var thatTbody = $("#returnSupplierItemTbody tr td:first-child");
-        
+            var items =[];
+            var thatTbody = $("#returnSupplierItemTbody tr td:first-child");
          $.ajax({
             method: 'get',
             url: "{{route('admin.getSupplierItems')}}",
             data:{
-                 'supplier': div.firstChild.innerHTML,
+                 'po_id': div.firstChild.innerHTML,
             },        
             success: function(data){
                 console.log(data);
                 $("#returnSupplierItemTbody tr").remove();
                 var modalReturnItemTbody = document.getElementById("returnSupplierItemTbody");
-                for(var i = 0; i < data.length; i++){
-                        var newRow = modalReturnItemTbody.insertRow(-1);
+                
+                
+                    for(var i = 0; i < data.length; i++){
+                            var newRow = modalReturnItemTbody.insertRow(-1);
+                            document.getElementById("rspname").value = data[i].supplier_name;
+                            document.getElementById("rspname2").value = data[i].supplier_name;
+                            
+                            newRow.insertCell(-1).innerHTML = "<td>"+data[i].description+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
+                            newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='damaged"+data[i].product_id+"' type='number' min='0' max='" +data[i].damaged_quantity+"' name='damaged[]' value='0' ></td>";
+                            newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='salable"+data[i].product_id+" ' type='number' min='0' max='"+data[i].damaged_salable_quantity+"' name='damagedsalable[]' value='0' ></td>";                            
+                            newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxSupplier(this)' type='checkbox' class='form-control'><input class='form-control' type='hidden' disabled name='product_id[]' value='" +data[i].product_id+ "'><input class='form-control' type='hidden' disabled name='po_id[]' value='" +data[i].po_id+ "'></td>";
                         
-                        newRow.insertCell(-1).innerHTML = "<td>"+data[i].description+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].damaged_quantity+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].damaged_salable_quantity+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='damaged"+data[i].product_id+"' type='number' min='0' max='" +data[i].damaged_quantity+"' name='damaged[]' value='0' ></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='salable"+data[i].product_id+" ' type='number' min='0' max='"+data[i].damaged_salable_quantity+"' name='damagedsalable[]' value='0' ></td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxSupplier(this)' type='checkbox' class='form-control'><input class='form-control' type='hidden' disabled name='product_id[]' value='" +data[i].product_id+ "'></td>";
-                    
-                }
+                    }
+
             }
 
         });
@@ -471,12 +474,12 @@ function searchSupplier(a){
             resultDiv.innerHTML = "";
             for (var i = 0;  i< data.length; i++) {
                 var node = document.createElement("DIV");
-                node.setAttribute("id",data[i].supplier_name)
+                node.setAttribute("id",data[i].po_id)
               //   node.setAttribute("data-quantity",data[i].)
                 node.setAttribute("onclick","addSupplierRow(this)")
                 node.setAttribute("data-supplier",data[i].supplier_name)
                 var pElement = document.createElement("P");
-                var textNode = document.createTextNode(data[i].supplier_name);
+                var textNode = document.createTextNode(data[i].po_id);
                 pElement.appendChild(textNode);
                 node.appendChild(pElement);          
                 resultDiv.appendChild(node);  
@@ -549,39 +552,123 @@ function searchSupplier(a){
 
 	
 	}
-	 function getItems2(button){
-		
-	 	var ORnumber = button.parentNode.parentNode.parentNode.firstChild.innerHTML;
-	 	var date = button.parentNode.parentNode.parentNode.childNodes[1].innerHTML;
+    function removeRow(button){
+        
+        var exchangeItemTbody = document.getElementById("veiwReturnedItemTbody2");
+        var exchangeItemTbodyRows = $("#veiwReturnedItemTbody2 tr td:first-child");
+        for(var i = 0; i < exchangeItemTbody.rows.length; i++ ){
+            console.log( (exchangeItemTbodyRows[i].innerHTML).includes(button.parentNode.parentNode.childNodes[1].innerHTML))
+            if( (exchangeItemTbodyRows[i].innerHTML).includes(button.parentNode.parentNode.firstChild.childNodes[1].innerHTML) ){
+                exchangeItemTbodyRows[i].parentNode.childNodes[3].outerHTML = button.dataset.buttontemp;
+                   $(button.parentNode.parentNode).hide(500,function(){
+                        this.remove();  
+                    });
+            }
+        }
+    }
+    function computeAmount(input){
+        input.parentNode.parentNode.childNodes[5].firstChild.value = (parseInt( input.value )+parseInt(input.parentNode.nextElementSibling.firstChild.value))*parseInt(input.dataset.unitprice);
+    }
+    function computeAmount2(input){
+         
+        input.parentNode.parentNode.childNodes[5].firstChild.value = (parseInt( input.value )+parseInt(input.parentNode.previousElementSibling.firstChild.value))*parseInt(input.dataset.unitprice);
+    }
+    function Accept(button){
+        var tbody = document.getElementById("supplierExchangeTbody");
+        var newRow = tbody.insertRow(-1);
+        newRow.insertCell(-1).innerHTML = "<td><input type='hidden' class='form-control' name='productid[]' value="+button.dataset.product_id+"><input type='hidden' class='form-control' name='returnsid[]' value="+button.dataset.returnsid+"><input type='hidden' class='form-control' name='Supplier' value="+button.dataset.suppname+"><input type='hidden' class='form-control' name='id[]' value="+button.dataset.id+"><input type='hidden' class='form-control' name='unitprice[]' value="+button.dataset.unitprice+"><p>" +button.dataset.description+ "</p></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input onchange='computeAmount(this)' class='form-control' value='"+button.dataset.damaged_qty+"' data-unitprice='"+button.dataset.unitprice+"' type='number' min='0' max='"+button.dataset.damaged_qty+"' name='damagedQuantityAccepted[]'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input onchange='computeAmount2(this)' class='form-control' value='"+button.dataset.damagedsal_qty+"' data-unitprice='"+button.dataset.unitprice+"' type='number' min='0' max='"+button.dataset.damagedsal_qty+"' name='damagedSalableAccepted[]'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='unit[]' > <option class='form-control'  value='pcs'>Pcs</option><option class='form-control'  value='sets'>Sets</option></select>"+ "</td>";
+        newRow.insertCell(-1).innerHTML = "<td>"+button.dataset.unitprice+ "</td>";
+        newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' disabled name='amount[]'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><button type='button' data-buttontemp='"+button.parentNode.parentNode.parentNode.outerHTML+"' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+    
+        $id =  button.dataset.id;
+        document.getElementById('stat'+$id).innerHTML = "Accepted";
 
+    }
+    function Rejected(button){
+        document.getElementById('stat'+$id).innerHTML = "Rejected";
+    }
+	 function getItems2(button){
+		var rowId = button.dataset.id;
 	 	$.ajax({
 	 		type:'GET',
-	 		url: "{{route('admin.getReturnedItems')}}",
+	 		url: "{{route('admin.getSupplierReturnedItems')}}",
              data: {
-                 'ORNumber': ORnumber,
-                 'Date': date
+                 'return_supplier_id':rowId,
              },
      		success:function(data){
                  $("#veiwReturnedItemTbody2 tr").remove();
                  var returnedItemTable = document.getElementById("veiwReturnedItemTbody2");
+                 document.getElementById("returnedSupplierName").innerHTML = data[0].supplier_name;
+                 document.getElementById("supplierViewDate").innerHTML = data[0].created_at;
+                 document.getElementById('returneddrNumber').innerHTML = data[0].po_id;
                  for(var i = 0; i < data.length; i++){
                      var newRow = returnedItemTable.insertRow(-1);
                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
-                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQuantity + "</td>";
-                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].undamagedQuantity+ "</td>";
-                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedSalableQuantity+ "</td>";
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQty_return + "</td>";
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damaged_salableQty_return + "</td>";
 
+                          newRow.insertCell(-1).innerHTML = "<td><div class='text-center'>\
+                            <div id='stat"+data[i].return_supplier_id+"'> <input type='hidden' id='status"+data[i].return_supplier_id+"'> <button class='controll btn btn-success' id='accept"+data[i].return_supplier_id+"' data-id='"+data[i].return_supplier_id+"' data-suppname ='"+data[i].supplier_name+"'  data-damagedsal_qty='"+data[i].damaged_salableQty_return+"' data-product_id='"+data[i].product_id+"'\
+                                 data-description='"+data[i].description+"' data-unitPrice = '"+data[i].wholesale_price+"' data-returnsid = '"+data[i].returns_s_id+"' data-damaged_qty='"+data[i].damagedQty_return +"' onclick='Accept(this)' value='Accepted'>Accept</button>\
+                         <button class='controll btn btn-danger' data-id='"+data[i].return_supplier_id+"' value='Rejected' onclick='Rejected(this)' >Reject</button></div></td></div>";
+                     
                  }
-
-                 document.getElementById("returnedDate").innerHTML = button.parentNode.parentNode.previousSibling.innerHTML;
-                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
-                 document.getElementById("customerName").innerHTML = data[0].customer_name;
+                 
+                 
      		}
 	 	});
 
      }
-	// }
+      function getItems3(button){
+		var rowId = button.dataset.id;
+	 	$.ajax({
+	 		type:'GET',
+	 		url: "{{route('admin.getSupplierReturnedItems2')}}",
+             data: {
+                 'return_supplier_id':rowId,
+             },
+     		success:function(data){
+                 console.log(data);
+                 $("#veiwReturnedItemTbody3 tr").remove();
+                 $("#supplierExchangeTBody3 tr").remove();
+                 var returnedItemTable = document.getElementById("veiwReturnedItemTbody3");
+                 var returnedItemTable2 = document.getElementById("supplierExchangeTBody3");
+                 
+                 document.getElementById("returnedSname").innerHTML = data[0].supplier_name;
+                 document.getElementById("supplierVDate").innerHTML = data[0].created_at;
+                 document.getElementById('returnedDRNo').innerHTML = data[0].po_id;
+                 
+                 document.getElementById('rsDR').innerHTML = data[0].returned_po_id;
+                 document.getElementById('returned_sdate').innerHTML = data[0].created_at2;
+                 
+                 
+                 for(var i = 0; i < data.length; i++){
+                     var newRow = returnedItemTable.insertRow(-1);
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQty_return + "</td>";
+                     newRow.insertCell(-1).innerHTML = "<td>" +data[i].damaged_salableQty_return + "</td>";    
+                     newRow.insertCell(-1).innerHTML = "<td><div class = 'text-center'>"+ data[i].return_status + "</div></td>";
+                     
+                     var newRow2 = returnedItemTable2.insertRow(-1);
+                    newRow2.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                     newRow2.insertCell(-1).innerHTML = "<td>" +data[i].damaged_item_accepted + "</td>";
+                     newRow2.insertCell(-1).innerHTML = "<td>" +data[i].damaged_salable_accepted + "</td>";    
+                     newRow2.insertCell(-1).innerHTML = "<td><div class = 'text-center'>"+ data[i].unit + "</div></td>";
+                     newRow2.insertCell(-1).innerHTML = "<td><div class = 'text-center'>"+ data[i].price + "</div></td>";
+                     newRow2.insertCell(-1).innerHTML = "<td><div class = 'text-center'>"+ data[i].amount + "</div></td>";
+
+
+                 }
+                 
+                 
+     		}
+	 	});
+
+     }
     function createReport(button){
         // var dateFrom = document.getElementById("from").value;
         // var dateTo = document.getElementById("to").value;
@@ -673,6 +760,18 @@ function searchSupplier(a){
     });
 
     $(document).ready(function(){
+        if(localStorage.getItem('success') == 'Successful'){
+            $("#successDiv p").remove();    
+            $("#successDiv").removeClass("hidden")
+                    .html("<h3>"+localStorage.getItem('message')+"</h3>");
+            $("#successDiv").css("display:block");                             
+            $("#successDiv").slideDown("slow")
+                .delay(1000)                        
+                .hide(1500);
+            localStorage.removeItem('success');
+            localStorage.removeItem('message');
+        }
+
         let today = new Date().toISOString().substr(0, 10);
         var d = new Date();
         var hours = "";
@@ -689,6 +788,7 @@ function searchSupplier(a){
         }   
         document.querySelector("#today").value = today+"T"+hours +":"+minutes;
         document.querySelector("#suppliertoday").value = today+"T"+hours +":"+minutes;
+        document.querySelector("#returned_date").value = today+"T"+hours +":"+minutes;
 
         var t = setInterval(function(){
             var d = new Date();
@@ -711,6 +811,30 @@ function searchSupplier(a){
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+        
+        $('#supplierexchange').on('submit',function(e){
+            e.preventDefault();
+                var data = $(this).serialize();  
+            var arrayOfData = $(this).serializeArray();      
+     
+                $.ajax({
+                    type:'POST',
+                    url: "{{route('admin.supplierExchange')}}",
+
+                    data:arrayOfData,
+                    success:function(data){
+                        console.log(data);
+                        localStorage.setItem('message',data);
+                        localStorage.setItem('success','Successful');
+                        location.reload(true);
+                    },
+                   
+                });
+
+            
+                
+
         });
 
         $('#formReturnItem').on('submit',function(e){
@@ -754,6 +878,7 @@ function searchSupplier(a){
                         $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
                         // $('#formReturnItem').reset();
                         $("#returnItemTbody tr").remove();
+                        $("#returnsDataTable2").DataTable().ajax.reload();//reload the dataTables
 
 
                     },
@@ -777,15 +902,19 @@ function searchSupplier(a){
 
         $('#formsupplierReturnItem').on('submit',function(e){
             e.preventDefault();
-            var data = $(this).serialize();     
+            var data = $(this).serialize(); 
+        var arrayOfData = $("#formsupplierReturnItem").serializeArray();  
+                
+ 
             var supplierret = []; 
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.createSupplierReturnItem')}}",
                     data:data,
                     success:function(data){
-                       console.log(data);
-
+                        localStorage.setItem('success','Successful');
+                        localStorage.setItem('message',data);
+                        location.reload(true);
                     },
                     error:function(data){
                   
@@ -929,9 +1058,12 @@ function searchSupplier(a){
                "ajax":  "{{ route('returns.getReturns2') }}",
                "columns": [
                   {data: 'created_at'},
+                  {data: 'po_id'},
+                  {data: 'supplier_name'},
+                  {data: 'address'},
                    {data: 'damagedQty_return'},
                    {data: 'damaged_salableQty_return'},
-                   {data: 'return_status'},
+                   {data: 'status'},
                    {data: 'action'},
                ]
            });
@@ -1099,8 +1231,8 @@ function searchSupplier(a){
                                 <thead>
                                     <tr>
                                         <th class="text-left" style = "width: 20%;">Date</th>
-                                        <!-- <th class="text-left">Item</th> -->
-                                        <th class="text-left">Supplier</th>
+                                        <th class="text-left">Delivery Receipt Number</th>
+                                        <th class="text-left">Supplier Name</th>
                                         <th class="text-left">Address</th>
                                         <th class="text-left">Damaged Quantity Return</th>
                                         <th class="text-left">Damaged Salable Quantity Return</th>
@@ -1240,7 +1372,6 @@ function searchSupplier(a){
                         </div>
                     </div>
                     {!! Form::close() !!}
-{{-- 
                     {!! Form::open(['method'=>'post','id'=>'formsupplierReturnItem']) !!}
                     <div id = "supplierDiv" class = "hidden">
                         <div class="panel panel-default">
@@ -1266,15 +1397,26 @@ function searchSupplier(a){
                                 <div class="form-group">    
                                     <div class="row">
                                         <div class="col-md-3">
-                                            {{Form::label('Supplier', 'Supplier:')}}
+                                            {{Form::label('Delivery Receipy', 'Delivery Receipt:')}}
                                         </div>
                                         <div class="col-md-9">
                                            <div class="autocomplete" style="width:100%;">
-                                            {{-- <input autocomplete="off" type="text" id="searchItemInput" ng-model="testModel" ng-keyup="search()" onkeyup="searchItem(this)" class="form-control border-input" placeholder="Enter the name of the item"> --}}
-                                            <input autocomplete="off" type="text" id="searchSupplierName" name="supplierName" onkeyup="searchSupplier(this)" class="form-control border-input" placeholder="Enter the name of the supplier">
+                                            <input autocomplete="off" type="text" id="searchDRreceipt" name="DRreceipt" onkeyup="searchSupplier(this)" class="form-control border-input" placeholder="Enter the delivery receipt">
                                             <div id="searchSupplierResultDiv" class="searchSupplierResultDivs">
                                             </div>
                                         </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{Form::label('Supplier Name', 'Supplier Name:')}}
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" disabled id='rspname' class="form-control"/>    
+                                            <input type="hidden" name="Sname" id='rspname2' class="form-control"/>    
                                         </div>
                                     </div>
                                 </div>
@@ -1287,7 +1429,7 @@ function searchSupplier(a){
                                         </div>
                                         <div class="col-md-9">
                                             {{Form::text('Address','',['class'=>'form-control','value'=>'','disabled'])}}
-                                            <input id="supplier_address" type="hidden" name="sadddress" class="form-control border-input" >
+                                            <input id="supplier_address" type="hidden" name="saddress" class="form-control border-input" >
                                         </div>
                                     </div>
                                 </div>
@@ -1308,8 +1450,7 @@ function searchSupplier(a){
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Description</th>
-                                                <th class="text-left">Damaged Quantity in Inventory</th>
-                                                <th class="text-left">Damaged Salable Quantity in Inventory</th>
+                                                <th class="text-left">Quantity in Inventory</th>
                                                 <th class="text-left">Damaged Quantity</th>
                                                 <th class="text-left">Damaged Salable Quantity</th>
                                                 <th class="text-left">Check item to return</th>
@@ -1317,6 +1458,7 @@ function searchSupplier(a){
                                         </thead>
 
                                         <tbody id="returnSupplierItemTbody">
+                                        
                                         </tbody>
                                     </table>
                                 </div>
@@ -1324,7 +1466,7 @@ function searchSupplier(a){
                             </div>
                         </div>
                     </div>
-                    {!! Form::close() !!} --}}
+                    {!! Form::close() !!}
         
                 <div id="errorDivCreateReturns" class="hidden">
 
@@ -1333,7 +1475,7 @@ function searchSupplier(a){
                     <div class="text-right">                                           
                         <div class="col-md-12">   
                             <button type="submit" id="returnSaveButton" class="btn btn-success" form='formReturnItem'>Save</button>
-                            {{-- <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button> --}}
+                            <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
@@ -1423,12 +1565,8 @@ function searchSupplier(a){
 
                                 <thead>
                                     <tr>
-                                        {{-- <th class="text-left">Qty.</th> --}}
-                                        {{-- <th class="text-left">Quantity</th> --}}
-                                        {{-- <th class="text-left">Unit</th> --}}
                                         <th class="text-left">Description</th>
                                         <th class="text-left">Unit Price</th>
-                                        {{-- <th class="text-left">Amount</th> --}}
                                         <th class="text-left">Damaged</th>
                                         <th class="text-left">Undamaged</th>
                                         <th class="text-left">Damage Salable</th>
@@ -1490,6 +1628,7 @@ function searchSupplier(a){
                 <h3 class="modal-title">Return to Supplier Information</h3>
             </div>
             <div class="modal-body">
+              {!! Form::open(['method'=>'post','id'=>'supplierexchange']) !!}
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>
@@ -1498,14 +1637,34 @@ function searchSupplier(a){
                         </strong>
                     </div>
                     <div class="panel-body">
-
+                      
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Delivery Receipt number', 'Delivery Receipt Number:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="form-control" id="returneddrNumber" form="supplierexchange"></p>   
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-3">
                                     {{Form::label('Supplier Name', 'Supplier Name:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    <p class="form-control" id="returnedSupplierName"></p>   
+                                    <p class="form-control" id="returnedSupplierName" form="supplierexchange"></p>   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Address', 'Address:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="form-control" id="returnedAddress" form="supplierexchange"></p>   
                                 </div>
                             </div>
                         </div>
@@ -1516,8 +1675,8 @@ function searchSupplier(a){
                                     {{Form::label('Date:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{--  {{ Form::number('Date','',['class'=>'form-control']) }}  --}}
-                                    <p class="form-control" id="returnedORNumber"></p>
+                                    
+                                    <p class="form-control" id="supplierViewDate"></p>
 
                                 </div>
                             </div>
@@ -1527,11 +1686,10 @@ function searchSupplier(a){
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Description</th>
-                                        <th class="text-left">Damaged Quantity Returned</th>
-                                        <th class="text-left">Damaged Salable Quantity Returned </th>
+                                        <th class="text-left" width="30%">Description</th>
+                                        <th class="text-left" width="20%">Damaged Quantity Returned</th>
+                                        <th class="text-left" width="20%">Damaged Salable Quantity Returned </th>
                                         <th class="text-left">Status</th>
-                                        <th class="text-left">Edit</th>
                                     </tr>
                                 </thead>
 
@@ -1549,22 +1707,186 @@ function searchSupplier(a){
                         </strong>
                     </div>
                     <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date', 'Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="datetime-local" name="Date" id="returned_date"  class="form-control"/>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Delivery Receipt Number:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    {{ Form::text('Delivery Receipt Number','',['class'=>'form-control','id'=>'returned_dr_id','required'=>'true']) }}
+                                </div>
+                            </div>
+                        </div>
+                            
                         <div class="content table-responsive">
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped" id="table1">
 
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Qty</th>
-                                        <th class="text-left">Unit</th>
-                                        <th class="text-left">Description</th>
+                                        <th class="text-left" width="25%">Description</th>
+                                        <th class="text-left" width="15%">Damaged Quantity Accepted</th>
+                                        <th class="text-left" width="15%">Damaged Salable Quantity Accepted</th>
+                                        <th class="text-left" width="15%">Unit</th>
                                         <th class="text-left">Unit Price</th>
                                         <th class="text-left">Amount</th>
-                                        <th class="text-left">Type</th>
-                                        <!-- <th class="text-left">Purchase Price</th> -->
+                                        <th class="text-left">Remove</th>
                                     </tr>
                                 </thead>
 
-                                <tbody id="veiwReturnedItemTbody">
+                                <tbody id="supplierExchangeTbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-right">                                           
+                        <div class="col-md-12">   
+                            <button type="submit" class="btn btn-success" form='supplierexchange'>Save</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+</div>
+<div id="viewReturn3" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
+    <div class = "modal-dialog modal-lg">
+        <div class = "modal-content">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Return to Supplier Information</h3>
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            Information
+                        </strong>
+                    </div>
+                    <div class="panel-body">
+                      
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Delivery Receipt number', 'Delivery Receipt Number:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="form-control" id="returnedDRNo"></p>   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Supplier Name', 'Supplier Name:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="form-control" id="returnedSname"></p>   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Address', 'Address:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="form-control" id="returnedAd" ></p>   
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    
+                                    <p class="form-control" id="supplierVDate"></p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped no-wrap" style="width:100%;">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" width="30%">Description</th>
+                                        <th class="text-left" width="20%">Damaged Quantity Returned</th>
+                                        <th class="text-left" width="20%">Damaged Salable Quantity Returned </th>
+                                        <th class="text-left">Status</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="veiwReturnedItemTbody3">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>
+                            <span class="glyphicon glyphicon-refresh"></span>
+                            Supplier Exchanged Item
+                        </strong>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Date', 'Date:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="form-control" id="returned_sdate"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">                                
+                            <div class="row">
+                                <div class="col-md-3">
+                                    {{Form::label('Delivery Receipt Number:')}}
+                                </div>
+                                <div class="col-md-9">
+                                    <p class="form-control" id="rsDR"></p>
+                                </div>
+                            </div>
+                        </div>
+                            
+                        <div class="content table-responsive">
+                            <table class="table table-bordered table-striped" id="table2">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" width="25%">Description</th>
+                                        <th class="text-left" width="15%">Damaged Quantity Accepted</th>
+                                        <th class="text-left" width="15%">Damaged Salable Quantity Accepted</th>
+                                        <th class="text-left" width="15%">Unit</th>
+                                        <th class="text-left">Unit Price</th>
+                                        <th class="text-left">Amount</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="supplierExchangeTBody3">
                                 </tbody>
                             </table>
                         </div>
@@ -1581,7 +1903,6 @@ function searchSupplier(a){
         </div>
     </div>
 </div>
-
 
 <div id="returnOrRefundPrompt" class="modal fade" tabindex="-1" role = "dialog" aria-labelledby = "viewLabel" aria-hidden="true">
     <div class = "modal-dialog modal-md">

@@ -956,9 +956,7 @@ class="active"
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
             <div class="modal-header">
-                <div id="errorDivEditItem" class="hidden">
 
-                </div>
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title"><i class=" fa fa-edit" style="margin-right: 10px"></i> Edit</h3>
             </div>
@@ -1040,7 +1038,7 @@ class="active"
                                 </div>
                                 <div class="col-md-9">                                    
                                     {{-- {{Form::number('retailPrice','',['class'=>'form-control','id'=>'itemRetailPrice'])}} --}}
-                                    <input id="itemRetailPrice" style='width: 100px;' class="form-control" onchange='checkReorderLevel(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number'>
+                                    <input id="itemRetailPrice" name="retailPrice" style='width: 100px;' class="form-control" onchange='checkReorderLevel(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number'>
                                     
                                 </div>
                             </div>
@@ -1052,7 +1050,7 @@ class="active"
                                 </div>
                                 <div class="col-md-9">                                    
                                     {{-- {{Form::number('reOrder Level','',['class'=>'form-control','id'=>'itemReorderLevel'])}} --}}
-                                    <input style='width: 100px;' class="form-control" onchange='checkReorderLevel(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number'>
+                                    <input style='width: 100px;' id="itemReorderLevel" name="reOrder_Level"class="form-control" onchange='checkReorderLevel(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number'>
                                 </div>
                             </div>
                         </div>
@@ -1068,6 +1066,9 @@ class="active"
                         </div>
                     </div>
                 </div>
+                <div id="errorDivEditItem" class="hidden">
+
+                    </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="text-right">                                           

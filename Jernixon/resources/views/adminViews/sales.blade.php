@@ -465,7 +465,7 @@ ng-controller="customerPurchase"
         if(checkbox.checked){        
             checkbox.setAttribute("name","warranty[]");
             var date = new Date();
-            date.setDate(date.getDate() + 1);
+            date.setDate(date.getDate() + 7);
 
             // var newDate = date.getDate()+'-'+ (date.getMonth()+1) +'-'+date.getFullYear();
             var newDate = date.getFullYear() +'-'+ (date.getMonth()+1) +'-'+ date.getDate();

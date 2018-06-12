@@ -508,14 +508,14 @@ class="active"
             "serverSide": true,
             "colReorder": true,  
             "pagingType": "full_numbers",
-            "ajax":  "{{ route('reports.getStockAdjustmentReport') }}",
+            "ajax":  "{{ route('reports.getPurchasedItemReport') }}",
             "columns": [
-            {data: 'employee_name'},
-            {data: 'description',name: 'products.description'},
-            {data: 'quantity'},
-            {data: 'status'},
+            {data: 'po_id'},
             {data: 'created_at'},
-            {data: 'remarks'},
+            {data: 'supplier_name'},
+            {data: 'totalQuantity'},
+            {data: 'price'},
+            {data: 'totalAmount'},
             ]
             
         });
@@ -673,12 +673,12 @@ class="active"
                                     <table id="purchasedTable" class="table table-striped table-bordered dt-responsive pre" style="width:100%">
                                         <thead >
                                             <tr class = "text-left">
+                                                <th>PO ID</th>
                                                 <th>Date Delivered</th>
                                                 <th>Supplier</th>
                                                 <th>Quantity</th>
-                                                <th>Status</th>
-                                                <th>Date of Adjustment</th>
-                                                <th style="width:25%;">Remarks</th>
+                                                <th>Price</th>
+                                                <th>Total Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>

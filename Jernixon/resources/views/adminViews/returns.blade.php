@@ -344,6 +344,7 @@ ng-app="ourAngularJsApp"
                 }else{
                     var timeDiff = Math.abs( (new Date(data[0].warranty)).getTime() - (new Date(data[0].created_at)).getTime());
                     var remainingDaysTemp = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                    console.log(remainingDaysTemp)
                     var remainingDays = "";
                     if(remainingDaysTemp <= 0){
                         remainingDays = "0";
@@ -975,11 +976,11 @@ function searchSupplier(a){
 
         });
 
-        $('#formsupplierReturnItem').on('submit',function(e){
+        $('#formsupplierReturnItem').on('submit',function(e){   
             e.preventDefault();
-            if( checkTotalQuantityOfCheckedBoxSupplier() ){
-                console.log("ifff")
-            }else{
+            // if( checkTotalQuantityOfCheckedBoxSupplier() ){
+            //     console.log("ifff")
+            // }else{
                 var data = $(this).serialize(); 
                 var arrayOfData = $("#formsupplierReturnItem").serializeArray();  
                 var supplierret = []; 
@@ -997,7 +998,7 @@ function searchSupplier(a){
                     }
                 });
 
-            }
+      
 
         });
         
@@ -1541,7 +1542,7 @@ function searchSupplier(a){
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Description</th>
-                                                <th class="text-left">Quantity Purchased</th>
+                                                <th class="text-left">Quantity </th>
                                                 <th class="text-left">Damaged Quantity</th>
                                                 <th class="text-left">Damaged Salable Quantity</th>
                                                 <th class="text-left">Check item to return</th>

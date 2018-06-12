@@ -165,6 +165,7 @@ Route::get('admin/reports/getReports', 'AdminController@getReports')->name('repo
 Route::get('admin/reports/getDamagedItems', 'AdminController@getDamagedItems')->name('reports.getDamagedItems');
 Route::get('admin/reports/getLostItems', 'AdminController@getLostItems')->name('reports.getLostItems');
 Route::get('admin/reports/getStockAdjustmentReport', 'AdminController@getStockAdjustmentReport')->name('reports.getStockAdjustmentReport');
+Route::get('admin/reports/getPurchasedItemReport', 'AdminController@getPurchasedItemReport')->name('reports.getPurchasedItemReport');
 Route::get('admin/reports/createReportSoldItems', 'AdminController@createReportSoldItems')->name('reports.createReportSoldItems');
 Route::get('admin/reports/createReportDamagedItems', 'AdminController@createReportDamagedItems')->name('reports.createReportDamagedItems');
 Route::get('admin/reports/createReportLostItems', 'AdminController@createReportLostItems')->name('reports.createReportLostItems');

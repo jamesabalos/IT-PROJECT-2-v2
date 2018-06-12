@@ -156,16 +156,35 @@ function addReturnItem(div){
                 $("#refundTbody tr").remove();
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
                 var modalRefundTbody = document.getElementById("refundTbody");
+                var today = new Date().toISOString().substr(0, 10);
+                if(data[0].warranty == null){
+                    var remainingDays = "No warranty";                    
+                }else{
+                    var timeDiff = Math.abs( (new Date(data[0].warranty)).getTime() - (new Date(data[0].created_at)).getTime());
+                    var remainingDaysTemp = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                    console.log(remainingDaysTemp)
+                    var remainingDays = "";
+                    if(remainingDaysTemp <= 0){
+                        remainingDays = "0";
+                    }else{
+                        remainingDays = remainingDaysTemp;
+                    }
+                }
                 for(var i = 0; i < data.length; i++){
                         var newRow = modalReturnItemTbody.insertRow(-1);
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";//<input type='number' class='form-control' value='" +data[i].quantity+ "' max='" +data[i].quantity+ "' min='1' disabled>
                         newRow.insertCell(-1).innerHTML = "<td>" +data[i].price+ "</td>";
-                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
+                        if( data[i].quantity <= 0){
+                            newRow.insertCell(-1).innerHTML = "<td><input disabled data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
+                        }else{
+                            newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxRefund(this)' type='checkbox' class='form-control'><input type='hidden' disabled name='productId[]' value='" +data[i].product_id+  "'><input type='hidden' disabled name='price[]' value='" +data[i].price+ "'><input type='hidden' name='totalQuantity[]' value='0' disabled></td>";
+                        }
                         // newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='status[]' style='width:100px'> <option class='form-control' value='damaged'>DAMAGED</option><option class='form-control' value='undamaged'>UNDAMAGED</option></select></td>";
                         newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0' value='0'  max='" +data[i].quantity+ "'></td>";
                         newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityUndamage[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
                         newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantityDamageSalable[]' oninput='inputDamageUndamageDamageSaleble(this)' disabled min='0'  value='0' max='" +data[i].quantity+ "'></td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +remainingDays+ "</td>";
                         
 
                 }
@@ -173,29 +192,25 @@ function addReturnItem(div){
                 document.getElementById("Customer").value = data[0].customer_name;
                 document.getElementById("returnCustomerName").value = data[0].customer_name;
                 document.getElementById("ORdate").value = data[0].created_at;
-                var today = new Date().toISOString().substr(0, 10);
-                var date1 = new Date("12/13/2010");
-                var date2 = new Date("12/15/2010");
-                var timeDiff = Math.abs( (new Date(today)).getTime() - (new Date(data[0].created_at)).getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                if( 7-parseInt(diffDays) <= 0 ){
-                    document.getElementById("remainingWarrantyDays").value = "0";
-                }else{
-                    document.getElementById("remainingWarrantyDays").value = 7-parseInt(diffDays);
-                }
+
+                // if( 7-parseInt(diffDays) <= 0 ){
+                //     document.getElementById("remainingWarrantyDays").value = "0";
+                // }else{
+                //     document.getElementById("remainingWarrantyDays").value = 7-parseInt(diffDays);
+                // }
 
 
                 
             }
             });
 
-        if(div.dataset.modal === "searchORNumberInput"){
+        // if(div.dataset.modal === "searchORNumberInput"){
+        //     document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
+        //     document.getElementById("resultORNumberDiv").innerHTML = "";
+        // }else{
             document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
             document.getElementById("resultORNumberDiv").innerHTML = "";
-        }else{
-            document.getElementById("refundSearchORNumberInput").value = div.firstChild.innerHTML ;
-            document.getElementById("refundORNumberDiv").innerHTML = "";
-        }
+        // }
 
     }
 function toggleCheckbox(button){
@@ -503,7 +518,8 @@ $(document).ready(function(){
           console.log("ifff")
       }else{
           // return true;
-          var data = $(this).serialize();           
+          var data = $(this).serialize();  
+          var arrayOfData = $("#formReturnItem").serializeArray();             
           $.ajax({
               type:'POST',
               // url:'admin/storeNewItem',
@@ -807,7 +823,7 @@ function custReturn(){
                                       </div>
                                   </div>
                                   
-                                  <div class="form-group">    
+                                  {{-- <div class="form-group">    
                                       <div class="row">
                                           <div class="col-md-3">
                                               {{Form::label('remainingWarrantyDays', 'Remaining warranty day/s:')}}
@@ -816,7 +832,7 @@ function custReturn(){
                                               {{Form::text('remainingWarrantyDays','',['class'=>'form-control','value'=>'','disabled'])}}
                                           </div>
                                       </div>
-                                  </div>
+                                  </div> --}}
                               </div>
                           </div>
                           <div class="panel panel-default">
@@ -839,7 +855,8 @@ function custReturn(){
                                                   <th class="text-left">Damaged</th>
                                                   <th class="text-left">Undamaged</th>
                                                   <th class="text-left">Damage Salable</th>
-                                              </tr>
+                                                  <th class="text-left">Remaining warranty day/s</th>                                              
+                                                </tr>
                                           </thead>
   
                                           <tbody id="returnItemTbody">

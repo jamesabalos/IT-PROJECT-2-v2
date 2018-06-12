@@ -33,7 +33,28 @@ class="active"
 <script src="{{asset('assets/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('assets/js/vfs_fonts.js')}}"></script>
 <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
-
+<style type="text/css">
+    /* Popover Header */
+    .popover-title {
+        /* background-color: #73AD21;  */
+        color: red; 
+        /* font-size: 28px; */
+        text-align:center;
+    }
+    
+    /* Popover Body */
+    .popover-content {
+        /* background-color: coral; */
+        /* color: #FFFFFF; */
+        padding: 20px;
+    }
+    
+    
+    /* Popover Arrow */
+    .arrow {
+        border-right-color: red !important;
+    }
+    </style>
 
 <script>
     function remove(button){
@@ -50,6 +71,18 @@ class="active"
 
 }
 
+function checkQuantity(input){
+    if( parseInt(input.value) <= 0 ){
+        input.setAttribute("data-content","Quantity is not sufficient!");
+        $(input).popover('show');
+    }else if( parseInt(input.value) > input.dataset.max){
+        input.setAttribute("data-content","Quantity exceeds the available stock on hand, quantity should not exceed "+input.dataset.max+"!");
+        $(input).popover('show');
+    }else{
+        $(input).popover('destroy');    
+    }
+}
+
 function addRow(divElement){
     var items =[];
     var thatTbody = $("#stockTable tr td:first-child");
@@ -63,7 +96,8 @@ function addRow(divElement){
         var newRow = thatTable.insertRow(-1);
        
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' name='itemName[]' value='" +divElement.firstChild.innerHTML+ "'>"+divElement.firstChild.innerHTML+ "</td>";
-        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
+        // newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' min='1' max='" +divElement.dataset.quantity+ "' value='1' class='form-control' ></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input type='number' name='quantity[]' data-toggle='popover' title='Error' data-max='" +divElement.dataset.quantity+ "'  class='form-control' onchange='checkQuantity(this)'></td>";
       
         newRow.insertCell(-1).innerHTML = "<td><select class='form-control dmp' id='foo"+divElement.id+"' onclick='getsalable("+divElement.id+")'  name='status[]' > <option class='form-control'  value='Damaged'>Damaged</option><option class='form-control'  value='Damaged Saleable'>Damaged Saleable</option><option class='form-control' value='Lost'>Lost</option></select></td>";
 

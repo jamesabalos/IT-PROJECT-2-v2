@@ -275,7 +275,7 @@ ng-controller="ownerPurchase"
             $(input).popover('destroy');    
         }
 
-        if( parseInt(document.getElementById("totalSalesDiv").firstChild.children[1].innerHTML) < 0 && parseInt(document.getElementById("discountInput").value) >= 1 ){
+        if( parseInt(document.getElementById("totalAmountDiv").children[1].innerHTML) < 0 && parseInt(document.getElementById("discountInput").value) >= 1 ){
             $(document.getElementById("discountInput")).popover('show');
         }else{
             $(document.getElementById("discountInput")).popover('destroy');
@@ -603,7 +603,7 @@ ng-controller="ownerPurchase"
                 var itemDescription = event.currentTarget.firstChild.innerHTML;
                 var itemName = itemDescription.replace(/\s/g,'').replace(/-/g,'').replace(/\//g,'').replace(/\./g,'').replace(/\+/g,'');
 
-                var quantity = "<input style='width: 100px;' data-max='"+event.currentTarget.dataset.max+"' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' ng-init='" +itemName+ "Q =1' name='quantity[]' class='form-control' ng-focus='$event = $event' onchange='checkQuantity(this)' ng-change='changingQuantity($event)' ng-model='" +itemName + "Q'  required></input>";
+                var quantity = "<input style='width: 100px;' onchange='checkQuantity(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' ng-init='" +itemName+ "Q =1' name='quantity[]' class='form-control' ng-focus='$event = $event' ng-change='changingQuantity($event)' ng-model='" +itemName + "Q'  required></input>";
                 var temp1 = $compile(quantity)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp1);
 
@@ -612,7 +612,7 @@ ng-controller="ownerPurchase"
 
                  angular.element( lastRow.insertCell(-1) ).append(itemDescription);
 
-                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' onchange='checkQuantity(this)' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control text-right' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
+                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control text-right' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
                 var temp2 = $compile(unitPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 

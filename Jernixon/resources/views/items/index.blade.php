@@ -8,6 +8,28 @@ class="active"
 @section('headScript')
 <link href="{{asset('assets/css/datatables.min.css')}}" rel="stylesheet"/>
 <link href="{{asset('assets/css/buttons.dataTables.min.css')}}" rel="stylesheet"/>
+<style type="text/css">
+    /* Popover Header */
+    .popover-title {
+        /* background-color: #73AD21;  */
+        color: red; 
+        /* font-size: 28px; */
+        text-align:center;
+    }
+    
+    /* Popover Body */
+    .popover-content {
+        /* background-color: coral; */
+        /* color: #FFFFFF; */
+        padding: 20px;
+    }
+    
+    
+    /* Popover Arrow */
+    .arrow {
+        border-right-color: red !important;
+    }
+    </style>
 @endsection
 
 @extends('inc.headScripts')
@@ -193,6 +215,14 @@ class="active"
 
         }
         
+    }
+    function checkReorderLevel(input){
+        if( parseInt(input.value) <= 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
     }
     function searchCategory(a){
 //        document.getElementById("errorDivCreateReturns").innerHTML= "";
@@ -926,9 +956,7 @@ class="active"
     <div class = "modal-dialog modal-md">
         <div class = "modal-content">
             <div class="modal-header">
-                <div id="errorDivEditItem" class="hidden">
 
-                </div>
                 <button class="close" data-dismiss="modal">&times;</button>
                 <h3 class="modal-title"><i class=" fa fa-edit" style="margin-right: 10px"></i> Edit</h3>
             </div>
@@ -1009,7 +1037,9 @@ class="active"
                                     {{Form::label('Selling Price', 'Selling Price:')}}
                                 </div>
                                 <div class="col-md-9">                                    
-                                    {{Form::number('retailPrice','',['class'=>'form-control','id'=>'itemRetailPrice'])}}
+                                    {{-- {{Form::number('retailPrice','',['class'=>'form-control','id'=>'itemRetailPrice'])}} --}}
+                                    <input id="itemRetailPrice" name="retailPrice" style='width: 100px;' class="form-control" onchange='checkReorderLevel(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number'>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -1019,7 +1049,8 @@ class="active"
                                     {{Form::label('Reorder Level', 'Reorder Level:')}}
                                 </div>
                                 <div class="col-md-9">                                    
-                                    {{Form::number('reOrder Level','',['class'=>'form-control','id'=>'itemReorderLevel'])}}
+                                    {{-- {{Form::number('reOrder Level','',['class'=>'form-control','id'=>'itemReorderLevel'])}} --}}
+                                    <input style='width: 100px;' id="itemReorderLevel" name="reOrder_Level"class="form-control" onchange='checkReorderLevel(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number'>
                                 </div>
                             </div>
                         </div>
@@ -1035,6 +1066,9 @@ class="active"
                         </div>
                     </div>
                 </div>
+                <div id="errorDivEditItem" class="hidden">
+
+                    </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="text-right">                                           

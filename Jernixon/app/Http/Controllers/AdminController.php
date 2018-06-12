@@ -213,7 +213,7 @@ class AdminController extends Controller
             for($i = 0; $i < $arrayCount2; $i++){
 
                 $insert = DB::table('sales')->insert(
-                ['or_number' => $request->receiptNumber, 'product_id' => $request->damagedProductIds[$i], 'customer_name' => $request->customerName, 'price' => $request->damagedRetailPrices[$i],'quantity' => $request->damagedQuantity[$i],'created_at' => $request->Date, 'exchangeor' => $request->oldORNumber, 'unit' => $request->unit[$i],'address'=>$request->address,'warranty'=>$request->warranty[$i]]
+                ['or_number' => $request->receiptNumber, 'product_id' => $request->damagedProductIds[$i], 'customer_name' => $request->customerName, 'price' => $request->damagedRetailPrices[$i],'quantity' => $request->damagedQuantity[$i],'created_at' => $request->Date, 'exchangeor' => $request->oldORNumber, 'unit' => $request->unit[$i],'address'=>$request->address,'warranty'=>$request->warranty[$i],'discount' => $request->discount]
                 );
                 DB::table('damaged_salable_items')
                 //->select('product_id')
@@ -797,6 +797,13 @@ public function createPurchasesFilter(Request $request){
             ->select('stock_adjustments.employee_name','products.description', 'quantity', 'stock_adjustments.status', 'stock_adjustments.created_at', 'stock_adjustments.remarks');
         return Datatables::of($data)
             ->make(true);
+    }
+    public function getPurchasedItemReport(){
+        $data = DB::table('purchases')
+        ->select('po_id','supplier_name',DB::raw('sum(quantity) as totalQuantity'),'price',DB::raw('sum(amount) as totalAmount'), 'created_at')
+        ->groupBy('po_id');
+        return Datatables::of($data)
+        ->make(true);
     }
 
     public function validateDateRange(Request $request){

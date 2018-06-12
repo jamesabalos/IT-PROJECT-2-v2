@@ -109,7 +109,6 @@ ng-app="ourAngularJsApp"
         $(a.parentNode.parentNode).hide(500,function(){
             this.remove();  
         });
-        // a.parentNode.parentNode.remove();
 
     }
 
@@ -171,9 +170,9 @@ ng-app="ourAngularJsApp"
 
         });
 
-        if(div.dataset.modal === "searchORNumberInput"){
-            document.getElementById("searchORNumberInput").value = div.firstChild.innerHTML ;
-        }
+        // if(div.dataset.modal === "searchORNumberInput"){
+            document.getElementById("searchDRreceipt").value = div.firstChild.innerHTML ;
+        // }
 
     }
 
@@ -260,6 +259,54 @@ ng-app="ourAngularJsApp"
             // }
 
     }
+<<<<<<< HEAD
+=======
+    function checkTotalQuantityOfCheckedBoxSupplier(){
+        //get total quantity for every raw then check if the total Quantity == 0, if 0, then disabled save button
+            var errorMessages = "";
+            var status = false;
+            var totalCheck = 0;
+            if(document.getElementById("searchDRreceipt").value === ""){
+                status = true;
+                $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");                
+                document.getElementById("errorDivCreateReturnsSupplier").innerHTML = "<h4>Please input the delivery receipt number first.</h4>";
+                return status;
+            }
+
+            for(var i=0; i < $("#returnSupplierItemTbody tr").length ;i++ ){
+                //if first row's checkbox is checked and its  4th child element's value == 0
+                if( ($("#returnSupplierItemTbody tr td:nth-child(5)")[i].firstChild).checked && ($("#returnSupplierItemTbody tr td:nth-child(5) :nth-child(4)")[i]).value == 0 ){
+                        $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreateReturnsSupplier").html(function(){
+                            var addedHtml = errorMessages+"<h4>Quantity return for " + ($("#returnSupplierItemTbody tr td:nth-child(1)")[i]).innerHTML + " must be atleast 1</h4>";
+                            return addedHtml;
+                        });
+                        errorMessages += document.getElementById("errorDivCreateReturnsSupplier").innerHTML;
+                        status = true;
+                        return status;
+                }
+
+                if( !(($("#returnSupplierItemTbody tr td:nth-child(5)")[i].firstChild).checked) ) {
+                    totalCheck++;
+                }
+
+                if( ($("#returnSupplierItemTbody tr td:nth-child(5) :nth-child(4)")[i]).value > parseInt( ($("#returnSupplierItemTbody tr td:nth-child(2)")[i]).innerHTML) ){
+                    status = true;
+                    $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");                
+                    document.getElementById("errorDivCreateReturnsSupplier").innerHTML = "<h4>Total quantity return for " +($("#returnSupplierItemTbody tr td:nth-child(1)")[i]).innerHTML+ " exceeded.</h4>";   
+                    return status;
+                }
+
+                if(totalCheck == $("#returnSupplierItemTbody tr").length ){
+                    status = true;
+                    $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");                
+                    document.getElementById("errorDivCreateReturnsSupplier").innerHTML = "<h4>Check an item to be return.</h4>";   
+                    return status;
+                }
+            }
+            
+    }
+>>>>>>> 58f44f27d1b2d2d8ecf06fd22445a3c165630b11
         
     function addReturnItem(div){
         var items =[];
@@ -278,13 +325,12 @@ ng-app="ourAngularJsApp"
                 var modalReturnItemTbody = document.getElementById("returnItemTbody");
                 var modalRefundTbody = document.getElementById("refundTbody");
                 var today = new Date().toISOString().substr(0, 10);
-                // var date1 = new Date("12/13/2010");
-                // var date2 = new Date("12/15/2010");
                 if(data[0].warranty == null){
                     var remainingDays = "No warranty";                    
                 }else{
                     var timeDiff = Math.abs( (new Date(data[0].warranty)).getTime() - (new Date(data[0].created_at)).getTime());
                     var remainingDaysTemp = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                    console.log(remainingDaysTemp)
                     var remainingDays = "";
                     if(remainingDaysTemp <= 0){
                         remainingDays = "0";
@@ -587,20 +633,38 @@ function searchSupplier(a){
                     });
             }
         }
+        document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
     }
     function computeAmount(input){
         input.parentNode.parentNode.childNodes[5].firstChild.value = (parseInt( input.value )+parseInt(input.parentNode.nextElementSibling.firstChild.value))*parseInt(input.dataset.unitprice);
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Damage quantity exceeded.");
+            $(input).popover('show');
+        }else if( parseInt(input.value) < 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
     }
     function computeAmount2(input){
-         
         input.parentNode.parentNode.childNodes[5].firstChild.value = (parseInt( input.value )+parseInt(input.parentNode.previousElementSibling.firstChild.value))*parseInt(input.dataset.unitprice);
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Damage salable quantity exceeded.");
+            $(input).popover('show');
+        }else if( parseInt(input.value) < 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
     }
     function Accept(button){
         var tbody = document.getElementById("supplierExchangeTbody");
         var newRow = tbody.insertRow(-1);
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' class='form-control' name='productid[]' value="+button.dataset.product_id+"><input type='hidden' class='form-control' name='returnsid[]' value="+button.dataset.returnsid+"><input type='hidden' class='form-control' name='Supplier' value="+button.dataset.suppname+"><input type='hidden' class='form-control' name='id[]' value="+button.dataset.id+"><input type='hidden' class='form-control' name='unitprice[]' value="+button.dataset.unitprice+"><p>" +button.dataset.description+ "</p></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input onchange='computeAmount(this)' class='form-control' value='"+button.dataset.damaged_qty+"' data-unitprice='"+button.dataset.unitprice+"' type='number' min='0' max='"+button.dataset.damaged_qty+"' name='damagedQuantityAccepted[]'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><input onchange='computeAmount2(this)' class='form-control' value='"+button.dataset.damagedsal_qty+"' data-unitprice='"+button.dataset.unitprice+"' type='number' min='0' max='"+button.dataset.damagedsal_qty+"' name='damagedSalableAccepted[]'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Exceeded' onchange='computeAmount(this)' class='form-control' value='0' data-unitprice='"+button.dataset.unitprice+"' type='number' data-max='"+button.dataset.damaged_qty+"' name='damagedQuantityAccepted[]'></td>";
+        newRow.insertCell(-1).innerHTML = "<td><input trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Exceeded' onchange='computeAmount2(this)' class='form-control' value='0' data-unitprice='"+button.dataset.unitprice+"' type='number' data-max='"+button.dataset.damagedsal_qty+"' name='damagedSalableAccepted[]'></td>";
         newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='unit[]' > <option class='form-control'  value='pcs'>Pcs</option><option class='form-control'  value='sets'>Sets</option></select>"+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td>"+button.dataset.unitprice+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' disabled name='amount[]'></td>";
@@ -608,6 +672,7 @@ function searchSupplier(a){
     
         $id =  button.dataset.id;
         document.getElementById('stat'+$id).innerHTML = "Accepted";
+        document.getElementById("saveSupplierExchangeItemButton").removeAttribute("disabled")
 
     }
     function Rejected(button){
@@ -615,6 +680,9 @@ function searchSupplier(a){
         document.getElementById('stat'+$id).innerHTML = "Rejected";
     }
 	 function getItems2(button){
+        $("#supplierExchangeTbody tr").remove(); 
+        document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
+                
 		var rowId = button.dataset.id;
 	 	$.ajax({
 	 		type:'GET',
@@ -840,7 +908,6 @@ function searchSupplier(a){
             e.preventDefault();
                 var data = $(this).serialize();  
             var arrayOfData = $(this).serializeArray();      
-     
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.supplierExchange')}}",
@@ -923,13 +990,16 @@ function searchSupplier(a){
 
         });
 
-        $('#formsupplierReturnItem').on('submit',function(e){
+        $('#formsupplierReturnItem').on('submit',function(e){   
             e.preventDefault();
-            var data = $(this).serialize(); 
-        var arrayOfData = $("#formsupplierReturnItem").serializeArray();  
-                
- 
-            var supplierret = []; 
+            if( checkTotalQuantityOfCheckedBoxSupplier() ){
+                console.log("error occured")
+            }else{
+                console.log("ready")
+                // return true;
+                var data = $(this).serialize(); 
+                var arrayOfData = $("#formsupplierReturnItem").serializeArray();  
+                var supplierret = []; 
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.createSupplierReturnItem')}}",
@@ -943,6 +1013,8 @@ function searchSupplier(a){
                   
                     }
                 });
+        }
+      
 
         });
         
@@ -1486,7 +1558,7 @@ function searchSupplier(a){
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Description</th>
-                                                <th class="text-left">Quantity Purchased</th>
+                                                <th class="text-left">Quantity </th>
                                                 <th class="text-left">Damaged Quantity</th>
                                                 <th class="text-left">Damaged Salable Quantity</th>
                                                 <th class="text-left">Check item to return</th>
@@ -1788,7 +1860,7 @@ function searchSupplier(a){
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" class="btn btn-success" form='supplierexchange'>Save</button>
+                            <button type="submit" id="saveSupplierExchangeItemButton" disabled class="btn btn-success" form='supplierexchange'>Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Close</button>
                         </div>
                     </div>

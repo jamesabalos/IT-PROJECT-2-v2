@@ -23,10 +23,14 @@ class StockAdjustmentNotification extends Notification
     protected $stock_type;
     protected $stock_remarks;
 
-    public function __construct($itemname,$stock_id)
+    public function __construct($itemname,$stock_adjusted,$stock_quantity,$stock_type,$stock_remarks,$stock_id)
     {
         //
         $this->itemname= $itemname;
+        $this->stock_adjustedby= $stock_adjusted;
+        $this->stock_quantity= $stock_quantity;
+        $this->stock_type= $stock_type;
+        $this->stock_remarks= $stock_remarks;
         $this->stock_id= $stock_id;
     }
 
@@ -65,7 +69,12 @@ class StockAdjustmentNotification extends Notification
     {
         return [
             'itemname'=> $this->itemname,
+            'stock_adjustedby'=>$this->stock_adjustedby,
+            'stock_quantity'=>$this->stock_quantity,
+            'stock_type'=>$this->stock_type,
+            'stock_remarks'=>$this->stock_remarks,
             'stock_id'=>$this->stock_id,
+
         ];
     }
 }

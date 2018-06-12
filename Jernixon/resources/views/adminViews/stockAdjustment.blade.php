@@ -258,7 +258,7 @@ function createReport(button){
       }
   });
 }
-    function stockid (data, sta) {
+    function stockid(data, sta) {
         $.ajax({
             type:'PUT',
             url: 'stockAjustment/updateStockAdjustment',

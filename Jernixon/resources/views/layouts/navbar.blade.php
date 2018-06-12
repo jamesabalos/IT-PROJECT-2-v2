@@ -809,10 +809,10 @@
                                         @endif
 
                                         <!-- All Old Notification -->
-                                        @if(empty(auth()->user()->readNotifications->where('type','App\Notifications\ReorderNotification')->count()))
+                                        @if(empty(auth()->user()->readNotifications->count()))
                                             <li class="list-group-item hidden readNotif">No Read Notifications</li>
                                         @else
-                                            @foreach (Auth::user()->readNotifications as $notification)
+                                            @foreach (Auth::user()->readNotifications->take(20) as $notification)
                                                     @include('notifications.'.snake_case(class_basename($notification->type))) 
                                             @endforeach
                                         @endif

@@ -539,7 +539,7 @@ class="active"
                 <div class="header">
                     <div class = "content" >
                         <div id = "buttons">
-                            <button type="button" id="soldButton" class="btn btn-basic active btn-xs btns" >Sold Items</button>
+                            <button type="button" id="soldButton" class="btn btn-basic active btn-xs btns">Sold Items</button>
                             <button type="button" id="damgaedButton" class="btn btn-basic btn-xs btns">Damaged Items</button>
                             <button type="button" id="lostButton" class="btn btn-basic btn-xs btns">Lost Items</button>
                             <button type="button" id="stockAdjustmentButton" class="btn btn-basic btn-xs btns">Stock Adjustments</button>

@@ -1541,7 +1541,7 @@ function searchSupplier(a){
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Description</th>
-                                                <th class="text-left">Quantity in Inventory</th>
+                                                <th class="text-left">Quantity Purchased</th>
                                                 <th class="text-left">Damaged Quantity</th>
                                                 <th class="text-left">Damaged Salable Quantity</th>
                                                 <th class="text-left">Check item to return</th>

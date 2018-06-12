@@ -879,9 +879,11 @@ public function createPurchasesFilter(Request $request){
             'Date' => 'required'
         ]);
         
-        $arrayCount = count($request);
+        $admin = Admin::all();
+        $arrayCount = count($request->productId);
         for($i = 0;$i<$arrayCount;$i++){
             $data = '';
+            $type = '';
             if($request->status[$i] == "Damaged"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "damaged", 'status' => "accepted", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]
@@ -889,9 +891,11 @@ public function createPurchasesFilter(Request $request){
 
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
-                    ->latest()
-                    ->first();
-                
+                    ->get()
+                    ->last();
+                foreach($admin as $admins){
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->authName,$request->quantity[$i],'Damaged',$request->remarks[$i],$data->stock_adjustments_id));
+                }
 
                 $damagedcount = DB::table('damaged_items')->where('product_id',$request->productId[$i])->count();
                 if($damagedcount == 0 ){
@@ -910,13 +914,14 @@ public function createPurchasesFilter(Request $request){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "damaged_salable", 'status' => "accepted", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]                    
                 );
-
-
-
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
-                    ->latest()
-                    ->first();
+                    ->get()
+                    ->last();
+
+                    foreach($admin as $admins){
+                        $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->authName,$request->quantity[$i],'Damaged Saleable',$request->remarks[$i],$data->stock_adjustments_id));
+                    }
 
                 // $insertDamagedItems = DB::table('damaged_salable_items')->insert(
                 //     ['product_id' => $request->productId[$i],'damaged_selling_price'=>$request->dprice[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
@@ -941,11 +946,16 @@ public function createPurchasesFilter(Request $request){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "lost", 'status' => "accepted", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]                    
                 );
-
+                
+                $type= 'Lost';
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
-                    ->latest()
-                    ->first();
+                    ->get()
+                    ->last();
+                
+                foreach($admin as $admins){
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->authName,$request->quantity[$i],'Lost',$request->remarks[$i],$data->stock_adjustments_id));
+                }
 
                 $insertLostItems = DB::table('lost_items')->insert(
                     ['stock_adjustments_id' => $data->stock_adjustments_id, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'created_at' => $request->Date]);
@@ -953,12 +963,6 @@ public function createPurchasesFilter(Request $request){
                         ->where('product_id', $request->productId[$i])
                         ->decrement('quantity', $request->quantity[$i]);
             }
-
-            
-            $admin = Admin::all();
-                foreach($admin as $admins){
-                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$data->stock_adjustments_id));
-                }
         }
         
         return $request->all();
@@ -968,7 +972,7 @@ public function createPurchasesFilter(Request $request){
         DB::table('stock_adjustments')
             ->where('stock_adjustments_id',$request->stockid)
             ->update(['status' => $request->status,'updated_at'=>now()]);
-
+        
              if($request->status == "Accepted"){
                 $stockquan = DB::table('stock_adjustments')->where('stock_adjustments_id',$request->stockid)->first();
                 if($stockquan->type =="damaged"){

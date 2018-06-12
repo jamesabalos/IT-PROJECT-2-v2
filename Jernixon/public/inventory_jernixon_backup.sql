@@ -13,7 +13,7 @@ CREATE TABLE `admins` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO admins VALUES("1","ADMIN","admin@gmail.com","$2y$10$HpGuCVm2xV4cuj62m0dVaekc4xbDxazwNdHwUCq3XE2R2mBbfFvOW","ACxKDXgg2nSwmsjLNi2rKKKirNMZiFZmnDZysEHtuVAJRe5J58QeMZpDyK6Z","2018-02-25 05:39:36","2018-02-25 05:39:36");
+INSERT INTO admins VALUES("1","ADMIN","admin@gmail.com","$2y$10$HpGuCVm2xV4cuj62m0dVaekc4xbDxazwNdHwUCq3XE2R2mBbfFvOW","WRN7lHAo3iWNOPvvhCcr3naXlysNzDbLBXY9gu1AqpOeEQyhxe65fVBgwFLq","2018-02-25 05:39:36","2018-02-25 05:39:36");
 
 
 
@@ -38,9 +38,11 @@ INSERT INTO categories VALUES("Engine & Engine Parts");
 INSERT INTO categories VALUES("Exhaust");
 INSERT INTO categories VALUES("Lighting");
 INSERT INTO categories VALUES("Luggage");
+INSERT INTO categories VALUES("New category");
 INSERT INTO categories VALUES("Oils");
 INSERT INTO categories VALUES("Other Motor Parts");
 INSERT INTO categories VALUES("Seating");
+INSERT INTO categories VALUES("this is the category");
 INSERT INTO categories VALUES("Transmission");
 
 
@@ -57,13 +59,15 @@ CREATE TABLE `damaged_items` (
   CONSTRAINT `di_prodID` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO damaged_items VALUES("","82","-12","2018-06-08 00:34:00","");
-INSERT INTO damaged_items VALUES("","79","1","2018-06-08 03:50:00","");
-INSERT INTO damaged_items VALUES("","83","1","2018-06-20 12:22:00","");
-INSERT INTO damaged_items VALUES("","125","1","2018-06-09 12:10:00","");
-INSERT INTO damaged_items VALUES("","116","1","2018-06-09 12:10:00","");
-INSERT INTO damaged_items VALUES("","130","76","2018-06-09 12:13:00","");
-INSERT INTO damaged_items VALUES("","108","-29","2018-06-09 12:13:00","");
+INSERT INTO damaged_items VALUES("","160","0","2018-06-08 22:26:58","");
+INSERT INTO damaged_items VALUES("","85","1","2018-06-11 14:49:57","");
+INSERT INTO damaged_items VALUES("","118","3","2018-06-12 13:22:00","");
+INSERT INTO damaged_items VALUES("","115","3","2018-06-12 14:17:00","");
+INSERT INTO damaged_items VALUES("","117","1","2018-06-12 14:21:00","");
+INSERT INTO damaged_items VALUES("","111","1","2018-06-12 14:22:00","");
+INSERT INTO damaged_items VALUES("","58","1","2018-06-12 14:27:00","");
+INSERT INTO damaged_items VALUES("","18","1","2018-06-12 14:28:00","");
+INSERT INTO damaged_items VALUES("","67","1","2018-06-12 14:35:00","");
 
 
 
@@ -79,10 +83,11 @@ CREATE TABLE `damaged_salable_items` (
   UNIQUE KEY `damaged_salable_id_UNIQUE` (`damaged_salable_id`),
   KEY `dsi_prodID_idx` (`product_id`),
   CONSTRAINT `dsi_prodID` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
-INSERT INTO damaged_salable_items VALUES("26","151","200.00","-6","2018-06-08 09:38:38","");
-INSERT INTO damaged_salable_items VALUES("27","149","105.00","0","2018-06-08 09:49:04","");
+INSERT INTO damaged_salable_items VALUES("1","160","100.00","1","2018-06-11 15:22:59","");
+INSERT INTO damaged_salable_items VALUES("2","90","","1","2018-06-12 14:28:00","");
+INSERT INTO damaged_salable_items VALUES("3","66","","1","2018-06-12 14:35:00","");
 
 
 
@@ -98,9 +103,8 @@ CREATE TABLE `lost_items` (
   CONSTRAINT `pid_lost_item` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO lost_items VALUES("1","109","1","2018-05-30 19:14:00","");
-INSERT INTO lost_items VALUES("12","154","1","2018-05-31 17:15:00","");
-INSERT INTO lost_items VALUES("18","108","1","2018-06-05 12:18:00","");
+INSERT INTO lost_items VALUES("91","53","1","2018-06-12 14:28:00","");
+INSERT INTO lost_items VALUES("96","69","1","2018-06-12 14:35:00","");
 
 
 
@@ -149,6 +153,7 @@ INSERT INTO model VALUES("GP125");
 INSERT INTO model VALUES("Lifan");
 INSERT INTO model VALUES("Mio");
 INSERT INTO model VALUES("Motor Star");
+INSERT INTO model VALUES("New Model");
 INSERT INTO model VALUES("Raider");
 INSERT INTO model VALUES("RS100");
 INSERT INTO model VALUES("Rusi");
@@ -156,6 +161,7 @@ INSERT INTO model VALUES("Shogun");
 INSERT INTO model VALUES("Smash");
 INSERT INTO model VALUES("Sniper");
 INSERT INTO model VALUES("STX");
+INSERT INTO model VALUES("this is the model");
 INSERT INTO model VALUES("TMX");
 INSERT INTO model VALUES("Wave");
 INSERT INTO model VALUES("Wind");
@@ -179,94 +185,15 @@ CREATE TABLE `notifications` (
   KEY `notifications_notifiable_id_notifiable_type_index` (`notifiable_id`,`notifiable_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO notifications VALUES("05c4c92c-1fcc-493a-a0fa-96802d1f82b3","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMXCDI\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:37:11","2018-06-08 10:37:11");
-INSERT INTO notifications VALUES("08dc25b1-6df9-4ed9-8596-eccaef5812a3","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":5,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 04:48:04","2018-06-08 04:48:04");
-INSERT INTO notifications VALUES("0e2d16cd-e5ad-4c66-8de1-a7832ad460e1","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit GLPRO\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 07:06:04","2018-06-08 07:06:04");
-INSERT INTO notifications VALUES("102302b6-63a2-4a51-9b3a-28e5611ee1b2","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"c1\"}","","2018-06-08 09:38:39","2018-06-08 09:38:39");
-INSERT INTO notifications VALUES("13fa0bec-b9a3-46f3-b599-5d3ea1c8232e","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit GLPRO\",\"stock_id\":35}","","2018-06-09 12:13:52","2018-06-09 12:13:52");
-INSERT INTO notifications VALUES("14cf2045-8971-4062-bdcd-a2955c3234ce","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":3,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 06:12:23","2018-06-08 06:12:23");
-INSERT INTO notifications VALUES("1568115e-afab-4d69-a6c9-f3404c005b9f","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush XRM\",\"stock_id\":32}","","2018-06-09 00:34:57","2018-06-09 00:34:57");
-INSERT INTO notifications VALUES("18eafbd6-8bd7-4d59-bac3-95a793085cd5","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMX CPT.\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"aaa\"}","","2018-06-08 10:26:35","2018-06-08 10:26:35");
-INSERT INTO notifications VALUES("1a98022f-ac64-45e7-afee-fdc28092ef53","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":5,\"description\":\"Connecting Rod KitSTX\"}","","2018-06-08 08:24:50","2018-06-08 08:24:50");
-INSERT INTO notifications VALUES("2341005b-3150-431e-b469-38dce88d9bd7","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set CG125\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:29:05","2018-06-08 10:29:05");
-INSERT INTO notifications VALUES("263c1116-a971-44af-8bb5-4b9761fc8733","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Undamaged Item\",\"Customer\":\"c1\"}","","2018-06-08 08:48:22","2018-06-08 08:48:22");
-INSERT INTO notifications VALUES("292c0cb5-8202-45ba-8010-b1795af9c2b1","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set XRM\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:37:11","2018-06-08 10:37:11");
-INSERT INTO notifications VALUES("37a158de-45d5-4b30-aab9-53a93b19cf08","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"c1\"}","","2018-06-08 08:41:05","2018-06-08 08:41:05");
-INSERT INTO notifications VALUES("38cb90c7-f923-4335-b71a-9303db0244b4","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":2,\"description\":\"Valve Guide Set XRM\"}","","2018-06-08 09:48:46","2018-06-08 09:48:46");
-INSERT INTO notifications VALUES("3a52ed9c-159c-4840-854b-70d6e57d4314","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":5,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:07:07","2018-06-08 10:07:07");
-INSERT INTO notifications VALUES("3d9df6ad-0d6a-48a9-88ad-619357e06277","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":3,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:36:53","2018-06-08 10:36:53");
-INSERT INTO notifications VALUES("3dc9ebff-aca2-46c8-a1be-ad5d1f018fe6","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit GLPRO\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"James\"}","","2018-06-08 07:57:50","2018-06-08 07:57:50");
-INSERT INTO notifications VALUES("4f32c6f0-cc17-4135-bc3f-8beba2334cf2","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-07 07:29:20","2018-06-07 07:29:20");
-INSERT INTO notifications VALUES("556d6556-9008-4e95-92a3-effce1a91ae0","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":2,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:47:30","2018-06-08 10:47:30");
-INSERT INTO notifications VALUES("577dd632-6cec-46a8-b5ad-33b1570a9792","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Primary Coil CT00\",\"stock_id\":35}","","2018-06-09 12:10:55","2018-06-09 12:10:55");
-INSERT INTO notifications VALUES("5b2bea59-40d1-49d6-a969-7a96bf9e8bf8","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":5,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:07:07","2018-06-08 10:07:07");
-INSERT INTO notifications VALUES("620f7de2-06f8-4f66-aca1-d35403a187bd","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMXCDI\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"aaa\"}","","2018-06-08 09:49:04","2018-06-08 09:49:04");
-INSERT INTO notifications VALUES("62890b3d-eef4-4766-9214-8fa0d362c5e0","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 40\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"James\"}","","2018-06-08 07:15:02","2018-06-08 07:15:02");
-INSERT INTO notifications VALUES("632309ae-ce39-4aec-b2ea-ccb991c25705","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit GLPRO\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"James\"}","","2018-06-08 07:59:47","2018-06-08 07:59:47");
-INSERT INTO notifications VALUES("656e3995-afc7-48fc-9d6d-1211dec49979","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set CG125\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"aaa\"}","","2018-06-08 09:52:52","2018-06-08 09:52:52");
-INSERT INTO notifications VALUES("74f1ae03-1da1-4a50-b7d6-34b25f635687","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":2,\"description\":\"Valve Guide Set XRM\"}","","2018-06-08 09:48:46","2018-06-08 09:48:46");
-INSERT INTO notifications VALUES("7739a43d-cd30-496c-bd5f-2e7c49016ba6","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":0,\"description\":\"Brake Master Repair Kit Mio\"}","","2018-06-08 04:48:24","2018-06-08 04:48:24");
-INSERT INTO notifications VALUES("778e8f84-90c7-4c62-9bdf-1a128470fa4e","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit GLPRO\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 06:32:51","2018-06-08 06:32:51");
-INSERT INTO notifications VALUES("7c11cfdc-d53f-4bdf-8ef3-d1b7aa21d636","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Connecting Rod KitSTX\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 08:30:37","2018-06-08 08:30:37");
-INSERT INTO notifications VALUES("842ce940-d535-4530-b24a-84d59c09056c","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMX CPT.\",\"quantity\":\"1\",\"type\":\"Undamaged Item\",\"Customer\":\"aaa\"}","","2018-06-08 09:52:53","2018-06-08 09:52:53");
-INSERT INTO notifications VALUES("8b7fba80-838d-4f0a-a1ce-5a2b96fe41f1","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Sniper\",\"stock_id\":35}","","2018-06-09 03:50:48","2018-06-09 03:50:48");
-INSERT INTO notifications VALUES("8ea5da83-bf9f-40f8-9b70-f55d4e0f3e8e","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Carburador Insulator BC175\",\"stock_id\":35}","","2018-06-09 12:13:52","2018-06-09 12:13:52");
-INSERT INTO notifications VALUES("91b7cb1a-5a7a-493a-a4a0-817dbbc6877d","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":2,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:47:30","2018-06-08 10:47:30");
-INSERT INTO notifications VALUES("93afd0bd-23c0-4935-8561-623cc3280153","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMXCDI\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","2018-06-12 00:27:34","2018-06-08 12:43:05","2018-06-12 00:27:34");
-INSERT INTO notifications VALUES("94186a27-5119-4f1a-9b6c-971397745e02","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":0,\"description\":\"Brake Master Repair Kit Mio\"}","","2018-06-08 04:48:24","2018-06-08 04:48:24");
-INSERT INTO notifications VALUES("96953813-ab9a-4be2-bc05-250bc765d8c5","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":5,\"description\":\"Connecting Rod KitSTX\"}","","2018-06-08 08:27:37","2018-06-08 08:27:37");
-INSERT INTO notifications VALUES("96bccdc2-70ef-48b9-a540-f3f8d0896ea8","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":2,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:47:30","2018-06-08 10:47:30");
-INSERT INTO notifications VALUES("98b195e4-94ad-45d6-9fb5-db784348ade6","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"c2\"}","","2018-06-08 08:50:43","2018-06-08 08:50:43");
-INSERT INTO notifications VALUES("9c5b7b5e-bfe3-4828-a63b-1ba32df0dd5f","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Crypton\",\"stock_id\":31}","","2018-06-09 00:33:40","2018-06-09 00:33:40");
-INSERT INTO notifications VALUES("9e5484e5-6623-411b-91c0-19052851ba95","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":4,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 06:09:44","2018-06-08 06:09:44");
-INSERT INTO notifications VALUES("a2b8d673-02b3-44c0-804f-03666afe66eb","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"c1\"}","","2018-06-08 08:35:01","2018-06-08 08:35:01");
-INSERT INTO notifications VALUES("a6372cc4-703f-45b6-a5a3-a7ecd8c4b39a","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set XRM\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"aaa\"}","","2018-06-08 09:52:53","2018-06-08 09:52:53");
-INSERT INTO notifications VALUES("a64c2f2c-a791-4227-aef5-5890b9dcabc6","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMXCDI\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:39:55","2018-06-08 10:39:55");
-INSERT INTO notifications VALUES("a6d6523a-3bac-49a0-9e04-cd00fb80df01","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":5,\"description\":\"Connecting Rod KitSTX\"}","","2018-06-08 08:24:50","2018-06-08 08:24:50");
-INSERT INTO notifications VALUES("a6f88914-f452-4741-9af6-01129edb87a1","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":5,\"description\":\"Connecting Rod KitSTX\"}","","2018-06-08 08:27:37","2018-06-08 08:27:37");
-INSERT INTO notifications VALUES("a9567edf-b920-4257-9092-4ee68c576c6f","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set XRM\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"aaa\"}","","2018-06-08 09:49:04","2018-06-08 09:49:04");
-INSERT INTO notifications VALUES("aadaa34d-5193-4a22-990d-dd2b8390a820","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Mio\",\"stock_id\":34}","","2018-06-09 03:50:25","2018-06-09 03:50:25");
-INSERT INTO notifications VALUES("aaf2743b-c0cd-4eb0-b89c-d8e4fb64f74e","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":5,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:07:07","2018-06-08 10:07:07");
-INSERT INTO notifications VALUES("ab529fa8-a9b1-4155-9c78-e1fc51902887","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMX CPT.\",\"quantity\":\"1\",\"type\":\"Undamaged Item\",\"Customer\":\"aaa\"}","","2018-06-08 09:49:04","2018-06-08 09:49:04");
-INSERT INTO notifications VALUES("ad45026a-633f-4f22-aa29-bedcb1cda356","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit Trinity\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Marinel\"}","","2018-06-07 07:16:42","2018-06-07 07:16:42");
-INSERT INTO notifications VALUES("aeed6d8f-56a3-43f1-88e2-e2abcc82f7ee","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":5,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 04:48:04","2018-06-08 04:48:04");
-INSERT INTO notifications VALUES("af9b6e80-43c5-47cd-a3e1-7f7aa2081529","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Sniper\",\"stock_id\":\"30\"}","2018-06-06 06:12:31","2018-06-06 03:10:43","2018-06-06 06:12:31");
-INSERT INTO notifications VALUES("b3b11398-eb5e-4f9a-81cc-7cbd7155ba61","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":3,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:36:53","2018-06-08 10:36:53");
-INSERT INTO notifications VALUES("b3ddc061-9f4c-4894-9bfe-4076fc069b1b","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Mio\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Joshua\"}","","2018-06-08 06:35:50","2018-06-08 06:35:50");
-INSERT INTO notifications VALUES("b49c6974-24d3-46c5-abf0-2f7b96b29ade","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Connecting Rod KitSTX\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"Jake James Manzon\"}","","2018-06-08 08:23:41","2018-06-08 08:23:41");
-INSERT INTO notifications VALUES("b4a2b969-fb4e-4099-b2fd-9816c469e80e","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":0,\"description\":\"Valve Guide Set XRM\"}","","2018-06-08 10:36:54","2018-06-08 10:36:54");
-INSERT INTO notifications VALUES("b5895406-c933-4ed0-a041-2f3414948714","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"item3\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"Ban\"}","","2018-06-08 07:15:47","2018-06-08 07:15:47");
-INSERT INTO notifications VALUES("b7ade799-fde2-4f06-b49d-9a433f6cb1fa","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Mio\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Joshua\"}","","2018-06-08 06:38:26","2018-06-08 06:38:26");
-INSERT INTO notifications VALUES("bf263d88-e1c8-4f86-bfc5-0dce5c878f80","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":5,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 04:48:04","2018-06-08 04:48:04");
-INSERT INTO notifications VALUES("c022fa85-f4eb-4927-bc3f-0ecf44a1a9e2","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Joshua\"}","","2018-06-08 06:34:16","2018-06-08 06:34:16");
-INSERT INTO notifications VALUES("c22e5413-691c-4d0d-816b-906fa4e1fd21","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":5,\"description\":\"Connecting Rod KitSTX\"}","","2018-06-08 08:24:50","2018-06-08 08:24:50");
-INSERT INTO notifications VALUES("c35a00b3-b651-4e18-a080-6be235747d2c","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set CG125\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:37:11","2018-06-08 10:37:11");
-INSERT INTO notifications VALUES("c6e8af4d-fd1c-4105-8fb6-ff9e2503e84b","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 40\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"James\"}","","2018-06-08 07:28:19","2018-06-08 07:28:19");
-INSERT INTO notifications VALUES("c873fffc-02fd-4a59-bb2d-ce1411450641","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":5,\"description\":\"Connecting Rod KitSTX\"}","","2018-06-08 08:27:37","2018-06-08 08:27:37");
-INSERT INTO notifications VALUES("cbf042f3-831e-4fba-842c-aae957ba0f61","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit GLPRO\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-07 07:20:04","2018-06-07 07:20:04");
-INSERT INTO notifications VALUES("cdce1d37-cd42-46f5-a17c-4df332509f9d","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":0,\"description\":\"Valve Guide Set XRM\"}","","2018-06-08 10:36:54","2018-06-08 10:36:54");
-INSERT INTO notifications VALUES("cf50d586-fdf9-47ca-97d0-9023524a7456","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":0,\"description\":\"Brake Master Repair Kit Mio\"}","","2018-06-08 04:48:24","2018-06-08 04:48:24");
-INSERT INTO notifications VALUES("cfe1254c-2272-4233-b443-da5c92c25b6b","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set CG125\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"aaa\"}","","2018-06-08 09:49:03","2018-06-08 09:49:03");
-INSERT INTO notifications VALUES("d22eea59-f760-47c8-82a8-caaa63c297c3","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 100\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"c1\"}","","2018-06-08 08:34:43","2018-06-08 08:34:43");
-INSERT INTO notifications VALUES("d4cd6710-a6cd-45fd-bd5b-51e5b5123227","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMX CPT.\",\"quantity\":\"1\",\"type\":\"Undamaged Item\",\"Customer\":\"Jake James\"}","","2018-06-08 10:37:11","2018-06-08 10:37:11");
-INSERT INTO notifications VALUES("d4d425bb-ff35-44df-9524-dd08035623c6","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":2,\"description\":\"Valve Guide Set XRM\"}","","2018-06-08 09:48:46","2018-06-08 09:48:46");
-INSERT INTO notifications VALUES("d73f1e4b-6c9c-4bed-b2e5-48aca7426dce","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set CG125\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:41:36","2018-06-08 10:41:36");
-INSERT INTO notifications VALUES("d92b1f55-845b-4208-b526-5c2fc6013232","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set XRM\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:46:00","2018-06-08 10:46:00");
-INSERT INTO notifications VALUES("dd03375e-1eaf-4f9d-8d96-0abe527aa125","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMXCDI\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James\"}","","2018-06-08 10:23:58","2018-06-08 10:23:58");
-INSERT INTO notifications VALUES("e2060189-2bb7-49f3-ab53-112b02919c09","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":4,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 06:09:44","2018-06-08 06:09:44");
-INSERT INTO notifications VALUES("e47eb813-a306-49ed-b700-f3d06fd58053","App\\Notifications\\ReorderNotification","1","App\\Admin","{\"quantity\":3,\"description\":\"Valve Guide Set CG125\"}","","2018-06-08 10:36:53","2018-06-08 10:36:53");
-INSERT INTO notifications VALUES("e601bc72-f8ca-4e0d-86d9-e2b202f59997","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":0,\"description\":\"Valve Guide Set XRM\"}","","2018-06-08 10:36:54","2018-06-08 10:36:54");
-INSERT INTO notifications VALUES("e747d57c-c1e3-4836-9400-e146c467b048","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush XRM\",\"stock_id\":33}","","2018-06-09 00:35:25","2018-06-09 00:35:25");
-INSERT INTO notifications VALUES("e8b37445-bab4-4b9f-8416-f4b8d3066394","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 40\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"James\"}","","2018-06-07 07:33:15","2018-06-07 07:33:15");
-INSERT INTO notifications VALUES("e8db0b8f-938c-46df-a727-48496ba7a22a","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Connecting Rod KitSTX\",\"quantity\":\"1\",\"type\":\"Undamaged Item\",\"Customer\":\"Jake James\"}","","2018-06-08 08:25:47","2018-06-08 08:25:47");
-INSERT INTO notifications VALUES("eb41f8b2-4fab-447d-88e7-52bae1c34427","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Item 40\",\"quantity\":\"1\",\"type\":\"Undamaged Item\",\"Customer\":\"Jake James\"}","","2018-06-08 07:43:00","2018-06-08 07:43:00");
-INSERT INTO notifications VALUES("ebbfb843-c482-438a-b3f0-b56519791030","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set CG125\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"aaa\"}","","2018-06-08 10:27:35","2018-06-08 10:27:35");
-INSERT INTO notifications VALUES("ed4c456b-ea36-472b-96b0-f8db8789e126","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Carbon Brush Mio\",\"quantity\":\"1\",\"type\":\"Damaged Items\",\"Customer\":\"Jake James Manzon\"}","","2018-06-08 07:44:59","2018-06-08 07:44:59");
-INSERT INTO notifications VALUES("f34a98a8-69ef-4e90-8573-012a3fbb09bb","App\\Notifications\\ReorderNotification","4","App\\User","{\"quantity\":3,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 06:12:23","2018-06-08 06:12:23");
-INSERT INTO notifications VALUES("f65bec68-45de-4aaa-b0c4-9d0e7cfef3c4","App\\Notifications\\ReturnNotification","1","App\\Admin","{\"itemname\":\"Valve Guide Set TMXCDI\",\"quantity\":\"1\",\"type\":\"Damaged Salable Items\",\"Customer\":\"aaa\"}","","2018-06-08 09:52:53","2018-06-08 09:52:53");
-INSERT INTO notifications VALUES("f89df56e-e1ce-442d-9f17-4535a2ae80ed","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":3,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 06:12:23","2018-06-08 06:12:23");
-INSERT INTO notifications VALUES("fb0f65de-2063-4bf8-9ea7-98d13c878f22","App\\Notifications\\ReorderNotification","1","App\\User","{\"quantity\":4,\"description\":\"Brake Master Repair Kit GLPRO\"}","","2018-06-08 06:09:44","2018-06-08 06:09:44");
-INSERT INTO notifications VALUES("fbab497d-e541-4b44-8993-d7eab11c7091","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Carburador Insulator GY6125\",\"stock_id\":35}","","2018-06-09 12:10:54","2018-06-09 12:10:54");
+INSERT INTO notifications VALUES("32613ca7-d1ec-43f3-8202-a05464df11ff","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Fuel Cock Crypton\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Lost\",\"stock_remarks\":\"asdasd\",\"stock_id\":96}","2018-06-12 14:42:38","2018-06-12 14:35:42","2018-06-12 14:42:38");
+INSERT INTO notifications VALUES("616cef04-518b-42c9-a5df-13e61bb76335","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Stator Assy.MOTOR STAR\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Damaged\",\"stock_remarks\":\"Damaged\",\"stock_id\":91}","","2018-06-12 14:29:26","2018-06-12 14:29:26");
+INSERT INTO notifications VALUES("91fe52f8-ac86-4c96-ab78-1da716060949","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Primary Coil TMX-CDI1\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Damaged\",\"stock_remarks\":\"sdfhgkjnm\",\"stock_id\":88}","","2018-06-12 14:22:16","2018-06-12 14:22:16");
+INSERT INTO notifications VALUES("b5d9f62e-6671-4689-8953-3db552532e96","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Fuel Cock C100\\/Dream\\/XRM\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Damaged\",\"stock_remarks\":\"asdad\",\"stock_id\":95}","","2018-06-12 14:35:42","2018-06-12 14:35:42");
+INSERT INTO notifications VALUES("c8183a10-d4bc-46d0-a151-8eaf0ec34186","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Rocker Arm W\\/tappet Screw Mio\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Damaged Saleable\",\"stock_remarks\":\"Damaged Saleable\",\"stock_id\":91}","","2018-06-12 14:29:26","2018-06-12 14:29:26");
+INSERT INTO notifications VALUES("ce328569-3273-4dcd-a701-f1d7c69648c2","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Fuel Cock BC175\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Damaged Saleable\",\"stock_remarks\":\"asdas\",\"stock_id\":94}","","2018-06-12 14:35:41","2018-06-12 14:35:41");
+INSERT INTO notifications VALUES("dc9343b4-aa6c-4f17-9278-04401a4a0f0f","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Regulator Rectifier Crypton\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Lost\",\"stock_remarks\":\"Lost\",\"stock_id\":91}","","2018-06-12 14:29:26","2018-06-12 14:29:26");
+INSERT INTO notifications VALUES("e7a275a3-6454-413a-83ae-007a341cde14","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Brake Master Repair Kit Shogun\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Damaged\",\"stock_remarks\":\"sdasda\",\"stock_id\":89}","","2018-06-12 14:23:32","2018-06-12 14:23:32");
+INSERT INTO notifications VALUES("f08aa689-a6b1-4c05-8c46-4987d894276d","App\\Notifications\\StockAdjustmentNotification","1","App\\Admin","{\"itemname\":\"Regulator Rectifier  Smash\",\"stock_adjustedby\":\"ADMIN\",\"stock_quantity\":\"1\",\"stock_type\":\"Damaged\",\"stock_remarks\":\"Damaged\",\"stock_id\":90}","","2018-06-12 14:27:52","2018-06-12 14:27:52");
 
 
 
@@ -445,7 +372,8 @@ INSERT INTO physical_count_items VALUES("151","0");
 INSERT INTO physical_count_items VALUES("152","0");
 INSERT INTO physical_count_items VALUES("153","0");
 INSERT INTO physical_count_items VALUES("154","0");
-INSERT INTO physical_count_items VALUES("158","0");
+INSERT INTO physical_count_items VALUES("159","0");
+INSERT INTO physical_count_items VALUES("160","0");
 
 
 
@@ -477,7 +405,7 @@ CREATE TABLE `products` (
   KEY `category_idx` (`categoryname`),
   CONSTRAINT `category` FOREIGN KEY (`categoryname`) REFERENCES `categories` (`categoryname`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `model` FOREIGN KEY (`modelname`) REFERENCES `model` (`modelname`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=159 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=latin1;
 
 INSERT INTO products VALUES("1","Connecting Rod KitXRM110","available","5","2018-03-01 00:00:00","","XRM","Body & Frame");
 INSERT INTO products VALUES("2","Connecting Rod KitBILP/HD3","available","5","2018-03-01 00:00:00","","Barako","Body & Frame");
@@ -633,7 +561,8 @@ INSERT INTO products VALUES("151","Item 100","available","5","2018-05-31 06:56:2
 INSERT INTO products VALUES("152","item3","available","4","2018-05-31 07:27:54","2018-05-31 07:31:26","Generic","Other Motor Parts");
 INSERT INTO products VALUES("153","Item 40","available","5","2018-05-31 08:13:30","2018-05-31 08:15:22","Generic","Other Motor Parts");
 INSERT INTO products VALUES("154","item 101","available","5","2018-05-31 08:29:59","2018-05-31 08:32:20","Generic","Other Motor Parts");
-INSERT INTO products VALUES("158","aaabbb","available","3","2018-06-08 04:24:47","2018-06-08 04:24:47","XRM","Other Motor Parts");
+INSERT INTO products VALUES("159","this is the item","available","5","2018-06-08 16:05:29","2018-06-08 16:09:24","this is the model","this is the category");
+INSERT INTO products VALUES("160","New Item","available","5","2018-06-08 22:18:12","2018-06-08 22:18:46","New Model","New category");
 
 
 
@@ -654,66 +583,11 @@ CREATE TABLE `purchases` (
   PRIMARY KEY (`purchase_id`),
   KEY `purchases_product_id_foreign` (`product_id`),
   CONSTRAINT `purchases_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO purchases VALUES("1","1","82","Honda","5","","1.00","2018-04-06 00:00:00","","0","");
-INSERT INTO purchases VALUES("2","1","19","Honda","7","","1.00","2018-04-06 00:00:00","","0","");
-INSERT INTO purchases VALUES("3","1","147","Honda","7","","1.00","2018-04-06 00:00:00","","0","");
-INSERT INTO purchases VALUES("4","909090","111","lol","2","","5.00","2018-05-30 18:17:00","","0","");
-INSERT INTO purchases VALUES("5","90901","111","lla","1","","10.00","2018-05-30 18:20:00","","0","");
-INSERT INTO purchases VALUES("6","90902","111","aa","2","","10.00","2018-05-30 18:21:00","","0","");
-INSERT INTO purchases VALUES("7","90903","111","aaae","5","","15.00","2018-05-30 18:22:00","","0","");
-INSERT INTO purchases VALUES("8","90904","111","aaa","2","","20.00","2018-05-30 18:39:00","","0","");
-INSERT INTO purchases VALUES("9","1001","108","Yamaha","25","","53.00","2018-05-30 18:52:00","","0","");
-INSERT INTO purchases VALUES("10","1001","112","Yamaha","35","","53.00","2018-05-30 18:52:00","","0","");
-INSERT INTO purchases VALUES("11","1001","109","Yamaha","28","","53.00","2018-05-30 18:52:00","","0","");
-INSERT INTO purchases VALUES("12","445","151","Honda","100","","150.00","2018-05-31 14:58:00","","0","");
-INSERT INTO purchases VALUES("13","12312","152","nm","100","","50.00","2018-05-31 15:29:00","","0","");
-INSERT INTO purchases VALUES("14","200","153","honda","50","","40.00","2018-05-31 16:13:00","","0","");
-INSERT INTO purchases VALUES("15","1011","154","yamaha","10","","50.00","2018-05-31 16:31:00","","0","");
-INSERT INTO purchases VALUES("16","1234","154","Honda","5","","50.00","2018-05-31 16:37:00","","0","");
-INSERT INTO purchases VALUES("17","234432","108","Motorstar","1","pcs","53.00","2018-06-07 14:06:00","","53","2");
-INSERT INTO purchases VALUES("18","12321","130","Yamaha","100","pcs","32.00","2018-06-09 12:12:00","","3200","0");
-INSERT INTO purchases VALUES("19","12321","108","Yamaha","50","pcs","53.00","2018-06-09 12:12:00","","2650","0");
-INSERT INTO purchases VALUES("20","876542345678","82","h","4","pcs","1.00","2018-06-09 12:48:00","","4","0");
-INSERT INTO purchases VALUES("21","76867868","82","h","4","pcs","1.00","2018-06-09 12:50:00","","4","0");
-INSERT INTO purchases VALUES("22","1231321","82","h","4","pcs","1.00","2018-06-09 12:53:00","","4","0");
-INSERT INTO purchases VALUES("23","23241","151","h","1","pcs","150.00","2018-06-09 12:56:00","","150","0");
-INSERT INTO purchases VALUES("24","5646","151","h","1","pcs","150.00","2018-06-09 13:02:00","","150","0");
-INSERT INTO purchases VALUES("25","23211","151","h","1","pcs","150.00","2018-06-09 13:24:00","","150","0");
-INSERT INTO purchases VALUES("26","12312312","151","h","1","pcs","150.00","2018-06-09 13:27:00","","150","0");
-INSERT INTO purchases VALUES("27","2312321","151","h","1","pcs","150.00","2018-06-09 13:28:00","","150","0");
-INSERT INTO purchases VALUES("28","465656","108","yamaha","5","pcs","53.00","2018-06-09 13:29:00","","265","0");
-INSERT INTO purchases VALUES("29","2345678","130","yamaha","5","pcs","32.00","2018-06-09 15:49:00","","160","0");
-INSERT INTO purchases VALUES("30","123","82","Honda","2","pcs","1.00","2018-06-11 12:55:00","","2","0");
-INSERT INTO purchases VALUES("31","4324","82","Honda","2","pcs","1.00","2018-06-11 13:11:00","","2","0");
-INSERT INTO purchases VALUES("32","1233","82","Honda","2","pcs","1.00","2018-06-11 14:02:00","","2","0");
-INSERT INTO purchases VALUES("33","12334","82","Honda","2","pcs","1.00","2018-06-11 14:02:00","","2","0");
-INSERT INTO purchases VALUES("34","23214124","82","Honda","2","pcs","1.00","2018-06-11 14:05:00","","2","0");
-INSERT INTO purchases VALUES("35","2321","152","nm","5","pcs","50.00","2018-06-11 14:06:00","","250","0");
-INSERT INTO purchases VALUES("36","12312312312","82","Honda","2","pcs","1.00","2018-06-11 14:11:00","","2","0");
-INSERT INTO purchases VALUES("37","414213123","152","nm","5","pcs","50.00","2018-06-11 14:13:00","","250","0");
-INSERT INTO purchases VALUES("38","123222","108","Yamaha","5","pcs","53.00","2018-06-11 16:06:00","","265","0");
-INSERT INTO purchases VALUES("39","12321312","108","Yamaha","4","pcs","53.00","2018-06-11 16:40:00","","212","0");
-INSERT INTO purchases VALUES("40","12321312","108","Yamaha","4","pcs","53.00","2018-06-11 16:40:00","","212","0");
-INSERT INTO purchases VALUES("41","3123123","108","Yamaha","4","pcs","53.00","2018-06-11 16:43:00","","212","0");
-INSERT INTO purchases VALUES("42","31231222","108","Yamaha","4","pcs","53.00","2018-06-11 16:45:00","","212","0");
-INSERT INTO purchases VALUES("43","1232131","108","Yamaha","4","pcs","53.00","2018-06-11 16:47:00","","212","0");
-INSERT INTO purchases VALUES("44","321414","108","Yamaha","4","pcs","53.00","2018-06-11 21:14:00","","212","0");
-INSERT INTO purchases VALUES("45","321414","112","Yamaha","5","pcs","53.00","2018-06-11 21:14:00","","265","0");
-INSERT INTO purchases VALUES("46","321414","109","Yamaha","5","pcs","53.00","2018-06-11 21:14:00","","265","0");
-INSERT INTO purchases VALUES("47","5435","82","Honda","2","pcs","1.00","2018-06-11 23:14:00","","2","0");
-INSERT INTO purchases VALUES("48","32124","152","nm","12","pcs","50.00","2018-06-11 23:21:00","","600","0");
-INSERT INTO purchases VALUES("49","42232","130","yamaha","10","pcs","32.00","2018-06-11 23:23:00","","320","0");
-INSERT INTO purchases VALUES("50","333","82","Honda","0","pcs","1.00","2018-06-11 23:23:00","","0","0");
-INSERT INTO purchases VALUES("51","887","130","yamaha","10","pcs","32.00","2018-06-11 23:28:00","","320","0");
-INSERT INTO purchases VALUES("52","123123","82","Honda","0","pcs","1.00","2018-06-11 23:38:00","","0","0");
-INSERT INTO purchases VALUES("53","86876","151","h","1","pcs","150.00","2018-06-11 23:43:00","","150","0");
-INSERT INTO purchases VALUES("54","321232","82","Honda","0","pcs","1.00","2018-06-11 23:45:00","","0","0");
-INSERT INTO purchases VALUES("55","3332","82","Honda","0","pcs","1.00","2018-06-11 23:49:00","","0","0");
-INSERT INTO purchases VALUES("56","3456","82","Honda","2","pcs","1.00","2018-06-11 00:00:00","","2","0");
-INSERT INTO purchases VALUES("57","435","82","Honda","0","pcs","1.00","2018-06-11 00:21:00","","0","0");
-INSERT INTO purchases VALUES("58","5435","108","Motorstar","0","pcs","53.00","2018-06-12 12:27:00","","0","0");
+INSERT INTO purchases VALUES("1","1001","160","Honda","1","pcs","85.00","2018-06-08 06:19:00","","85","0");
+INSERT INTO purchases VALUES("2","1002","160","Honda","20","pcs","85.00","2018-06-08 06:20:00","","1700","0");
+INSERT INTO purchases VALUES("3","4535","160","Honda","1","pcs","85.00","2018-06-12 13:01:00","","85","0");
 
 
 
@@ -734,14 +608,9 @@ CREATE TABLE `returns` (
   CONSTRAINT `prodID_return` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO returns VALUES("1","147","Jake James","1.00","1","0","0","2018-06-08 18:37:10","");
-INSERT INTO returns VALUES("1","148","Jake James","105.00","0","1","0","2018-06-08 18:37:11","");
-INSERT INTO returns VALUES("1","149","Jake James","105.00","0","0","1","2018-06-08 18:37:11","");
-INSERT INTO returns VALUES("1","150","Jake James","105.00","1","0","0","2018-06-08 18:37:11","");
-INSERT INTO returns VALUES("2","149","Jake James","105.00","1","0","0","2018-06-08 18:39:55","");
-INSERT INTO returns VALUES("1","147","Jake James","1.00","1","0","0","2018-06-08 18:41:36","");
-INSERT INTO returns VALUES("1","150","Jake James","105.00","1","0","0","2018-06-08 18:46:00","");
-INSERT INTO returns VALUES("3","149","Jake James","105.00","1","0","0","2018-06-08 20:43:02","");
+INSERT INTO returns VALUES("1111","160","James","100.00","1","0","0","2018-06-09 06:26:58","");
+INSERT INTO returns VALUES("246899","85","Customer two","65.00","1","0","0","2018-06-11 14:49:56","");
+INSERT INTO returns VALUES("1112","160","James","100.00","0","0","1","2018-06-11 15:22:59","");
 
 
 
@@ -749,35 +618,17 @@ DROP TABLE returns_supplier;
 
 CREATE TABLE `returns_supplier` (
   `returns_s_id` int(11) NOT NULL AUTO_INCREMENT,
-  `po_id` int(11) DEFAULT NULL,
   `address` varchar(45) DEFAULT NULL,
   `supplier_name` varchar(45) NOT NULL,
-  `status` enum('Pending','Settled') DEFAULT 'Pending',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
+  `status` enum('Pending','Settled') DEFAULT 'Pending',
+  `po_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`returns_s_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
-INSERT INTO returns_supplier VALUES("7","","","yamaha","Pending","2018-06-09 12:14:34","");
-INSERT INTO returns_supplier VALUES("6","","","yamaha","Pending","2018-06-09 12:14:23","");
-INSERT INTO returns_supplier VALUES("5","","","h","Settled","2018-06-11 23:44:09","");
-INSERT INTO returns_supplier VALUES("8","","","yamaha","Settled","2018-06-11 23:28:36","");
-INSERT INTO returns_supplier VALUES("9","","","yamaha","Settled","2018-06-11 23:23:23","");
-INSERT INTO returns_supplier VALUES("10","","","1","Pending","2018-06-11 11:30:12","");
-INSERT INTO returns_supplier VALUES("11","","","Honda","Settled","2018-06-11 23:23:52","");
-INSERT INTO returns_supplier VALUES("12","","","Honda","Settled","2018-06-11 23:38:36","");
-INSERT INTO returns_supplier VALUES("13","1","","Honda","Settled","2018-06-11 14:12:07","");
-INSERT INTO returns_supplier VALUES("14","1","","Honda","Settled","2018-06-11 23:15:10","");
-INSERT INTO returns_supplier VALUES("15","12","","nm","Settled","2018-06-11 14:13:27","");
-INSERT INTO returns_supplier VALUES("16","1001","","Yamaha","Settled","2018-06-11 16:07:56","");
-INSERT INTO returns_supplier VALUES("17","1001","","Yamaha","Settled","2018-06-11 16:47:54","");
-INSERT INTO returns_supplier VALUES("18","12","","nm","Settled","2018-06-11 23:21:29","");
-INSERT INTO returns_supplier VALUES("19","123","","Honda","Settled","2018-06-11 23:46:06","");
-INSERT INTO returns_supplier VALUES("20","3","","Honda","Settled","2018-06-11 23:49:29","");
-INSERT INTO returns_supplier VALUES("21","12","","Honda","Settled","2018-06-12 00:08:25","");
-INSERT INTO returns_supplier VALUES("22","12","","Honda","Settled","2018-06-12 00:21:15","");
-INSERT INTO returns_supplier VALUES("23","1231231","","h","Pending","2018-06-12 12:26:09","");
-INSERT INTO returns_supplier VALUES("24","234","","Motorstar","Settled","2018-06-12 12:27:28","");
+INSERT INTO returns_supplier VALUES("1","","Honda","2018-06-12 13:02:37","","Settled","1");
+INSERT INTO returns_supplier VALUES("2","","Honda","2018-06-12 13:03:15","","Pending","100");
 
 
 
@@ -794,34 +645,13 @@ CREATE TABLE `returns_supplier_info` (
   `damaged_salable_accepted` int(11) DEFAULT '0',
   `return_status` enum('Pending','Accepted','Rejected') DEFAULT 'Pending',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updatede_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`return_supplier_id`),
   KEY `returns_s_id_idx` (`returns_s_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
-INSERT INTO returns_supplier_info VALUES("8","86876","5","151","0","1","0","7","Accepted","2018-06-11 23:44:09","");
-INSERT INTO returns_supplier_info VALUES("9","","5","82","4","0","4","0","Rejected","2018-06-09 13:29:02","");
-INSERT INTO returns_supplier_info VALUES("10","887","8","130","10","0","10","0","Accepted","2018-06-11 23:28:36","");
-INSERT INTO returns_supplier_info VALUES("11","","8","108","5","0","0","0","Rejected","2018-06-11 23:28:36","");
-INSERT INTO returns_supplier_info VALUES("12","","8","108","5","0","5","0","Rejected","2018-06-11 23:28:36","");
-INSERT INTO returns_supplier_info VALUES("13","42232","9","130","10","0","15","0","Accepted","2018-06-11 23:23:22","");
-INSERT INTO returns_supplier_info VALUES("14","333","11","82","0","0","0","0","Accepted","2018-06-11 23:23:52","");
-INSERT INTO returns_supplier_info VALUES("15","123123","12","82","0","0","0","0","Accepted","2018-06-11 23:38:36","");
-INSERT INTO returns_supplier_info VALUES("16","","13","82","2","0","6","0","Pending","2018-06-11 16:06:33","");
-INSERT INTO returns_supplier_info VALUES("17","5435","14","82","2","0","10","0","Accepted","2018-06-11 23:15:09","");
-INSERT INTO returns_supplier_info VALUES("18","","15","152","2","3","4","6","Pending","2018-06-11 16:06:33","");
-INSERT INTO returns_supplier_info VALUES("19","","16","108","5","0","10","0","Pending","2018-06-11 17:52:53","");
-INSERT INTO returns_supplier_info VALUES("20","","16","112","5","0","0","0","Pending","2018-06-11 17:52:53","");
-INSERT INTO returns_supplier_info VALUES("21","321414","17","108","4","0","24","0","Accepted","2018-06-11 21:16:18","");
-INSERT INTO returns_supplier_info VALUES("22","321414","17","112","0","5","0","5","Accepted","2018-06-11 21:16:18","");
-INSERT INTO returns_supplier_info VALUES("23","321414","17","109","5","0","5","0","Accepted","2018-06-11 21:16:19","");
-INSERT INTO returns_supplier_info VALUES("24","32124","18","152","12","0","12","0","Accepted","2018-06-11 23:21:29","");
-INSERT INTO returns_supplier_info VALUES("25","321232","19","82","0","0","0","0","Accepted","2018-06-11 23:46:06","");
-INSERT INTO returns_supplier_info VALUES("26","3332","20","82","0","0","0","0","Accepted","2018-06-11 23:49:29","");
-INSERT INTO returns_supplier_info VALUES("27","3456","21","82","2","0","2","0","Accepted","2018-06-12 00:08:25","");
-INSERT INTO returns_supplier_info VALUES("28","435","22","82","0","0","0","0","Accepted","2018-06-12 00:21:15","");
-INSERT INTO returns_supplier_info VALUES("29","","23","151","0","0","0","0","Pending","2018-06-12 12:26:09","");
-INSERT INTO returns_supplier_info VALUES("30","5435","24","108","0","0","0","0","Accepted","2018-06-12 12:27:28","");
+INSERT INTO returns_supplier_info VALUES("1","4535","1","160","1","0","1","0","Accepted","2018-06-12 13:02:37","");
+INSERT INTO returns_supplier_info VALUES("2","","2","160","0","0","0","0","Pending","2018-06-12 13:03:15","");
 
 
 
@@ -845,8 +675,8 @@ INSERT INTO salable_items VALUES("4","150.00","180.00","12","2018-03-31 00:00:00
 INSERT INTO salable_items VALUES("5","150.00","180.00","23","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("6","150.00","180.00","5","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("7","150.00","180.00","27","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("8","150.00","180.00","35","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("9","150.00","180.00","24","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("8","150.00","180.00","32","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("9","150.00","180.00","23","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("10","150.00","180.00","22","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("11","250.00","280.00","6","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("12","250.00","280.00","21","2018-03-31 00:00:00","");
@@ -855,12 +685,12 @@ INSERT INTO salable_items VALUES("14","250.00","280.00","15","2018-03-31 00:00:0
 INSERT INTO salable_items VALUES("15","250.00","280.00","6","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("16","250.00","280.00","4","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("17","250.00","280.00","37","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("18","250.00","280.00","25","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("18","250.00","280.00","24","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("19","1.00","1.00","10","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("20","250.00","280.00","6","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("21","250.00","280.00","33","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("22","250.00","280.00","5","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("23","120.00","150.00","20","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("23","120.00","150.00","19","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("24","120.00","150.00","9","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("25","120.00","150.00","39","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("26","120.00","150.00","15","2018-03-31 00:00:00","");
@@ -871,42 +701,42 @@ INSERT INTO salable_items VALUES("30","120.00","150.00","17","2018-03-31 00:00:0
 INSERT INTO salable_items VALUES("31","120.00","150.00","45","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("32","120.00","150.00","15","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("33","120.00","150.00","21","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("34","120.00","150.00","9","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("34","120.00","150.00","4","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("35","120.00","150.00","10","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("36","120.00","150.00","38","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("37","155.00","185.00","34","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("38","155.00","185.00","24","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("39","155.00","185.00","48","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("40","155.00","185.00","41","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("38","155.00","185.00","23","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("39","155.00","185.00","46","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("40","155.00","185.00","38","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("41","155.00","185.00","10","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("42","155.00","185.00","30","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("43","155.00","185.00","37","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("44","155.00","185.00","7","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("45","155.00","185.00","23","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("46","155.00","185.00","32","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("46","155.00","185.00","31","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("47","155.00","185.00","29","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("48","155.00","185.00","13","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("49","200.00","230.00","15","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("50","205.00","235.00","26","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("51","287.00","317.00","38","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("52","190.00","220.00","40","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("53","190.00","220.00","48","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("52","190.00","220.00","38","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("53","190.00","220.00","46","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("54","287.00","317.00","23","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("55","287.00","317.00","37","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("56","287.00","317.00","40","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("57","95.00","125.00","25","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("58","186.00","216.00","19","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("58","186.00","216.00","18","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("59","186.00","216.00","22","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("60","186.00","216.00","9","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("61","270.00","300.00","35","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("62","286.00","316.00","39","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("63","150.00","180.00","20","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("63","150.00","180.00","19","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("64","186.00","216.00","27","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("65","125.00","155.00","5","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("66","125.00","155.00","27","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("67","75.00","105.00","10","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("65","125.00","155.00","2","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("66","125.00","155.00","26","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("67","75.00","105.00","5","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("68","75.00","105.00","24","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("69","125.00","155.00","43","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("69","125.00","155.00","42","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("70","125.00","155.00","46","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("71","125.00","155.00","13","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("72","125.00","155.00","26","2018-03-31 00:00:00","");
@@ -916,14 +746,14 @@ INSERT INTO salable_items VALUES("75","85.00","115.00","47","2018-03-31 00:00:00
 INSERT INTO salable_items VALUES("76","85.00","115.00","45","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("77","85.00","115.00","20","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("78","125.00","155.00","6","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("79","35.00","65.00","7","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("80","35.00","70.00","3","2018-03-31 00:00:00","2018-05-30 15:39:00");
-INSERT INTO salable_items VALUES("81","35.00","70.00","12","2018-03-31 00:00:00","2018-05-30 16:10:39");
-INSERT INTO salable_items VALUES("82","1.00","1.00","20","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("83","35.00","65.00","5","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("79","35.00","65.00","8","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("80","35.00","70.00","1","2018-03-31 00:00:00","2018-05-30 15:39:00");
+INSERT INTO salable_items VALUES("81","35.00","70.00","11","2018-03-31 00:00:00","2018-05-30 16:10:39");
+INSERT INTO salable_items VALUES("82","1.00","1.00","4","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("83","35.00","65.00","2","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("84","90.00","120.00","35","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("85","35.00","65.00","37","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("86","35.00","65.00","0","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("85","35.00","65.00","35","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("86","35.00","65.00","1","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("87","195.00","225.00","6","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("88","403.00","433.00","7","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("89","225.00","255.00","37","2018-03-31 00:00:00","");
@@ -933,9 +763,9 @@ INSERT INTO salable_items VALUES("92","225.00","255.00","22","2018-03-31 00:00:0
 INSERT INTO salable_items VALUES("93","225.00","255.00","38","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("94","403.00","433.00","4","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("95","403.00","433.00","16","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("96","37.00","67.00","17","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("97","39.00","69.00","44","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("98","25.00","55.00","25","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("96","37.00","67.00","13","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("97","39.00","69.00","43","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("98","25.00","55.00","24","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("99","375.00","405.00","7","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("100","375.00","405.00","37","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("101","375.00","405.00","4","2018-03-31 00:00:00","");
@@ -945,30 +775,30 @@ INSERT INTO salable_items VALUES("104","375.00","405.00","42","2018-03-31 00:00:
 INSERT INTO salable_items VALUES("105","375.00","405.00","34","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("106","53.00","83.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("107","53.00","83.00","3","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("108","53.00","83.00","77","2018-03-31 00:00:00","2018-05-26 07:38:54");
-INSERT INTO salable_items VALUES("109","53.00","83.00","5","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("108","53.00","83.00","0","2018-03-31 00:00:00","2018-05-26 07:38:54");
+INSERT INTO salable_items VALUES("109","53.00","83.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("110","53.00","83.00","1","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("111","20.00","83.00","8","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("112","53.00","83.00","24","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("111","20.00","83.00","0","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("112","53.00","83.00","18","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("113","53.00","83.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("114","53.00","83.00","0","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("115","150.00","180.00","4","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("115","150.00","180.00","-2","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("116","150.00","180.00","31","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("117","150.00","180.00","18","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("118","150.00","180.00","31","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("119","95.00","125.00","8","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("117","150.00","180.00","16","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("118","150.00","180.00","28","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("119","95.00","125.00","7","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("120","135.00","165.00","6","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("121","125.00","155.00","9","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("122","107.00","137.00","15","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("122","107.00","137.00","14","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("123","180.00","210.00","44","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("124","160.00","190.00","16","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("125","55.00","85.00","12","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("125","55.00","85.00","13","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("126","38.00","68.00","15","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("127","45.00","75.00","31","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("128","75.00","105.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("129","19.50","49.50","7","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("130","32.00","62.00","31","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("131","19.50","49.50","46","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("130","32.00","62.00","7","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("131","19.50","49.50","45","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("132","98.00","128.00","0","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("133","89.00","119.00","29","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("134","188.00","218.00","45","2018-03-31 00:00:00","");
@@ -985,14 +815,15 @@ INSERT INTO salable_items VALUES("144","300.00","330.00","20","2018-03-31 00:00:
 INSERT INTO salable_items VALUES("145","300.00","330.00","47","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("146","300.00","330.00","22","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("147","1.00","1.00","2","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("148","75.00","105.00","34","2018-03-31 00:00:00","");
+INSERT INTO salable_items VALUES("148","75.00","105.00","35","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("149","75.00","105.00","19","2018-03-31 00:00:00","");
 INSERT INTO salable_items VALUES("150","75.00","105.00","0","2018-03-31 00:00:00","");
-INSERT INTO salable_items VALUES("151","150.00","200.00","52","2018-05-31 06:56:20","2018-05-31 06:58:54");
-INSERT INTO salable_items VALUES("152","50.00","70.00","100","2018-05-31 07:27:54","2018-05-31 07:31:26");
-INSERT INTO salable_items VALUES("153","40.00","50.00","20","2018-05-31 08:13:30","2018-05-31 08:15:22");
+INSERT INTO salable_items VALUES("151","150.00","200.00","46","2018-05-31 06:56:20","2018-05-31 06:58:54");
+INSERT INTO salable_items VALUES("152","50.00","70.00","78","2018-05-31 07:27:54","2018-05-31 07:31:26");
+INSERT INTO salable_items VALUES("153","40.00","50.00","15","2018-05-31 08:13:30","2018-05-31 08:15:22");
 INSERT INTO salable_items VALUES("154","50.00","70.00","14","2018-05-31 08:29:59","2018-05-31 08:32:20");
-INSERT INTO salable_items VALUES("158","0.00","0.00","0","2018-06-08 04:24:47","2018-06-08 04:24:47");
+INSERT INTO salable_items VALUES("159","100.00","150.00","15","2018-06-08 16:05:29","2018-06-08 16:09:25");
+INSERT INTO salable_items VALUES("160","85.00","100.00","20","2018-06-08 22:18:12","2018-06-08 22:18:46");
 
 
 
@@ -1010,21 +841,22 @@ CREATE TABLE `sales` (
   `discount` int(11) DEFAULT NULL,
   `exchangeor` int(11) DEFAULT NULL,
   `address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `warranty` datetime(6) DEFAULT NULL,
   KEY `sales_product_id_foreign` (`product_id`),
   CONSTRAINT `sales_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO sales VALUES("1","147","Jake James","1.00","0","2018-06-08 18:36:00","","pcs","0","","");
-INSERT INTO sales VALUES("1","148","Jake James","105.00","1","2018-06-08 18:36:00","","pcs","0","","");
-INSERT INTO sales VALUES("1","149","Jake James","105.00","1","2018-06-08 18:36:00","","pcs","0","","");
-INSERT INTO sales VALUES("1","150","Jake James","105.00","0","2018-06-08 18:36:00","","pcs","0","","");
-INSERT INTO sales VALUES("2","149","Jake James","105.00","0","2018-06-08 18:38:00","","pcs","0","","");
-INSERT INTO sales VALUES("3","149","Jake James","105.00","0","2018-06-08 18:40:00","","pcs","0","","");
-INSERT INTO sales VALUES("4","147","Jake James","1.00","1","2018-06-08 18:47:00","","pcs","0","","");
-INSERT INTO sales VALUES("5","112","Jake James","83.00","1","2018-06-08 18:59:00","","pcs","0","2","");
-INSERT INTO sales VALUES("6","149","aaa","75.00","1","2018-06-08 20:43:00","","","","","");
-INSERT INTO sales VALUES("7","151","Jake James","150.00","1","2018-06-08 20:51:00","","","","3","");
-INSERT INTO sales VALUES("8","149","Customer two","75.00","2","2018-06-08 20:52:00","","pcs","","7","");
+INSERT INTO sales VALUES("1111","160","James","100.00","0","2018-06-08 06:26:00","","pcs","0","","","0000-00-00 00:00:00.000000");
+INSERT INTO sales VALUES("1112","160","James","100.00","0","2018-06-08 06:27:00","","pcs","0","1111","","0000-00-00 00:00:00.000000");
+INSERT INTO sales VALUES("123","108","Marinel","83.00","1","2018-06-09 10:04:00","","pcs","0","","","0000-00-00 00:00:00.000000");
+INSERT INTO sales VALUES("2468","111","Customer One","83.00","1","2018-06-11 13:11:00","","pcs","0","","baguio","0000-00-00 00:00:00.000000");
+INSERT INTO sales VALUES("24688","112","Customer two","83.00","1","2018-06-11 13:12:00","","pcs","2","","bakakeng","2018-06-12 13:10:00.000000");
+INSERT INTO sales VALUES("246899","85","Customer two","65.00","1","2018-06-11 13:16:00","","pcs","4","","London","2018-06-12 00:00:00.000000");
+INSERT INTO sales VALUES("246000","111","Customer two","83.00","1","2018-06-11 13:29:00","","pcs","0","","bakakeng","");
+INSERT INTO sales VALUES("1232342","111","James","83.00","2","2018-06-11 16:27:00","","pcs","","","","");
+INSERT INTO sales VALUES("12345","111","Jake James","83.00","1","2018-06-11 16:28:00","","pcs","","","","");
+INSERT INTO sales VALUES("999977777","153","James","50.00","2","2018-06-11 16:36:00","","pcs","","","","");
+INSERT INTO sales VALUES("3333","153","Jake the 2nd","50.00","3","2018-06-11 16:36:00","","pcs","5","","Taiwan Taipe","2018-06-12 00:00:00.000000");
 
 
 
@@ -1044,20 +876,77 @@ CREATE TABLE `stock_adjustments` (
   UNIQUE KEY `stock_adjustments_id_UNIQUE` (`stock_adjustments_id`),
   KEY `sa_product_id_idx` (`product_id`),
   CONSTRAINT `sa_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=latin1;
 
-INSERT INTO stock_adjustments VALUES("28","ADMIN","126","1","damaged","Accepted","damaged by rats","2018-06-05 04:07:00","");
+INSERT INTO stock_adjustments VALUES("28","ADMIN","126","1","damaged","Pending","damaged by rats","2018-06-12 15:04:34","");
 INSERT INTO stock_adjustments VALUES("29","ADMIN","80","1","damaged","Accepted","adsada","2018-06-06 11:08:00","");
 INSERT INTO stock_adjustments VALUES("30","ADMIN","83","1","damaged","Accepted","asdsad","2018-06-06 11:10:00","");
-INSERT INTO stock_adjustments VALUES("31","ADMIN","86","1","damaged","Accepted","mark","2018-06-08 00:33:00","");
-INSERT INTO stock_adjustments VALUES("32","ADMIN","82","2","damaged","Accepted","sasds","2018-06-08 00:34:00","");
-INSERT INTO stock_adjustments VALUES("33","ADMIN","82","2","damaged","Accepted","sadasdasd","2018-06-08 00:35:00","");
-INSERT INTO stock_adjustments VALUES("34","ADMIN","79","1","damaged","Accepted","sdasdas","2018-06-08 03:50:00","");
-INSERT INTO stock_adjustments VALUES("35","ADMIN","83","1","damaged","Accepted","adsds","2018-06-20 12:22:00","");
-INSERT INTO stock_adjustments VALUES("36","ADMIN","125","1","damaged","Accepted","asdasda","2018-06-09 12:10:00","");
-INSERT INTO stock_adjustments VALUES("37","ADMIN","116","1","damaged","Accepted","asdasda","2018-06-09 12:10:00","");
-INSERT INTO stock_adjustments VALUES("38","ADMIN","130","101","damaged","Accepted","asdas","2018-06-09 12:13:00","");
-INSERT INTO stock_adjustments VALUES("39","ADMIN","108","10","damaged","Accepted","sadasa","2018-06-09 12:13:00","");
+INSERT INTO stock_adjustments VALUES("31","ADMIN","159","1","damaged","Accepted","item was damaged","2018-06-08 01:20:00","");
+INSERT INTO stock_adjustments VALUES("32","ADMIN","83","1","damaged","Accepted","nnmnbm","2018-06-08 02:19:00","");
+INSERT INTO stock_adjustments VALUES("33","ADMIN","116","1","damaged","Accepted","nmbmbn","2018-06-08 02:19:00","");
+INSERT INTO stock_adjustments VALUES("34","ADMIN","39","2","damaged","Accepted","asdasd","2018-06-08 02:31:00","");
+INSERT INTO stock_adjustments VALUES("35","ADMIN","40","3","damaged","Accepted","asdasdd","2018-06-08 02:31:00","");
+INSERT INTO stock_adjustments VALUES("36","ADMIN","83","2","damaged","Accepted","asdasd","2018-06-08 02:36:00","");
+INSERT INTO stock_adjustments VALUES("37","ADMIN","80","1","damaged","Accepted","asdasda","2018-06-08 02:36:00","");
+INSERT INTO stock_adjustments VALUES("38","ADMIN","115","3","damaged","Accepted","fchgjbkj","2018-06-08 02:37:00","");
+INSERT INTO stock_adjustments VALUES("39","ADMIN","117","1","damaged","Accepted","rhj","2018-06-08 02:37:00","");
+INSERT INTO stock_adjustments VALUES("40","ADMIN","111","1","damaged","Accepted","ghjgj","2018-06-08 02:38:00","");
+INSERT INTO stock_adjustments VALUES("41","ADMIN","46","1","damaged","Accepted","dcfgghvh","2018-06-08 02:38:00","");
+INSERT INTO stock_adjustments VALUES("42","ADMIN","67","1","damaged","Accepted","gggfjfj","2018-06-08 02:38:00","");
+INSERT INTO stock_adjustments VALUES("43","ADMIN","83","1","damaged","Accepted","asdasd","2018-06-08 02:40:00","");
+INSERT INTO stock_adjustments VALUES("44","ADMIN","65","1","damaged","Accepted","asdsad","2018-06-08 02:40:00","");
+INSERT INTO stock_adjustments VALUES("45","ADMIN","67","1","damaged","Accepted","dasdad","2018-06-08 02:40:00","");
+INSERT INTO stock_adjustments VALUES("46","ADMIN","66","1","damaged","Accepted","asdasd","2018-06-08 02:41:00","");
+INSERT INTO stock_adjustments VALUES("47","ADMIN","67","1","damaged","Accepted","sdadasd","2018-06-08 02:41:00","");
+INSERT INTO stock_adjustments VALUES("48","ADMIN","23","1","lost","Accepted","asdada","2018-06-08 02:41:00","");
+INSERT INTO stock_adjustments VALUES("49","ADMIN","125","1","damaged_salable","Accepted","adasda","2018-06-08 02:41:00","");
+INSERT INTO stock_adjustments VALUES("50","ADMIN","67","1","damaged_salable","Accepted","dasdasd","2018-06-08 02:41:00","");
+INSERT INTO stock_adjustments VALUES("51","ADMIN","67","1","damaged","Accepted","tddhfjhgjh","2018-06-08 02:46:00","");
+INSERT INTO stock_adjustments VALUES("52","ADMIN","131","1","damaged","Accepted","gg","2018-06-08 02:46:00","");
+INSERT INTO stock_adjustments VALUES("53","ADMIN","34","4","lost","Accepted","fgvhj","2018-06-08 02:46:00","");
+INSERT INTO stock_adjustments VALUES("54","ADMIN","51","1","damaged_salable","Accepted","gcfhgjhk","2018-06-08 02:46:00","");
+INSERT INTO stock_adjustments VALUES("55","ADMIN","80","1","damaged","Accepted","jjh","2018-06-08 02:47:00","");
+INSERT INTO stock_adjustments VALUES("56","ADMIN","51","1","damaged_salable","Accepted","gghjj","2018-06-08 02:47:00","");
+INSERT INTO stock_adjustments VALUES("57","ADMIN","34","1","lost","Accepted","fdhffg","2018-06-08 02:47:00","");
+INSERT INTO stock_adjustments VALUES("58","ADMIN","65","2","damaged","Accepted","bghj","2018-06-08 02:47:00","");
+INSERT INTO stock_adjustments VALUES("59","ADMIN","66","3","damaged_salable","Accepted","jkhkhkjhkj","2018-06-08 02:47:00","");
+INSERT INTO stock_adjustments VALUES("60","ADMIN","9","1","damaged","Accepted","asdasd","2018-06-08 02:56:00","");
+INSERT INTO stock_adjustments VALUES("61","ADMIN","8","1","damaged","Accepted","asdasd","2018-06-08 02:56:00","");
+INSERT INTO stock_adjustments VALUES("62","ADMIN","8","1","damaged","Accepted","asdasda","2018-06-08 02:56:00","");
+INSERT INTO stock_adjustments VALUES("63","ADMIN","81","1","damaged","Accepted","sadas","2018-06-08 02:56:00","");
+INSERT INTO stock_adjustments VALUES("64","ADMIN","8","1","damaged","Accepted","asdasd","2018-06-08 02:56:00","");
+INSERT INTO stock_adjustments VALUES("65","ADMIN","119","1","damaged","Accepted","asdasda","2018-06-08 02:56:00","");
+INSERT INTO stock_adjustments VALUES("66","ADMIN","122","1","damaged","Accepted","asdasd","2018-06-08 02:56:00","");
+INSERT INTO stock_adjustments VALUES("67","ADMIN","149","1","damaged_salable","Accepted","asdasd","2018-06-08 02:58:00","");
+INSERT INTO stock_adjustments VALUES("68","ADMIN","108","2","damaged","Accepted","sdsad","2018-06-08 02:58:00","");
+INSERT INTO stock_adjustments VALUES("69","ADMIN","97","1","damaged","Accepted","fdsfsdfs","2018-06-08 02:58:00","");
+INSERT INTO stock_adjustments VALUES("70","ADMIN","96","4","lost","Accepted","asdasd","2018-06-08 02:58:00","");
+INSERT INTO stock_adjustments VALUES("71","ADMIN","52","2","lost","Accepted","adasda","2018-06-08 02:58:00","");
+INSERT INTO stock_adjustments VALUES("72","ADMIN","53","1","damaged","Accepted","sada","2018-06-08 05:17:00","");
+INSERT INTO stock_adjustments VALUES("73","ADMIN","38","1","damaged","Accepted","dasda","2018-06-08 05:17:00","");
+INSERT INTO stock_adjustments VALUES("74","ADMIN","63","1","damaged","Accepted","asdasd","2018-06-08 05:19:00","");
+INSERT INTO stock_adjustments VALUES("75","ADMIN","111","1","damaged","Accepted","ASas","2018-06-08 05:20:00","");
+INSERT INTO stock_adjustments VALUES("76","ADMIN","98","1","damaged","Accepted","adasd","2018-06-08 05:20:00","");
+INSERT INTO stock_adjustments VALUES("77","Juan Dela Cruz","131","1","damaged","Pending","sdad","2018-06-08 05:24:00","");
+INSERT INTO stock_adjustments VALUES("78","Juan Dela Cruz","83","1","damaged","Pending","asdsad","2018-06-08 05:26:00","");
+INSERT INTO stock_adjustments VALUES("79","Juan Dela Cruz","18","1","damaged","Pending","sadsd","2018-06-08 05:31:00","");
+INSERT INTO stock_adjustments VALUES("80","Juan Dela Cruz","8","1","damaged","Pending","asdas","2018-06-08 05:31:00","");
+INSERT INTO stock_adjustments VALUES("81","Juan Dela Cruz","33","1","damaged","Pending","asdas","2018-06-08 05:31:00","");
+INSERT INTO stock_adjustments VALUES("82","ADMIN","118","1","damaged","Accepted","sddfghjklm","2018-06-12 13:22:00","");
+INSERT INTO stock_adjustments VALUES("83","ADMIN","115","1","damaged","Accepted","cvbnmmb","2018-06-12 14:17:00","");
+INSERT INTO stock_adjustments VALUES("84","ADMIN","115","1","damaged","Accepted","cvbnmmb","2018-06-12 14:17:00","");
+INSERT INTO stock_adjustments VALUES("85","ADMIN","115","1","damaged","Accepted","cvbnmmb","2018-06-12 14:17:00","");
+INSERT INTO stock_adjustments VALUES("86","ADMIN","118","1","damaged","Accepted","asdasda","2018-06-12 14:19:00","");
+INSERT INTO stock_adjustments VALUES("87","ADMIN","118","1","damaged","Accepted","asdasdsa","2018-06-12 14:20:00","");
+INSERT INTO stock_adjustments VALUES("88","ADMIN","117","1","damaged","Accepted","sdfhgkjnm","2018-06-12 14:21:00","");
+INSERT INTO stock_adjustments VALUES("89","ADMIN","111","1","damaged","Accepted","sdasda","2018-06-12 14:22:00","");
+INSERT INTO stock_adjustments VALUES("90","ADMIN","58","1","damaged","Accepted","Damaged","2018-06-12 14:27:00","");
+INSERT INTO stock_adjustments VALUES("91","ADMIN","18","1","damaged","Accepted","Damaged","2018-06-12 14:28:00","");
+INSERT INTO stock_adjustments VALUES("92","ADMIN","90","1","damaged_salable","Accepted","Damaged Saleable","2018-06-12 14:28:00","");
+INSERT INTO stock_adjustments VALUES("93","ADMIN","53","1","lost","Accepted","Lost","2018-06-12 14:28:00","");
+INSERT INTO stock_adjustments VALUES("94","ADMIN","66","1","damaged_salable","Accepted","asdas","2018-06-12 14:35:00","");
+INSERT INTO stock_adjustments VALUES("95","ADMIN","67","1","damaged","Pending","asdad","2018-06-12 15:04:34","");
+INSERT INTO stock_adjustments VALUES("96","ADMIN","69","1","lost","Pending","asdasd","2018-06-12 15:04:34","");
 
 
 
@@ -1078,7 +967,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO users VALUES("1","Juan Dela Cruz","12345678910","juan@gmail.com","Baguio City","$2y$10$KfNeDs7yyjq.6llgi7kNkOtEboPlArbW2jwsgVAvlw82MCHVR61Ja","h2uj1dEMhbmKhduCWijCxhE0V0gYROVEAA6WeGN9N8T5Rlypz2PIGb2mrjus","2018-04-02 12:36:26","2018-05-30 10:43:49","active");
+INSERT INTO users VALUES("1","Juan Dela Cruz","12345678910","juan@gmail.com","Baguio City","$2y$10$KfNeDs7yyjq.6llgi7kNkOtEboPlArbW2jwsgVAvlw82MCHVR61Ja","tkt5hSCALIK4CP8E61YJaDnV2olowIzJ9IDf7B3Qmk6kMp0r8K8SBbr6zIND","2018-04-02 12:36:26","2018-05-30 10:43:49","active");
 INSERT INTO users VALUES("4","jaramel","9876372718","jaramel@gmail.com","Loakan","$2y$10$kaTX2Yv1HO5lRfo.MIfMGODDYBiCj40nTx8AWsP4DIaO88P0Wd6BW","","2018-05-31 07:23:28","2018-05-31 07:23:28","active");
 
 

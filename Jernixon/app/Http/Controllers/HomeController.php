@@ -263,6 +263,7 @@ class HomeController extends Controller
 
         $arrayCount = count($request->productId);
         $data='';
+        
         for($i = 0;$i<$arrayCount;$i++){
            
             if($request->status[$i] == "Damaged"){
@@ -271,8 +272,12 @@ class HomeController extends Controller
                 );
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
-                    ->latest()
-                    ->first();
+                    ->get()
+                    ->last();
+                foreach($admin as $admins){
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->authName,$request->quantity[$i],'Damaged',$request->remarks[$i],$data->stock_adjustments_id));
+                }
+
 
             }elseif($request->status[$i] == "Damaged Saleable"){
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
@@ -280,22 +285,27 @@ class HomeController extends Controller
                 );
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
-                    ->latest()
-                    ->first();
-
+                    ->get()
+                    ->last();
+                foreach($admin as $admins){
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->authName,$request->quantity[$i],'Damaged Saleable',$request->remarks[$i],$data->stock_adjustments_id));
+                }
             }else{
                 $insertStockAdjustments = DB::table('stock_adjustments')->insertGetId(
                     ['employee_name' => $request->authName, 'product_id' => $request->productId[$i], 'quantity' => $request->quantity[$i], 'type' => "lost", 'created_at' => $request->Date, 'remarks'=>$request->remarks[$i]]
                 );            
                 $data = DB::table('stock_adjustments')
                     ->select('stock_adjustments_id')
-                    ->latest()
-                    ->first();
-            }
-            $admin = Admin::all();
+                    ->get()
+                    ->last();
+
                 foreach($admin as $admins){
-                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$data->stock_adjustments_id));
+                    $admins->notify(new StockAdjustmentNotification($request->itemName[$i],$request->authName,$request->quantity[$i],'Lost',$request->remarks[$i],$data->stock_adjustments_id));
                 }
+
+            }
+            
+            
         }
         
         return $request->all();

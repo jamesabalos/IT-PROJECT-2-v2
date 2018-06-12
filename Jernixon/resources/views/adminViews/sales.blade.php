@@ -358,7 +358,7 @@ ng-controller="customerPurchase"
         $('#dsDiv').addClass('hidden');
         $('#siDiv').removeClass('hidden');
     }
-    function searchItem(a){       
+    function searchItem(a){
         a.nextElementSibling.removeAttribute("class");
           if(a.value === ""){
               document.getElementById("searchResultDiv").setAttribute("class","hidden");   
@@ -444,7 +444,7 @@ ng-controller="customerPurchase"
         }
       }
 
-      function checkDiscount(input){    
+      function checkDiscount(input){
           if(input.value < 0){
             input.setAttribute("data-content","Discount should be greater than or equal to 0");
             $(input).popover('show');
@@ -1490,8 +1490,6 @@ function changeToDamage(){
                 var warrantyInput = "<input type='checkbox' class='form-control' onchange='toggleCheckboxWarranty(this)'>"
                 angular.element( lastRow.insertCell(-1) ).append(warrantyInput);
                 
-                
-
                 //store in localStorage
                 var tds  = $(lastRow.innerHTML).slice(0);   
                 console.log(tds[4].childNodes[0].outerHTML + tds[4].childNodes[1].outerHTML)  
@@ -1723,10 +1721,10 @@ function changeToDamage(){
                 // console.log("ngBindsWithoutFormat: "+ngBindsWithoutFormat)
                 //update total sales price and orignal price
                 document.getElementById("totalSalesDiv").innerHTML="";
-                angular.element( totalSalesDiv ).append( $compile(originalPrice)($scope) );
+                angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
                 document.getElementById("originalAmountDiv").innerHTML="";
-                angular.element( originalAmountDiv ).append( $compile(price)($scope) );
+                angular.element( originalAmountDiv ).append( $compile(originalPrice)($scope) );
             }
 
         }

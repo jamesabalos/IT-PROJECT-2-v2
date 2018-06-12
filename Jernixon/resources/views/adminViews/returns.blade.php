@@ -1401,7 +1401,6 @@ function searchSupplier(a){
                             <div class="text-right">                                           
                                 <div class="col-md-12">   
                                     <button type="submit" id="returnSaveButton" class="btn btn-success" form='formReturnItem'>Save</button>
-                                    {{-- <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button> --}}
                                     <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
@@ -1501,20 +1500,19 @@ function searchSupplier(a){
                                         
                             </div>
                         </div>
+                        <div class="row">
+                        <div class="text-right">                                           
+                            <div class="col-md-12">   
+                                <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
+                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
                     </div>
                     {!! Form::close() !!}
-        
 
                         </div>
-                <div class="row">
-                    <div class="text-right">                                           
-                        <div class="col-md-12">   
-                            <button type="submit" id="returnSaveButton" class="btn btn-success" form='formReturnItem'>Save</button>
-                            <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
-                            <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </div>
-                </div>
+                
                 
             </div>
         </div>

@@ -654,7 +654,7 @@ CREATE TABLE `purchases` (
   PRIMARY KEY (`purchase_id`),
   KEY `purchases_product_id_foreign` (`product_id`),
   CONSTRAINT `purchases_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO purchases VALUES("1","1","82","Honda","5","","1.00","2018-04-06 00:00:00","","0","");
 INSERT INTO purchases VALUES("2","1","19","Honda","7","","1.00","2018-04-06 00:00:00","","0","");
@@ -713,6 +713,7 @@ INSERT INTO purchases VALUES("54","321232","82","Honda","0","pcs","1.00","2018-0
 INSERT INTO purchases VALUES("55","3332","82","Honda","0","pcs","1.00","2018-06-11 23:49:00","","0","0");
 INSERT INTO purchases VALUES("56","3456","82","Honda","2","pcs","1.00","2018-06-11 00:00:00","","2","0");
 INSERT INTO purchases VALUES("57","435","82","Honda","0","pcs","1.00","2018-06-11 00:21:00","","0","0");
+INSERT INTO purchases VALUES("58","5435","108","Motorstar","0","pcs","53.00","2018-06-12 12:27:00","","0","0");
 
 
 
@@ -755,7 +756,7 @@ CREATE TABLE `returns_supplier` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`returns_s_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 INSERT INTO returns_supplier VALUES("7","","","yamaha","Pending","2018-06-09 12:14:34","");
 INSERT INTO returns_supplier VALUES("6","","","yamaha","Pending","2018-06-09 12:14:23","");
@@ -775,6 +776,8 @@ INSERT INTO returns_supplier VALUES("19","123","","Honda","Settled","2018-06-11 
 INSERT INTO returns_supplier VALUES("20","3","","Honda","Settled","2018-06-11 23:49:29","");
 INSERT INTO returns_supplier VALUES("21","12","","Honda","Settled","2018-06-12 00:08:25","");
 INSERT INTO returns_supplier VALUES("22","12","","Honda","Settled","2018-06-12 00:21:15","");
+INSERT INTO returns_supplier VALUES("23","1231231","","h","Pending","2018-06-12 12:26:09","");
+INSERT INTO returns_supplier VALUES("24","234","","Motorstar","Settled","2018-06-12 12:27:28","");
 
 
 
@@ -794,7 +797,7 @@ CREATE TABLE `returns_supplier_info` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`return_supplier_id`),
   KEY `returns_s_id_idx` (`returns_s_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 INSERT INTO returns_supplier_info VALUES("8","86876","5","151","0","1","0","7","Accepted","2018-06-11 23:44:09","");
 INSERT INTO returns_supplier_info VALUES("9","","5","82","4","0","4","0","Rejected","2018-06-09 13:29:02","");
@@ -817,6 +820,8 @@ INSERT INTO returns_supplier_info VALUES("25","321232","19","82","0","0","0","0"
 INSERT INTO returns_supplier_info VALUES("26","3332","20","82","0","0","0","0","Accepted","2018-06-11 23:49:29","");
 INSERT INTO returns_supplier_info VALUES("27","3456","21","82","2","0","2","0","Accepted","2018-06-12 00:08:25","");
 INSERT INTO returns_supplier_info VALUES("28","435","22","82","0","0","0","0","Accepted","2018-06-12 00:21:15","");
+INSERT INTO returns_supplier_info VALUES("29","","23","151","0","0","0","0","Pending","2018-06-12 12:26:09","");
+INSERT INTO returns_supplier_info VALUES("30","5435","24","108","0","0","0","0","Accepted","2018-06-12 12:27:28","");
 
 
 

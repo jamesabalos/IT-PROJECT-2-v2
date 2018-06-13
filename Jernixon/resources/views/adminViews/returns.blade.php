@@ -694,7 +694,7 @@ function searchSupplier(a){
         newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='unit[]' > <option class='form-control'  value='pcs'>Pcs</option><option class='form-control'  value='sets'>Sets</option></select>"+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td>"+button.dataset.unitprice+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' disabled name='amount[]'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><button type='button' data-buttontemp='"+button.parentNode.parentNode.parentNode.outerHTML+"' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+        newRow.insertCell(-1).innerHTML = "<td><button type='button' data-buttontemp='"+button.parentNode.parentNode.parentNode.outerHTML+"' data-returnsid='"+button.dataset.returnsid+"' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
     
         $id =  button.dataset.id;
         document.getElementById('stat'+$id).innerHTML = "Accepted";
@@ -708,7 +708,7 @@ function searchSupplier(a){
     function Rejected(button){
         $id = button.dataset.id;
         document.getElementById('saveSupplierExchangeItemButton').removeAttribute('disabled');
-        document.getElementById('stat'+$id).innerHTML = "<p>Rejected</p><button type='button' data-buttontemp='"+button.parentNode.outerHTML+"' onclick='undoRejected(this)'>undo</button><input type='hidden' name='rejectedId[]' value='" +button.dataset.id+ "'>";
+        document.getElementById('stat'+$id).innerHTML = "<p>Rejected</p><button type='button' data-buttontemp='"+button.parentNode.outerHTML+"' onclick='undoRejected(this)'>undo</button><input type='hidden' name='rejectedId[]' value='" +button.dataset.id+ "'><input type='hidden' name='rejected_returnsid[]' value='" +button.dataset.returnsid+ "'>";
 
     }
 	 function getItems2(button){
@@ -737,7 +737,7 @@ function searchSupplier(a){
                           newRow.insertCell(-1).innerHTML = "<td><div class='text-center'>\
     <div id='stat"+data[i].return_supplier_id+"'> <input type='hidden' id='status"+data[i].return_supplier_id+"'> <button class='controll btn btn-success' id='accept"+data[i].return_supplier_id+"' data-id='"+data[i].return_supplier_id+"' data-suppname ='"+data[i].supplier_name+"'  data-damagedsal_qty='"+data[i].damaged_salableQty_return+"' data-product_id='"+data[i].product_id+"'\
     data-description='"+data[i].description+"' data-unitPrice = '"+data[i].wholesale_price+"' data-returnsid = '"+data[i].returns_s_id+"' data-damaged_qty='"+data[i].damagedQty_return +"' onclick='Accept(this)' value='Accepted'>Accept</button>\
-    <button class='controll btn btn-danger' data-id='"+data[i].return_supplier_id+"' value='Rejected' onclick='Rejected(this)' >Reject</button></div></td>";
+    <button class='controll btn btn-danger' data-returnsid='"+data[i].returns_s_id+"' data-id='"+data[i].return_supplier_id+"' value='Rejected' onclick='Rejected(this)' >Reject</button></div></td>";
                      
                  }
                  
@@ -941,7 +941,7 @@ function searchSupplier(a){
                 var data = $(this).serialize();  
             var arrayOfData = $(this).serializeArray();    
              console.log(arrayOfData)  
-             //return true;    
+             return true;    
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.supplierExchange')}}",

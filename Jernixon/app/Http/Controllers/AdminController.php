@@ -466,68 +466,75 @@ public function createPurchasesFilter(Request $request){
                     ->select('returns_supplier.supplier_name','address','description','damaged_salableQty_return','damagedQty_return'
                     ,'return_status','returns_supplier.created_at as created_at','purchases.created_at as created_at2','returns_supplier.po_id'
                     ,'returned_po_id','unit','price','amount','damaged_item_accepted','damaged_salable_accepted')
-                    ->where('returns_supplier_info.returns_s_id', '=',$request->return_supplier_id)
-                    ->groupBy('description')
+                    ->where('returns_supplier_info.returns_s_id', '=',$request->return_s_id)
+                    ->groupBy('return_s_id')
                     ->get();
         return $data;
 
     }
     
     public function supplierExchange(Request $request){
-        
-        
-        $data = DB::table('purchases')
+        if($request->rejectedId&&  !($request->id)){
+            for($i=0; $i<count($request->rejectedId);$i++){
+                    $updatem1 = DB::table('returns_supplier_info')->where('return_supplier_id',$request->rejectedId[$i])->update(['return_status'=>'Rejected']);
+            }
+            // $updatem2 = DB::table('returns_supplier')->where('returns_s_id',$request->returnsid[$i])->update(['status'=>'Settled']);
+            return  'Returned Items are settled';   
+        }
+        if($request->id){
+            $data = DB::table('purchases')
             ->select('po_id')
             ->where('po_id' , '=' , $request->Official_Receipt_Number)
             ->get();
+            if($data->isEmpty()){
+                if($request->rejectedId){
+                    for($i=0; $i<count($request->rejectedId);$i++){
+                            $updatem1 = DB::table('returns_supplier_info')->where('return_supplier_id',$request->rejectedId[$i])->update(['return_status'=>'Rejected']);       
+                    }
+                }
 
-        if($data->isEmpty()){
+                $countm = count($request->productid);
+                // $addquantity='';
+                for($i=0; $i<$countm ;$i++){
+
+                    //decrement in the damaged item and track how many damaged to return
+                    if($request->damagedQuantityAccepted[$i] > 0 ){
+                        $update = DB::table('returns_supplier_info')->where('return_supplier_id','=',$request->id[$i])->increment('damaged_item_accepted',$request->damagedQuantityAccepted[$i]);
+                        DB::table('damaged_items')->where('product_id',$request->productid[$i])->decrement('quantity',$request->damagedQuantityAccepted[$i]);
+                    }
+
+                    //decrement in damaged salable and track the damage salable to return
+                    if($request->damagedSalableAccepted[$i] > 0){
+                        $updatesalable = DB::table('damaged_salable_items')->where('product_id',$request->productid[$i])->decrement('quantity',$request->damagedSalableAccepted[$i]);
+                        $update2 = DB::table('returns_supplier_info')->where('return_supplier_id','=',$request->id[$i])->increment('damaged_salable_accepted',$request->damagedSalableAccepted[$i]);
+                    }
+                    
+                    //addition
+                    $addquantity = $request->damagedQuantityAccepted[$i] + $request->damagedSalableAccepted[$i];
+                    $totalamount = $addquantity * $request->unitprice[$i];
+
+                    //update the items from Pending to Accepted
+                    $update3 = DB::table('returns_supplier_info')->where('return_supplier_id','=',$request->id[$i])->update(['return_status'=>'Accepted','returned_po_id'=>$request->Delivery_Receipt_Number]);
+
+                    // create New Delivery receipt
+                    $insertPurchases = DB::table('purchases')->insert(
+                        ['po_id' => $request->Delivery_Receipt_Number, 'product_id' => $request->productid[$i],'quantity'=> $addquantity, 'supplier_name' => $request->Supplier, 'price' => $request->unitprice[$i],'created_at' => $request->Date, 'discount' => '0', 'amount'=>$totalamount, 'unit' => $request->unit[$i]]
+                    );
+                    
+                    //Increase the salable items.
+                    DB::table('salable_items')
+                    ->where('product_id', $request->productid[$i])
+                    ->increment('quantity',$addquantity);
+                }
+                return 'Returned Items are settled';
+            }else{
+                return "unsuccessful";
+            }
+
+        }
 
         
-        $countm = count($request->productid);
-        // $addquantity='';
-            for($i=0; $i<$countm ;$i++){
-
-                //decrement in the damaged item and track how many damaged to return
-                if($request->damagedQuantityAccepted[$i] > 0 ){
-                    $update = DB::table('returns_supplier_info')->where('return_supplier_id','=',$request->id[$i])->increment('damaged_item_accepted',$request->damagedQuantityAccepted[$i]);
-                    DB::table('damaged_items')->where('product_id',$request->productid[$i])->decrement('quantity',$request->damagedQuantityAccepted[$i]);
-                }
-
-                //decrement in damaged salable and track the damage salable to return
-                if($request->damagedSalableAccepted[$i] > 0){
-                    $updatesalable = DB::table('damaged_salable_items')->where('product_id',$request->productid[$i])->decrement('quantity',$request->damagedSalableAccepted[$i]);
-                    $update2 = DB::table('returns_supplier_info')->where('return_supplier_id','=',$request->id[$i])->increment('damaged_salable_accepted',$request->damagedSalableAccepted[$i]);
-                }
-                
-                //addition
-                $addquantity = $request->damagedQuantityAccepted[$i] + $request->damagedSalableAccepted[$i];
-                $totalamount = $addquantity * $request->unitprice[$i];
-
-                //update the items from Pending to Accepted
-                $update3 = DB::table('returns_supplier_info')->where('return_supplier_id','=',$request->id[$i])->update(['return_status'=>'Accepted','returned_po_id'=>$request->Delivery_Receipt_Number]);
-
-                // create New Delivery receipt
-                $insertPurchases = DB::table('purchases')->insert(
-                    ['po_id' => $request->Delivery_Receipt_Number, 'product_id' => $request->productid[$i],'quantity'=> $addquantity, 'supplier_name' => $request->Supplier, 'price' => $request->unitprice[$i],'created_at' => $request->Date, 'discount' => '0', 'amount'=>$totalamount, 'unit' => $request->unit[$i]]
-                );
-                
-                //Increase the salable items.
-                DB::table('salable_items')
-                ->where('product_id', $request->productid[$i])
-                ->increment('quantity',$addquantity);
-
-                //Update all status of items to rejected if it is not accepted.
-                $update4 = DB::table('returns_supplier_info')->where('returns_s_id',$request->returnsid[$i])->where('return_status','Pending')->update(['return_status'=>'Rejected']);
-                $update5 = DB::table('returns_supplier')->where('returns_s_id',$request->returnsid[$i])->update(['status'=>'Settled']);
-                
-                
-            }
-            return 'Returned Items are settled';        
-            
-        }else{
-            return "unsuccessful";
-        }
+        //$updatem2 = DB::table('returns_supplier')->where('returns_s_id',$request->returnsid[$i])->update(['status'=>'Settled']);
 
     }
     

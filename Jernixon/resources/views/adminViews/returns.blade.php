@@ -657,7 +657,7 @@ function searchSupplier(a){
         }
     }
     function Accept(button){
-        var tbody = document.getElementById("supplierExchangeTbody");
+        var tbody = document.getElementById("supplierExchangeTbody");   
         var newRow = tbody.insertRow(-1);
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' class='form-control' name='productid[]' value="+button.dataset.product_id+"><input type='hidden' class='form-control' name='returnsid[]' value="+button.dataset.returnsid+"><input type='hidden' class='form-control' name='Supplier' value="+button.dataset.suppname+"><input type='hidden' class='form-control' name='id[]' value="+button.dataset.id+"><input type='hidden' class='form-control' name='unitprice[]' value="+button.dataset.unitprice+"><p>" +button.dataset.description+ "</p></td>";
         newRow.insertCell(-1).innerHTML = "<td><input trigger='manual' placement='top' data-toggle='popover' title='Error' data-content='Exceeded' onchange='computeAmount(this)' class='form-control' value='0' data-unitprice='"+button.dataset.unitprice+"' type='number' data-max='"+button.dataset.damaged_qty+"' name='damagedQuantityAccepted[]'></td>";
@@ -672,9 +672,14 @@ function searchSupplier(a){
         document.getElementById("saveSupplierExchangeItemButton").removeAttribute("disabled")
 
     }
+    function undoRejected(button){
+        button.parentNode.innerHTML = button.dataset.buttontemp
+    }
     function Rejected(button){
         $id = button.dataset.id;
-        document.getElementById('stat'+$id).innerHTML = "Rejected";
+
+        document.getElementById('stat'+$id).innerHTML = "<p>Rejected</p><button type='button' data-buttontemp='"+button.parentNode.outerHTML+"' onclick='undoRejected(this)'>undo</button><input type='hidden' name='rejectedId[]' value='" +button.dataset.id+ "'>";
+
     }
 	 function getItems2(button){
         $("#supplierExchangeTbody tr").remove(); 
@@ -700,9 +705,9 @@ function searchSupplier(a){
                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].damaged_salableQty_return + "</td>";
 
                           newRow.insertCell(-1).innerHTML = "<td><div class='text-center'>\
-                            <div id='stat"+data[i].return_supplier_id+"'> <input type='hidden' id='status"+data[i].return_supplier_id+"'> <button class='controll btn btn-success' id='accept"+data[i].return_supplier_id+"' data-id='"+data[i].return_supplier_id+"' data-suppname ='"+data[i].supplier_name+"'  data-damagedsal_qty='"+data[i].damaged_salableQty_return+"' data-product_id='"+data[i].product_id+"'\
-                                 data-description='"+data[i].description+"' data-unitPrice = '"+data[i].wholesale_price+"' data-returnsid = '"+data[i].returns_s_id+"' data-damaged_qty='"+data[i].damagedQty_return +"' onclick='Accept(this)' value='Accepted'>Accept</button>\
-                                <button class='controll btn btn-danger' data-id='"+data[i].return_supplier_id+"' value='Rejected' onclick='Rejected(this)' >Reject</button></div></td>";
+    <div id='stat"+data[i].return_supplier_id+"'> <input type='hidden' id='status"+data[i].return_supplier_id+"'> <button class='controll btn btn-success' id='accept"+data[i].return_supplier_id+"' data-id='"+data[i].return_supplier_id+"' data-suppname ='"+data[i].supplier_name+"'  data-damagedsal_qty='"+data[i].damaged_salableQty_return+"' data-product_id='"+data[i].product_id+"'\
+    data-description='"+data[i].description+"' data-unitPrice = '"+data[i].wholesale_price+"' data-returnsid = '"+data[i].returns_s_id+"' data-damaged_qty='"+data[i].damagedQty_return +"' onclick='Accept(this)' value='Accepted'>Accept</button>\
+    <button class='controll btn btn-danger' data-id='"+data[i].return_supplier_id+"' value='Rejected' onclick='Rejected(this)' >Reject</button></div></td>";
                      
                  }
                  
@@ -904,7 +909,9 @@ function searchSupplier(a){
         $('#supplierexchange').on('submit',function(e){
             e.preventDefault();
                 var data = $(this).serialize();  
-            var arrayOfData = $(this).serializeArray();      
+            var arrayOfData = $(this).serializeArray();    
+            // console.log(arrayOfData)  
+            // return true;    
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.supplierExchange')}}",

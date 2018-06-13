@@ -104,6 +104,21 @@ ng-app="ourAngularJsApp"
 <script src="{{asset('assets/js/buttons.flash.min.js')}}"></script>
 
 <script>
+let today = new Date().toISOString().substr(0, 10);
+        var d = new Date();
+        var hours = "";
+        var minutes = "";
+        if( parseInt(d.getHours()) < 10  ){
+            hours = "0"+d.getHours();
+        }else{
+            hours = d.getHours();
+        }
+        if( parseInt(d.getMinutes()) < 10){
+            minutes = "0"+d.getMinutes();
+        }else{
+            minutes = d.getMinutes();
+        }   
+        var time=today+"T"+hours +":"+minutes;
 
     function removeRow(a){
         $(a.parentNode.parentNode).hide(500,function(){
@@ -711,7 +726,9 @@ function searchSupplier(a){
         document.getElementById('stat'+$id).innerHTML = "<p>Rejected</p><button type='button' data-buttontemp='"+button.parentNode.outerHTML+"' onclick='undoRejected(this)'>undo</button><input type='hidden' name='rejectedId[]' value='" +button.dataset.id+ "'><input type='hidden' name='rejected_returnsid[]' value='" +button.dataset.returnsid+ "'>";
 
     }
+     
 	 function getItems2(button){
+         
         $("#supplierExchangeTbody tr").remove(); 
         // document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
                 
@@ -734,12 +751,70 @@ function searchSupplier(a){
                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].damagedQty_return + "</td>";
                      newRow.insertCell(-1).innerHTML = "<td>" +data[i].damaged_salableQty_return + "</td>";
 
-                          newRow.insertCell(-1).innerHTML = "<td><div class='text-center'>\
-    <div id='stat"+data[i].return_supplier_id+"'> <input type='hidden' id='status"+data[i].return_supplier_id+"'> <button class='controll btn btn-success' id='accept"+data[i].return_supplier_id+"' data-id='"+data[i].return_supplier_id+"' data-suppname ='"+data[i].supplier_name+"'  data-damagedsal_qty='"+data[i].damaged_salableQty_return+"' data-product_id='"+data[i].product_id+"'\
-    data-description='"+data[i].description+"' data-unitPrice = '"+data[i].wholesale_price+"' data-returnsid = '"+data[i].returns_s_id+"' data-damaged_qty='"+data[i].damagedQty_return +"' onclick='Accept(this)' value='Accepted'>Accept</button>\
-    <button class='controll btn btn-danger' data-returnsid='"+data[i].returns_s_id+"' data-id='"+data[i].return_supplier_id+"' value='Rejected' onclick='Rejected(this)' >Reject</button></div></td>";
+                     if(data[i].return_status == "Pending"){
+                    newRow.insertCell(-1).innerHTML = "<td><div class='text-center'>\
+                    <div id='stat"+data[i].return_supplier_id+"'> <input type='hidden' id='status"+data[i].return_supplier_id+"'> <button class='controll btn btn-success' id='accept"+data[i].return_supplier_id+"' data-id='"+data[i].return_supplier_id+"' data-suppname ='"+data[i].supplier_name+"'  data-damagedsal_qty='"+data[i].damaged_salableQty_return+"' data-product_id='"+data[i].product_id+"'\
+                    data-description='"+data[i].description+"' data-unitPrice = '"+data[i].wholesale_price+"' data-returnsid = '"+data[i].returns_s_id+"' data-damaged_qty='"+data[i].damagedQty_return +"' onclick='Accept(this)' value='Accepted'>Accept</button>\
+                    <button class='controll btn btn-danger' data-returnsid='"+data[i].returns_s_id+"' data-id='"+data[i].return_supplier_id+"' value='Rejected' onclick='Rejected(this)' >Reject</button></div></td>";
+                     }else{
+                          newRow.insertCell(-1).innerHTML = "<td>"+data[i].return_status+"</td>";
+                     }
                      
                  }
+                 $.ajax({
+                        type:'GET',
+                        url: "{{route('admin.getSupplierReturnedItems2')}}",
+                        data: {
+                            'return_s_id':data[0].returns_s_id,
+                        },
+                        success:function(data){
+                            console.log(data);
+                            if(!$.trim(data)){
+                                console.log('no data');
+                                
+                                document.getElementById("returned_date").removeAttribute('disabled');
+                                
+                                $("#supplierExchangeTBody3 tr").remove();
+                                document.getElementById('hid').removeAttribute('class','hidden');
+                                document.getElementById('saveSupplierExchangeItemButton').setAttribute('class','btn btn-success');
+                                document.getElementById('table1').setAttribute('class','table table-bordered table-striped');
+                                document.getElementById('table2').setAttribute('class','hidden');
+                            }else{
+                                console.log('not here');
+                                 $("#supplierExchangeTBody3 tr").remove();
+                                var returnedItemTable2 = document.getElementById("supplierExchangeTBody3");
+                                if(data[0].status == "Pending"){
+                                    document.getElementById('hid').removeAttribute('class','hidden');
+                                    document.getElementById('saveSupplierExchangeItemButton').setAttribute('class','btn btn-success');
+                                    document.getElementById('table1').setAttribute('class','table table-bordered table-striped');
+                                }else{
+                                    document.getElementById('hid').setAttribute('class','hidden');
+                                    document.getElementById('table2').setAttribute('class','table table-bordered table-striped');
+                                    document.getElementById('saveSupplierExchangeItemButton').setAttribute('class','hidden');
+                                    document.getElementById('table1').setAttribute('class','hidden');
+                                }
+                                
+                                
+                                for(var i = 0; i < data.length; i++){
+                                    var newRow2 = returnedItemTable2.insertRow(-1);
+                                    
+                                    newRow2.insertCell(-1).innerHTML = "<td>" +data[i].created_at2+ "</td>";
+                                    newRow2.insertCell(-1).innerHTML = "<td>" +data[i].returned_po_id+ "</td>";
+                                    newRow2.insertCell(-1).innerHTML = "<td>" +data[i].description+ "</td>";
+                                    newRow2.insertCell(-1).innerHTML = "<td>" +data[i].damaged_item_accepted + "</td>";
+                                    newRow2.insertCell(-1).innerHTML = "<td>" +data[i].damaged_salable_accepted + "</td>";    
+                                    newRow2.insertCell(-1).innerHTML = "<td><div class = 'text-center'>"+ data[i].unit + "</div></td>";
+                                    newRow2.insertCell(-1).innerHTML = "<td><div class = 'text-center'>"+ data[i].price + "</div></td>";
+                                    newRow2.insertCell(-1).innerHTML = "<td><div class = 'text-center'>"+ data[i].amount + "</div></td>";
+
+
+                                }
+                            }
+                           
+                            
+                            
+                        }
+                    });
                  
                  
      		}
@@ -895,20 +970,6 @@ function searchSupplier(a){
             localStorage.removeItem('message');
         }
 
-        let today = new Date().toISOString().substr(0, 10);
-        var d = new Date();
-        var hours = "";
-        var minutes = "";
-        if( parseInt(d.getHours()) < 10  ){
-            hours = "0"+d.getHours();
-        }else{
-            hours = d.getHours();
-        }
-        if( parseInt(d.getMinutes()) < 10){
-            minutes = "0"+d.getMinutes();
-        }else{
-            minutes = d.getMinutes();
-        }   
         document.querySelector("#today").value = today+"T"+hours +":"+minutes;
         document.querySelector("#suppliertoday").value = today+"T"+hours +":"+minutes;
         document.querySelector("#returned_date").value = today+"T"+hours +":"+minutes;
@@ -941,7 +1002,7 @@ function searchSupplier(a){
                 var data = $(this).serialize();  
             var arrayOfData = $(this).serializeArray();    
              console.log(arrayOfData)  
-             return true;    
+             //return true;    
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.supplierExchange')}}",
@@ -949,7 +1010,7 @@ function searchSupplier(a){
                     data:arrayOfData,
                     success:function(data){
                         console.log(data);
-                        if(data == 'successful'){ 
+                        if($.trim(data) == 'successful'){ 
                             $("#errorDivCreatePurchase").html("");
                             localStorage.setItem('message','Returned Items are settled');
                             localStorage.setItem('success','Successful');
@@ -960,7 +1021,17 @@ function searchSupplier(a){
 
                         }
                     },
-                   
+                    error:function(data){
+                        var response = data.responseJSON;
+                        $("#errorDivCreateSupplierReturns").removeClass("hidden").addClass("alert-danger text-center");
+                        $("#errorDivCreateSupplierReturns").html(function(){
+                            var addedHtml="";
+                            for (var key in response.errors) {
+                                addedHtml += "<p>"+response.errors[key]+"</p>";
+                            }
+                            return addedHtml;
+                        });
+                    }
                 });
 
             
@@ -1772,7 +1843,7 @@ function searchSupplier(a){
 </div>
 
 <div id="viewReturn2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="viewLabel" aria-hidden="true"> 
-    <div class = "modal-dialog modal-lg">
+    <div class = "modal-dialog modal-lg" style='width:65%;'>
         <div class = "modal-content">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
@@ -1858,25 +1929,27 @@ function searchSupplier(a){
                         </strong>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Date', 'Date:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    <input type="datetime-local" name="Date" id="returned_date"  class="form-control"/>
-                                    
+                        <div id='hid'>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        {{Form::label('Date', 'Date:')}}
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="datetime-local" name="Date" id="returned_date"  class="form-control"/>
+                                        
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">                                
-                            <div class="row">
-                                <div class="col-md-3">
-                                    {{Form::label('Delivery Receipt Number:')}}
-                                </div>
-                                <div class="col-md-9">
-                                    {{ Form::text('Delivery Receipt Number','',['class'=>'form-control','id'=>'returned_dr_id']) }}
+                            <div class="form-group">                                
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        {{Form::label('num','Delivery Receipt Number:')}}
+                                    </div>
+                                    <div class="col-md-9">
+                                        {{ Form::text('Delivery Receipt Number','',['class'=>'form-control','id'=>'returned_dr_id']) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1897,6 +1970,25 @@ function searchSupplier(a){
                                 </thead>
 
                                 <tbody id="supplierExchangeTbody">
+                                </tbody>
+                            </table>
+
+                            <table class="table table-bordered table-striped" id="table2">
+
+                                <thead>
+                                    <tr>
+                                        <th class="text-left" >Date</th>
+                                        <th class="text-left" >Delivery Receipt</th>
+                                        <th class="text-left" width="15%">Description</th>
+                                        <th class="text-left" width="15%">Damaged Quantity Accepted</th>
+                                        <th class="text-left" width="15%">Damaged Salable Quantity Accepted</th>
+                                        <th class="text-left">Unit</th>
+                                        <th class="text-left">Unit Price</th>
+                                        <th class="text-left">Amount</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="supplierExchangeTBody3">
                                 </tbody>
                             </table>
                             <div id="errorDivCreateSupplierReturns" class="hidden"></div>
@@ -2025,22 +2117,7 @@ function searchSupplier(a){
                         </div>
                             
                         <div class="content table-responsive">
-                            <table class="table table-bordered table-striped" id="table2">
-
-                                <thead>
-                                    <tr>
-                                        <th class="text-left" width="25%">Description</th>
-                                        <th class="text-left" width="15%">Damaged Quantity Accepted</th>
-                                        <th class="text-left" width="15%">Damaged Salable Quantity Accepted</th>
-                                        <th class="text-left" width="15%">Unit</th>
-                                        <th class="text-left">Unit Price</th>
-                                        <th class="text-left">Amount</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody id="supplierExchangeTBody3">
-                                </tbody>
-                            </table>
+                            
                         </div>
                     </div>
                 </div>

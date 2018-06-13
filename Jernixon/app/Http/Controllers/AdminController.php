@@ -390,21 +390,21 @@ public function createPurchasesFilter(Request $request){
 
             return Datatables::of($data)
             ->addColumn('action',function($data){
-                if($data->status == 'Pending'){
+                // if($data->status == 'Pending'){
                     return "
                     <a href = '#viewReturn2' data-toggle='modal' >
                         <button onclick='getItems2(this)' data-id='".$data->returns_s_id."' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
                     </a>
     
                     ";
-                }else{
-                    return "
-                    <a href = '#viewReturn3' data-toggle='modal' >
-                        <button onclick='getItems3(this)' data-id='".$data->returns_s_id."' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
-                    </a>
+                // }else{
+                //     return "
+                //     <a href = '#viewReturn3' data-toggle='modal' >
+                //         <button onclick='getItems3(this)' data-id='".$data->returns_s_id."' class='btn btn-info' ><i class='glyphicon glyphicon-th-list'></i> View</button>
+                //     </a>
     
-                    ";
-                }
+                //     ";
+                // }
 
             })
             ->make(true);
@@ -465,11 +465,14 @@ public function createPurchasesFilter(Request $request){
                     ->join('purchases','purchases.po_id','=','returns_supplier_info.returned_po_id')
                     ->select('returns_supplier.supplier_name','address','description','damaged_salableQty_return','damagedQty_return'
                     ,'return_status','returns_supplier.created_at as created_at','purchases.created_at as created_at2','returns_supplier.po_id'
-                    ,'returned_po_id','unit','price','amount','damaged_item_accepted','damaged_salable_accepted')
+                    ,'returned_po_id','unit','price','amount','damaged_item_accepted','damaged_salable_accepted','returns_supplier.status')
                     ->where('returns_supplier_info.returns_s_id', '=',$request->return_s_id)
-                    ->groupBy('return_s_id')
+                    ->groupBy('description')
                     ->get();
-        return $data;
+    
+            return $data;
+        
+        
 
     }
     
@@ -478,7 +481,12 @@ public function createPurchasesFilter(Request $request){
             for($i=0; $i<count($request->rejectedId);$i++){
                     $updatem1 = DB::table('returns_supplier_info')->where('return_supplier_id',$request->rejectedId[$i])->update(['return_status'=>'Rejected']);
             }
-            // $updatem2 = DB::table('returns_supplier')->where('returns_s_id',$request->returnsid[$i])->update(['status'=>'Settled']);
+            $getreturnstat = DB::table('returns_supplier_info')->where('return_status','Pending')->where('returns_s_id',$request->rejected_returnsid[0])->get();
+
+            if($getreturnstat->isEmpty()){
+                $updatem2 = DB::table('returns_supplier')->where('returns_s_id',$request->rejected_returnsid[0])->update(['status'=>'Settled']);
+            }
+            
             return  'successful';   
         }
         if($request->id){
@@ -526,6 +534,14 @@ public function createPurchasesFilter(Request $request){
                     DB::table('salable_items')
                     ->where('product_id', $request->productid[$i])
                     ->increment('quantity',$addquantity);
+
+                    
+
+                    
+                }
+                $getreturnstat = DB::table('returns_supplier_info')->where('return_status','Pending')->where('returns_s_id',$request->returnsid[0])->get();
+                if($getreturnstat->isEmpty()){
+                    $updatem2 = DB::table('returns_supplier')->where('returns_s_id',$request->returnsid[0])->update(['status'=>'Settled']);
                 }
                 return 'successful';
             }else{

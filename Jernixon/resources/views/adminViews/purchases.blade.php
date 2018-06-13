@@ -385,6 +385,9 @@ ng-controller="ownerPurchase"
           $('#formPurchaseOrder').on('submit',function(e){
               e.preventDefault();
               var data = $(this).serialize();
+            var arrayOfData = $(this).serializeArray();      
+                // console.log(arrayOfData)              
+                // return true;
                 if( $("#purchaseTable tr").length == 0 ){
                     $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
                         $("#errorDivCreatePurchase").html("<h4>Please input item/s</h4>");
@@ -395,8 +398,9 @@ ng-controller="ownerPurchase"
                   url: "{{route('admin.createPurchases')}}",
                   data: data,
 
-                  success:function(data){
-                    if(data === "successful"){
+                  success:function(dataReceive){
+                      console.log(dataReceive.replace(/^\s+|\s+$/g, ''))
+                    if(dataReceive.replace(/^\s+|\s+$/g, '') === "successful"){
                       //close modal
                       $('#purchase').modal('hide')                    
                       //remove rows in purchase table
@@ -414,8 +418,10 @@ ng-controller="ownerPurchase"
                       document.getElementById("formPurchaseOrder").reset(); //reset the form
 
                        $("#purchasesDataTable").DataTable().ajax.reload();//reload the dataTables
-                        $("#purchasetable tr").remove();
+                        location.reload();
+                        
                     }else{
+                        
                         $("#errorDivCreatePurchase").removeClass("hidden").addClass("alert-danger text-center");
                         $("#errorDivCreatePurchase").html("<h4>Official Receipt Number duplicated</h4>");
                     }

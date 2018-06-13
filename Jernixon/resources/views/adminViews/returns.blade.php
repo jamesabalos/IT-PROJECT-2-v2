@@ -677,7 +677,7 @@ function searchSupplier(a){
     }
     function Rejected(button){
         $id = button.dataset.id;
-
+        document.getElementById('saveSupplierExchangeItemButton').removeAttribute('disabled');
         document.getElementById('stat'+$id).innerHTML = "<p>Rejected</p><button type='button' data-buttontemp='"+button.parentNode.outerHTML+"' onclick='undoRejected(this)'>undo</button><input type='hidden' name='rejectedId[]' value='" +button.dataset.id+ "'>";
 
     }
@@ -722,7 +722,7 @@ function searchSupplier(a){
 	 		type:'GET',
 	 		url: "{{route('admin.getSupplierReturnedItems2')}}",
              data: {
-                 'return_supplier_id':rowId,
+                 'return_s_id':rowId,
              },
      		success:function(data){
                  console.log(data);
@@ -910,8 +910,8 @@ function searchSupplier(a){
             e.preventDefault();
                 var data = $(this).serialize();  
             var arrayOfData = $(this).serializeArray();    
-            // console.log(arrayOfData)  
-            // return true;    
+             console.log(arrayOfData)  
+             //return true;    
                 $.ajax({
                     type:'POST',
                     url: "{{route('admin.supplierExchange')}}",
@@ -1835,7 +1835,7 @@ function searchSupplier(a){
                                     {{Form::label('Delivery Receipt Number:')}}
                                 </div>
                                 <div class="col-md-9">
-                                    {{ Form::text('Delivery Receipt Number','',['class'=>'form-control','id'=>'returned_dr_id','required'=>'true']) }}
+                                    {{ Form::text('Delivery Receipt Number','',['class'=>'form-control','id'=>'returned_dr_id']) }}
                                 </div>
                             </div>
                         </div>

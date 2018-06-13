@@ -479,13 +479,14 @@ public function createPurchasesFilter(Request $request){
                     $updatem1 = DB::table('returns_supplier_info')->where('return_supplier_id',$request->rejectedId[$i])->update(['return_status'=>'Rejected']);
             }
             // $updatem2 = DB::table('returns_supplier')->where('returns_s_id',$request->returnsid[$i])->update(['status'=>'Settled']);
-            return  'Returned Items are settled';   
+            return  'successful';   
         }
         if($request->id){
             $data = DB::table('purchases')
             ->select('po_id')
-            ->where('po_id' , '=' , $request->Official_Receipt_Number)
+            ->where('po_id' , '=' , $request->Delivery_Receipt_Number)
             ->get();
+
             if($data->isEmpty()){
                 if($request->rejectedId){
                     for($i=0; $i<count($request->rejectedId);$i++){
@@ -526,7 +527,7 @@ public function createPurchasesFilter(Request $request){
                     ->where('product_id', $request->productid[$i])
                     ->increment('quantity',$addquantity);
                 }
-                return 'Returned Items are settled';
+                return 'successful';
             }else{
                 return "unsuccessful";
             }

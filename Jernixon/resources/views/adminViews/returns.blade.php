@@ -949,9 +949,16 @@ function searchSupplier(a){
                     data:arrayOfData,
                     success:function(data){
                         console.log(data);
-                        localStorage.setItem('message',data);
-                        localStorage.setItem('success','Successful');
-                        location.reload(true);
+                        if(data == 'successful'){ 
+                            $("#errorDivCreatePurchase").html("");
+                            localStorage.setItem('message','Returned Items are settled');
+                            localStorage.setItem('success','Successful');
+                            location.reload(true);
+                        }else{
+                            $("#errorDivCreateSupplierReturns").removeClass("hidden").addClass("alert-danger text-center");
+                            $("#errorDivCreateSupplierReturns").html('The delivery receipt is duplicated.');
+
+                        }
                     },
                    
                 });
@@ -1892,6 +1899,7 @@ function searchSupplier(a){
                                 <tbody id="supplierExchangeTbody">
                                 </tbody>
                             </table>
+                            <div id="errorDivCreateSupplierReturns" class="hidden"></div>
                         </div>
                     </div>
                 </div>

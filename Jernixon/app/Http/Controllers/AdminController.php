@@ -356,7 +356,7 @@ public function createPurchasesFilter(Request $request){
 
     public function searchSupplier($supplier){
         
-        $s = DB::table('purchases')->where('po_id','LIKE','%'.$supplier.'%')->groupBy('po_id')->get();
+        $s = DB::table('purchases')->where('po_id','LIKE','%'.$supplier.'%')->groupBy('po_id')->limit(5)->get();
         return $s; 
 
     }

@@ -137,36 +137,36 @@ ng-app="ourAngularJsApp"
         document.getElementById("searchResultDiv").innerHTML = "";
 
     }
-        function addSupplierRow(div){
-            document.getElementById("searchSupplierResultDiv").innerHTML = "";
-            var items =[];
-            var thatTbody = $("#returnSupplierItemTbody tr td:first-child");
-         $.ajax({
-            method: 'get',
-            url: "{{route('admin.getSupplierItems')}}",
-            data:{
-                 'po_id': div.firstChild.innerHTML,
-            },        
-            success: function(data){
-                console.log(data);
-                $("#returnSupplierItemTbody tr").remove();
-                var modalReturnItemTbody = document.getElementById("returnSupplierItemTbody");
-                
-                
-                    for(var i = 0; i < data.length; i++){
-                            var newRow = modalReturnItemTbody.insertRow(-1);
-                            document.getElementById("rspname").value = data[i].supplier_name;
-                            document.getElementById("rspname2").value = data[i].supplier_name;
-                            
-                            newRow.insertCell(-1).innerHTML = "<td>"+data[i].description+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
-                            newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='damaged"+data[i].product_id+"' type='number' min='0' max='" +data[i].damaged_quantity+"' name='damaged[]' value='0' ></td>";
-                            newRow.insertCell(-1).innerHTML = "<td><input class='form-control' disabled id='salable"+data[i].product_id+" ' type='number' min='0' max='"+data[i].damaged_salable_quantity+"' name='damagedsalable[]' value='0' ></td>";                            
-                            newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxSupplier(this)' type='checkbox' class='form-control'><input class='form-control' type='hidden' disabled name='product_id[]' value='" +data[i].product_id+ "'><input class='form-control' type='hidden' disabled name='po_id[]' value='" +data[i].po_id+ "'></td>";
+    function addSupplierRow(div){
+        document.getElementById("searchSupplierResultDiv").innerHTML = "";
+        var items =[];
+        var thatTbody = $("#returnSupplierItemTbody tr td:first-child");
+        $.ajax({
+        method: 'get',
+        url: "{{route('admin.getSupplierItems')}}",
+        data:{
+                'po_id': div.firstChild.innerHTML,
+        },        
+        success: function(data){
+            console.log(data);
+            $("#returnSupplierItemTbody tr").remove();
+            var modalReturnItemTbody = document.getElementById("returnSupplierItemTbody");
+            
+            
+                for(var i = 0; i < data.length; i++){
+                        var newRow = modalReturnItemTbody.insertRow(-1);
+                        document.getElementById("rspname").value = data[i].supplier_name;
+                        document.getElementById("rspname2").value = data[i].supplier_name;
                         
-                    }
+                        newRow.insertCell(-1).innerHTML = "<td>"+data[i].description+ "</td>";
+                        newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";    
+                        newRow.insertCell(-1).innerHTML = "<td><input class='form-control' onchange='checkQuantitySupplier(this)' oninput='inputDamageQuantityDamageSalableQuantity(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' disabled id='damaged"+data[i].product_id+"' type='number' data-max='" +data[i].quantity+"' name='damaged[]' value='0' ></td>";
+                        newRow.insertCell(-1).innerHTML = "<td><input class='form-control' onchange='checkQuantitySupplier(this)' oninput='inputDamageQuantityDamageSalableQuantity(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' disabled id='salable"+data[i].product_id+" ' type='number' data-max='"+data[i].quantity+"' name='damagedsalable[]' value='0' ></td>";                            
+                        newRow.insertCell(-1).innerHTML = "<td><input data-productId='" +data[i].product_id+ "' onchange='toggleCheckboxSupplier(this)' type='checkbox' class='form-control'><input class='form-control' type='hidden' disabled name='product_id[]' value='" +data[i].product_id+ "'><input class='form-control' type='hidden' disabled name='po_id[]' value='" +data[i].po_id+ "'><input type='hidden' name='supplierReturnTotalQuantity[]' value='0'></td>";
+                    
+                }
 
-            }
+        }
 
         });
 
@@ -194,6 +194,22 @@ ng-app="ourAngularJsApp"
 
     }
 
+    function inputDamageQuantityDamageSalableQuantity(input){
+        var total = parseInt( $(input).closest("tr")[0].children[2].firstElementChild.value ) + parseInt($(input).closest("tr")[0].children[3].firstElementChild.value);
+        if( total > parseInt( $(input).closest("tr")[0].children[1].innerHTML ) ){
+            $("#errorDivCreateReturnsSupplier").removeClass("hidden").addClass("alert-danger text-center");
+            $("#errorDivCreateReturnsSupplier").html(function(){
+                var addedHtml="";
+                    addedHtml += "<h4>Total quantity return for "+ $(input).closest("tr")[0].children[0].innerHTML +" exceeded.</h4>";
+                return addedHtml;
+            });
+        }else{          
+            $("#errorDivCreateReturnsSupplier").html("");
+
+        }
+        console.log( $(input).closest("tr")[0].children[4].children[3] )
+        $(input).closest("tr")[0].children[4].children[3].setAttribute("value",total);
+    }
     function checkQuantity(input){
         if( parseInt(input.value) > parseInt(input.dataset.max) ){
             input.setAttribute("data-content","Quantity exceeds the available stock on hand, quantity should not exceed "+input.dataset.max+"!");
@@ -211,6 +227,19 @@ ng-app="ourAngularJsApp"
             $(document.getElementById("discountInput")).popover('destroy');
 
         }
+    }
+    function checkQuantitySupplier(input){
+        if( parseInt(input.value) > parseInt(input.dataset.max) ){
+            input.setAttribute("data-content","Quantity should not exceed to "+input.dataset.max+"!");
+            $(input).popover('show');
+        }else if( parseInt(input.value) < 0 ){
+            input.setAttribute("data-content","Quantity is not sufficient!");
+            $(input).popover('show');
+        }else{
+            $(input).popover('destroy');    
+        }
+
+       
     }
 
     function checkTotalQuantityOfCheckedBox(){
@@ -630,7 +659,7 @@ function searchSupplier(a){
                     });
             }
         }
-        document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
+        // document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
     }
     function computeAmount(input){
         input.parentNode.parentNode.childNodes[5].firstChild.value = (parseInt( input.value )+parseInt(input.parentNode.nextElementSibling.firstChild.value))*parseInt(input.dataset.unitprice);
@@ -669,11 +698,12 @@ function searchSupplier(a){
     
         $id =  button.dataset.id;
         document.getElementById('stat'+$id).innerHTML = "Accepted";
-        document.getElementById("saveSupplierExchangeItemButton").removeAttribute("disabled")
+        // document.getElementById("saveSupplierExchangeItemButton").removeAttribute("disabled")
 
     }
     function undoRejected(button){
-        button.parentNode.innerHTML = button.dataset.buttontemp
+        button.parentNode.innerHTML = button.dataset.buttontemp;
+
     }
     function Rejected(button){
         $id = button.dataset.id;
@@ -683,7 +713,7 @@ function searchSupplier(a){
     }
 	 function getItems2(button){
         $("#supplierExchangeTbody tr").remove(); 
-        document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
+        // document.getElementById("saveSupplierExchangeItemButton").setAttribute("disabled",true)
                 
 		var rowId = button.dataset.id;
 	 	$.ajax({
@@ -1000,9 +1030,10 @@ function searchSupplier(a){
                 console.log("error occured")
             }else{
                 console.log("ready")
-                // return true;
                 var data = $(this).serialize(); 
-                var arrayOfData = $("#formsupplierReturnItem").serializeArray();  
+                var arrayOfData = $("#formsupplierReturnItem").serializeArray(); 
+                // console.log(arrayOfData) 
+                // return true;
                 var supplierret = []; 
                 $.ajax({
                     type:'POST',
@@ -1577,14 +1608,17 @@ function searchSupplier(a){
                                         
                             </div>
                         </div>
+                        <div id="errorDivCreateReturnsSupplier" class="hidden">
+
+                        </div>
                         <div class="row">
-                        <div class="text-right">                                           
-                            <div class="col-md-12">   
-                                <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
-                                <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            <div class="text-right">                                           
+                                <div class="col-md-12">   
+                                    <button type="submit" id="supplierreturnbutton" class="btn btn-success hidden" form='formsupplierReturnItem'>Save</button>
+                                    <button class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </div>
                     {!! Form::close() !!}
 
@@ -1864,7 +1898,7 @@ function searchSupplier(a){
                 <div class="row">
                     <div class="text-right">                                           
                         <div class="col-md-12">   
-                            <button type="submit" id="saveSupplierExchangeItemButton" disabled class="btn btn-success" form='supplierexchange'>Save</button>
+                            <button type="submit" id="saveSupplierExchangeItemButton" class="btn btn-success" form='supplierexchange'>Save</button>
                             <button class="btn btn-danger" data-dismiss="modal">Close</button>
                         </div>
                     </div>

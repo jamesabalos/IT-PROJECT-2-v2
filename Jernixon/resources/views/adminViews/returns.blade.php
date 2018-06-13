@@ -259,8 +259,6 @@ ng-app="ourAngularJsApp"
             // }
 
     }
-<<<<<<< HEAD
-=======
     function checkTotalQuantityOfCheckedBoxSupplier(){
         //get total quantity for every raw then check if the total Quantity == 0, if 0, then disabled save button
             var errorMessages = "";
@@ -306,7 +304,6 @@ ng-app="ourAngularJsApp"
             }
             
     }
->>>>>>> 58f44f27d1b2d2d8ecf06fd22445a3c165630b11
         
     function addReturnItem(div){
         var items =[];

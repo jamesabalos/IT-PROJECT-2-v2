@@ -188,9 +188,14 @@ ng-controller="customerPurchase"
             if(m<7){
                 items += "<tr>\
                             <td class='quantity nl'>"+rows[i].cells[0].lastChild.value+"</td>\
-                            <td class='unit nl'>"+rows[i].cells[1].firstChild.value+"</td>\
-                            <td class='desc nl'>"+rows[i].cells[2].innerHTML+"</td>\
-                            <td class='unitp nl'>"+rows[i].cells[3].innerText+"</td>\
+                            <td class='unit nl'>"+rows[i].cells[1].firstChild.value+"</td>";
+                    if( rows[i].cells[6].firstChild.checked ){
+                      items += "<td class='desc nl'>"+rows[i].cells[2].innerHTML+"(warranty)</td>";
+                    }else{
+                      items += "<td class='desc nl'>"+rows[i].cells[2].innerHTML+"</td>";
+                    }
+                
+                items += "<td class='unitp nl'>"+rows[i].cells[3].innerText+"</td>\
                             <td class='amount nl'>"+rows[i].cells[4].innerText+"</td>\
                         <tr>\
                         ";
@@ -541,15 +546,6 @@ ng-controller="customerPurchase"
                     if( ($("#cartTbody tr td:nth-child(1)")[i].firstChild).value <= 0 ){
                         check = true;
                         checkQuantity( $("#cartTbody tr td:nth-child(1)")[i].firstChild );
-                        // ($("#cartTbody tr td:nth-child(1)")[i].firstChild).setAttribute("data-content","Quantiity should be greate");
-                        // $($("#cartTbody tr td:nth-child(1)")[i].firstChild).popover("show");
-                        // $("#salesErrorDiv").hide(500);
-                        // $("#salesErrorDiv").removeClass("hidden");
-                        // $("#salesErrorDiv").slideDown("slow", function() {
-                        //     $("#salesErrorDiv").html(function(){
-                        //         return "<h4>Please fill up a valid quantity.</h4>";
-                        //     });
-                        // });
                     }
                 }
                 if(check){
@@ -559,20 +555,13 @@ ng-controller="customerPurchase"
 
             $.ajax({
                 type:'POST',
-                // url:'admin/storeNewItem',
                 url: "{{route('admin.createSales')}}",
-                //                        dataType:'json',
+                //dataType:'json',
 
-                // data:{
-                //     'name': arrayOfData[1].value,
-                // },
-
-                // data:{data},
                 data:data,
-                //_token:$("#_token"),
+                //_token:$("#_token")
                 success:function(data){
-                    // console.log(data)
-                    if(data === "successful"){
+                    if(data.replace(/^\s+|\s+$/g, '') === "successful"){
                         document.getElementById("formSales").reset();
                         var items = [];
                         var len=localStorage.length;
@@ -583,12 +572,6 @@ ng-controller="customerPurchase"
                                 items.push(key);
                             }
                         }
-
-                        //delete items in localStorage
-                        // for(var i=0; i < items.length; i++){
-                        //     localStorage.removeItem(items[i]);
-                        // }
-                            
 
                         //clear total sales
                         document.getElementById("totalSalesDiv").firstChild.innerHTML="";
@@ -619,6 +602,8 @@ ng-controller="customerPurchase"
                     document.getElementById("customerName").value = localStorage.getItem("customerName");
                     document.getElementById("address").value = localStorage.getItem("customerAddress");
 
+                    location.reload();
+
                     }else{
                         $("#salesErrorDiv").css("display","block");
                         $("#salesErrorDiv").removeClass("alert-success hidden").addClass("alert-danger");
@@ -647,10 +632,6 @@ ng-controller="customerPurchase"
                     
                 }
             });
-            // .done(function(data) {
-            //          alert("success!!!!"); 
-            // });
-
 
         })
 

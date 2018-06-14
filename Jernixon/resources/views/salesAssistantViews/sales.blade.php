@@ -557,7 +557,7 @@ ng-controller="customerPurchase"
                 data:data,
                 //_token:$("#_token"),
                 success:function(data){
-                    if(data === "successful"){
+                    if(data.replace(/^\s+|\s+$/g, '') === "successful"){
                         document.getElementById("formSales").reset();
                         var items = [];
                         var len=localStorage.length;

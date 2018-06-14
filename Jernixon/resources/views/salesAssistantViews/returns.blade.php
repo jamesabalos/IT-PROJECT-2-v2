@@ -547,7 +547,7 @@ $(document).ready(function(){
                   $("#returnsDataTable").DataTable().ajax.reload();//reload the dataTables
                   // $('#formReturnItem').reset();
                   $("#returnItemTbody tr").remove();
-                  
+                  location.reload();
                   
               },
               error:function(data){

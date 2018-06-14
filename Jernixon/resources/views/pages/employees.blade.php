@@ -79,7 +79,7 @@
             //key value pair of form
             // var data = $(this).serialize();
             var arrayOfData = $(this).serializeArray();
-            var password = (arrayOfData[2].value).split(" ", 1) + "@jernixon";
+            var password = (arrayOfData[1].value).split(" ", 1) + "@jernixon";
             var adminParam = {
                         'name': arrayOfData[1].value,
                         'email': arrayOfData[2].value,

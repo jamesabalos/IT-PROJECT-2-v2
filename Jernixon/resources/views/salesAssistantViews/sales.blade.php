@@ -599,7 +599,8 @@ ng-controller="customerPurchase"
                         $("#salesErrorDiv").removeClass("alert-success hidden").addClass("alert-danger");
                         $("#salesErrorDiv").html("Receipt Number duplicated");
                     }
-
+                
+                    location.reload();
                 },
 
 

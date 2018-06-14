@@ -661,14 +661,15 @@ function searchSupplier(a){
 
 	
 	}
-    function removeRow(button){
+    function removeRowInSupplierExchangedItem(button){
         
         var exchangeItemTbody = document.getElementById("veiwReturnedItemTbody2");
         var exchangeItemTbodyRows = $("#veiwReturnedItemTbody2 tr td:first-child");
         for(var i = 0; i < exchangeItemTbody.rows.length; i++ ){
-            console.log( (exchangeItemTbodyRows[i].innerHTML).includes(button.parentNode.parentNode.childNodes[1].innerHTML))
-            if( (exchangeItemTbodyRows[i].innerHTML).includes(button.parentNode.parentNode.firstChild.childNodes[1].innerHTML) ){
-                exchangeItemTbodyRows[i].parentNode.childNodes[3].outerHTML = button.dataset.buttontemp;
+            // console.log("compare: "+exchangeItemTbodyRows[i].innerHTML + " to "+ button.parentNode.parentNode.childNodes[0].children[5].innerHTML)
+            // console.log( exchangeItemTbodyRows[i].innerHTML === button.parentNode.parentNode.childNodes[0].children[5].innerHTML )
+            if( (exchangeItemTbodyRows[i].innerHTML) === button.parentNode.parentNode.childNodes[0].children[5].innerHTML ){
+                exchangeItemTbodyRows[i].parentNode.childNodes[3].innerHTML = button.dataset.buttontemp;
                    $(button.parentNode.parentNode).hide(500,function(){
                         this.remove();  
                     });
@@ -701,6 +702,7 @@ function searchSupplier(a){
         }
     }
     function Accept(button){
+        // $(event).closest("tr").remove();
         var tbody = document.getElementById("supplierExchangeTbody");   
         var newRow = tbody.insertRow(-1);
         newRow.insertCell(-1).innerHTML = "<td><input type='hidden' class='form-control' name='productid[]' value="+button.dataset.product_id+"><input type='hidden' class='form-control' name='returnsid[]' value="+button.dataset.returnsid+"><input type='hidden' class='form-control' name='Supplier' value="+button.dataset.suppname+"><input type='hidden' class='form-control' name='id[]' value="+button.dataset.id+"><input type='hidden' class='form-control' name='unitprice[]' value="+button.dataset.unitprice+"><p>" +button.dataset.description+ "</p></td>";
@@ -709,7 +711,7 @@ function searchSupplier(a){
         newRow.insertCell(-1).innerHTML = "<td><select class='form-control' name='unit[]' > <option class='form-control'  value='pcs'>Pcs</option><option class='form-control'  value='sets'>Sets</option></select>"+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td>"+button.dataset.unitprice+ "</td>";
         newRow.insertCell(-1).innerHTML = "<td><input type='number' class='form-control' disabled name='amount[]'></td>";
-        newRow.insertCell(-1).innerHTML = "<td><button type='button' data-buttontemp='"+button.parentNode.parentNode.parentNode.outerHTML+"' data-returnsid='"+button.dataset.returnsid+"' onclick='removeRow(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
+        newRow.insertCell(-1).innerHTML = "<td><button type='button' data-buttontemp='"+button.parentNode.parentNode.outerHTML+"' data-returnsid='"+button.dataset.returnsid+"' onclick='removeRowInSupplierExchangedItem(this)' class='btn btn-danger form-control'><i class='glyphicon glyphicon-remove'></i></button></td>";
     
         $id =  button.dataset.id;
         document.getElementById('stat'+$id).innerHTML = "Accepted";

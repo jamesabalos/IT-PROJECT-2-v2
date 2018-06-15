@@ -147,7 +147,7 @@ ng-controller="ownerPurchase"
                   $("#purchaseOrdertableTbody tr").remove();
 
                   var modalPurchaseTable = document.getElementById("purchaseOrdertableTbody");
-                  var totalAmount = "";
+                  var totalAmount = 0;
                   for(var i = 0; i < data.length; i++){
                       var newRow = modalPurchaseTable.insertRow(-1);
                       newRow.insertCell(-1).innerHTML = "<td>" +data[i].quantity+ "</td>";
@@ -163,7 +163,7 @@ ng-controller="ownerPurchase"
                   document.getElementById("discountDivView").innerHTML = data[0].discount;
 
 
-                  document.getElementById("totalAmountDivView").innerHTML = totalAmount;
+                  document.getElementById("totalAmountDivView").innerHTML = totalAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
               }
           });

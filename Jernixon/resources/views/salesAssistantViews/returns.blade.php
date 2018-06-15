@@ -344,7 +344,7 @@ function searchOfficialReceipt(a){
             },
 
 			success:function(data){
-                // console.log(data)        
+                console.log(data)        
                 $("#veiwReturnedItemTbody tr").remove();
                 var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
                 for(var i = 0; i < data.length; i++){
@@ -365,7 +365,7 @@ function searchOfficialReceipt(a){
                 document.getElementById("address").innerHTML= data[0].address;
                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
                 document.getElementById("customerName").innerHTML = data[0].customer_name;
-                // {{-- document.getElementById("warrantyDay").value = data[0].created_at; --}}
+                 document.getElementById("address").value = data[0].address;
 
 			}
 		});

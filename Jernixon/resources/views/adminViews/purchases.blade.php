@@ -618,7 +618,7 @@ ng-controller="ownerPurchase"
 
                  angular.element( lastRow.insertCell(-1) ).append(itemDescription);
 
-                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control text-right' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
+                var unitPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input style='width: 100px;color:green' step='0.25' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number' ng-init='" +itemName+ "UP =" +event.currentTarget.dataset.price+ "' name='unitPrice[]' class='form-control text-right' ng-focus='$event = $event' ng-change='changingUnitPrice($event)' ng-model='" +itemName + "UP'  required></input></div>";
                 var temp2 = $compile(unitPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 

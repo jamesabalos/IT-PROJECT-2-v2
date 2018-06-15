@@ -622,7 +622,7 @@ ng-controller="ownerPurchase"
                 var temp2 = $compile(unitPrice)($scope);
                 angular.element( lastRow.insertCell(-1) ).append(temp2);
 
-                var amount = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-bind='" +itemName+"Q"+"*"+itemName+ "UP |number:2'></p></div><input type='hidden' name='amount[]' ng-value='" +itemName+"Q"+"*"+itemName+ "UP'>";
+                var amount = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green;' ng-bind='" +itemName+"Q"+"*"+itemName+ "UP |number'></p></div><input type='hidden' name='amount[]' ng-value='" +itemName+"Q"+"*"+itemName+ "UP'>";
                 // var amount = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><input disabled name='amount[]' class='form-control text-right' style='color:green;' ng-model='"+itemName+"amount' ng-bind='" +itemName+"Q"+"*"+itemName+ "UP |number:2'></p></div><input type='hidden' name='amount[]' value=''>";
                 var temp3 = $compile(amount)($scope); 
                 angular.element( lastRow.insertCell(-1) ).append(temp3);

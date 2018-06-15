@@ -303,7 +303,7 @@ class="active"
 
     }
     function checkItemQuantity(button){
-        var quantityLeft = button.parentNode.parentNode.childNodes[1].innerHTML;
+        var quantityLeft = button.parentNode.parentNode.childNodes[3].innerHTML;
         if(button.childNodes[1].nodeValue === "Enable"){
             formUpdateChangeStatus(button.childNodes[1].nodeValue,button.id);
         }else{
@@ -1038,7 +1038,7 @@ class="active"
                                 </div>
                                 <div class="col-md-9">                                    
                                     {{-- {{Form::number('retailPrice','',['class'=>'form-control','id'=>'itemRetailPrice'])}} --}}
-                                    <input id="itemRetailPrice" name="retailPrice" style='width: 100px;' class="form-control" onchange='checkReorderLevel(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number'>
+                                    <input id="itemRetailPrice" name="retailPrice" step="0.25" style='width: 100px;' class="form-control" onchange='checkReorderLevel(this)' trigger='manual' placement='top' data-toggle='popover' title='Error' type='number'>
                                     
                                 </div>
                             </div>

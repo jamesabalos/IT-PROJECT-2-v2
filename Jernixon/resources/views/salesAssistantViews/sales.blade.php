@@ -998,7 +998,7 @@ var _this = this;
             //         if(totalSalesNgBinds === ""){
             //             var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
             //         }else{
-            //             var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+            //             var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number'></p>";
             //         }
             //         angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
@@ -1124,12 +1124,12 @@ var _this = this;
         //            //     if(totalSalesNgBinds === ""){
         //            //         var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
         //            //     }else{
-        //            //         var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+        //            //         var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number'></p>";
         //            //     }
         //            // }else{
         //            //     var temp3 = document.getElementById("totalSalesDiv").firstElementChild.getAttribute("ng-bind").split(" ")[0] +"+"+totalSalesNgBinds;
         //            //     console.log(document.getElementById("totalSalesDiv").firstElementChild.getAttribute("ng-bind").split(" ")[0] +"+"+totalSalesNgBinds)
-        //            //     var price = "<p class='form-control' style='color:green' ng-bind='" +temp3+ " |number:2'></p>";
+        //            //     var price = "<p class='form-control' style='color:green' ng-bind='" +temp3+ " |number'></p>";
         //            // }
 
                    
@@ -1137,7 +1137,7 @@ var _this = this;
         //            if(totalSalesNgBinds === ""){
         //                var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p>";
         //            }else{
-        //                var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number:2'></p>";
+        //                var price = "<p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ " |number'></p>";
         //            }
 
         //            angular.element( totalSalesDiv ).append( $compile(price)($scope) );
@@ -1240,7 +1240,7 @@ var _this = this;
 
                                 var ngModelName = ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model");
                                 var tempSalesPrice = $.parseHTML(myItemJSON.salesPrice);
-                                var retailPrice = parseInt(sellingPrice);    
+                                var retailPrice = parseFloat(sellingPrice);    
                                 var newSalesPrice = $($.parseHTML(myItemJSON['salesPrice'])[0].children[1]).attr("ng-init", ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
                                 // var salesPriceSpanElement = ($.parseHTML( myItemJSON.salesPrice)[0].children[0]);
                                 var changeSalesPricePElement = (tempSalesPrice[0].children[1]).outerHTML=newSalesPrice[0].outerHTML;
@@ -1283,7 +1283,7 @@ var _this = this;
                         var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
                         var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='" +totalSalesNgBinds+ "'></p></div>";
                     }else{
-                        // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number:2'></p></div>";
+                        // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")-discountValue |number'></p></div>";
                         var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ")- (("+totalSalesNgBinds+")*(discountValue/100)) |number:2'></p></div>";
                         var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='(" +totalSalesNgBinds+ ") |number:2'></p></div>";                   
                     }
@@ -1394,7 +1394,7 @@ var _this = this;
 
                 console.log("TScorrect: " + newNgBinds)
                 var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "- ("+newNgBinds+"*(discountValue/100)) |number:2'></p></div>";
-                // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "-discountValue |number:2'></p></div>";
+                // var price = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ "-discountValue |number'></p></div>";
                 angular.element( totalSalesDiv ).append( $compile(price)($scope) );
 
                 var originalPrice = "<div class = 'input-group'><span class = 'input-group-addon'>&#8369</span><p class='form-control text-right' style='color:green' ng-bind='" +newNgBinds+ " |number:2'></p></div>";
@@ -1416,7 +1416,7 @@ var _this = this;
                 }
 
                 var ngModelName = event.currentTarget.attributes["ng-model"].value;
-                var retailPrice = parseInt(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.children[1].innerText);
+                var retailPrice = parseFloat(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.children[1].innerText);
                 var sellingPrice = ngModelName+"SP";
                 $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
                 // document.getElementById("salesPriceValue").setAttribute("value",retailPrice * $scope[ngModelName]);
@@ -1439,7 +1439,9 @@ var _this = this;
                     action: item['action'],
                     unit: item['unit'],
                     model: item['model'],
-                    category: item['category']
+                    category: item['category'],
+                    warranty: item['warranty']
+                    
                 };
 
                 var jsonObject = JSON.stringify(itemObject);

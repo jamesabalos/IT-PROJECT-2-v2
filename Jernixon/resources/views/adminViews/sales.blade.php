@@ -1148,7 +1148,7 @@ function changeToDamage(){
 
                                 var ngModelName = ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model");
                                 var tempSalesPrice = $.parseHTML(myItemJSON.salesPrice);
-                                var retailPrice = parseInt(sellingPrice);    
+                                var retailPrice = parseFloat(sellingPrice);    
                                 var newSalesPrice = $($.parseHTML(myItemJSON['salesPrice'])[0].children[1]).attr("ng-init", ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
                                 // var salesPriceSpanElement = ($.parseHTML( myItemJSON.salesPrice)[0].children[0]);
                                 var changeSalesPricePElement = (tempSalesPrice[0].children[1]).outerHTML=newSalesPrice[0].outerHTML;
@@ -1295,7 +1295,7 @@ function changeToDamage(){
                                /////////////////////////////////////
                                var ngModelName = ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model");
                                 var tempSalesPrice = $.parseHTML(myItemJSON.salesPrice);
-                                var retailPrice = parseInt(sellingPrice);    
+                                var retailPrice = parseFloat(sellingPrice);    
                                 var newSalesPrice = $($.parseHTML(myItemJSON['salesPrice'])[0].children[1]).attr("ng-init", ($.parseHTML(myItemJSON['quantityPurchase'])[0]).getAttribute("ng-model")+"SP="+ retailPrice * $scope[ngModelName]);
                                 // var salesPriceSpanElement = ($.parseHTML( myItemJSON.salesPrice)[0].children[0]);
                                 var changeSalesPricePElement = (tempSalesPrice[0].children[1]).outerHTML=newSalesPrice[0].outerHTML;
@@ -1586,7 +1586,7 @@ function changeToDamage(){
                 var ngModelName = event.currentTarget.attributes["ng-model"].value;
                 // var oldTs = parseInt(document.getElementById("totalSales").innerText);
                 // var retailPrice = parseInt(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.children[1].innerText);
-                var retailPrice = parseInt(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.children[1].innerText);
+                var retailPrice = parseFloat(event.currentTarget.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.firstChild.children[1].innerText);
                 var sellingPrice = ngModelName+"SP";
                 $scope[sellingPrice] =  retailPrice * $scope[ngModelName];
                 // document.getElementById("salesPriceValue").setAttribute("value",retailPrice * $scope[ngModelName]);
@@ -1612,7 +1612,9 @@ function changeToDamage(){
                     action: item['action'],
                     unit: item['unit'],
                     model: item['model'],
-                    category: item['category']
+                    category: item['category'],
+                    warranty: item['warranty']
+
                 };
 
                 var jsonObject = JSON.stringify(itemObject);

@@ -611,7 +611,7 @@ function searchSupplier(a){
             },
 
 			success:function(data){
-                // console.log(data)        
+                console.log(data)        
                 $("#veiwReturnedItemTbody tr").remove();
                 var returnedItemTable = document.getElementById("veiwReturnedItemTbody");
                 for(var i = 0; i < data.length; i++){

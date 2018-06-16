@@ -559,8 +559,8 @@ public function createPurchasesFilter(Request $request){
 
         $data = DB::table('returns')
                 ->join('products','products.product_id','=','returns.product_id')
-                // ->join('sales', 'sales.product_id', '=', 'returns.product_id')
-                ->select('returns.price','returns.product_id','returns.customer_name','description', DB::raw('sum(damagedQuantity) as damagedQuantity'),DB::raw('sum(undamagedQuantity) as undamagedQuantity'), DB::raw('sum(damagedSalableQuantity) as damagedSalableQuantity'))
+                 ->join('sales', 'sales.product_id', '=', 'returns.product_id')
+                ->select('returns.created_at','sales.address','returns.price','returns.product_id','returns.customer_name','description', DB::raw('sum(damagedQuantity) as damagedQuantity'),DB::raw('sum(undamagedQuantity) as undamagedQuantity'), DB::raw('sum(damagedSalableQuantity) as damagedSalableQuantity'))
                 ->where('returns.or_number', '=',$request->ORNumber)
                 ->groupBy('products.description')
                 ->get();

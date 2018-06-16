@@ -365,7 +365,7 @@ function searchOfficialReceipt(a){
                 document.getElementById("address").innerHTML= data[0].address;
                 document.getElementById("returnedORNumber").innerHTML = ORnumber;
                 document.getElementById("customerName").innerHTML = data[0].customer_name;
-                 document.getElementById("address").value = data[0].address;
+                //  document.getElementById("address").value = data[0].address;
 
 			}
 		});

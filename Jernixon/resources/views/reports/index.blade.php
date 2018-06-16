@@ -378,7 +378,7 @@ class="active"
             $("#lostButton").removeClass('active');
             $("#damgaedButton").removeClass('active');
             $("#damagedItemsDiv").addClass('hidden');
-            $("#lostItemsDiv").addClass("hidden");
+            $("#lostItemsDiv").addClass("hidden");            
             $("#stockAdjustmentButton").removeClass('active');
             $("#stockAdjustmentDiv").addClass('hidden');
             $("#purchasedButton").removeClass('active');
@@ -430,8 +430,9 @@ class="active"
         $("#lostButton").addClass('active');
         $("#damgaedButton").removeClass('active');
         $("#lostItemsDiv").removeClass("hidden");
+        $("#purchasedItemDiv").addClass("hidden");
+        $("#soldDiv").addClass("hidden");
         $("#purchasedButton").removeClass('active');
-        $("#purchasedItemDiv").removeClass("hidden");
         $("#stockAdjustmentButton").removeClass('active');
         $("#stockAdjustmentDiv").addClass('hidden');
         $('#lostItemsTable').DataTable({
